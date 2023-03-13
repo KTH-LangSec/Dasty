@@ -2,6 +2,7 @@ const util = require('node:util');
 // const exec = util.promisify(require('child_process').exec);
 const {exec} = require('child_process');
 const fs = require('fs');
+const {getDb, closeConnection} = require('./db/conn');
 
 const args = process.argv;
 
@@ -10,7 +11,7 @@ function getCliArg(name) {
     return index >= 0 && process.argv.length > index ? args.splice(index, 2)[1] : null;
 }
 
-function execCmd(cmd, live = false) {
+function execCmd(cmd, live = false, abortOnErr = true) {
     return new Promise(resolve => {
         const childProcess = exec(cmd);
         let out = '';
@@ -22,13 +23,15 @@ function execCmd(cmd, live = false) {
         });
         childProcess.stderr.on('data', data => {
             if (live) process.stderr.write(data);
+
+            out += data; // stderr might also be used for information output (e.g. git)
             err += data;
         });
 
-        childProcess.on('close', () => {
-            if (err !== '') {
-                if (!live) console.error(err);
-                process.exit(1);
+        childProcess.on('close', code => {
+            if (code !== 0) {
+                if (!live) process.stderr.write(err);
+                if (abortOnErr) process.exit(1);
             }
 
             resolve(out);
@@ -91,8 +94,7 @@ function findTestScripts(repoName) {
 
 async function runAnalysis(testScript, pkgName, resultFilename, repoName) {
 
-    const analysisPath = __dirname + '/../taint-analysis/index.js';
-    const resultPath = __dirname + `/results/${resultFilename}.json`;
+    const analysisFilename = __dirname + '/../taint-analysis/index.js';
 
     let cmd = `cd ./packages/${repoName}; `
     cmd += '$GRAAL_NODE_HOME'
@@ -104,29 +106,56 @@ async function runAnalysis(testScript, pkgName, resultFilename, repoName) {
         + ' --nodeprof.ExcludeSource=excluded/'
         + ' --nodeprof.IgnoreJalangiException=false'
         + ' --nodeprof $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js'
-        + ` --analysis ${analysisPath}`
+        + ` --analysis ${analysisFilename}`
         + ` --initParam pkgName:${pkgName}`
-        + ` --initParam resultPath:${resultPath}`
+        + ` --initParam resultPath:${resultFilename}`
         + ` ${testScript};`;
 
     console.log(cmd);
 
-    await execCmd(cmd, true);
+    await execCmd(cmd, true, false);
+}
 
+async function writeResultsToDB(pkgName, resultFilenames) {
+    const results = [];
+
+    // parse and merge all results
+    resultFilenames.forEach(resultFilename => {
+        if (!fs.existsSync(resultFilename)) return;
+
+        results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf-8')));
+    });
+
+    if (results.length === 0) return;
+
+    const db = await getDb();
+
+    const resultsColl = await db.collection('results');
+    let pkgId = (await resultsColl.findOne({package: pkgName}, {projection: {_id: 0}}))?._id;
+    if (!pkgId) {
+        pkgId = (await resultsColl.insertOne({package: pkgName, runs: []})).insertedId;
+    }
+
+    const run = {
+        timestamp: Date.now(),
+        results
+    };
+
+    await resultsColl.updateOne({_id: pkgId}, {$push: {runs: run}});
 }
 
 async function run() {
     if (args.length < 1) {
         // ToDo - usage info
         console.log('No package name specified')
-        process.exit(-1);
+        process.exit(1);
     }
 
     const pkgName = process.argv[args.length - 1];
 
     console.log('Fetching URL');
-    const url = await fetchURL(pkgName);
-    // const url = 'https://github.com/aheckmann/gm.git';
+    // const url = await fetchURL(pkgName);
+    const url = 'https://github.com/aheckmann/gm.git';
 
     console.log(`Fetching repository ${url}`);
     // await execCmd(`cd packages; git clone ${url}`, true);
@@ -139,12 +168,19 @@ async function run() {
     console.log('Finding test script');
     const testScripts = findTestScripts(repoName);
 
-    console.log(testScripts);
-
-    console.log('Run analysis')
+    console.log('Running analysis');
+    const resultBasePath = __dirname + `/results/`;
+    const resultFiles = [];
     for (const [index, testScript] of testScripts.entries()) {
-        await runAnalysis(testScript, pkgName, `${pkgName}-${index}`, repoName);
+        const resultFilename = `${resultBasePath}/${pkgName}-${index}.json`;
+        resultFiles.push(resultFilename);
+        await runAnalysis(testScript, pkgName, resultFilename, repoName);
     }
+
+    console.log("Writing results to DB");
+    await writeResultsToDB(pkgName, resultFiles);
 }
 
-run().then(() => console.log('Analyzation complete'));
+run()
+    .then(() => console.log('Analyzation complete'))
+    .finally(() => closeConnection());

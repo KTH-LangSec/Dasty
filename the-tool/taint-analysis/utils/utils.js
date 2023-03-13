@@ -16,11 +16,16 @@ function iidToCode(iid) {
 
 function parseIID(iid) {
     // const sourceObject = iidToSourceObject(iid);
-    const location = iidToLocation(iid);
+    // const location = iidToLocation(iid);
+    const src = iidToSourceObject(iid);
+    const location = {
+        artifact: src.name,
+        region: src.loc
+    };
     const code = iidToCode(iid);
 
     return {
-        iid,
+        // iid,
         location,
         // filename: sourceObject.name,
         code

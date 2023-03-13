@@ -43,6 +43,7 @@ class ModuleWrapperProxyHandler {
         }
 
         // return new wrapper and copy the current entry point path
+        // return new Proxy(result, new ModuleWrapperProxyHandler({type: 'propertyRead', args: [property]}, this.entryPoint.slice()));
         return new Proxy(result, new ModuleWrapperProxyHandler(property, this.entryPoint.slice()));
     }
 
@@ -54,11 +55,20 @@ class ModuleWrapperProxyHandler {
         // if called from within a function it's not an entry point
         if (callDepth > 0) return Reflect.apply(target, thisArg, argumentList);
 
+        // const ep = {
+        //     type: 'apply',
+        //     args: argumentList.map(a => a.toString())
+        // };
+
+        const ep = '()';
+
         let result = null;
         callDepth++; // adapt call depth
+        this.entryPoint.push(ep);
         try {
             result = Reflect.apply(target, thisArg, argumentList); // call the actual function
         } finally {
+            this.entryPoint.pop();
             callDepth--;
         }
 
@@ -68,7 +78,7 @@ class ModuleWrapperProxyHandler {
         }
 
         // wrap the result if necessary
-        return new Proxy(result, new ModuleWrapperProxyHandler('()', this.entryPoint.slice()));
+        return new Proxy(result, new ModuleWrapperProxyHandler(ep, this.entryPoint.slice()));
     }
 
     /**
@@ -93,7 +103,7 @@ function shouldWrap(obj) {
 }
 
 function createModuleWrapper(module, moduleName) {
-    const handler = new ModuleWrapperProxyHandler(`module:${moduleName}`);
+    const handler = new ModuleWrapperProxyHandler(/*`module:${moduleName}`*/);
     return shouldWrap(module) ? new Proxy(module, handler) : module;
 }
 

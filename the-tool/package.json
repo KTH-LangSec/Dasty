@@ -1,18 +1,14 @@
 {
-  "name": "custom",
+  "name": "the-tool",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "gm": "^1.25.0",
-    "moment": "^2.29.4"
+    "mongodb": "^5.1.0"
   }
 }
