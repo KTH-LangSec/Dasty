@@ -11,8 +11,8 @@ function getCliArg(name, numValues = 1) {
     return index >= 0 && args.length >= index + numValues ? args.splice(index, numValues + 1) : null;
 }
 
-function execCmd(cmd, live = false, abortOnErr = true) {
-    return new Promise(resolve => {
+function execCmd(cmd, live = false, throwOnErr = true) {
+    return new Promise((resolve, reject) => {
         const childProcess = exec(cmd);
         let out = '';
         let err = '';
@@ -31,7 +31,7 @@ function execCmd(cmd, live = false, abortOnErr = true) {
         childProcess.on('close', code => {
             if (code !== 0) {
                 if (!live) process.stderr.write(err);
-                if (abortOnErr) process.exit(1);
+                if (throwOnErr) reject(err);
             }
 
             resolve(out);
@@ -50,13 +50,13 @@ async function fetchURL(pkgName) {
     return url.substring(4).trim();
 }
 
-function adaptTestScript(script, scripts) {
+function adaptTestScript(script, scripts, repoPath) {
     const argParts = script.trim().split(' ');
     switch (argParts[0]) {
         case 'node':
             return argParts.slice(1).join(' ');
         case 'mocha':
-            argParts[0] = './node_modules/mocha/bin/mocha.js';
+            argParts[0] = './node_modules/mocha/bin/' + (fs.existsSync(repoPath + '/node_modules/mocha/bin/mocha.js') ? 'mocha.js' : 'mocha');
             const bailIndex = argParts.findIndex(a => a === '--bail');
             if (bailIndex >= 0) {
                 argParts[bailIndex] = '--exit';
@@ -64,19 +64,21 @@ function adaptTestScript(script, scripts) {
             return argParts.join(' ');
         case 'npm':
             if (argParts[1] === 'run') {
-                return adaptTestScript(scripts[argParts[2]], scripts);
+                return adaptTestScript(scripts[argParts[2]], scripts, repoPath);
             }
 
             // ignore other npm commands (e.g. audit)
             return null;
         // ToDo add other testing frameworks
+        case 'nyc':
+            return (adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath));
         default:
             return null;
     }
 }
 
-function findTestScripts(repoName) {
-    const pkgJson = fs.readFileSync(`./packages/${repoName}/package.json`, 'utf8');
+function findTestScripts(repoPath) {
+    const pkgJson = fs.readFileSync(`${repoPath}/package.json`, 'utf8');
     const pkg = JSON.parse(pkgJson);
 
     // ToDo - it's not always defined with 'test'
@@ -88,15 +90,15 @@ function findTestScripts(repoName) {
     // split multiple scripts
     const cmds = pkg.scripts.test.split(/(&&)|;/);
     return cmds.map(cmd =>
-        cmd !== '&&' && cmd !== ';' ? adaptTestScript(cmd, pkg.scripts) : null
+        cmd !== '&&' && cmd !== ';' ? adaptTestScript(cmd, pkg.scripts, repoPath) : null
     ).filter(s => s !== null);
 }
 
-async function runAnalysis(testScript, pkgName, resultFilename, repoName) {
+async function runAnalysis(testScript, pkgName, resultFilename) {
 
     const analysisFilename = __dirname + '/../taint-analysis/index.js';
 
-    let cmd = `cd ./packages/${repoName}; `
+    let cmd = `cd ./packages/${pkgName}; `
     cmd += '$GRAAL_NODE_HOME'
         + ' --jvm '
         + ' --experimental-options'
@@ -166,27 +168,31 @@ function locToSarif(dbLocation, message = null) {
 
 async function runPipeline(pkgName) {
     console.log('Fetching URL');
-    // const url = await fetchURL(pkgName);
-    const url = 'https://github.com/aheckmann/gm.git';
+    const url = await fetchURL(pkgName);
 
-    console.log(`Fetching repository ${url}`);
-    // await execCmd(`cd packages; git clone ${url}`, true);
-
-    const repoName = url.split('/').pop().split('.')[0];
+    const repoPath = __dirname + `/packages/${pkgName}`;
+    if (!fs.existsSync(repoPath)) {
+        console.log(`Fetching repository ${url}`);
+        await execCmd(`cd packages; git clone ${url} ${pkgName}`, true);
+    } else {
+        console.log(`Directory ${repoPath} already exists. Skipping git clone.`)
+    }
 
     console.log('Installing dependencies');
-    // await execCmd(`cd packages/${repoName}; npm install;`, true);
+    await execCmd(`cd ${repoPath}; npm install;`, true);
 
     console.log('Finding test script');
-    const testScripts = findTestScripts(repoName);
+    const testScripts = findTestScripts(repoPath);
+
+    console.log(testScripts);
 
     console.log('Running analysis');
-    const resultBasePath = __dirname + `/results/`;
+    const resultBasePath = __dirname + '/results/';
     const resultFiles = [];
     for (const [index, testScript] of testScripts.entries()) {
         const resultFilename = `${resultBasePath}/${pkgName}-${index}.json`;
         resultFiles.push(resultFilename);
-        await runAnalysis(testScript, pkgName, resultFilename, repoName);
+        await runAnalysis(testScript, pkgName, resultFilename);
     }
 
     console.log("Writing results to DB");
@@ -244,22 +250,38 @@ async function getSarif(pkgName) {
     }
 }
 
-
-const sarif = getCliArg('sarif', 0);
-
-if (args.length < 1) {
-    // ToDo - usage info
-    console.log('No package name specified')
-    process.exit(1);
+function getPkgsFromFile(filename) {
+    const contents = fs.readFileSync(filename, {encoding: 'utf8'});
+    return contents.split('\n').map(pkg => pkg.trim());
 }
-const pkgName = process.argv[args.length - 1];
 
-if (sarif) {
-    getSarif(pkgName)
-        .then(() => console.log('Sarif written'))
-        .finally(() => closeConnection())
-} else {
-    runPipeline(pkgName)
-        .then(() => console.log('Analyzation complete'))
-        .finally(() => closeConnection());
+async function run() {
+    const sarif = getCliArg('sarif', 0);
+    const fromFile = getCliArg('fromFile', 0);
+
+    if (args.length < 1) {
+        // ToDo - usage info
+        console.log('No package name specified')
+        process.exit(1);
+    }
+
+    const pkgNames = fromFile ? getPkgsFromFile(args[args.length - 1]) : [args[args.length - 1]];
+
+    for (const pkgName of pkgNames) {
+        try {
+            if (sarif) {
+                console.log(`Getting sarif for '${pkgName}'`);
+                await getSarif(pkgName)
+            } else {
+                console.log(`Analysing '${pkgName}'`);
+                await runPipeline(pkgName)
+                console.log(`Analyzing ${pkgName} complete`);
+            }
+        } catch (e) {
+            console.error(`Could not process '${pkgName}'`);
+        }
+    }
+    closeConnection();
 }
+
+run().then(() => console.log('done'));
