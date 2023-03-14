@@ -44,7 +44,7 @@ class ModuleWrapperProxyHandler {
 
         // return new wrapper and copy the current entry point path
         // return new Proxy(result, new ModuleWrapperProxyHandler({type: 'propertyRead', args: [property]}, this.entryPoint.slice()));
-        return new Proxy(result, new ModuleWrapperProxyHandler(property, this.entryPoint.slice()));
+        return new Proxy(result, new ModuleWrapperProxyHandler('.' + property, this.entryPoint.slice()));
     }
 
     /**
@@ -103,7 +103,7 @@ function shouldWrap(obj) {
 }
 
 function createModuleWrapper(module, moduleName) {
-    const handler = new ModuleWrapperProxyHandler(/*`module:${moduleName}`*/);
+    const handler = new ModuleWrapperProxyHandler(`require('${moduleName}')`);
     return shouldWrap(module) ? new Proxy(module, handler) : module;
 }
 

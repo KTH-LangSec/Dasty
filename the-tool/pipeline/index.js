@@ -6,9 +6,9 @@ const {getDb, closeConnection} = require('./db/conn');
 
 const args = process.argv;
 
-function getCliArg(name) {
+function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
-    return index >= 0 && process.argv.length > index ? args.splice(index, 2)[1] : null;
+    return index >= 0 && args.length >= index + numValues ? args.splice(index, numValues + 1) : null;
 }
 
 function execCmd(cmd, live = false, abortOnErr = true) {
@@ -76,7 +76,7 @@ function adaptTestScript(script, scripts) {
 }
 
 function findTestScripts(repoName) {
-    const pkgJson = fs.readFileSync(`./packages/${repoName}/package.json`, 'utf-8');
+    const pkgJson = fs.readFileSync(`./packages/${repoName}/package.json`, 'utf8');
     const pkg = JSON.parse(pkgJson);
 
     // ToDo - it's not always defined with 'test'
@@ -123,7 +123,7 @@ async function writeResultsToDB(pkgName, resultFilenames) {
     resultFilenames.forEach(resultFilename => {
         if (!fs.existsSync(resultFilename)) return;
 
-        results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf-8')));
+        results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf8')));
     });
 
     if (results.length === 0) return;
@@ -144,15 +144,27 @@ async function writeResultsToDB(pkgName, resultFilenames) {
     await resultsColl.updateOne({_id: pkgId}, {$push: {runs: run}});
 }
 
-async function run() {
-    if (args.length < 1) {
-        // ToDo - usage info
-        console.log('No package name specified')
-        process.exit(1);
+function locToSarif(dbLocation, message = null) {
+    const sarifLoc = {
+        physicalLocation: {
+            artifactLocation: {uri: 'file://' + dbLocation.artifact},
+            region: {
+                startLine: dbLocation.region.start.line,
+                startColumn: dbLocation.region.start.column,
+                endLine: dbLocation.region.end.line,
+                endColumn: dbLocation.region.end.column
+            }
+        },
+    };
+
+    if (message) {
+        sarifLoc.message = {text: message};
     }
 
-    const pkgName = process.argv[args.length - 1];
+    return sarifLoc;
+}
 
+async function runPipeline(pkgName) {
     console.log('Fetching URL');
     // const url = await fetchURL(pkgName);
     const url = 'https://github.com/aheckmann/gm.git';
@@ -181,6 +193,73 @@ async function run() {
     await writeResultsToDB(pkgName, resultFiles);
 }
 
-run()
-    .then(() => console.log('Analyzation complete'))
-    .finally(() => closeConnection());
+async function getSarif(pkgName) {
+    const db = await getDb();
+    const results = await db.collection('results').findOne({package: pkgName});
+
+    const sarif = {
+        version: '2.1.0',
+        $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+        runs: results.runs.map(run => ({
+            tool: {
+                driver: {
+                    name: 'GadgetTaintTracker',
+                    version: '0.1',
+                    informationUri: "https://ToDoLinktoRepo.com"
+                }
+            },
+            results: run.results.map(result => ({
+                ruleId: 'ToDo',
+                level: 'error',
+                message: {text: `Flow found into sink {module: ${result.sink.module}, code: ${result.sink.code}}`},
+                locations: [locToSarif(result.sink.location)],
+                codeFlows: [{
+                    message: {text: 'ToDo'},
+                    threadFlows: [{
+                        locations: [
+                            // ToDo (maybe) - add state, messages and nesting level
+                            {
+                                location: locToSarif(
+                                    result.entryPoint.location,
+                                    `Entry point {callTrace: ${result.entryPoint.entryPoint.join('')}}`
+                                )
+                            },
+                            {location: locToSarif(result.source.location, 'Undefined property read')},
+                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location)})),
+                            {location: locToSarif(result.sink.location, 'Sink')}
+                        ]
+                    }]
+                }]
+            }))
+        }))
+    };
+
+    const out = getCliArg('out', 1);
+    if (!out) {
+        console.log('No output file (--out) specified. Writing to stdout.');
+        console.log(JSON.stringify(sarif));
+    } else {
+        fs.writeFileSync(out[1], JSON.stringify(sarif), {encoding: 'utf8'});
+        console.log(`Output written to ${out[1]}.`);
+    }
+}
+
+
+const sarif = getCliArg('sarif', 0);
+
+if (args.length < 1) {
+    // ToDo - usage info
+    console.log('No package name specified')
+    process.exit(1);
+}
+const pkgName = process.argv[args.length - 1];
+
+if (sarif) {
+    getSarif(pkgName)
+        .then(() => console.log('Sarif written'))
+        .finally(() => closeConnection())
+} else {
+    runPipeline(pkgName)
+        .then(() => console.log('Analyzation complete'))
+        .finally(() => closeConnection());
+}
