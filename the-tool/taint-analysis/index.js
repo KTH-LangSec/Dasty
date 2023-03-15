@@ -15,8 +15,10 @@ function executionDone(flows, resultPath) {
 const blacklistFilepath = __dirname + '/conf/sink-blacklist.json';
 
 const pkgName = J$.initParams.pkgName ?? null;
-const resultPath = J$.initParams.resultPath ?? __dirname + `/results/${pkgName ?? 'result'}.json`;
+const resultFilename = J$.initParams.resultFilename ?? __dirname + `/results/${pkgName ?? 'result'}.json`;
 
-const analysis = new TaintAnalysis(pkgName, getSinkBlacklist(blacklistFilepath), flows => executionDone(flows, resultPath));
+const analysis = new TaintAnalysis(pkgName, getSinkBlacklist(blacklistFilepath), resultFilename, flows => executionDone(flows, resultFilename));
 
 J$.addAnalysis(analysis);
+
+require('module').runMain();

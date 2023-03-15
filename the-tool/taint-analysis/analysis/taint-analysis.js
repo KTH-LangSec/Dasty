@@ -3,6 +3,7 @@ const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal} = requir
 const {parseIID, iidToLocation, iidToCode} = require("../utils/utils");
 const assert = require('assert');
 const {createModuleWrapper} = require("./module-wrapper");
+const {ReturnDocument} = require("mongodb");
 
 // const assert = require('assert');
 
@@ -14,16 +15,63 @@ class TaintAnalysis {
     entryPointIID = 0;
     entryPoint = [];
 
-    constructor(pkgName, sinksBlacklist, executionDoneCallback) {
+    spawnIndex = 0; // keeps track of how many child analyses were spawned so far (for result file naming)
+
+    constructor(pkgName, sinksBlacklist, resultFilename, executionDoneCallback) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.executionDoneCallback = executionDoneCallback;
+        this.resultFilename = resultFilename;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, scope) => {
         // We only care for internal node functions
         // ToDo - should we whitelist (e.g. node:internal)?
         if (isConstructor || f === undefined || (!scope?.startsWith('node:')) || f === console.log) return;
+
+        if (scope === 'node:child_process' && f.name === 'spawn') {
+            const analysisFilename = __dirname + '/../index.js';
+            const resultFilename = `${this.resultFilename}.spawn-${this.spawnIndex}.json`;
+
+            // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
+            const spawnWrapper = (command, args, options) => {
+                // if no node process simply unwrap tainted values
+                if (!command.endsWith('node')) {
+                    const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
+                    return Reflect.apply(f, receiver, unwrappedArgs);
+                }
+
+                console.log('Spawning child process analysis');
+                this.spawnIndex++;
+
+                const graalNode = process.env.GRAAL_NODE_HOME;
+                const nodeProfHome = process.env.NODEPROF_HOME;
+                const analysisArgs = [
+                    '--jvm',
+                    '--experimental-options',
+                    '--engine.WarnInterpreterOnly=false',
+                    `--vm.Dtruffle.class.path.append=${nodeProfHome}/build/nodeprof.jar`,
+                    '--nodeprof.Scope=module',
+                    '--nodeprof.ExcludeSource=excluded/',
+                    '--nodeprof.IgnoreJalangiException=false',
+                    '--nodeprof=true',
+                    `${nodeProfHome}/src/ch.usi.inf.nodeprof/js/jalangi.js`,
+                    '--analysis', analysisFilename,
+                    '--initParam', `resultFilename:${resultFilename}`,
+                ];
+
+                if (this.pkgName) {
+                    analysisArgs.push('--initParam', `pkgName:${this.pkgName ?? ''}`);
+                }
+
+                analysisArgs.push(...args);
+
+                // console.log(analysisArgs);
+                return f.call(receiver, graalNode, analysisArgs, options);
+            };
+
+            return {result: spawnWrapper};
+        }
 
         // ToDo - unwrap constructor calls
 
@@ -34,10 +82,12 @@ class TaintAnalysis {
         const internalWrapper = !isAsync
             ? (...args) => {
                 const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
-                return f.call(receiver, ...unwrappedArgs);
+                return Reflect.apply(f, receiver, unwrappedArgs);
+                // return f.call(receiver, ...unwrappedArgs);
             } : async (...args) => {
                 const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
-                return await f.call(receiver, ...unwrappedArgs);
+                return Reflect.apply(f, receiver, unwrappedArgs);
+                // return await f.call(receiver, ...unwrappedArgs);
             }
 
         return {result: internalWrapper};
