@@ -24,7 +24,6 @@ function execCmd(cmd, live = false, throwOnErr = true) {
         childProcess.stderr.on('data', data => {
             if (live) process.stderr.write(data);
 
-            out += data; // stderr might also be used for information output (e.g. git)
             err += data;
         });
 
@@ -34,7 +33,7 @@ function execCmd(cmd, live = false, throwOnErr = true) {
                 if (throwOnErr) reject(err);
             }
 
-            resolve(out);
+            resolve(out, err);
         });
     });
 }
@@ -62,6 +61,9 @@ function adaptTestScript(script, scripts, repoPath) {
                 argParts[bailIndex] = '--exit';
             }
             return argParts.join(' ');
+        case 'jest':
+            argParts[0] = './node_modules/jest/bin/jest.js'
+            return argParts.join(' ');
         case 'npm':
             if (argParts[1] === 'run') {
                 return adaptTestScript(scripts[argParts[2]], scripts, repoPath);
@@ -69,10 +71,28 @@ function adaptTestScript(script, scripts, repoPath) {
 
             // ignore other npm commands (e.g. audit)
             return null;
-        // ToDo add other testing frameworks
+        case 'c8':
+        // return './node_modules/c8/bin/c8.js ' + adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
         case 'nyc':
-            return (adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath));
+            return adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
         default:
+            // if nothing else matches check try to find the module and extract the 'bin' file
+            const modulePath = `${repoPath}/node_modules/${argParts[0]}/`;
+            if (!fs.existsSync(modulePath)) return null;
+
+            const pkgJson = JSON.parse(fs.readFileSync(modulePath + 'package.json', {encoding: 'utf8'}));
+            if (typeof pkgJson?.bin) {
+                if (typeof pkgJson.bin === 'string') {
+                    argParts[0] = modulePath + pkgJson.bin;
+                } else if (pkgJson.bin[argParts[0]]) {
+                    argParts[0] = modulePath + pkgJson.bin[argParts[0]];
+                } else {
+                    return null;
+                }
+
+                return argParts.join(' ');
+            }
+
             return null;
     }
 }
@@ -110,7 +130,7 @@ async function runAnalysis(testScript, pkgName, resultFilename) {
         + ' --nodeprof $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js'
         + ` --analysis ${analysisFilename}`
         + ` --initParam pkgName:${pkgName}`
-        + ` --initParam resultPath:${resultFilename}`
+        + ` --initParam resultFilename:${resultFilename}`
         + ` ${testScript};`;
 
     console.log(cmd);
@@ -179,17 +199,17 @@ async function runPipeline(pkgName) {
     }
 
     console.log('Installing dependencies');
-    await execCmd(`cd ${repoPath}; npm install;`, true);
+    // await execCmd(`cd ${repoPath}; npm install;`, true);
 
-    console.log('Finding test script');
+    console.log('Finding test scripts');
     const testScripts = findTestScripts(repoPath);
-
-    console.log(testScripts);
 
     console.log('Running analysis');
     const resultBasePath = __dirname + '/results/';
     const resultFiles = [];
     for (const [index, testScript] of testScripts.entries()) {
+        console.log(`Running test '${testScript}'`);
+
         const resultFilename = `${resultBasePath}/${pkgName}-${index}.json`;
         resultFiles.push(resultFilename);
         await runAnalysis(testScript, pkgName, resultFilename);
@@ -279,6 +299,7 @@ async function run() {
             }
         } catch (e) {
             console.error(`Could not process '${pkgName}'`);
+            console.error(e);
         }
     }
     closeConnection();

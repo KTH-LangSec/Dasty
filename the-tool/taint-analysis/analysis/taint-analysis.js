@@ -35,10 +35,13 @@ class TaintAnalysis {
 
             // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
             const spawnWrapper = (command, args, options) => {
-                // if no node process simply unwrap tainted values
-                if (!command.endsWith('node')) {
-                    const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
-                    return Reflect.apply(f, receiver, unwrappedArgs);
+                console.log('command', command);
+
+                const unwrappedCommand = command.__taint ? command.valueOf() : command;
+                const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
+
+                if (!unwrappedCommand.endsWith('node')) {
+                    return f.call(receiver, unwrappedCommand, unwrappedArgs, options);
                 }
 
                 console.log('Spawning child process analysis');
@@ -64,7 +67,7 @@ class TaintAnalysis {
                     analysisArgs.push('--initParam', `pkgName:${this.pkgName ?? ''}`);
                 }
 
-                analysisArgs.push(...args);
+                analysisArgs.push(...unwrappedArgs);
 
                 // console.log(analysisArgs);
                 return f.call(receiver, graalNode, analysisArgs, options);
@@ -103,7 +106,7 @@ class TaintAnalysis {
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
-        // ToDo - also check functions with no name (by e.g. comparing the functions themself?)
+        // ToDo - also check functions with no name (by e.g. comparing the functions themselves?)
         if (this.sinksBlacklist) {
             const blacklistedFunctions = this.sinksBlacklist.get(functionScope);
             if (blacklistedFunctions !== undefined && (blacklistedFunctions == null || (!f.name && blacklistedFunctions.has(f.name)))) {
@@ -125,15 +128,15 @@ class TaintAnalysis {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
 
         // ToDo - the dynamic wrapping of functions introduces some overhead, maybe there is a better way to record entry points
-        if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
-            && (typeof result === 'object' || typeof result === 'function')) {
-            // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
-            const moduleName = args[0];
-            if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
-                const wrapper = createModuleWrapper(result, moduleName);
-                return {result: wrapper};
-            }
-        }
+        // if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
+        //     && (typeof result === 'object' || typeof result === 'function')) {
+        //     // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
+        //     const moduleName = args[0];
+        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
+        //         const wrapper = createModuleWrapper(result, moduleName);
+        //         return {result: wrapper};
+        //     }
+        // }
 
         /* ToDo - in invokeFun intersect internal/builtin functions which have tainted arguments or similar
             (e.g. [taintedVal, ...].join()) and propagate taint */
