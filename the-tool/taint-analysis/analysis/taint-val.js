@@ -271,7 +271,7 @@ function getTypeOf(val) {
     return tpe === 'object' && val instanceof Array ? 'array' : tpe;
 }
 
-function createCodeFlow(iid, type, name, values) {
+function createCodeFlow(iid, type, name, values = undefined) {
     const transformation = {iid, type, name};
     if (values) {
         transformation.values = values;
@@ -287,4 +287,4 @@ function createTaintVal(sourceIID, entryPoint, undef = true, val = null, type = 
     }, handler);
 }
 
-module.exports = {createTaintVal};
+module.exports = {createTaintVal, createCodeFlow};

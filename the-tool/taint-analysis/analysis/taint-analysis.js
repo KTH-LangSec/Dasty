@@ -4,6 +4,7 @@ const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep} = require
 const assert = require('assert');
 const {createModuleWrapper} = require("./module-wrapper");
 const {ReturnDocument} = require("mongodb");
+const {emulateBuiltin} = require("./native");
 
 // const assert = require('assert');
 
@@ -127,7 +128,7 @@ class TaintAnalysis {
         });
     }
 
-    invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionIid, functionSid) => {
+    invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
 
         // ToDo - the dynamic wrapping of functions introduces some overhead, maybe there is a better way to record entry points
@@ -140,6 +141,14 @@ class TaintAnalysis {
         //         return {result: wrapper};
         //     }
         // }
+
+        // emulate taint propagation for builtins
+        if (functionScope === '<builtin>' &&!f?.__taint) {
+            const taintedResult = emulateBuiltin(iid, result, base, f, args);
+            if (taintedResult) {
+                return {result: taintedResult};
+            }
+        }
 
         /* ToDo - in invokeFun intersect internal/builtin functions which have tainted arguments or similar
             (e.g. [taintedVal, ...].join()) and propagate taint */
