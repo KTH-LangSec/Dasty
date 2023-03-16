@@ -8,7 +8,7 @@ const resultHandler = require('./utils/result-handler');
 const path = require('path');
 
 function executionDone(flows, resultPath) {
-    console.log(flows.length > 0 ? "Flows found" : "No flows found");
+    console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
     resultHandler.writeFlowsToFile(flows, resultPath);
 }
 

@@ -4,7 +4,7 @@ const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep} = require
 const assert = require('assert');
 const {createModuleWrapper} = require("./module-wrapper");
 const {ReturnDocument} = require("mongodb");
-const {emulateBuiltin} = require("./native");
+const {emulateBuiltin, emulateNodeJs} = require("./native");
 
 // const assert = require('assert');
 
@@ -132,20 +132,26 @@ class TaintAnalysis {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
 
         // ToDo - the dynamic wrapping of functions introduces some overhead, maybe there is a better way to record entry points
-        // if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
-        //     && (typeof result === 'object' || typeof result === 'function')) {
-        //     // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
-        //     const moduleName = args[0];
-        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
-        //         const wrapper = createModuleWrapper(result, moduleName);
-        //         return {result: wrapper};
-        //     }
-        // }
+        if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
+            && (typeof result === 'object' || typeof result === 'function')) {
+            // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
+            const moduleName = args[0];
+            if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
+                const wrapper = createModuleWrapper(result, moduleName);
+                return {result: wrapper};
+            }
+        }
 
         // emulate taint propagation for builtins
-        if (functionScope === '<builtin>' && !f?.__taint) {
-            const taintedResult = emulateBuiltin(iid, result, base, f, args);
-            if (taintedResult) {
+        if (functionScope && !f?.__taint) {
+            let taintedResult = null;
+            if (functionScope === '<builtin>') {
+                taintedResult = emulateBuiltin(iid, result, base, f, args);
+            } else if (functionScope.startsWith('node:')) {
+                taintedResult = emulateNodeJs(functionScope, iid, result, base, f, args);
+            }
+
+            if (taintedResult !== null) {
                 return {result: taintedResult};
             }
         }

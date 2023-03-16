@@ -6,14 +6,12 @@ const mockModule = require('./module-wrapper/mock-module');
 
 // console.log(mockModule.__entryPoint, typeof mockModule);
 
-mockModule();
 // mockModule();
-mockModule().undefinedPropRead();
+// // mockModule();
+// mockModule().undefinedPropRead();
 
-// const proxyFun = new Proxy(class Cl {
-// }, {});
+const obj = {};
+const x = 'echo' + obj.blub;
 
-// proxyFun = new Proxy(() => {}, {});
-//
-// proxyFun(1, 2, 3);
+cp.exec(x);
 
