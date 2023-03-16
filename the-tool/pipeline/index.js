@@ -199,7 +199,7 @@ async function runPipeline(pkgName) {
     }
 
     console.log('Installing dependencies');
-    // await execCmd(`cd ${repoPath}; npm install;`, true);
+    await execCmd(`cd ${repoPath}; npm install;`, true);
 
     console.log('Finding test scripts');
     const testScripts = findTestScripts(repoPath);

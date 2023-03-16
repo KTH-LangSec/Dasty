@@ -39,6 +39,7 @@ class TaintProxyHandler {
             case 'function':
                 return () => {
                 };
+            case 'non-primitive':
             case 'object':
                 return {};
             default:
@@ -189,7 +190,7 @@ class TaintProxyHandler {
         const cf = createCodeFlow(
             iid,
             'binary',
-            'add' + isLeft ? 'Right' : 'Left',
+            'add' + (isLeft ? 'Right' : 'Left'),
             [val?.__taint ?? val]
         );
 
@@ -228,7 +229,7 @@ class TaintProxyHandler {
 
             // we know that it is not a primitive (ToDo - might still be a wrapper though - e.g. new String())
             if (this.__type === null) {
-                this.__type = 'object';
+                this.__type = 'non-primitive';
             }
 
             // if the property exists copy it -> else set it to null (i.e. 'unknown')
@@ -248,6 +249,18 @@ class TaintProxyHandler {
 
         // If nothing matches return untainted value
         // return Reflect.get(...arguments);
+    }
+
+    set(target, prop, value, receiver) {
+        if (this.hasOwnProperty(prop) || TaintProxyHandler.prototype.hasOwnProperty(prop)) {
+            return (this[prop] = value);
+        }
+
+        if (this.__type === null) {
+            this.__type = 'non-primitive';
+        }
+
+        return Reflect.set(target, prop, value, receiver);
     }
 
     /** Traps function call (i.e. proxy(...)) */

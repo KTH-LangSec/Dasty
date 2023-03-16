@@ -1,1 +1,42 @@
-[{"source":{"location":{"artifact":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/examples/mvc/lib/boot.js","region":{"start":{"line":19,"column":16},"end":{"line":19,"column":23}}},"code":"obj.name"},"entryPoint":{"iid":0,"entryPoint":[]},"codeFlow":[],"sink":{"location":{"artifact":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/examples/mvc/lib/boot.js","region":{"start":{"line":28,"column":22},"end":{"line":28,"column":77}}},"code":"path.join(__dirname, '..', 'controllers', name, 'views')","module":"node:path"}},{"source":{"location":{"artifact":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/examples/mvc/lib/boot.js","region":{"start":{"line":19,"column":16},"end":{"line":19,"column":23}}},"code":"obj.name"},"entryPoint":{"iid":0,"entryPoint":[]},"codeFlow":[],"sink":{"location":{"artifact":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/examples/mvc/lib/boot.js","region":{"start":{"line":28,"column":22},"end":{"line":28,"column":77}}},"code":"path.join(__dirname, '..', 'controllers', name, 'views')","module":"node:path"}},{"source":{"location":{"artifact":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/examples/mvc/lib/boot.js","region":{"start":{"line":19,"column":16},"end":{"line":19,"column":23}}},"code":"obj.name"},"entryPoint":{"iid":0,"entryPoint":[]},"codeFlow":[],"sink":{"location":{"artifact":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/examples/mvc/lib/boot.js","region":{"start":{"line":28,"column":22},"end":{"line":28,"column":77}}},"code":"path.join(__dirname, '..', 'controllers', name, 'views')","module":"node:path"}}]
+[
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/tests/infer-typeof.js",
+        "region": {
+          "start": {
+            "line": 5,
+            "column": 12
+          },
+          "end": {
+            "line": 5,
+            "column": 17
+          }
+        }
+      },
+      "code": "obj.fn"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/tests/infer-typeof.js",
+        "region": {
+          "start": {
+            "line": 16,
+            "column": 5
+          },
+          "end": {
+            "line": 16,
+            "column": 15
+          }
+        }
+      },
+      "code": "cp.exec(fn)",
+      "module": "node:child_process"
+    }
+  }
+]

@@ -143,7 +143,7 @@ class TaintAnalysis {
         // }
 
         // emulate taint propagation for builtins
-        if (functionScope === '<builtin>' &&!f?.__taint) {
+        if (functionScope === '<builtin>' && !f?.__taint) {
             const taintedResult = emulateBuiltin(iid, result, base, f, args);
             if (taintedResult) {
                 return {result: taintedResult};
@@ -155,6 +155,8 @@ class TaintAnalysis {
     };
 
     invokeFunException = (iid, e, f) => {
+        // console.log(e.message);
+
         if (e?.code === 'ERR_ASSERTION') {
             return {result: true}; // just return something to stop propagation of error
         }/* else if (e instanceof TypeError && f?.__taint) {
@@ -179,6 +181,24 @@ class TaintAnalysis {
 
     binary = (iid, op, left, right, result, isLogic) => {
 
+        // if it is a typeof comparison with a taint value use this information to infer the type
+        if (!left?.__taint && !right?.__taint
+            && (left?.__typeOfResult || right?.__typeOfResult)
+            && ['==', '===', '!=', '!=='].includes(op)) {
+            let taint;
+            let type;
+            if (left.__typeOfResult) {
+                taint = left.__taintVal;
+                type = right;
+            } else {
+                taint = right.__taintVal;
+                type = left;
+            }
+
+            taint.__type = type;
+            return {result: op === '===' || op === '=='};
+        }
+
         // ToDo - look into not undefined or (default value for object deconstruction e.g. {prop = []})
 
         if ((left?.__taint === undefined)
@@ -187,8 +207,10 @@ class TaintAnalysis {
         switch (op) {
             case '===':
             case '==':
+            case '!==':
+            case '!=':
                 if (left?.__taint && right === undefined || right?.__taint && left === undefined) {
-                    return {result: true};
+                    return {result: op === '===' || op === '=='};
                 }
                 break;
             case '&&':
@@ -266,7 +288,13 @@ class TaintAnalysis {
 
         switch (op) {
             case 'typeof':
-                return {result: left.__typeof()};
+                /** if we don't know the type yet return the proxy object and an information that it is the result of typeof
+                 this is used further up in the comparison to assign the correct type */
+                return {
+                    result: (left.__type !== null && left.__type !== 'non-primitive')
+                        ? left.__typeof()
+                        : {__typeOfResult: true, __taintVal: left}
+                };
             case '!':
                 return {result: left.__undef};
         }

@@ -1,0 +1,865 @@
+[
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+        "region": {
+          "start": {
+            "line": 132,
+            "column": 15
+          },
+          "end": {
+            "line": 132,
+            "column": 22
+          }
+        }
+      },
+      "code": "err.type"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/body-parser.js",
+          "region": {
+            "start": {
+              "line": 152,
+              "column": 22
+            },
+            "end": {
+              "line": 152,
+              "column": 35
+            }
+          }
+        },
+        "code": "'[' + err.type",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "["
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/body-parser.js",
+          "region": {
+            "start": {
+              "line": 152,
+              "column": 22
+            },
+            "end": {
+              "line": 152,
+              "column": 42
+            }
+          }
+        },
+        "code": "'[' + err.type + '] '",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "] "
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/body-parser.js",
+          "region": {
+            "start": {
+              "line": 152,
+              "column": 21
+            },
+            "end": {
+              "line": 152,
+              "column": 57
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "Unexpected token u in JSON at position 0"
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/body-parser.js",
+        "region": {
+          "start": {
+            "line": 152,
+            "column": 7
+          },
+          "end": {
+            "line": 152,
+            "column": 85
+          }
+        }
+      },
+      "code": "res.end(err ? ('[' + err.type + '] ' + err.message) : JSON.stringify(req.body))",
+      "module": "node:_http_outgoing"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+        "region": {
+          "start": {
+            "line": 83,
+            "column": 11
+          },
+          "end": {
+            "line": 83,
+            "column": 20
+          }
+        }
+      },
+      "code": "error.type"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+          "region": {
+            "start": {
+              "line": 726,
+              "column": 14
+            },
+            "end": {
+              "line": 726,
+              "column": 27
+            }
+          }
+        },
+        "code": "'[' + err.type",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "["
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+          "region": {
+            "start": {
+              "line": 726,
+              "column": 14
+            },
+            "end": {
+              "line": 726,
+              "column": 34
+            }
+          }
+        },
+        "code": "'[' + err.type + '] '",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "] "
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+          "region": {
+            "start": {
+              "line": 726,
+              "column": 13
+            },
+            "end": {
+              "line": 726,
+              "column": 49
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "incorrect data check"
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+        "region": {
+          "start": {
+            "line": 724,
+            "column": 9
+          },
+          "end": {
+            "line": 726,
+            "column": 50
+          }
+        }
+      },
+      "code": "res.end(req.headers['x-error-property']\n          ? err[req.headers['x-error-property']]\n          : ('[' + err.type + '] ' + err.message))",
+      "module": "node:_http_outgoing"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+        "region": {
+          "start": {
+            "line": 83,
+            "column": 11
+          },
+          "end": {
+            "line": 83,
+            "column": 20
+          }
+        }
+      },
+      "code": "error.type"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+          "region": {
+            "start": {
+              "line": 726,
+              "column": 14
+            },
+            "end": {
+              "line": 726,
+              "column": 27
+            }
+          }
+        },
+        "code": "'[' + err.type",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "["
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+          "region": {
+            "start": {
+              "line": 726,
+              "column": 14
+            },
+            "end": {
+              "line": 726,
+              "column": 34
+            }
+          }
+        },
+        "code": "'[' + err.type + '] '",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "] "
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+          "region": {
+            "start": {
+              "line": 726,
+              "column": 13
+            },
+            "end": {
+              "line": 726,
+              "column": 49
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "incorrect data check"
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/json.js",
+        "region": {
+          "start": {
+            "line": 724,
+            "column": 9
+          },
+          "end": {
+            "line": 726,
+            "column": 50
+          }
+        }
+      },
+      "code": "res.end(req.headers['x-error-property']\n          ? err[req.headers['x-error-property']]\n          : ('[' + err.type + '] ' + err.message))",
+      "module": "node:_http_outgoing"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/types/raw.js",
+        "region": {
+          "start": {
+            "line": 62,
+            "column": 16
+          },
+          "end": {
+            "line": 62,
+            "column": 23
+          }
+        }
+      },
+      "code": "req.body"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/raw.js",
+        "region": {
+          "start": {
+            "line": 488,
+            "column": 11
+          },
+          "end": {
+            "line": 488,
+            "column": 35
+          }
+        }
+      },
+      "code": "Buffer.isBuffer(req.body)",
+      "module": "node:buffer"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/types/raw.js",
+        "region": {
+          "start": {
+            "line": 62,
+            "column": 16
+          },
+          "end": {
+            "line": 62,
+            "column": 23
+          }
+        }
+      },
+      "code": "req.body"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/raw.js",
+        "region": {
+          "start": {
+            "line": 488,
+            "column": 11
+          },
+          "end": {
+            "line": 488,
+            "column": 35
+          }
+        }
+      },
+      "code": "Buffer.isBuffer(req.body)",
+      "module": "node:buffer"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/types/raw.js",
+        "region": {
+          "start": {
+            "line": 62,
+            "column": 16
+          },
+          "end": {
+            "line": 62,
+            "column": 23
+          }
+        }
+      },
+      "code": "req.body"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/raw.js",
+        "region": {
+          "start": {
+            "line": 488,
+            "column": 11
+          },
+          "end": {
+            "line": 488,
+            "column": 35
+          }
+        }
+      },
+      "code": "Buffer.isBuffer(req.body)",
+      "module": "node:buffer"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+        "region": {
+          "start": {
+            "line": 132,
+            "column": 15
+          },
+          "end": {
+            "line": 132,
+            "column": 22
+          }
+        }
+      },
+      "code": "err.type"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+          "region": {
+            "start": {
+              "line": 553,
+              "column": 22
+            },
+            "end": {
+              "line": 553,
+              "column": 35
+            }
+          }
+        },
+        "code": "'[' + err.type",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "["
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+          "region": {
+            "start": {
+              "line": 553,
+              "column": 22
+            },
+            "end": {
+              "line": 553,
+              "column": 42
+            }
+          }
+        },
+        "code": "'[' + err.type + '] '",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "] "
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+          "region": {
+            "start": {
+              "line": 553,
+              "column": 21
+            },
+            "end": {
+              "line": 553,
+              "column": 57
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "Encoding not recognized: '' (searched as: '')"
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+        "region": {
+          "start": {
+            "line": 553,
+            "column": 7
+          },
+          "end": {
+            "line": 553,
+            "column": 85
+          }
+        }
+      },
+      "code": "res.end(err ? ('[' + err.type + '] ' + err.message) : JSON.stringify(req.body))",
+      "module": "node:_http_outgoing"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/types/text.js",
+        "region": {
+          "start": {
+            "line": 36,
+            "column": 24
+          },
+          "end": {
+            "line": 36,
+            "column": 42
+          }
+        }
+      },
+      "code": "opts.defaultCharset"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "iid": null,
+        "type": "functionResult",
+        "name": "toUpperCase"
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+          "region": {
+            "start": {
+              "line": 71,
+              "column": 34
+            },
+            "end": {
+              "line": 71,
+              "column": 81
+            }
+          }
+        },
+        "code": "'unsupported charset \"' + encoding.toUpperCase()",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "unsupported charset \""
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+          "region": {
+            "start": {
+              "line": 71,
+              "column": 34
+            },
+            "end": {
+              "line": 71,
+              "column": 87
+            }
+          }
+        },
+        "code": "'unsupported charset \"' + encoding.toUpperCase() + '\"'",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "\""
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+          "region": {
+            "start": {
+              "line": 553,
+              "column": 21
+            },
+            "end": {
+              "line": 553,
+              "column": 57
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "[charset.unsupported] "
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+        "region": {
+          "start": {
+            "line": 553,
+            "column": 7
+          },
+          "end": {
+            "line": 553,
+            "column": 85
+          }
+        }
+      },
+      "code": "res.end(err ? ('[' + err.type + '] ' + err.message) : JSON.stringify(req.body))",
+      "module": "node:_http_outgoing"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/types/text.js",
+        "region": {
+          "start": {
+            "line": 36,
+            "column": 24
+          },
+          "end": {
+            "line": 36,
+            "column": 42
+          }
+        }
+      },
+      "code": "opts.defaultCharset"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "iid": null,
+        "type": "functionResult",
+        "name": "toUpperCase"
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+          "region": {
+            "start": {
+              "line": 71,
+              "column": 34
+            },
+            "end": {
+              "line": 71,
+              "column": 81
+            }
+          }
+        },
+        "code": "'unsupported charset \"' + encoding.toUpperCase()",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "unsupported charset \""
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+          "region": {
+            "start": {
+              "line": 71,
+              "column": 34
+            },
+            "end": {
+              "line": 71,
+              "column": 87
+            }
+          }
+        },
+        "code": "'unsupported charset \"' + encoding.toUpperCase() + '\"'",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "\""
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+          "region": {
+            "start": {
+              "line": 553,
+              "column": 21
+            },
+            "end": {
+              "line": 553,
+              "column": 57
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "[charset.unsupported] "
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+        "region": {
+          "start": {
+            "line": 553,
+            "column": 7
+          },
+          "end": {
+            "line": 553,
+            "column": 85
+          }
+        }
+      },
+      "code": "res.end(err ? ('[' + err.type + '] ' + err.message) : JSON.stringify(req.body))",
+      "module": "node:_http_outgoing"
+    }
+  },
+  {
+    "source": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/types/text.js",
+        "region": {
+          "start": {
+            "line": 36,
+            "column": 24
+          },
+          "end": {
+            "line": 36,
+            "column": 42
+          }
+        }
+      },
+      "code": "opts.defaultCharset"
+    },
+    "entryPoint": {
+      "iid": 0,
+      "entryPoint": []
+    },
+    "codeFlow": [
+      {
+        "iid": null,
+        "type": "functionResult",
+        "name": "toUpperCase"
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+          "region": {
+            "start": {
+              "line": 71,
+              "column": 34
+            },
+            "end": {
+              "line": 71,
+              "column": 81
+            }
+          }
+        },
+        "code": "'unsupported charset \"' + encoding.toUpperCase()",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "unsupported charset \""
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/lib/read.js",
+          "region": {
+            "start": {
+              "line": 71,
+              "column": 34
+            },
+            "end": {
+              "line": 71,
+              "column": 87
+            }
+          }
+        },
+        "code": "'unsupported charset \"' + encoding.toUpperCase() + '\"'",
+        "type": "binary",
+        "name": "addRight",
+        "values": [
+          "\""
+        ]
+      },
+      {
+        "location": {
+          "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+          "region": {
+            "start": {
+              "line": 553,
+              "column": 21
+            },
+            "end": {
+              "line": 553,
+              "column": 57
+            }
+          }
+        },
+        "code": "('[' + err.type + '] ' + err.message)",
+        "type": "binary",
+        "name": "addLeft",
+        "values": [
+          "[charset.unsupported] "
+        ]
+      }
+    ],
+    "sink": {
+      "location": {
+        "artifact": "/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/test/text.js",
+        "region": {
+          "start": {
+            "line": 553,
+            "column": 7
+          },
+          "end": {
+            "line": 553,
+            "column": 85
+          }
+        }
+      },
+      "code": "res.end(err ? ('[' + err.type + '] ' + err.message) : JSON.stringify(req.body))",
+      "module": "node:_http_outgoing"
+    }
+  }
+]
