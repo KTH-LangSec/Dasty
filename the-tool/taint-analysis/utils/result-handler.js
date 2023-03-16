@@ -4,6 +4,10 @@ const fs = require('fs');
 const {parseIID} = require("./utils");
 
 function replaceIID(obj) {
+    if (!obj?.iid) {
+        return obj;
+    }
+
     const iid = obj.iid;
     delete obj.iid;
 

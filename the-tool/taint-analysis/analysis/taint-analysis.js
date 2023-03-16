@@ -1,6 +1,6 @@
 // DO NOT INSTRUMENT
 const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal} = require("./taint-val");
-const {parseIID, iidToLocation, iidToCode} = require("../utils/utils");
+const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep} = require("../utils/utils");
 const assert = require('assert');
 const {createModuleWrapper} = require("./module-wrapper");
 const {ReturnDocument} = require("mongodb");
@@ -35,8 +35,6 @@ class TaintAnalysis {
 
             // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
             const spawnWrapper = (command, args, options) => {
-                console.log('command', command);
-
                 const unwrappedCommand = command.__taint ? command.valueOf() : command;
                 const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
 
@@ -84,11 +82,12 @@ class TaintAnalysis {
         // ToDo - unwrap deep -> e.g. an array containing a taint value (same for sink checking in invokeFunPre)
         const internalWrapper = !isAsync
             ? (...args) => {
-                const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
+                const unwrappedArgs = unwrapDeep(args)
+                /*args.map(a => a?.__taint ? a.valueOf() : a);*/
                 return Reflect.apply(f, receiver, unwrappedArgs);
                 // return f.call(receiver, ...unwrappedArgs);
             } : async (...args) => {
-                const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
+                const unwrappedArgs = unwrapDeep(args);
                 return Reflect.apply(f, receiver, unwrappedArgs);
                 // return await f.call(receiver, ...unwrappedArgs);
             }
@@ -115,9 +114,13 @@ class TaintAnalysis {
         }
 
         args.forEach(arg => {
-            if (arg?.__taint) {
+            const argTaints = checkTaintDeep(arg);
+            if (argTaints.length > 0) {
                 // const sink = parseIID(iid);
-                this.flows.push({...arg.__taint, sink: {iid, module: functionScope}});
+                argTaints.forEach(taint => {
+                    this.flows.push({...taint, sink: {iid, module: functionScope}});
+                });
+
                 // const taintSrcString = arg.__taint.reduce((acc, t) => (acc ? ', ' : '') + acc + t);
                 // console.log(`Flow found: Sources: ${taintSrcString}, Sink: ${sink}`);
             }
