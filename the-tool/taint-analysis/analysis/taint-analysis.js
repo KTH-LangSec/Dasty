@@ -119,9 +119,8 @@ class TaintAnalysis {
             if (argTaints.length > 0) {
                 // const sink = parseIID(iid);
                 argTaints.forEach(taint => {
-                    this.flows.push({...taint, sink: {iid, module: functionScope}});
+                    this.flows.push({...taint, sink: {iid, type: 'functionCall', value: functionScope}});
                 });
-
                 // const taintSrcString = arg.__taint.reduce((acc, t) => (acc ? ', ' : '') + acc + t);
                 // console.log(`Flow found: Sources: ${taintSrcString}, Sink: ${sink}`);
             }
@@ -160,14 +159,26 @@ class TaintAnalysis {
             (e.g. [taintedVal, ...].join()) and propagate taint */
     };
 
-    invokeFunException = (iid, e, f) => {
-        // console.log(e.message);
+    invokeFunException = (iid, e, f, receiver, args) => {
+        if (receiver?.__taint) {
+            this.flows.push({
+                ...receiver.__taint,
+                sink: {iid, type: 'functionCallReceiverException', value: e.code + ' ' + e.toString()}
+            });
+        }
+        if (args?.length > 0) {
+            const taints = checkTaintDeep(args);
+            taints.forEach(taint => {
+                this.flows.push({
+                    ...taint,
+                    sink: {iid, type: 'functionCallArgException', value: e.code + ' ' + e.toString()}
+                });
+            });
+        }
 
         if (e?.code === 'ERR_ASSERTION') {
             return {result: true}; // just return something to stop propagation of error
-        }/* else if (e instanceof TypeError && f?.__taint) {
-            return {result: true};
-        }*/
+        }
     }
 
     read = (iid, name, val, isGlobal, isScriptLocal) => {
@@ -237,7 +248,7 @@ class TaintAnalysis {
         // if (base?.__taint) return;
 
         // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new new taint value
-        if (!base) return;
+        if (!base || offset === '__taint') return;
 
         // // this is probably an array access
         if (isComputed && base.__taint && typeof offset === 'number') {

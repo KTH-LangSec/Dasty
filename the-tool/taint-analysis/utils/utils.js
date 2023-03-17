@@ -1,7 +1,7 @@
 // DO NOT INSTRUMENT
 
 const fs = require("fs");
-const {MAX_UNWRAP_DEPTH} = require("../conf/analysis-conf");
+const {DEFAULT_UNWRAP_DEPTH} = require("../conf/analysis-conf");
 
 function iidToLocation(iid) {
     return J$.iidToLocation(iid);
@@ -145,21 +145,22 @@ function getSinkBlacklist(filepath) {
     return blacklist;
 }
 
-function checkTaintDeep(arg, depth = 0, done = []) {
-    if (!arg || depth > MAX_UNWRAP_DEPTH) return [];
+function checkTaintDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
+    // console.log(arg);
+    if (!arg || depth < 0) return [];
+
+    if (typeof arg !== 'object' && typeof arg !== 'function') return [];
 
     if (arg.__taint) {
         return [arg.__taint, ...checkTaintDeep(arg.valueOf())];
     }
 
-    if (typeof arg !== 'object' && typeof arg !== 'function') return [];
-
     if (arg instanceof Array) {
-        return arg.flatMap(a => checkTaintDeep(a, ++depth, done));
+        return arg.flatMap(a => checkTaintDeep(a, --depth, done));
     } else if (arg instanceof Set) {
         return Array.from(arg, a => checkTaintDeep(a, done)).flat();
     } else if (arg instanceof Map) {
-        return Array.from(arg, ([key, val]) => [...checkTaintDeep(key, ++depth, done), ...checkTaintDeep(val, ++depth, done)]).flat();
+        return Array.from(arg, ([key, val]) => [...checkTaintDeep(key, --depth, done), ...checkTaintDeep(val, --depth, done)]).flat();
         // ToDo - other built-in objects?
     } else {
         const taints = [];
@@ -175,14 +176,14 @@ function checkTaintDeep(arg, depth = 0, done = []) {
             if (done.includes(propVal)) continue;
 
             done.push(propVal);
-            taints.push(...checkTaintDeep(propVal, ++depth, done));
+            taints.push(...checkTaintDeep(propVal, --depth, done));
         }
         return taints;
     }
 }
 
-function unwrapDeep(arg, depth = 0, done = []) {
-    if (!arg || depth > MAX_UNWRAP_DEPTH) return arg;
+function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
+    if (!arg || depth < 0) return arg;
 
     if (arg.__taint) {
         return unwrapDeep(arg.valueOf());
@@ -191,11 +192,11 @@ function unwrapDeep(arg, depth = 0, done = []) {
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;
 
     if (arg instanceof Array) {
-        return arg.map(a => unwrapDeep(a, ++depth, done));
+        return arg.map(a => unwrapDeep(a, --depth, done));
     } else if (arg instanceof Set) {
-        return new Set(Array.from(arg, a => unwrapDeep(a, ++depth, done)));
+        return new Set(Array.from(arg, a => unwrapDeep(a, --depth, done)));
     } else if (arg instanceof Map) {
-        return new Map(Array.from(arg, ([key, val]) => [unwrapDeep(key, ++depth, done), unwrapDeep(val, ++depth, done)]));
+        return new Map(Array.from(arg, ([key, val]) => [unwrapDeep(key, --depth, done), unwrapDeep(val, --depth, done)]));
         // ToDo - other built-in objects?
     } else {
         for (const prop in arg) {
@@ -211,7 +212,7 @@ function unwrapDeep(arg, depth = 0, done = []) {
 
             done.push(propVal);
 
-            arg[prop] = unwrapDeep(propVal, ++depth, done);
+            arg[prop] = unwrapDeep(propVal, --depth, done);
         }
         return arg;
     }

@@ -27,6 +27,9 @@ class ModuleWrapperProxyHandler {
         if (property === '__entryPoint') {
             // allow to access handlers entrypoint
             return this.entryPoint;
+        } else if (typeof property === 'string' && property.startsWith('__')) {
+            // this is probably another analysis field access
+            return undefined;
         }
 
         const result = Reflect.get(target, property, receiver);
@@ -95,11 +98,10 @@ class ModuleWrapperProxyHandler {
 function shouldWrap(obj) {
     // Don't wrap Map or Sets and Arrays as Proxy does not always delegate to the target (e.g. Array.from(set))
     // To fix this we could unpack it ourselves via instrumentation, but it's not relevant for now
-    return (typeof obj === 'function'
-        || (typeof obj === 'object'
-            && obj !== null
-            /*&& !(obj instanceof Map)
-            && !(obj instanceof Set)*/));
+    return (obj !== null && obj !== undefined && !obj.__entryPoint
+        && (typeof obj === 'function' || typeof obj === 'object'));
+    // && !(obj instanceof Map)
+    // && !(obj instanceof Set))));
 }
 
 function createModuleWrapper(module, moduleName) {

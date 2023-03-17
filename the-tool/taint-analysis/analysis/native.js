@@ -11,8 +11,17 @@ const builtins = new Map([
             if (!taintArg) return null;
 
             taintArg.__type = 'string';
-            const cf = createCodeFlow(iid, 'functionArgResult', 'join');
+            const cf = createCodeFlow(iid, 'functionArgResult', 'Array.join');
             return taintArg.__copyTaint(result, cf, 'string', false);
+        }
+    ], [
+        JSON.stringify,
+        (iid, result, target, f, args) => {
+            if (!args[0]?.__taint) return null;
+
+            args[0].__type = 'string';
+            const cf = createCodeFlow(iid, 'functionArgResult', 'JSON.stringify');
+            return args[0].__copyTaint(result, cf, 'string', false);
         }
     ]
 ]);
