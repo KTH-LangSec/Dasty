@@ -198,6 +198,15 @@ class TaintProxyHandler {
         return this.__copyTaint(result, cf, type);
     }
 
+    __addCodeFlow(iid, type, name, values = undefined, inferredType = null) {
+        if (inferredType && this.__type !== null && this.__type !== 'non-primitive') {
+            this.__type = inferredType;
+        }
+
+        const cf = createCodeFlow(iid, type, name, values);
+        this.__taint.codeFlow.push(cf);
+    }
+
     // Proxy traps
 
     /**
@@ -207,11 +216,11 @@ class TaintProxyHandler {
      // * @param receiver - the proxy object (unused)
      * @returns {any|{}}
      */
-    get(target, prop) {
+    get(target, prop, receiver) {
         // ToDo
         if (prop === 'constructor') {
-            return Reflect.get(...arguments)
-        } else if (/*this[prop] !== undefined*/this.hasOwnProperty(prop) || TaintProxyHandler.prototype.hasOwnProperty(prop)) {
+            return Reflect.get(target, prop, receiver);
+        } else if (this.hasOwnProperty(prop) || TaintProxyHandler.prototype.hasOwnProperty(prop)) {
             // if the property is defined in the class delegate to it (this makes it straightforward to overwrite specific functions/members)
             return typeof this[prop] === 'function' ? this[prop].bind(this) : this[prop];
         } else if (typeof prop === 'symbol') {
@@ -234,6 +243,12 @@ class TaintProxyHandler {
 
             // if the property exists copy it -> else set it to null (i.e. 'unknown')
             const newVal = this.__val[prop] ?? null;
+
+            // if already tainted simply return it
+            if (newVal?.__taint) {
+                return newVal;
+            }
+
             const type = getTypeOf(newVal);
             const cf = createCodeFlow(null, 'propRead', prop);
             const taintProxy = this.__copyTaint(newVal, cf, type, newVal === undefined);

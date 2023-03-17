@@ -145,58 +145,73 @@ function getSinkBlacklist(filepath) {
     return blacklist;
 }
 
-function checkTaintDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
+function checkTaintDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, taints = [], done = []) {
     // console.log(arg);
-    if (!arg || depth < 0) return [];
+    if (!arg || depth < 0) return taints;
 
-    if (typeof arg !== 'object' && typeof arg !== 'function') return [];
+    if (typeof arg !== 'object' && typeof arg !== 'function') return taints;
 
     if (arg.__taint) {
-        return [arg.__taint, ...checkTaintDeep(arg.valueOf())];
+        taints.push(arg);
+        return checkTaintDeep(arg.valueOf(), depth - 1, taints, done);
     }
 
-    if (arg instanceof Array) {
-        return arg.flatMap(a => checkTaintDeep(a, --depth, done));
-    } else if (arg instanceof Set) {
-        return Array.from(arg, a => checkTaintDeep(a, done)).flat();
+    if (depth === 0) {
+        return taints;
+    }
+
+    if (arg instanceof Array || arg instanceof Set) {
+        arg.forEach(a => checkTaintDeep(a, depth - 1, taints, done));
     } else if (arg instanceof Map) {
-        return Array.from(arg, ([key, val]) => [...checkTaintDeep(key, --depth, done), ...checkTaintDeep(val, --depth, done)]).flat();
+        arg.forEach((val, key) => {
+            checkTaintDeep(key, depth - 1, taints, done);
+            checkTaintDeep(val, depth - 1, taints, done);
+        });
         // ToDo - other built-in objects?
     } else {
-        const taints = [];
         for (const prop in arg) {
+            if (typeof prop === 'symbol') continue;
+
+            // skip properties with getters
+            const descr = Object.getOwnPropertyDescriptor(arg, prop);
+            if (descr === undefined || descr.get) {
+                continue;
+            }
+
             let propVal;
             try {
                 propVal = arg[prop];
             } catch (e) {
-                // getter problem
                 continue;
             }
 
             if (done.includes(propVal)) continue;
 
             done.push(propVal);
-            taints.push(...checkTaintDeep(propVal, --depth, done));
+            checkTaintDeep(propVal, depth - 1, taints, done);
         }
-        return taints;
     }
+
+    return taints;
 }
 
 function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
-    if (!arg || depth < 0) return arg;
+    if (!arg || depth < 0) {
+        return arg;
+    }
 
     if (arg.__taint) {
-        return unwrapDeep(arg.valueOf());
+        return unwrapDeep(arg.valueOf(), depth - 1, done);
     }
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;
 
     if (arg instanceof Array) {
-        return arg.map(a => unwrapDeep(a, --depth, done));
+        return arg.map(a => unwrapDeep(a, depth - 1, done));
     } else if (arg instanceof Set) {
-        return new Set(Array.from(arg, a => unwrapDeep(a, --depth, done)));
+        return new Set(Array.from(arg, a => unwrapDeep(a, depth - 1, done)));
     } else if (arg instanceof Map) {
-        return new Map(Array.from(arg, ([key, val]) => [unwrapDeep(key, --depth, done), unwrapDeep(val, --depth, done)]));
+        return new Map(Array.from(arg, ([key, val]) => [unwrapDeep(key, depth - 1, done), unwrapDeep(val, depth - 1, done)]));
         // ToDo - other built-in objects?
     } else {
         for (const prop in arg) {

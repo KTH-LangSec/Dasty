@@ -1,9 +1,7 @@
 // DO NOT INSTRUMENT
-const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal} = require("./taint-val");
+const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal, createCodeFlow} = require("./taint-val");
 const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep} = require("../utils/utils");
-const assert = require('assert');
 const {createModuleWrapper} = require("./module-wrapper");
-const {ReturnDocument} = require("mongodb");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
 
 // const assert = require('assert');
@@ -102,6 +100,14 @@ class TaintAnalysis {
             this.entryPointIID = iid;
         }
 
+        // record if called as function (only depth 0)
+        args.forEach(arg => {
+            // const argTaints = checkTaintDeep(arg, 1);
+            if (arg?.__taint) {
+                arg.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>');
+            }
+        });
+
         if (f === undefined || !args || args.length === 0 || !functionScope?.startsWith('node:')/*|| !this.sinks.includes(f)*/) return;
 
         // check if function is blacklisted
@@ -116,14 +122,13 @@ class TaintAnalysis {
 
         args.forEach(arg => {
             const argTaints = checkTaintDeep(arg);
-            if (argTaints.length > 0) {
-                // const sink = parseIID(iid);
-                argTaints.forEach(taint => {
-                    this.flows.push({...taint, sink: {iid, type: 'functionCall', value: functionScope}});
+            argTaints.forEach(taintVal => {
+                this.flows.push({
+                    // ...structuredClone(taintVal.__taint),
+                    ...taintVal.__taint,
+                    sink: {iid, type: 'functionCallArg', value: functionScope}
                 });
-                // const taintSrcString = arg.__taint.reduce((acc, t) => (acc ? ', ' : '') + acc + t);
-                // console.log(`Flow found: Sources: ${taintSrcString}, Sink: ${sink}`);
-            }
+            });
         });
     }
 
@@ -154,23 +159,22 @@ class TaintAnalysis {
                 return {result: taintedResult};
             }
         }
-
-        /* ToDo - in invokeFun intersect internal/builtin functions which have tainted arguments or similar
-            (e.g. [taintedVal, ...].join()) and propagate taint */
     };
 
     invokeFunException = (iid, e, f, receiver, args) => {
         if (receiver?.__taint) {
             this.flows.push({
                 ...receiver.__taint,
+                // ...structuredClone(receiver.__taint),
                 sink: {iid, type: 'functionCallReceiverException', value: e.code + ' ' + e.toString()}
             });
         }
         if (args?.length > 0) {
             const taints = checkTaintDeep(args);
-            taints.forEach(taint => {
+            taints.forEach(taintVal => {
                 this.flows.push({
-                    ...taint,
+                    ...taintVal.__taint,
+                    // ...structuredClone(taintVal.__taint),
                     sink: {iid, type: 'functionCallArgException', value: e.code + ' ' + e.toString()}
                 });
             });
@@ -255,17 +259,16 @@ class TaintAnalysis {
             return {result: base.__getArrayElem(offset)};
         }
 
-        // if internal -> unwrap
-        // if (this.internalFunctionCall !== null && val?.__taint) {
-        //     this.checkInternalSink(val);
-        //     return {result: val.valueOf()};
-        // }
-
+        if (val?.__taint) {
+            // if it is already tainted report repeated read
+            val.__addCodeFlow(iid, 'read', offset);
+        }
 
         // currently we only care for sources in non-native modules, even when analysing all
         // we also don't handle undefined property accesses of tainted values here
         // this is instead handled in the proxy itself
-        if (!scope || !scope.startsWith('file:') || base.__taint) return; // Note - null chaining is slower
+        // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
+        if (!scope?.startsWith('file:') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         if (val === undefined && Object.prototype.isPrototypeOf(base)) {

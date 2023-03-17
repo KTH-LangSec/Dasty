@@ -65,14 +65,13 @@ function adaptTestScript(script, scripts, repoPath) {
             argParts[0] = './node_modules/jest/bin/jest.js'
             return argParts.join(' ');
         case 'npm':
-            if (argParts[1] === 'run') {
+            if (argParts[1] === 'run' && argParts[2] !== 'lint') {
                 return adaptTestScript(scripts[argParts[2]], scripts, repoPath);
             }
 
             // ignore other npm commands (e.g. audit)
             return null;
         case 'c8':
-        // return './node_modules/c8/bin/c8.js ' + adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
         case 'nyc':
             return adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
         default:
@@ -167,6 +166,7 @@ async function writeResultsToDB(pkgName, resultFilenames) {
 }
 
 function locToSarif(dbLocation, message = null) {
+    if (!dbLocation) return undefined;
     const sarifLoc = {
         physicalLocation: {
             artifactLocation: {uri: 'file://' + dbLocation.artifact},
@@ -206,17 +206,23 @@ async function runPipeline(pkgName) {
 
     console.log('Running analysis');
     const resultBasePath = __dirname + '/results/';
-    const resultFiles = [];
     for (const [index, testScript] of testScripts.entries()) {
         console.log(`Running test '${testScript}'`);
 
-        const resultFilename = `${resultBasePath}/${pkgName}-${index}.json`;
-        resultFiles.push(resultFilename);
+        const resultFilename = `${resultBasePath}${pkgName}-${index}.json`;
         await runAnalysis(testScript, pkgName, resultFilename);
     }
 
-    console.log("Writing results to DB");
+    // fetch all result files (it could be that child processes create their own result files)
+    const resultFiles = fs.readdirSync(resultBasePath)
+        .filter(f => f.startsWith(pkgName + '-'))
+        .map(f => resultBasePath + f);
+
+    console.log('Writing results to DB');
     await writeResultsToDB(pkgName, resultFiles);
+
+    console.log('Cleaning up');
+    resultFiles.forEach(fs.unlinkSync); // could also be done async
 }
 
 async function getSarif(pkgName) {
@@ -237,7 +243,7 @@ async function getSarif(pkgName) {
             results: run.results.map(result => ({
                 ruleId: 'ToDo',
                 level: 'error',
-                message: {text: `Flow found into sink {module: ${result.sink.module}, code: ${result.sink.code}}`},
+                message: {text: `Flow found into sink {type: ${result.sink.type}, value: ${result.sink.value}, code: ${result.sink.code}}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},
@@ -251,7 +257,7 @@ async function getSarif(pkgName) {
                                 )
                             },
                             {location: locToSarif(result.source.location, 'Undefined property read')},
-                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location)})),
+                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
                             {location: locToSarif(result.sink.location, 'Sink')}
                         ]
                     }]
