@@ -1,0 +1,53 @@
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/npm-run-all -l -p lint:**
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/prettier --list-different .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/eslint --cache .
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/npm-run-all -l -p lint:**
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/prettier --list-different .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/eslint --cache .
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/cross-env NODE_ENV=test /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/npm-run-all -l -p lint:**
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/eslint --cache .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/prettier --list-different .
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+
+
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/npm-run-all -l -p lint:**
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/npm-run-all -l -p lint:**
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/prettier --list-different .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/eslint --cache .
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+
+
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/through2/node_modules/.bin/standard
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:node
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/through2/node_modules/.bin/c8 --check-coverage --branches 100 --functions 100 --lines 100 mocha test/test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/through2/node_modules/.bin/mocha test/test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:browser
+-e process.exit(process.version.startsWith("v8.") ? 0 : 1)

@@ -6,6 +6,8 @@ const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
 // console.log(STRING_AND_ARRAY_PROPS);
 
 class TaintProxyHandler {
+    __isAnalysisProxy = true;
+
     constructor(sourceIID, entryPoint, undef = true, val = null, type = null) {
         this.__taint = sourceIID ? {source: sourceIID, entryPoint, codeFlow: []} : null;
         this.__undef = undef;
@@ -268,7 +270,8 @@ class TaintProxyHandler {
 
     set(target, prop, value, receiver) {
         if (this.hasOwnProperty(prop) || TaintProxyHandler.prototype.hasOwnProperty(prop)) {
-            return (this[prop] = value);
+            this[prop] = value;
+            return true;
         }
 
         if (this.__type === null) {

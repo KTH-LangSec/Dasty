@@ -1,7 +1,7 @@
 // DO NOT INSTRUMENT
 
 const fs = require("fs");
-const {DEFAULT_UNWRAP_DEPTH} = require("../conf/analysis-conf");
+const {DEFAULT_UNWRAP_DEPTH, DEFAULT_CHECK_DEPTH} = require("../conf/analysis-conf");
 
 function iidToLocation(iid) {
     return J$.iidToLocation(iid);
@@ -145,15 +145,25 @@ function getSinkBlacklist(filepath) {
     return blacklist;
 }
 
-function checkTaintDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, taints = [], done = []) {
-    // console.log(arg);
+const checkedArgs = new Map();
+
+function checkTaintDeep(arg, depth = DEFAULT_CHECK_DEPTH) {
+    if (checkedArgs.has(arg)) {
+        return checkedArgs.get(arg);
+    }
+    const taints = checkTaintDeepRec(arg, depth);
+    checkedArgs.set(arg, taints);
+    return taints;
+}
+
+function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done = []) {
     if (!arg || depth < 0) return taints;
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return taints;
 
-    if (arg.__taint) {
+    if (isAnalysisProxy(arg) && arg.__taint) {
         taints.push(arg);
-        return checkTaintDeep(arg.valueOf(), depth - 1, taints, done);
+        return checkTaintDeepRec(arg.valueOf(), depth - 1, taints, done);
     }
 
     if (depth === 0) {
@@ -161,11 +171,11 @@ function checkTaintDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, taints = [], done = [
     }
 
     if (arg instanceof Array || arg instanceof Set) {
-        arg.forEach(a => checkTaintDeep(a, depth - 1, taints, done));
+        arg.forEach(a => checkTaintDeepRec(a, depth - 1, taints, done));
     } else if (arg instanceof Map) {
         arg.forEach((val, key) => {
-            checkTaintDeep(key, depth - 1, taints, done);
-            checkTaintDeep(val, depth - 1, taints, done);
+            checkTaintDeepRec(key, depth - 1, taints, done);
+            checkTaintDeepRec(val, depth - 1, taints, done);
         });
         // ToDo - other built-in objects?
     } else {
@@ -188,30 +198,37 @@ function checkTaintDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, taints = [], done = [
             if (done.includes(propVal)) continue;
 
             done.push(propVal);
-            checkTaintDeep(propVal, depth - 1, taints, done);
+            checkTaintDeepRec(propVal, depth - 1, taints, done);
         }
     }
 
     return taints;
 }
 
-function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
+function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
+    if (checkedArgs.get(arg)?.length === 0) {
+        return arg;
+    }
+    return unwrapDeepRec(arg, depth);
+}
+
+function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
     if (!arg || depth < 0) {
         return arg;
     }
 
-    if (arg.__taint) {
-        return unwrapDeep(arg.valueOf(), depth - 1, done);
+    if (isAnalysisProxy(arg) && arg.__taint) {
+        return unwrapDeepRec(arg.valueOf(), depth - 1, done);
     }
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;
 
     if (arg instanceof Array) {
-        return arg.map(a => unwrapDeep(a, depth - 1, done));
+        return arg.map(a => unwrapDeepRec(a, depth - 1, done));
     } else if (arg instanceof Set) {
-        return new Set(Array.from(arg, a => unwrapDeep(a, depth - 1, done)));
+        return new Set(Array.from(arg, a => unwrapDeepRec(a, depth - 1, done)));
     } else if (arg instanceof Map) {
-        return new Map(Array.from(arg, ([key, val]) => [unwrapDeep(key, depth - 1, done), unwrapDeep(val, depth - 1, done)]));
+        return new Map(Array.from(arg, ([key, val]) => [unwrapDeepRec(key, depth - 1, done), unwrapDeepRec(val, depth - 1, done)]));
         // ToDo - other built-in objects?
     } else {
         for (const prop in arg) {
@@ -227,9 +244,20 @@ function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 
             done.push(propVal);
 
-            arg[prop] = unwrapDeep(propVal, --depth, done);
+            arg[prop] = unwrapDeepRec(propVal, --depth, done);
         }
         return arg;
+    }
+}
+
+function isAnalysisProxy(obj) {
+    try {
+        return obj !== null && obj !== undefined
+            && typeof obj === 'function'
+            && (obj.__isAnalysisProxy);
+    } catch (e) {
+        // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
+        return false;
     }
 }
 
@@ -242,5 +270,6 @@ module.exports = {
     extractFunctions,
     getSinkBlacklist,
     checkTaintDeep,
-    unwrapDeep
+    unwrapDeep,
+    isAnalysisProxy,
 }

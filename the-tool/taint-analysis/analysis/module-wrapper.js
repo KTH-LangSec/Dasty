@@ -27,6 +27,8 @@ class ModuleWrapperProxyHandler {
         if (property === '__entryPoint') {
             // allow to access handlers entrypoint
             return this.entryPoint;
+        } else if (property === '__isAnalysisProxy') {
+            return true;
         } else if (typeof property === 'string' && property.startsWith('__')) {
             // this is probably another analysis field access
             return undefined;

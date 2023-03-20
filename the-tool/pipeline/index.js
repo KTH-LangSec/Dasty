@@ -49,6 +49,22 @@ async function fetchURL(pkgName) {
     return url.substring(4).trim();
 }
 
+function getBin(repoPath, pkgName) {
+    const modulePath = `${repoPath}/node_modules/${pkgName}/`;
+    if (!fs.existsSync(modulePath)) return null;
+
+    const pkgJson = JSON.parse(fs.readFileSync(modulePath + 'package.json', {encoding: 'utf8'}));
+    if (typeof pkgJson?.bin) {
+        if (typeof pkgJson.bin === 'string') {
+            return modulePath + pkgJson.bin;
+        } else if (pkgJson.bin[pkgName]) {
+            return modulePath + pkgJson.bin[pkgName];
+        }
+    }
+
+    return null;
+}
+
 function adaptTestScript(script, scripts, repoPath) {
     const argParts = script.trim().split(' ');
     switch (argParts[0]) {
@@ -68,31 +84,30 @@ function adaptTestScript(script, scripts, repoPath) {
             if (argParts[1] === 'run' && argParts[2] !== 'lint') {
                 return adaptTestScript(scripts[argParts[2]], scripts, repoPath);
             }
-
             // ignore other npm commands (e.g. audit)
             return null;
         case 'c8':
         case 'nyc':
             return adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
+        case 'cross-env':
+            return `${getBin(repoPath, 'cross-env')} ${argParts[1]} ${adaptTestScript(argParts.slice(2).join(' '), scripts, repoPath)}`;
+        // blacklist for linters and similar
+        case 'xo':
+        case 'tsd':
+            return null;
         default:
             // if nothing else matches check try to find the module and extract the 'bin' file
-            const modulePath = `${repoPath}/node_modules/${argParts[0]}/`;
-            if (!fs.existsSync(modulePath)) return null;
+            const bin = getBin(repoPath, argParts[0]);
 
-            const pkgJson = JSON.parse(fs.readFileSync(modulePath + 'package.json', {encoding: 'utf8'}));
-            if (typeof pkgJson?.bin) {
-                if (typeof pkgJson.bin === 'string') {
-                    argParts[0] = modulePath + pkgJson.bin;
-                } else if (pkgJson.bin[argParts[0]]) {
-                    argParts[0] = modulePath + pkgJson.bin[argParts[0]];
-                } else {
-                    return null;
-                }
+            if (bin === null) return null;
 
-                return argParts.join(' ');
+            // skip shell files for now - ToDo extract with npm (see node-wrapper dir)
+            if (bin.endsWith('.sh')) {
+                return adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
             }
 
-            return null;
+            argParts[0] = bin;
+            return argParts.join(' ');
     }
 }
 
@@ -124,7 +139,7 @@ async function runAnalysis(testScript, pkgName, resultFilename) {
         + ' --engine.WarnInterpreterOnly=false'
         + ' --vm.Dtruffle.class.path.append=$NODEPROF_HOME/build/nodeprof.jar'
         + ' --nodeprof.Scope=module'
-        + ' --nodeprof.ExcludeSource=excluded/'
+        + ' --nodeprof.ExcludeSource=grunt/'
         + ' --nodeprof.IgnoreJalangiException=false'
         + ' --nodeprof $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js'
         + ` --analysis ${analysisFilename}`
@@ -219,10 +234,10 @@ async function runPipeline(pkgName) {
         .map(f => resultBasePath + f);
 
     console.log('Writing results to DB');
-    await writeResultsToDB(pkgName, resultFiles);
+    // await writeResultsToDB(pkgName, resultFiles);
 
     console.log('Cleaning up');
-    resultFiles.forEach(fs.unlinkSync); // could also be done async
+    // resultFiles.forEach(fs.unlinkSync); // could also be done async
 }
 
 async function getSarif(pkgName) {

@@ -1,6 +1,6 @@
 // DO NOT INSTRUMENT
 const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal, createCodeFlow} = require("./taint-val");
-const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep} = require("../utils/utils");
+const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep, isAnalysisProxy} = require("../utils/utils");
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
 
@@ -41,7 +41,7 @@ class TaintAnalysis {
                     return f.call(receiver, unwrappedCommand, unwrappedArgs, options);
                 }
 
-                console.log('Spawning child process analysis');
+                console.log('Spawning child process analysis ' + args.join(' '));
                 this.spawnIndex++;
 
                 const graalNode = process.env.GRAAL_NODE_HOME;
@@ -64,7 +64,9 @@ class TaintAnalysis {
                     analysisArgs.push('--initParam', `pkgName:${this.pkgName ?? ''}`);
                 }
 
-                analysisArgs.push(...unwrappedArgs);
+                while (unwrappedArgs[0]?.startsWith('-')) unwrappedArgs.shift();
+
+                analysisArgs.push(...(unwrappedArgs.filter(a => a !== '')));
 
                 // console.log(analysisArgs);
                 return f.call(receiver, graalNode, analysisArgs, options);
@@ -79,36 +81,36 @@ class TaintAnalysis {
         // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
         // ToDo - should the return value be tainted?
         // ToDo - unwrap deep -> e.g. an array containing a taint value (same for sink checking in invokeFunPre)
-        const internalWrapper = !isAsync
-            ? (...args) => {
-                const unwrappedArgs = unwrapDeep(args)
-                /*args.map(a => a?.__taint ? a.valueOf() : a);*/
-                return Reflect.apply(f, receiver, unwrappedArgs);
-                // return f.call(receiver, ...unwrappedArgs);
-            } : async (...args) => {
-                const unwrappedArgs = unwrapDeep(args);
-                return Reflect.apply(f, receiver, unwrappedArgs);
-                // return await f.call(receiver, ...unwrappedArgs);
-            }
+        // const internalWrapper = !isAsync
+        //     ? (...args) => {
+        //         const unwrappedArgs = unwrapDeep(args);
+        //         /*args.map(a => a?.__taint ? a.valueOf() : a);*/
+        //         return Reflect.apply(f, receiver, unwrappedArgs);
+        //         // return f.call(receiver, ...unwrappedArgs);
+        //     } : async (...args) => {
+        //         const unwrappedArgs = unwrapDeep(args);
+        //         return Reflect.apply(f, receiver, unwrappedArgs);
+        //         // return await f.call(receiver, ...unwrappedArgs);
+        //     }
 
-        return {result: internalWrapper};
+        // return {result: internalWrapper};
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
-        if (proxy && !proxy.__taint && proxy?.__entryPoint) {
+        if (proxy && isAnalysisProxy(proxy) && !proxy.__taint && proxy?.__entryPoint) {
             this.entryPoint = proxy.__entryPoint;
             this.entryPointIID = iid;
         }
 
         // record if called as function (only depth 0)
-        args.forEach(arg => {
-            // const argTaints = checkTaintDeep(arg, 1);
-            if (arg?.__taint) {
-                arg.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>');
-            }
-        });
+        // args.forEach(arg => {
+        //     // const argTaints = checkTaintDeep(arg, 1);
+        //     if (isAnalysisProxy(arg) && arg.__taint) {
+        //         arg.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>');
+        //     }
+        // });
 
-        if (f === undefined || !args || args.length === 0 || !functionScope?.startsWith('node:')/*|| !this.sinks.includes(f)*/) return;
+        if (f === undefined || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:')/*|| !this.sinks.includes(f)*/) return;
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
@@ -136,18 +138,18 @@ class TaintAnalysis {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
 
         // ToDo - the dynamic wrapping of functions introduces some overhead, maybe there is a better way to record entry points
-        if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
-            && (typeof result === 'object' || typeof result === 'function')) {
-            // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
-            const moduleName = args[0];
-            if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
-                const wrapper = createModuleWrapper(result, moduleName);
-                return {result: wrapper};
-            }
-        }
+        // if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
+        //     && (typeof result === 'object' || typeof result === 'function')) {
+        //     // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
+        //     const moduleName = args[0];
+        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
+        //         const wrapper = createModuleWrapper(result, moduleName);
+        //         return {result: wrapper};
+        //     }
+        // }
 
         // emulate taint propagation for builtins
-        if (functionScope && !f?.__taint) {
+        if (functionScope && !isAnalysisProxy(f)) {
             let taintedResult = null;
             if (functionScope === '<builtin>') {
                 taintedResult = emulateBuiltin(iid, result, base, f, args);
@@ -162,7 +164,7 @@ class TaintAnalysis {
     };
 
     invokeFunException = (iid, e, f, receiver, args) => {
-        if (receiver?.__taint) {
+        if (isAnalysisProxy(receiver) && receiver.__taint) {
             this.flows.push({
                 ...receiver.__taint,
                 // ...structuredClone(receiver.__taint),
@@ -186,25 +188,17 @@ class TaintAnalysis {
     }
 
     read = (iid, name, val, isGlobal, isScriptLocal) => {
-        // if internal -> reset taint to string
-        // if (this.internalFunctionCall !== null && val?.__taint) {
-        //     this.checkInternalSink(val);
-        //     return {result: val.valueOf()};
-        // }
     }
 
 
     // this is needed to trigger instrumentation of object destructor syntax ({someProp})
     // ToDo - check why
     write = function (iid, name, val, lhs, isGlobal, isScriptLocal) {
-        // return {result: val};
     };
 
     binary = (iid, op, left, right, result, isLogic) => {
-
         // if it is a typeof comparison with a taint value use this information to infer the type
-        if (!left?.__taint && !right?.__taint
-            && (left?.__typeOfResult || right?.__typeOfResult)
+        if (((isAnalysisProxy(left) && left?.__typeOfResult) || (isAnalysisProxy(right) && right?.__typeOfResult))
             && ['==', '===', '!=', '!=='].includes(op)) {
             let taint;
             let type;
@@ -222,8 +216,8 @@ class TaintAnalysis {
 
         // ToDo - look into not undefined or (default value for object deconstruction e.g. {prop = []})
 
-        if ((left?.__taint === undefined)
-            && (right?.__taint === undefined)) return;
+        if ((!isAnalysisProxy(left) || left.__taint === undefined)
+            && (!isAnalysisProxy(right) || right.__taint === undefined)) return;
 
         switch (op) {
             case '===':
@@ -245,12 +239,6 @@ class TaintAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
-        // gm test
-        // if (['_sourceFormatters', 'disposers', 'sourceBuffer', '_append', 'sourceStream', 'called', 'highlightStyle'].includes(offset) || base?.__taint) return;
-        // if (['sourceBuffer'].includes(offset)) return;
-
-        // if (base?.__taint) return;
-
         // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new new taint value
         if (!base || offset === '__taint') return;
 
@@ -259,7 +247,7 @@ class TaintAnalysis {
             return {result: base.__getArrayElem(offset)};
         }
 
-        if (val?.__taint) {
+        if (isAnalysisProxy(val) && val.__taint) {
             // if it is already tainted report repeated read
             val.__addCodeFlow(iid, 'read', offset);
         }
@@ -272,39 +260,23 @@ class TaintAnalysis {
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         if (val === undefined && Object.prototype.isPrototypeOf(base)) {
-            // const res = new TaintVal(iid);
             const res = createTaintVal(iid, {iid: this.entryPointIID, entryPoint: this.entryPoint});
-
-            // if it is an internal function call argument then return actual value but check for sink
-            /*            if (this.internalFunctionCall) {
-                            this.checkInternalSink(res);
-                        } else {*/
             // also inject directly (e.g. for cases such as this.undefinedProp || (this.undefinedProp = []))
             // ToDo - this can lead to problems when injecting when it is not used later
             try {
+                // ToDo - make configurable
                 base[offset] = res;
             } catch (e) {
-                // in some cases injection does not work e.g. only a setter is specified
+                // in some cases injection does not work e.g. read only
             }
-            // indicator that it was injected directly for when we read it again
-            // unused for now but ToDo - could be used to identify new possible sinks
-            // base[offset].__injected = true;
-
             return {result: res};
-            // }
         }
-
-        // add additional taint
-        // if (val?.__injected) {
-        //     val.__taint.push(iid);
-        // }
     }
 
     unary = (iid, op, left, result) => {
         // change typeof of tainted object to circumvent type checks
         // ToDo - check if it leads to other problems
-        // ToDo - this also only works when instrumenting all -> we might have to change it for modules
-        if (!left?.__taint) return;
+        if (!isAnalysisProxy(left) || !left.__taint) return;
 
         switch (op) {
             case 'typeof':
@@ -313,7 +285,7 @@ class TaintAnalysis {
                 return {
                     result: (left.__type !== null && left.__type !== 'non-primitive')
                         ? left.__typeof()
-                        : {__typeOfResult: true, __taintVal: left}
+                        : {__typeOfResult: true, __taintVal: left, __isAnalysisProxy: true}
                 };
             case '!':
                 return {result: left.__undef};

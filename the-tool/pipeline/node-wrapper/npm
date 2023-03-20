@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export PATH=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/node-wrapper:$PATH
+
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm "$@"
+#$GRAAL_NPM_HOME "$@"
