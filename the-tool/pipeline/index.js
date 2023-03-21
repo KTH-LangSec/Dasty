@@ -6,28 +6,52 @@ const {getDb, closeConnection} = require('./db/conn');
 
 const args = process.argv;
 
+// const DEFAULT_TIMEOUT = 1 * 60 * 1000;
+const DEFAULT_TIMEOUT = 20000;
+
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
     return index >= 0 && args.length >= index + numValues ? args.splice(index, numValues + 1) : null;
 }
 
-function execCmd(cmd, live = false, throwOnErr = true) {
+function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT) {
     return new Promise((resolve, reject) => {
         const childProcess = exec(cmd);
         let out = '';
         let err = '';
 
+        let killTimeout;
+        const setKillTimout = () => {
+            if (killTimeout === null) return;
+
+            if (killTimeout) clearTimeout(killTimeout);
+            killTimeout = setTimeout(() => {
+                console.log('TIMEOUT');
+
+                clearTimeout(killTimeout);
+                killTimeout = null;
+                childProcess.kill('SIGINT');
+            }, timeout);
+        };
+
+        setKillTimout();
+
         childProcess.stdout.on('data', data => {
             if (live) process.stdout.write(data);
             out += data;
+
+            setKillTimout();
         });
         childProcess.stderr.on('data', data => {
             if (live) process.stderr.write(data);
 
             err += data;
+
+            setKillTimout();
         });
 
         childProcess.on('close', code => {
+            clearTimeout(killTimeout);
             if (code !== 0) {
                 if (!live) process.stderr.write(err);
                 if (throwOnErr) reject(err);
@@ -224,7 +248,7 @@ async function runPipeline(pkgName) {
     for (const [index, testScript] of testScripts.entries()) {
         console.log(`Running test '${testScript}'`);
 
-        const resultFilename = `${resultBasePath}${pkgName}-${index}.json`;
+        const resultFilename = `${resultBasePath}${pkgName}-${index}`;
         await runAnalysis(testScript, pkgName, resultFilename);
     }
 

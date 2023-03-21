@@ -1,6 +1,14 @@
 // DO NOT INSTRUMENT
 const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal, createCodeFlow} = require("./taint-val");
-const {parseIID, iidToLocation, iidToCode, checkTaintDeep, unwrapDeep, isAnalysisProxy} = require("../utils/utils");
+const {
+    parseIID,
+    iidToLocation,
+    iidToCode,
+    checkTaintDeep,
+    unwrapDeep,
+    isAnalysisProxy,
+    isAnalysisWrapper
+} = require("../utils/utils");
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
 
@@ -8,7 +16,6 @@ const {emulateBuiltin, emulateNodeJs} = require("./native");
 
 class TaintAnalysis {
     flows = [];
-    executionDone = false;
 
     // an object that keeps track of the current entry point (is updated by the module wrapper object)
     entryPointIID = 0;
@@ -16,9 +23,12 @@ class TaintAnalysis {
 
     spawnIndex = 0; // keeps track of how many child analyses were spawned so far (for result file naming)
 
-    constructor(pkgName, sinksBlacklist, resultFilename, executionDoneCallback) {
+    lastReadTaint = null;
+
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
+        this.propBlacklist = propBlacklist;
         this.executionDoneCallback = executionDoneCallback;
         this.resultFilename = resultFilename;
     }
@@ -30,7 +40,7 @@ class TaintAnalysis {
 
         if (scope === 'node:child_process' && f.name === 'spawn') {
             const analysisFilename = __dirname + '/../index.js';
-            const resultFilename = `${this.resultFilename}.spawn-${this.spawnIndex}.json`;
+            const resultFilename = `${this.resultFilename}.spawn-${this.spawnIndex}`;
 
             // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
             const spawnWrapper = (command, args, options) => {
@@ -69,7 +79,13 @@ class TaintAnalysis {
                 analysisArgs.push(...(unwrappedArgs.filter(a => a !== '')));
 
                 // console.log(analysisArgs);
-                return f.call(receiver, graalNode, analysisArgs, options);
+                const p = f.call(receiver, graalNode, analysisArgs, options);
+
+                // ToDo - improve (i.e. only on idle)
+                const killTimeout = setTimeout(() => p.kill(), 5 * 60 * 1000);
+                p.on('exit', () => clearTimeout(killTimeout));
+
+                return p;
             };
 
             return {result: spawnWrapper};
@@ -81,19 +97,25 @@ class TaintAnalysis {
         // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
         // ToDo - should the return value be tainted?
         // ToDo - unwrap deep -> e.g. an array containing a taint value (same for sink checking in invokeFunPre)
-        // const internalWrapper = !isAsync
-        //     ? (...args) => {
-        //         const unwrappedArgs = unwrapDeep(args);
-        //         /*args.map(a => a?.__taint ? a.valueOf() : a);*/
-        //         return Reflect.apply(f, receiver, unwrappedArgs);
-        //         // return f.call(receiver, ...unwrappedArgs);
-        //     } : async (...args) => {
-        //         const unwrappedArgs = unwrapDeep(args);
-        //         return Reflect.apply(f, receiver, unwrappedArgs);
-        //         // return await f.call(receiver, ...unwrappedArgs);
-        //     }
+        const internalWrapper = !isAsync
+            ? (...args) => {
+                const unwrappedReceiver = unwrapDeep(receiver);
+                const unwrappedArgs = unwrapDeep(args);
 
-        // return {result: internalWrapper};
+                /*args.map(a => a?.__taint ? a.valueOf() : a);*/
+
+                if (receiver !== unwrappedReceiver) {
+                    console.log(unwrappedReceiver);
+                }
+                return Reflect.apply(f, unwrappedReceiver, unwrappedArgs);
+                // return f.call(receiver, ...unwrappedArgs);
+            } : async (...args) => {
+                const unwrappedArgs = unwrapDeep(args);
+                return Reflect.apply(f, receiver, unwrappedArgs);
+                // return await f.call(receiver, ...unwrappedArgs);
+            }
+
+        return {result: internalWrapper};
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
@@ -122,13 +144,13 @@ class TaintAnalysis {
             }
         }
 
-        args.forEach(arg => {
+        args.forEach((arg, index) => {
             const argTaints = checkTaintDeep(arg);
             argTaints.forEach(taintVal => {
                 this.flows.push({
                     // ...structuredClone(taintVal.__taint),
                     ...taintVal.__taint,
-                    sink: {iid, type: 'functionCallArg', value: functionScope}
+                    sink: {iid, type: 'functionCallArg', value: functionScope, argIndex: index}
                 });
             });
         });
@@ -168,37 +190,55 @@ class TaintAnalysis {
             this.flows.push({
                 ...receiver.__taint,
                 // ...structuredClone(receiver.__taint),
-                sink: {iid, type: 'functionCallReceiverException', value: e.code + ' ' + e.toString()}
+                sink: {
+                    iid,
+                    type: 'functionCallReceiverException',
+                    value: e.code + ' ' + e.toString(),
+                    argIndex: 'receiver'
+                }
             });
         }
         if (args?.length > 0) {
-            const taints = checkTaintDeep(args);
-            taints.forEach(taintVal => {
-                this.flows.push({
-                    ...taintVal.__taint,
-                    // ...structuredClone(taintVal.__taint),
-                    sink: {iid, type: 'functionCallArgException', value: e.code + ' ' + e.toString()}
+            args.forEach((arg, index) => {
+                const taints = checkTaintDeep(arg);
+                taints.forEach(taintVal => {
+                    this.flows.push({
+                        ...taintVal.__taint,
+                        // ...structuredClone(taintVal.__taint),
+                        sink: {
+                            iid,
+                            type: 'functionCallArgException',
+                            value: e.code + ' ' + e.toString(),
+                            argIndex: index
+                        }
+                    });
                 });
             });
         }
 
-        if (e?.code === 'ERR_ASSERTION') {
+        if (e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError') {
             return {result: true}; // just return something to stop propagation of error
         }
     }
 
     read = (iid, name, val, isGlobal, isScriptLocal) => {
+        if (isAnalysisProxy(val) && val?.__taint) {
+            this.lastReadTaint = val.__taint;
+        }
     }
 
 
     // this is needed to trigger instrumentation of object destructor syntax ({someProp})
     // ToDo - check why
     write = function (iid, name, val, lhs, isGlobal, isScriptLocal) {
+        // if (val?.__taint) {
+        //     val.__addCodeFlow(iid, 'write', name);
+        // }
     };
 
     binary = (iid, op, left, right, result, isLogic) => {
         // if it is a typeof comparison with a taint value use this information to infer the type
-        if (((isAnalysisProxy(left) && left?.__typeOfResult) || (isAnalysisProxy(right) && right?.__typeOfResult))
+        if (((isAnalysisWrapper(left) && !left.__taint && left?.__typeOfResult) || (isAnalysisWrapper(right) && !right.__taint && right?.__typeOfResult))
             && ['==', '===', '!=', '!=='].includes(op)) {
             let taint;
             let type;
@@ -229,7 +269,7 @@ class TaintAnalysis {
                 }
                 break;
             case '&&':
-                if (!result.__taint && left?.__undef) return {result: false};
+                if (!result?.__taint && left?.__undef) return {result: false};
                 break;
             case '+':
                 // Todo - look into string Template Literals (it works but the other side is always '')
@@ -249,6 +289,7 @@ class TaintAnalysis {
 
         if (isAnalysisProxy(val) && val.__taint) {
             // if it is already tainted report repeated read
+            this.lastReadTaint = val.__taint;
             val.__addCodeFlow(iid, 'read', offset);
         }
 
@@ -259,8 +300,8 @@ class TaintAnalysis {
         if (!scope?.startsWith('file:') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
-        if (val === undefined && Object.prototype.isPrototypeOf(base)) {
-            const res = createTaintVal(iid, {iid: this.entryPointIID, entryPoint: this.entryPoint});
+        if (val === undefined && Object.prototype.isPrototypeOf(base) && !this.propBlacklist?.includes(offset)) {
+            const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
             // also inject directly (e.g. for cases such as this.undefinedProp || (this.undefinedProp = []))
             // ToDo - this can lead to problems when injecting when it is not used later
             try {
@@ -269,6 +310,8 @@ class TaintAnalysis {
             } catch (e) {
                 // in some cases injection does not work e.g. read only
             }
+
+            this.lastReadTaint = res.__taint;
             return {result: res};
         }
     }
@@ -282,6 +325,7 @@ class TaintAnalysis {
             case 'typeof':
                 /** if we don't know the type yet return the proxy object and an information that it is the result of typeof
                  this is used further up in the comparison to assign the correct type */
+                // return {result: left.__typeof()};
                 return {
                     result: (left.__type !== null && left.__type !== 'non-primitive')
                         ? left.__typeof()
@@ -299,10 +343,16 @@ class TaintAnalysis {
         }
     }
 
-    endExecution = () => {
-        this.executionDone = true;
+    uncaughtException = (err, origin) => {
         if (this.executionDoneCallback) {
-            this.executionDoneCallback(this.flows);
+            this.executionDoneCallback(err);
+            this.executionDoneCallback = null;
+        }
+    }
+
+    endExecution = (code) => {
+        if (this.executionDoneCallback) {
+            this.executionDoneCallback();
         }
     }
 }

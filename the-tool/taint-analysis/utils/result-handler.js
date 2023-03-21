@@ -18,6 +18,7 @@ const resultHandler = {
     writeFlowsToFile(flows, resultPath) {
         if (!flows || flows.length === 0) return;
 
+        flows = structuredClone(flows);
         // remove duplicates
         const processed = [];
         flows = flows.filter(flow => {
@@ -32,7 +33,7 @@ const resultHandler = {
 
         // parse iid
         flows.forEach(flow => {
-            flow.source = parseIID(flow.source);
+            flow.source = replaceIID(flow.source);
             flow.entryPoint = replaceIID(flow.entryPoint);
             flow.codeFlow.forEach((cf, index) => {
                 flow.codeFlow[index] = replaceIID(cf);
@@ -48,6 +49,26 @@ const resultHandler = {
         } else {
             console.log(JSON.stringify(flows));
         }
+    },
+
+    writeCrashReport(taint, err, filename) {
+        taint.source = replaceIID(taint.source);
+        taint.codeFlow.forEach((cf, index) => {
+            taint.codeFlow[index] = replaceIID(cf);
+        });
+
+        const report = JSON.stringify({
+            lastReadTaint: taint,
+            err: err
+        })
+        if (filename) {
+            fs.writeFileSync(filename, report, {encoding: 'utf8'});
+            console.log(`Crash report written to ${filename}`);
+        } else {
+            console.log(report);
+        }
+
+        // throw err;
     }
 }
 

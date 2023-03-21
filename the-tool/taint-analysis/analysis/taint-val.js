@@ -8,8 +8,8 @@ const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
 class TaintProxyHandler {
     __isAnalysisProxy = true;
 
-    constructor(sourceIID, entryPoint, undef = true, val = null, type = null) {
-        this.__taint = sourceIID ? {source: sourceIID, entryPoint, codeFlow: []} : null;
+    constructor(sourceIID, prop, entryPoint, undef = true, val = null, type = null) {
+        this.__taint = sourceIID ? {source: {iid: sourceIID, prop}, entryPoint, codeFlow: []} : null;
         this.__undef = undef;
 
         this.#type = type;
@@ -133,6 +133,7 @@ class TaintProxyHandler {
         const taintHandler = new TaintProxyHandler(
             null,
             null,
+            null,
             undef,
             newVal,
             type !== undefined ? type : this.__type
@@ -253,6 +254,9 @@ class TaintProxyHandler {
 
             const type = getTypeOf(newVal);
             const cf = createCodeFlow(null, 'propRead', prop);
+
+            // ToDo - check blacklist
+
             const taintProxy = this.__copyTaint(newVal, cf, type, newVal === undefined);
 
             // directly inject the new value and return it
@@ -310,8 +314,8 @@ function createCodeFlow(iid, type, name, values = undefined) {
     return transformation;
 }
 
-function createTaintVal(sourceIID, entryPoint, undef = true, val = null, type = null) {
-    const handler = new TaintProxyHandler(sourceIID, entryPoint, undef, val, type);
+function createTaintVal(sourceIID, prop, entryPoint, undef = true, val = null, type = null) {
+    const handler = new TaintProxyHandler(sourceIID, prop, entryPoint, undef, val, type);
 
     // the target is a function as it makes it callable while still being an object
     return new Proxy(() => {

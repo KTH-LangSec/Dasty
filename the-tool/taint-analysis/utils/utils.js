@@ -223,10 +223,18 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;
 
+
     if (arg instanceof Array) {
-        return arg.map(a => unwrapDeepRec(a, depth - 1, done));
+        arg.forEach((a, index) => arg[index] = unwrapDeepRec(a, depth - 1, done));
+        return arg;
     } else if (arg instanceof Set) {
-        return new Set(Array.from(arg, a => unwrapDeepRec(a, depth - 1, done)));
+        return arg;
+
+        arg.forEach((a) => {
+            arg.delete(a);
+            arg.add(unwrapDeepRec(a, depth - 1, done));
+        });
+        return arg;
     } else if (arg instanceof Map) {
         return new Map(Array.from(arg, ([key, val]) => [unwrapDeepRec(key, depth - 1, done), unwrapDeepRec(val, depth - 1, done)]));
         // ToDo - other built-in objects?
@@ -244,9 +252,19 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 
             done.push(propVal);
 
-            arg[prop] = unwrapDeepRec(propVal, --depth, done);
+            arg[prop] = unwrapDeepRec(propVal, depth - 1, done);
         }
         return arg;
+    }
+}
+
+function isAnalysisWrapper(obj) {
+    try {
+        return obj !== null && obj !== undefined
+            && (obj.__isAnalysisProxy);
+    } catch (e) {
+        // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
+        return false;
     }
 }
 
@@ -254,7 +272,7 @@ function isAnalysisProxy(obj) {
     try {
         return obj !== null && obj !== undefined
             && typeof obj === 'function'
-            && (obj.__isAnalysisProxy);
+            && obj.__isAnalysisProxy;
     } catch (e) {
         // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
         return false;
@@ -272,4 +290,5 @@ module.exports = {
     checkTaintDeep,
     unwrapDeep,
     isAnalysisProxy,
+    isAnalysisWrapper
 }
