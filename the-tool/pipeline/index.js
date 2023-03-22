@@ -9,6 +9,11 @@ const args = process.argv;
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 const DEFAULT_TIMEOUT = 20000;
 
+const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
+const PRE_ANALYSIS = __dirname + '/pre-analysis/';
+
+const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
+
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
     return index >= 0 && args.length >= index + numValues ? args.splice(index, numValues + 1) : null;
@@ -22,13 +27,12 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
 
         let killTimeout;
         const setKillTimout = () => {
-            if (killTimeout === null) return;
+            if (timeout === -1 || killTimeout === null) return;
 
             if (killTimeout) clearTimeout(killTimeout);
             killTimeout = setTimeout(() => {
                 console.log('TIMEOUT');
 
-                clearTimeout(killTimeout);
                 killTimeout = null;
                 childProcess.kill('SIGINT');
             }, timeout);
@@ -105,7 +109,7 @@ function adaptTestScript(script, scripts, repoPath) {
             argParts[0] = './node_modules/jest/bin/jest.js'
             return argParts.join(' ');
         case 'npm':
-            if (argParts[1] === 'run' && argParts[2] !== 'lint') {
+            if (argParts[1] === 'run' && !argParts[2].includes('lint')) {
                 return adaptTestScript(scripts[argParts[2]], scripts, repoPath);
             }
             // ignore other npm commands (e.g. audit)
@@ -152,24 +156,64 @@ function findTestScripts(repoPath) {
     ).filter(s => s !== null);
 }
 
-async function runAnalysis(testScript, pkgName, resultFilename) {
+async function runPreAnalysis(script, repoName, pkgName) {
+    await runAnalysis(script, PRE_ANALYSIS, repoName, {pkgName}/*, ['/node_modules']*/);
 
-    const analysisFilename = __dirname + '/../taint-analysis/index.js';
+    return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
+}
 
-    let cmd = `cd ./packages/${pkgName}; `
+async function runPreAnalysisNodeWrapper(repoName, pkgName) {
+    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName});
+
+    return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
+}
+
+async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
+    let params = ' --jvm '
+        + ' --experimental-options'
+        + ' --engine.WarnInterpreterOnly=false'
+        + ' --vm.Dtruffle.class.path.append=$NODEPROF_HOME/build/nodeprof.jar'
+        + ' --nodeprof.Scope=module'
+        + ' --nodeprof.IgnoreJalangiException=false'
+        + ' --nodeprof';
+
+    if (exclude && exclude.length > 0) {
+        params += ` --nodeprof.ExcludeSource=${exclude.join(',')}`
+    }
+
+    params += ` $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
+
+    for (const initParamName in initParams) {
+        params += ` --initParam ${initParamName}:${initParams[initParamName]}`;
+    }
+
+    fs.writeFileSync(__dirname + '/node-wrapper/params.txt', params, {encoding: 'utf8'});
+
+    await execCmd(`cd ${dir}; `+  NPM_WRAPPER + ' test', true, false);
+}
+
+async function runAnalysis(script, analysis, dir, initParams, exclude) {
+    let cmd = `cd ${dir}; `
     cmd += '$GRAAL_NODE_HOME'
         + ' --jvm '
         + ' --experimental-options'
         + ' --engine.WarnInterpreterOnly=false'
         + ' --vm.Dtruffle.class.path.append=$NODEPROF_HOME/build/nodeprof.jar'
         + ' --nodeprof.Scope=module'
-        + ' --nodeprof.ExcludeSource=grunt/'
         + ' --nodeprof.IgnoreJalangiException=false'
-        + ' --nodeprof $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js'
-        + ` --analysis ${analysisFilename}`
-        + ` --initParam pkgName:${pkgName}`
-        + ` --initParam resultFilename:${resultFilename}`
-        + ` ${testScript};`;
+        + ' --nodeprof';
+
+    if (exclude && exclude.length > 0) {
+        cmd += ` --nodeprof.ExcludeSource=${exclude.join(',')}`
+    }
+
+    cmd += ` $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
+
+    for (const initParamName in initParams) {
+        cmd += ` --initParam ${initParamName}:${initParams[initParamName]}`;
+    }
+
+    cmd += ` ${script};`;
 
     console.log(cmd);
 
@@ -228,6 +272,7 @@ function locToSarif(dbLocation, message = null) {
 async function runPipeline(pkgName) {
     console.log('Fetching URL');
     const url = await fetchURL(pkgName);
+    const resultBasePath = __dirname + '/results/';
 
     const repoPath = __dirname + `/packages/${pkgName}`;
     if (!fs.existsSync(repoPath)) {
@@ -238,29 +283,55 @@ async function runPipeline(pkgName) {
     }
 
     console.log('Installing dependencies');
-    await execCmd(`cd ${repoPath}; npm install;`, true);
+    await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
 
-    console.log('Finding test scripts');
-    const testScripts = findTestScripts(repoPath);
+    // console.log('Finding test scripts');
+    // const testScripts = findTestScripts(repoPath);
+    //
+    // if (testScripts.length === 0) {
+    //     console.log('No test scripts found');
+    //     fs.appendFileSync(resultBasePath + 'no-test-scripts.txt', pkgName + '\n', {encoding: 'utf8'});
+    //     return;
+    // }
 
-    console.log('Running analysis');
-    const resultBasePath = __dirname + '/results/';
-    for (const [index, testScript] of testScripts.entries()) {
-        console.log(`Running test '${testScript}'`);
+    console.log('Running pre-analysis');
 
-        const resultFilename = `${resultBasePath}${pkgName}-${index}`;
-        await runAnalysis(testScript, pkgName, resultFilename);
-    }
+    await runPreAnalysisNodeWrapper(repoPath, pkgName);
 
-    // fetch all result files (it could be that child processes create their own result files)
-    const resultFiles = fs.readdirSync(resultBasePath)
-        .filter(f => f.startsWith(pkgName + '-'))
-        .map(f => resultBasePath + f);
-
-    console.log('Writing results to DB');
-    // await writeResultsToDB(pkgName, resultFiles);
-
-    console.log('Cleaning up');
+    // let preAnalysisSuccess = false;
+    // for (const testScript of testScripts) {
+    //     if (await runPreAnalysis(testScript, repoPath, pkgName) === true) {
+    //         preAnalysisSuccess = true;
+    //     }
+    // }
+    //
+    // if (!preAnalysisSuccess) {
+    //     console.log('No internal dependencies detected');
+    //     return;
+    // }
+    //
+    // console.log('Running analysis');
+    // for (const [index, testScript] of testScripts.entries()) {
+    //     console.log(`Running test '${testScript}'`);
+    //
+    //     const resultFilename = `${resultBasePath}${pkgName}-${index}`;
+    //     await runAnalysis(
+    //         testScript,
+    //         TAINT_ANALYSIS,
+    //         repoPath,
+    //         {pkgName, resultFilename}
+    //     );
+    // }
+    //
+    // // fetch all result files (it could be that child processes create their own result files)
+    // const resultFiles = fs.readdirSync(resultBasePath)
+    //     .filter(f => f.startsWith(pkgName + '-'))
+    //     .map(f => resultBasePath + f);
+    //
+    // console.log('Writing results to DB');
+    // // await writeResultsToDB(pkgName, resultFiles);
+    //
+    // console.log('Cleaning up');
     // resultFiles.forEach(fs.unlinkSync); // could also be done async
 }
 

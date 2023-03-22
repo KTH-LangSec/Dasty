@@ -11,15 +11,17 @@ const {spawn} = require("child_process");
 // // mockModule();
 // mockModule().undefinedPropRead();
 
-function execIt(cmd) {
-    return new Promise(resolve => {
-        cp.exec(cmd, () => resolve());
-    });
-}
+console.log('execPath', process.execPath);
 
-const obj = {};
-
-cp.exec(obj.blub);
+// function execIt(cmd) {
+//     return new Promise(resolve => {
+//         cp.exec(cmd, () => resolve());
+//     });
+// }
+//
+// const obj = {};
+//
+// cp.exec(obj.blub);
 //
 // const proc = spawn('python3.8');
 // proc.stdin.write('hey');
