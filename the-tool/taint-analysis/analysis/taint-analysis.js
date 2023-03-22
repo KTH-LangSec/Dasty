@@ -12,8 +12,6 @@ const {
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
 
-// const assert = require('assert');
-
 class TaintAnalysis {
     flows = [];
 
@@ -99,15 +97,12 @@ class TaintAnalysis {
         // ToDo - unwrap deep -> e.g. an array containing a taint value (same for sink checking in invokeFunPre)
         const internalWrapper = !isAsync
             ? (...args) => {
-                const unwrappedReceiver = unwrapDeep(receiver);
+                // const unwrappedReceiver = unwrapDeep(receiver);
                 const unwrappedArgs = unwrapDeep(args);
 
                 /*args.map(a => a?.__taint ? a.valueOf() : a);*/
 
-                if (receiver !== unwrappedReceiver) {
-                    console.log(unwrappedReceiver);
-                }
-                return Reflect.apply(f, unwrappedReceiver, unwrappedArgs);
+                return Reflect.apply(f, receiver, unwrappedArgs);
                 // return f.call(receiver, ...unwrappedArgs);
             } : async (...args) => {
                 const unwrappedArgs = unwrapDeep(args);
@@ -256,8 +251,8 @@ class TaintAnalysis {
 
         // ToDo - look into not undefined or (default value for object deconstruction e.g. {prop = []})
 
-        if ((!isAnalysisProxy(left) || left.__taint === undefined)
-            && (!isAnalysisProxy(right) || right.__taint === undefined)) return;
+        if ((!isAnalysisProxy(left) || left?.__taint === undefined)
+            && (!isAnalysisProxy(right) || right?.__taint === undefined)) return;
 
         switch (op) {
             case '===':
@@ -279,7 +274,7 @@ class TaintAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
-        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new new taint value
+        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
         if (!base || offset === '__taint') return;
 
         // // this is probably an array access
@@ -291,6 +286,7 @@ class TaintAnalysis {
             // if it is already tainted report repeated read
             this.lastReadTaint = val.__taint;
             val.__addCodeFlow(iid, 'read', offset);
+            return;
         }
 
         // currently we only care for sources in non-native modules, even when analysing all

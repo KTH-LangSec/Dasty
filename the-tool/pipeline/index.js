@@ -157,22 +157,38 @@ function findTestScripts(repoPath) {
 }
 
 async function runPreAnalysis(script, repoName, pkgName) {
+    // first check if pre-analysis was already done
+    if (fs.readFileSync(script, PRE_ANALYSIS + '/results/nodejs-modules').split('\n').includes(pkgName)) {
+        return true;
+    } else if (fs.readFileSync(script, PRE_ANALYSIS + '/results/frontend-modules').split('\n').includes(pkgName)) {
+        return false;
+    }
+
     await runAnalysis(script, PRE_ANALYSIS, repoName, {pkgName}/*, ['/node_modules']*/);
 
     return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
 
 async function runPreAnalysisNodeWrapper(repoName, pkgName) {
+    // first check if pre-analysis was already done
+    if (fs.readFileSync(PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        return true;
+    } else if (fs.readFileSync(PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        return false;
+    }
+
     await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName});
 
     return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
 
 async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
+    const nodeprofHome = process.env.NODEPROF_HOME;
+
     let params = ' --jvm '
         + ' --experimental-options'
         + ' --engine.WarnInterpreterOnly=false'
-        + ' --vm.Dtruffle.class.path.append=$NODEPROF_HOME/build/nodeprof.jar'
+        + ` --vm.Dtruffle.class.path.append=${nodeprofHome}/build/nodeprof.jar`
         + ' --nodeprof.Scope=module'
         + ' --nodeprof.IgnoreJalangiException=false'
         + ' --nodeprof';
@@ -181,7 +197,7 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
         params += ` --nodeprof.ExcludeSource=${exclude.join(',')}`
     }
 
-    params += ` $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
+    params += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
 
     for (const initParamName in initParams) {
         params += ` --initParam ${initParamName}:${initParams[initParamName]}`;
@@ -189,16 +205,19 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
 
     fs.writeFileSync(__dirname + '/node-wrapper/params.txt', params, {encoding: 'utf8'});
 
-    await execCmd(`cd ${dir}; `+  NPM_WRAPPER + ' test', true, false);
+    await execCmd(`cd ${dir}; ` + NPM_WRAPPER + ' test', true, false);
 }
 
 async function runAnalysis(script, analysis, dir, initParams, exclude) {
+    const graalNode = process.env.GRAAL_NODE_HOME;
+    const nodeprofHome = process.env.NODEPROF_HOME;
+
     let cmd = `cd ${dir}; `
-    cmd += '$GRAAL_NODE_HOME'
+    cmd += graalNode
         + ' --jvm '
         + ' --experimental-options'
         + ' --engine.WarnInterpreterOnly=false'
-        + ' --vm.Dtruffle.class.path.append=$NODEPROF_HOME/build/nodeprof.jar'
+        + ` --vm.Dtruffle.class.path.append=${nodeprofHome}/build/nodeprof.jar`
         + ' --nodeprof.Scope=module'
         + ' --nodeprof.IgnoreJalangiException=false'
         + ' --nodeprof';
@@ -207,7 +226,7 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
         cmd += ` --nodeprof.ExcludeSource=${exclude.join(',')}`
     }
 
-    cmd += ` $NODEPROF_HOME/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
+    cmd += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
 
     for (const initParamName in initParams) {
         cmd += ` --initParam ${initParamName}:${initParams[initParamName]}`;
@@ -295,8 +314,21 @@ async function runPipeline(pkgName) {
     // }
 
     console.log('Running pre-analysis');
+    const preAnalysisSuccess = await runPreAnalysisNodeWrapper(repoPath, pkgName);
 
-    await runPreAnalysisNodeWrapper(repoPath, pkgName);
+    if (!preAnalysisSuccess) {
+        console.log('No internal dependencies detected');
+        return;
+    }
+
+    console.log('Running analysis');
+    const resultFilename = `${resultBasePath}${pkgName}`;
+    await runAnalysisNodeWrapper(
+        TAINT_ANALYSIS,
+        repoPath,
+        {pkgName, resultFilename}
+    );
+
 
     // let preAnalysisSuccess = false;
     // for (const testScript of testScripts) {

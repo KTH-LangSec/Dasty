@@ -223,18 +223,18 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;
 
-
     if (arg instanceof Array) {
-        arg.forEach((a, index) => arg[index] = unwrapDeepRec(a, depth - 1, done));
-        return arg;
+        // arg.forEach((a, index) => arg[index] = unwrapDeepRec(a, depth - 1, done));
+        // return arg;
+        return arg.map(a => unwrapDeepRec(a, depth - 1, done));
     } else if (arg instanceof Set) {
         return arg;
 
-        arg.forEach((a) => {
-            arg.delete(a);
-            arg.add(unwrapDeepRec(a, depth - 1, done));
-        });
-        return arg;
+        // arg.forEach((a) => {
+        //     arg.delete(a);
+        //     arg.add(unwrapDeepRec(a, depth - 1, done));
+        // });
+        // return arg;
     } else if (arg instanceof Map) {
         return new Map(Array.from(arg, ([key, val]) => [unwrapDeepRec(key, depth - 1, done), unwrapDeepRec(val, depth - 1, done)]));
         // ToDo - other built-in objects?
