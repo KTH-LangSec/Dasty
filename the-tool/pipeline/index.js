@@ -3,16 +3,19 @@ const util = require('node:util');
 const {exec} = require('child_process');
 const fs = require('fs');
 const {getDb, closeConnection} = require('./db/conn');
+const {ObjectId} = require("mongodb");
 
 const args = process.argv;
 
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
-const DEFAULT_TIMEOUT = 20000;
+// const DEFAULT_TIMEOUT = 20000;
+const DEFAULT_TIMEOUT = -1;
+const MAX_RUNS = 3;
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
-
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
+const PROP_BLACKLISTS_DIR = __dirname + '/blacklists/';
 
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
@@ -158,9 +161,9 @@ function findTestScripts(repoPath) {
 
 async function runPreAnalysis(script, repoName, pkgName) {
     // first check if pre-analysis was already done
-    if (fs.readFileSync(script, PRE_ANALYSIS + '/results/nodejs-modules').split('\n').includes(pkgName)) {
+    if (fs.readFileSync(script, PRE_ANALYSIS + '/results/nodejs-modules.txt').split('\n').includes(pkgName)) {
         return true;
-    } else if (fs.readFileSync(script, PRE_ANALYSIS + '/results/frontend-modules').split('\n').includes(pkgName)) {
+    } else if (fs.readFileSync(script, PRE_ANALYSIS + '/results/frontend-modules.txt').split('\n').includes(pkgName)) {
         return false;
     }
 
@@ -200,7 +203,10 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
     params += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
 
     for (const initParamName in initParams) {
-        params += ` --initParam ${initParamName}:${initParams[initParamName]}`;
+        const initParam = initParams[initParamName];
+        if (initParam !== null && initParam !== undefined) {
+            params += ` --initParam ${initParamName}:${initParam}`;
+        }
     }
 
     fs.writeFileSync(__dirname + '/node-wrapper/params.txt', params, {encoding: 'utf8'});
@@ -249,7 +255,7 @@ async function writeResultsToDB(pkgName, resultFilenames) {
         results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf8')));
     });
 
-    if (results.length === 0) return;
+    if (results.length === 0) return null;
 
     const db = await getDb();
 
@@ -260,11 +266,27 @@ async function writeResultsToDB(pkgName, resultFilenames) {
     }
 
     const run = {
+        _id: new ObjectId(),
         timestamp: Date.now(),
         results
     };
 
     await resultsColl.updateOne({_id: pkgId}, {$push: {runs: run}});
+
+    return run._id;
+}
+
+async function fetchExceptions(pkgName, runId) {
+    const db = await getDb();
+
+    const resultColl = await db.collection('results');
+
+    const pkgResults = await resultColl.findOne({
+        package: pkgName,
+        "runs._id": runId,
+        "runs.results.sink.type": "functionCallArgException"
+    });
+    return pkgResults ? pkgResults.runs[0].results.map(res => res.source) : null;
 }
 
 function locToSarif(dbLocation, message = null) {
@@ -322,12 +344,54 @@ async function runPipeline(pkgName) {
     }
 
     console.log('Running analysis');
-    const resultFilename = `${resultBasePath}${pkgName}`;
-    await runAnalysisNodeWrapper(
-        TAINT_ANALYSIS,
-        repoPath,
-        {pkgName, resultFilename}
-    );
+    let run = 0;
+    let propBlacklist = null;
+    let blacklistedProps = [];
+
+    while (true) {
+        const resultFilename = `${resultBasePath}${pkgName}`;
+        await runAnalysisNodeWrapper(
+            TAINT_ANALYSIS,
+            repoPath,
+            {pkgName, resultFilename, propBlacklist}
+        );
+
+        const resultFiles = fs.readdirSync(resultBasePath)
+            .filter(f => f.startsWith(pkgName) && !f.includes('crash-report'))
+            .map(f => resultBasePath + f);
+
+        console.log('Writing results to DB');
+        const runId = await writeResultsToDB(pkgName, resultFiles);
+
+        console.log('Cleaning up result files');
+        resultFiles.forEach(fs.unlinkSync); // could also be done async
+
+        // break if max run or if no flows found
+        if (!runId || ++run === MAX_RUNS) break;
+
+        console.log('Checking for exceptions');
+        const exceptions = await fetchExceptions(pkgName, runId);
+
+        if (!exceptions || exceptions.length === 0) {
+            console.log('No exceptions found');
+            break;
+        }
+
+        console.log('Exceptions found');
+
+        const newBlacklistedProps = exceptions.map(e => e.prop).filter(p => !blacklistedProps.includes(p));
+
+        console.log('Adding properties to blacklist: ' + newBlacklistedProps.join(', '));
+        blacklistedProps.push(...newBlacklistedProps);
+
+        propBlacklist = PROP_BLACKLISTS_DIR + pkgName + '.json';
+        fs.writeFileSync(propBlacklist, JSON.stringify(blacklistedProps), {encoding: 'utf8'});
+
+        console.log('Rerunning analysis with news blacklist');
+    }
+
+    console.log('Cleaning up');
+    // if (propBlacklist) fs.unlinkSync(propBlacklist);
 
 
     // let preAnalysisSuccess = false;

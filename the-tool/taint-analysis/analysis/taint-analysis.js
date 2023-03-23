@@ -11,6 +11,7 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
+const {NODE_EXEC_PATH} = require("../conf/analysis-conf");
 
 class TaintAnalysis {
     flows = [];
@@ -36,58 +37,58 @@ class TaintAnalysis {
         // ToDo - should we whitelist (e.g. node:internal)?
         if (isConstructor || f === undefined || (!scope?.startsWith('node:')) || f === console.log) return;
 
-        if (scope === 'node:child_process' && f.name === 'spawn') {
-            const analysisFilename = __dirname + '/../index.js';
-            const resultFilename = `${this.resultFilename}.spawn-${this.spawnIndex}`;
-
-            // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
-            const spawnWrapper = (command, args, options) => {
-                const unwrappedCommand = command.__taint ? command.valueOf() : command;
-                const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
-
-                if (!unwrappedCommand.endsWith('node')) {
-                    return f.call(receiver, unwrappedCommand, unwrappedArgs, options);
-                }
-
-                console.log('Spawning child process analysis ' + args.join(' '));
-                this.spawnIndex++;
-
-                const graalNode = process.env.GRAAL_NODE_HOME;
-                const nodeProfHome = process.env.NODEPROF_HOME;
-                const analysisArgs = [
-                    '--jvm',
-                    '--experimental-options',
-                    '--engine.WarnInterpreterOnly=false',
-                    `--vm.Dtruffle.class.path.append=${nodeProfHome}/build/nodeprof.jar`,
-                    '--nodeprof.Scope=module',
-                    '--nodeprof.ExcludeSource=excluded/',
-                    '--nodeprof.IgnoreJalangiException=false',
-                    '--nodeprof=true',
-                    `${nodeProfHome}/src/ch.usi.inf.nodeprof/js/jalangi.js`,
-                    '--analysis', analysisFilename,
-                    '--initParam', `resultFilename:${resultFilename}`,
-                ];
-
-                if (this.pkgName) {
-                    analysisArgs.push('--initParam', `pkgName:${this.pkgName ?? ''}`);
-                }
-
-                while (unwrappedArgs[0]?.startsWith('-')) unwrappedArgs.shift();
-
-                analysisArgs.push(...(unwrappedArgs.filter(a => a !== '')));
-
-                // console.log(analysisArgs);
-                const p = f.call(receiver, graalNode, analysisArgs, options);
-
-                // ToDo - improve (i.e. only on idle)
-                const killTimeout = setTimeout(() => p.kill(), 5 * 60 * 1000);
-                p.on('exit', () => clearTimeout(killTimeout));
-
-                return p;
-            };
-
-            return {result: spawnWrapper};
-        }
+        // if (scope === 'node:child_process' && f.name === 'spawn') {
+        //     const analysisFilename = __dirname + '/../index.js';
+        //     const resultFilename = `${this.resultFilename}.spawn-${this.spawnIndex}`;
+        //
+        //     // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
+        //     const spawnWrapper = (command, args, options) => {
+        //         const unwrappedCommand = command.__taint ? command.valueOf() : command;
+        //         const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
+        //
+        //         if (!unwrappedCommand.endsWith('node')) {
+        //             return f.call(receiver, unwrappedCommand, unwrappedArgs, options);
+        //         }
+        //
+        //         console.log('Spawning child process analysis ' + args.join(' '));
+        //         this.spawnIndex++;
+        //
+        //         const graalNode = process.env.GRAAL_NODE_HOME;
+        //         const nodeProfHome = process.env.NODEPROF_HOME;
+        //         const analysisArgs = [
+        //             '--jvm',
+        //             '--experimental-options',
+        //             '--engine.WarnInterpreterOnly=false',
+        //             `--vm.Dtruffle.class.path.append=${nodeProfHome}/build/nodeprof.jar`,
+        //             '--nodeprof.Scope=module',
+        //             '--nodeprof.ExcludeSource=excluded/',
+        //             '--nodeprof.IgnoreJalangiException=false',
+        //             '--nodeprof=true',
+        //             `${nodeProfHome}/src/ch.usi.inf.nodeprof/js/jalangi.js`,
+        //             '--analysis', analysisFilename,
+        //             '--initParam', `resultFilename:${resultFilename}`,
+        //         ];
+        //
+        //         if (this.pkgName) {
+        //             analysisArgs.push('--initParam', `pkgName:${this.pkgName ?? ''}`);
+        //         }
+        //
+        //         while (unwrappedArgs[0]?.startsWith('-')) unwrappedArgs.shift();
+        //
+        //         analysisArgs.push(...(unwrappedArgs.filter(a => a !== '')));
+        //
+        //         // console.log(analysisArgs);
+        //         const p = f.call(receiver, graalNode, analysisArgs, options);
+        //
+        //         // ToDo - improve (i.e. only on idle)
+        //         const killTimeout = setTimeout(() => p.kill(), 5 * 60 * 1000);
+        //         p.on('exit', () => clearTimeout(killTimeout));
+        //
+        //         return p;
+        //     };
+        //
+        //     return {result: spawnWrapper};
+        // }
 
         // ToDo - unwrap constructor calls
 
@@ -97,6 +98,8 @@ class TaintAnalysis {
         // ToDo - unwrap deep -> e.g. an array containing a taint value (same for sink checking in invokeFunPre)
         const internalWrapper = !isAsync
             ? (...args) => {
+
+                // ToDo - look into this
                 // const unwrappedReceiver = unwrapDeep(receiver);
                 const unwrappedArgs = unwrapDeep(args);
 
@@ -274,8 +277,12 @@ class TaintAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
-        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
-        if (!base || offset === '__taint') return;
+        // return the wrapped exec for execPath (which is often used to spawn a child process with the same node binary)
+        if (offset === 'execPath' && typeof val === 'string' && val.endsWith('node')) {
+            return {result: NODE_EXEC_PATH};
+        }
+            // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
+            if (!base || offset === '__taint') return;
 
         // // this is probably an array access
         if (isComputed && base.__taint && typeof offset === 'number') {

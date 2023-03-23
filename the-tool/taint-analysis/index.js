@@ -20,9 +20,10 @@ function executionDone(err) {
     const flows = analysis.flows;
 
     console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
-    resultHandler.writeFlowsToFile(flows, resultFilename + '.json');
+    const ts = Date.now();
+    resultHandler.writeFlowsToFile(flows, `${resultFilename}-${ts}.json`);
     if (err !== undefined && analysis.lastReadTaint) {
-        resultHandler.writeCrashReport(analysis.lastReadTaint, err, resultFilename ? `${resultFilename}-crash-report.json` : null);
+        resultHandler.writeCrashReport(analysis.lastReadTaint, err, resultFilename ? `${resultFilename}-${ts}-crash-report.json` : null);
     }
 }
 
