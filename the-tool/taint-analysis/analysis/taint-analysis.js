@@ -14,6 +14,10 @@ const {emulateBuiltin, emulateNodeJs} = require("./native");
 const {NODE_EXEC_PATH} = require("../conf/analysis-conf");
 
 class TaintAnalysis {
+    deepCheckCount = 0;
+    deepCheckExcCount = 0;
+    unwrapCount = 0;
+
     flows = [];
 
     // an object that keeps track of the current entry point (is updated by the module wrapper object)
@@ -95,22 +99,24 @@ class TaintAnalysis {
         // if it is an internal function replace it with wrapper function that unwraps taint values
         // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
         // ToDo - should the return value be tainted?
-        // ToDo - unwrap deep -> e.g. an array containing a taint value (same for sink checking in invokeFunPre)
         const internalWrapper = !isAsync
             ? (...args) => {
-
-                // ToDo - look into this
-                // const unwrappedReceiver = unwrapDeep(receiver);
-                const unwrappedArgs = unwrapDeep(args);
-
-                /*args.map(a => a?.__taint ? a.valueOf() : a);*/
-
-                return Reflect.apply(f, receiver, unwrappedArgs);
-                // return f.call(receiver, ...unwrappedArgs);
+            // to skip unnecessary unwrapping first try without and only unwrap on error
+                try {
+                    return Reflect.apply(f, receiver, args);
+                } catch (e) {
+                    this.unwrapCount++;
+                    const unwrappedArgs = args.map(arg => unwrapDeep(arg));
+                    return Reflect.apply(f, receiver, unwrappedArgs);
+                }
             } : async (...args) => {
-                const unwrappedArgs = unwrapDeep(args);
-                return Reflect.apply(f, receiver, unwrappedArgs);
-                // return await f.call(receiver, ...unwrappedArgs);
+                try {
+                    return Reflect.apply(f, receiver, args);
+                } catch (e) {
+                    this.unwrapCount++;
+                    const unwrappedArgs = unwrapDeep(args);
+                    return Reflect.apply(f, receiver, unwrappedArgs);
+                }
             }
 
         return {result: internalWrapper};
@@ -143,6 +149,7 @@ class TaintAnalysis {
         }
 
         args.forEach((arg, index) => {
+            this.deepCheckCount++;
             const argTaints = checkTaintDeep(arg);
             argTaints.forEach(taintVal => {
                 this.flows.push({
@@ -198,6 +205,7 @@ class TaintAnalysis {
         }
         if (args?.length > 0) {
             args.forEach((arg, index) => {
+                this.deepCheckExcCount++;
                 const taints = checkTaintDeep(arg);
                 taints.forEach(taintVal => {
                     this.flows.push({
@@ -354,6 +362,9 @@ class TaintAnalysis {
     }
 
     endExecution = (code) => {
+        console.log('checkTaintDeepFn', this.deepCheckCount);
+        console.log('checkTaintDeepEx', this.deepCheckExcCount);
+        console.log('unwrap', this.unwrapCount);
         if (this.executionDoneCallback) {
             this.executionDoneCallback();
         }

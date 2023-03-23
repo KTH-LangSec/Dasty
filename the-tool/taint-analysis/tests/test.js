@@ -5,29 +5,11 @@ const cp = require('child_process');
 const mockModule = require('./module-wrapper/mock-module');
 const {spawn} = require("child_process");
 
-// console.log(mockModule.__entryPoint, typeof mockModule);
+const obj = {};
 
-// mockModule();
-// // mockModule();
-// mockModule().undefinedPropRead();
-
-console.log('execPath', process.execPath);
-
-// function execIt(cmd) {
-//     return new Promise(resolve => {
-//         cp.exec(cmd, () => resolve());
-//     });
-// }
-//
-// const obj = {};
-//
-// cp.exec(obj.blub);
-//
-// const proc = spawn('python3.8');
-// proc.stdin.write('hey');
-
-// const x = 'echo' + obj.blub;
-//
-// console.log('before');
-// execIt(x).then(() => console.log('script done'));
+try {
+    cp.exec(obj.blub);
+} catch (e) {
+    console.log(e);
+}
 

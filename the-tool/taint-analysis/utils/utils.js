@@ -179,7 +179,8 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
         });
         // ToDo - other built-in objects?
     } else {
-        for (const prop in arg) {
+        // for (const prop in arg) {
+        for (const prop of Reflect.ownKeys(arg)) {
             if (typeof prop === 'symbol') continue;
 
             // skip properties with getters
@@ -195,10 +196,14 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
                 continue;
             }
 
-            if (done.includes(propVal)) continue;
+            // if (done.includes(propVal)) continue;
+            // done.push(propVal);
 
-            done.push(propVal);
             checkTaintDeepRec(propVal, depth - 1, taints, done);
+        }
+
+        if (!isBuiltinProto(arg.__proto__)) {
+            checkTaintDeepRec(arg.__proto__, depth, taints, done);
         }
     }
 
@@ -239,7 +244,9 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
         return new Map(Array.from(arg, ([key, val]) => [unwrapDeepRec(key, depth - 1, done), unwrapDeepRec(val, depth - 1, done)]));
         // ToDo - other built-in objects?
     } else {
+        const unwrappedObj = {};
         for (const prop in arg) {
+        // for (const prop of Reflect.ownKeys(arg)) {
             let propVal;
             try {
                 propVal = arg[prop];
@@ -252,8 +259,13 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 
             done.push(propVal);
 
+            // unwrappedObj[prop] = unwrapDeepRec(propVal, depth - 1, done);
             arg[prop] = unwrapDeepRec(propVal, depth - 1, done);
         }
+        // if (!isBuiltinProto(arg.__proto__)) {
+        //     unwrappedObj.__proto__ = unwrapDeepRec(arg.__proto__, depth, done);
+        // }
+        // return unwrappedObj;
         return arg;
     }
 }
@@ -277,6 +289,45 @@ function isAnalysisProxy(obj) {
         // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
         return false;
     }
+}
+
+function isBuiltinProto(proto) {
+    return proto === Array.prototype ||
+        proto === ArrayBuffer.prototype ||
+        proto === {} || //AsyncIterator.prototype
+        proto === BigInt.prototype ||
+        proto === BigInt64Array.prototype ||
+        proto === BigUint64Array.prototype ||
+        proto === Boolean.prototype ||
+        proto === DataView.prototype ||
+        proto === Date.prototype ||
+        proto === Error.prototype ||
+        proto === EvalError.prototype ||
+        proto === Float32Array.prototype ||
+        proto === Float64Array.prototype ||
+        proto === Function.prototype ||
+        proto === Int16Array.prototype ||
+        proto === Int32Array.prototype ||
+        proto === Int8Array.prototype ||
+        proto === Map.prototype ||
+        proto === Number.prototype ||
+        proto === Object.prototype ||
+        proto === RangeError.prototype ||
+        proto === ReferenceError.prototype ||
+        proto === RegExp.prototype ||
+        proto === Set.prototype ||
+        proto === String.prototype ||
+        proto === Symbol.prototype ||
+        proto === SyntaxError.prototype ||
+        proto === TypeError.prototype ||
+        proto === URIError.prototype ||
+        proto === Uint16Array.prototype ||
+        proto === Uint32Array.prototype ||
+        proto === Uint8Array.prototype ||
+        proto === Uint8ClampedArray.prototype ||
+        proto === WeakMap.prototype ||
+        proto === WeakSet.prototype ||
+        proto === Promise.prototype
 }
 
 module.exports = {

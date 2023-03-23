@@ -239,10 +239,10 @@ class TaintProxyHandler {
         } else {
             // handle all other property accesses
 
-            // we know that it is not a primitive (ToDo - might still be a wrapper though - e.g. new String())
-            if (this.__type === null) {
-                this.__type = 'non-primitive';
-            }
+            // we know that it is not a primitive - we actually don't know that as this might be just a check
+            // if (this.__type === null) {
+            //     this.__type = 'non-primitive';
+            // }
 
             // if the property exists copy it -> else set it to null (i.e. 'unknown')
             const newVal = this.__val[prop] ?? null;
@@ -259,12 +259,14 @@ class TaintProxyHandler {
 
             const taintProxy = this.__copyTaint(newVal, cf, type, newVal === undefined);
 
+            // don't inject directly - this can lead to unwanted behavior and does not have any new information as we already track the taint via the base
+
             // directly inject the new value and return it
-            try {
-                this.__val[prop] = taintProxy;
-            } catch (e) {
-                // might try to set readonly e.g. 'name' of function
-            }
+            // try {
+            //     this.__val[prop] = taintProxy;
+            // } catch (e) {
+            //     // might try to set readonly e.g. 'name' of function
+            // }
             return taintProxy;
         }
 
