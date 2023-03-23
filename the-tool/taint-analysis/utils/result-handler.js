@@ -68,7 +68,7 @@ const resultHandler = {
             console.log(report);
         }
 
-        // throw err;
+        throw err;
     }
 }
 

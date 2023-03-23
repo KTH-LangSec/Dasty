@@ -7,9 +7,9 @@ const {spawn} = require("child_process");
 
 const obj = {};
 
-try {
-    cp.exec(obj.blub);
-} catch (e) {
-    console.log(e);
-}
+const x = obj.blub + 'hi';
+
+const y = 'ho'
+
+eval(`console.log('heyho${x}');`);
 

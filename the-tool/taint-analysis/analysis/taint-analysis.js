@@ -37,8 +37,18 @@ class TaintAnalysis {
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, scope) => {
+        // always unwrap arguments for eval
+        if (f === eval) {
+            const evalWrapper = (...args) => {
+                this.unwrapCount++;
+                const unwrappedArgs = args.map(arg => unwrapDeep(arg));
+                return Reflect.apply(f, receiver, unwrappedArgs);
+            }
+
+            return {result: evalWrapper};
+        }
+
         // We only care for internal node functions
-        // ToDo - should we whitelist (e.g. node:internal)?
         if (isConstructor || f === undefined || (!scope?.startsWith('node:')) || f === console.log) return;
 
         // if (scope === 'node:child_process' && f.name === 'spawn') {
@@ -101,7 +111,7 @@ class TaintAnalysis {
         // ToDo - should the return value be tainted?
         const internalWrapper = !isAsync
             ? (...args) => {
-            // to skip unnecessary unwrapping first try without and only unwrap on error
+                // to skip unnecessary unwrapping first try without and only unwrap on error
                 try {
                     return Reflect.apply(f, receiver, args);
                 } catch (e) {
@@ -136,7 +146,7 @@ class TaintAnalysis {
         //     }
         // });
 
-        if (f === undefined || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:')/*|| !this.sinks.includes(f)*/) return;
+        if (f === undefined || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') && f !== eval) return;
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
@@ -155,7 +165,13 @@ class TaintAnalysis {
                 this.flows.push({
                     // ...structuredClone(taintVal.__taint),
                     ...taintVal.__taint,
-                    sink: {iid, type: 'functionCallArg', value: functionScope, argIndex: index}
+                    sink: {
+                        iid,
+                        type: 'functionCallArg',
+                        module: functionScope,
+                        functionName: f?.name,
+                        argIndex: index
+                    }
                 });
             });
         });
@@ -199,7 +215,8 @@ class TaintAnalysis {
                     iid,
                     type: 'functionCallReceiverException',
                     value: e.code + ' ' + e.toString(),
-                    argIndex: 'receiver'
+                    argIndex: 'receiver',
+                    functionName: f?.name
                 }
             });
         }
@@ -215,7 +232,8 @@ class TaintAnalysis {
                             iid,
                             type: 'functionCallArgException',
                             value: e.code + ' ' + e.toString(),
-                            argIndex: index
+                            argIndex: index,
+                            functionName: f?.name
                         }
                     });
                 });
@@ -289,8 +307,8 @@ class TaintAnalysis {
         if (offset === 'execPath' && typeof val === 'string' && val.endsWith('node')) {
             return {result: NODE_EXEC_PATH};
         }
-            // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
-            if (!base || offset === '__taint') return;
+        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
+        if (!base || offset === '__taint') return;
 
         // // this is probably an array access
         if (isComputed && base.__taint && typeof offset === 'number') {
