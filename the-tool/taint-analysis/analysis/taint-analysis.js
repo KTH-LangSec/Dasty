@@ -384,9 +384,9 @@ class TaintAnalysis {
     }
 
     endExecution = (code) => {
-        console.log('checkTaintDeepFn', this.deepCheckCount);
-        console.log('checkTaintDeepEx', this.deepCheckExcCount);
-        console.log('unwrap', this.unwrapCount);
+        // console.log('checkTaintDeepFn', this.deepCheckCount);
+        // console.log('checkTaintDeepEx', this.deepCheckExcCount);
+        // console.log('unwrap', this.unwrapCount);
         if (this.executionDoneCallback) {
             this.executionDoneCallback();
         }

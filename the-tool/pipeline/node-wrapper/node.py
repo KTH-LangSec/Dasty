@@ -7,15 +7,26 @@ def main():
     #     with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
     #         file.write(' '.join(sys.argv[1:]) + '\n')
 
-    print('\n------------------', file=sys.stderr)
-    print(' '.join(sys.argv), file=sys.stderr)
-    print('------------------\n', file=sys.stderr, flush=True)
+    # Note that printing (stdout or stderr) can change and fuck up the behaviour of some tests (and testing frameworks)
+    # print('\n------------------', file=sys.stderr)
+    # print(' '.join(sys.argv), file=sys.stderr)
+    # print('------------------\n', file=sys.stderr, flush=True)
+
+    # if it already has the instrumentation flags just execute it
+    if '--jvm' in sys.argv:
+        subprocess.run([os.environ['GRAAL_NODE_HOME']] + sys.argv[1:])
+        sys.exit()
 
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
     exclude_instrument = ['bin/nyc']
     include_instrument = ['bin/mocha', '/test', 'test/', 'test.js', 'bin/jest']  # only instrument if included in arg string
+
+    # node flags and their expected args (defaults to 0)
+    node_flags = {
+        '--loader': 1
+    }
 
     argv_string = ' '.join(sys.argv[1:])
 
@@ -38,25 +49,23 @@ def main():
 
         instrument_args = list(filter(lambda s: s != '', ' '.join(lines).split(' ')))
 
-        if 'mocha' in argv_string and '--bail' in sys.argv:
-            bail_index = sys.argv.index('--bail')
-            sys.argv[bail_index] = '--exit'
+        if 'mocha' in argv_string:
+            if '--bail' in sys.argv:
+                sys.argv.remove('--bail')
+            if '--exit' not in sys.argv:
+                sys.argv.append('--exit')
 
     # check where the script start (i.e. skipping node flags)
     script_idx = 1
     while sys.argv[script_idx].startswith('-'):
-        script_idx += 1
-
+        script_idx += 1 + (node_flags.get(sys.argv[script_idx]) if sys.argv[script_idx] in node_flags else 0)
 
     args = (node_exec  # the graal node binary
-            + instrument_args + sys.argv[1:script_idx]  # args for instrumentation and nodejs flags
+            + sys.argv[1:script_idx] + instrument_args  # args for instrumentation and nodejs flags
             + [os.path.dirname(os.path.realpath(__file__)) + '/script-wrapper.js']  # wrapper script that overwrites process.execPath (often used to spawn child processes)
             + sys.argv[script_idx:])  # the actual script
 
-    #     print(' '.join(args))
-    #     print('--------------')
-
-    print(' '.join(args), file=sys.stderr)
+    # print(' '.join(args), file=sys.stderr, flush=True)
     subprocess.run(args)
 
 
