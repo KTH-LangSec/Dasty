@@ -34,7 +34,7 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
 
             if (killTimeout) clearTimeout(killTimeout);
             killTimeout = setTimeout(() => {
-                console.log('TIMEOUT');
+                console.error('TIMEOUT');
 
                 killTimeout = null;
                 childProcess.kill('SIGINT');
@@ -44,7 +44,7 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
         setKillTimout();
 
         childProcess.stdout.on('data', data => {
-            if (live) process.stdout.write(data);
+            if (live) process.stderr.write(data);
             out += data;
 
             setKillTimout();
@@ -73,7 +73,7 @@ async function fetchURL(pkgName) {
     let url = await execCmd(`npm view ${pkgName} repository.url`);
 
     if (!url.startsWith('git+')) {
-        console.log('No git repository found');
+        console.error('No git repository found');
         process.exit(1);
     }
 
@@ -148,7 +148,7 @@ function findTestScripts(repoPath) {
 
     // ToDo - it's not always defined with 'test'
     if (!pkg.scripts.test) {
-        console.log('No test found');
+        console.error('No test found');
         process.exit(1);
     }
 
@@ -240,7 +240,7 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
 
     cmd += ` ${script};`;
 
-    console.log(cmd);
+    console.error(cmd);
 
     await execCmd(cmd, true, false);
 }
@@ -311,39 +311,39 @@ function locToSarif(dbLocation, message = null) {
 }
 
 async function runPipeline(pkgName) {
-    console.log('Fetching URL');
+    console.error('Fetching URL');
     const url = await fetchURL(pkgName);
     const resultBasePath = __dirname + '/results/';
 
     const repoPath = __dirname + `/packages/${pkgName}`;
     if (!fs.existsSync(repoPath)) {
-        console.log(`Fetching repository ${url}`);
+        console.error(`Fetching repository ${url}`);
         await execCmd(`cd packages; git clone ${url} ${pkgName}`, true);
     } else {
-        console.log(`Directory ${repoPath} already exists. Skipping git clone.`)
+        console.error(`Directory ${repoPath} already exists. Skipping git clone.`)
     }
 
-    console.log('Installing dependencies');
+    console.error('Installing dependencies');
     await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
 
-    // console.log('Finding test scripts');
+    // console.error('Finding test scripts');
     // const testScripts = findTestScripts(repoPath);
     //
     // if (testScripts.length === 0) {
-    //     console.log('No test scripts found');
+    //     console.error('No test scripts found');
     //     fs.appendFileSync(resultBasePath + 'no-test-scripts.txt', pkgName + '\n', {encoding: 'utf8'});
     //     return;
     // }
 
-    console.log('Running pre-analysis');
+    console.error('Running pre-analysis');
     const preAnalysisSuccess = await runPreAnalysisNodeWrapper(repoPath, pkgName);
 
     if (!preAnalysisSuccess) {
-        console.log('No internal dependencies detected');
+        console.error('No internal dependencies detected');
         return;
     }
 
-    console.log('Running analysis');
+    console.error('Running analysis');
     let run = 0;
     let propBlacklist = null;
     let blacklistedProps = [];
@@ -360,39 +360,39 @@ async function runPipeline(pkgName) {
             .filter(f => f.startsWith(pkgName) && !f.includes('crash-report'))
             .map(f => resultBasePath + f);
 
-        console.log('Writing results to DB');
+        console.error('Writing results to DB');
         const runId = await writeResultsToDB(pkgName, resultFiles);
 
-        console.log('Cleaning up result files');
+        console.error('Cleaning up result files');
         resultFiles.forEach(fs.unlinkSync); // could also be done async
 
         // break if max run or if no flows found
         if (!runId || ++run === MAX_RUNS) break;
 
-        console.log('Checking for exceptions');
+        console.error('Checking for exceptions');
         const exceptions = await fetchExceptions(pkgName, runId);
 
         if (!exceptions || exceptions.length === 0) {
-            console.log('No exceptions found');
+            console.error('No exceptions found');
             break;
         }
 
-        console.log('Exceptions found');
+        console.error('Exceptions found');
 
         const newBlacklistedProps = exceptions.map(e => e.prop).filter(p => !blacklistedProps.includes(p));
 
-        console.log('Adding properties to blacklist: ' + newBlacklistedProps.join(', '));
+        console.error('Adding properties to blacklist');
         blacklistedProps.push(...newBlacklistedProps);
+        blacklistedProps = Array.from(new Set(blacklistedProps));
 
         propBlacklist = PROP_BLACKLISTS_DIR + pkgName + '.json';
         fs.writeFileSync(propBlacklist, JSON.stringify(blacklistedProps), {encoding: 'utf8'});
 
-        console.log('Rerunning analysis with news blacklist');
+        console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
     }
 
-    console.log('Cleaning up');
-    // if (propBlacklist) fs.unlinkSync(propBlacklist);
-
+    console.error('Cleaning up');
+    if (propBlacklist) fs.unlinkSync(propBlacklist);
 
     // let preAnalysisSuccess = false;
     // for (const testScript of testScripts) {
@@ -402,13 +402,13 @@ async function runPipeline(pkgName) {
     // }
     //
     // if (!preAnalysisSuccess) {
-    //     console.log('No internal dependencies detected');
+    //     console.error('No internal dependencies detected');
     //     return;
     // }
     //
-    // console.log('Running analysis');
+    // console.error('Running analysis');
     // for (const [index, testScript] of testScripts.entries()) {
-    //     console.log(`Running test '${testScript}'`);
+    //     console.error(`Running test '${testScript}'`);
     //
     //     const resultFilename = `${resultBasePath}${pkgName}-${index}`;
     //     await runAnalysis(
@@ -424,10 +424,10 @@ async function runPipeline(pkgName) {
     //     .filter(f => f.startsWith(pkgName + '-'))
     //     .map(f => resultBasePath + f);
     //
-    // console.log('Writing results to DB');
+    // console.error('Writing results to DB');
     // // await writeResultsToDB(pkgName, resultFiles);
     //
-    // console.log('Cleaning up');
+    // console.error('Cleaning up');
     // resultFiles.forEach(fs.unlinkSync); // could also be done async
 }
 
@@ -474,11 +474,11 @@ async function getSarif(pkgName) {
 
     const out = getCliArg('out', 1);
     if (!out) {
-        console.log('No output file (--out) specified. Writing to stdout.');
-        console.log(JSON.stringify(sarif));
+        console.error('No output file (--out) specified. Writing to stdout.');
+        console.error(JSON.stringify(sarif));
     } else {
         fs.writeFileSync(out[1], JSON.stringify(sarif), {encoding: 'utf8'});
-        console.log(`Output written to ${out[1]}.`);
+        console.error(`Output written to ${out[1]}.`);
     }
 }
 
@@ -493,7 +493,7 @@ async function run() {
 
     if (args.length < 1) {
         // ToDo - usage info
-        console.log('No package name specified')
+        console.error('No package name specified')
         process.exit(1);
     }
 
@@ -502,12 +502,12 @@ async function run() {
     for (const pkgName of pkgNames) {
         try {
             if (sarif) {
-                console.log(`Getting sarif for '${pkgName}'`);
+                console.error(`Getting sarif for '${pkgName}'`);
                 await getSarif(pkgName)
             } else {
-                console.log(`Analysing '${pkgName}'`);
+                console.error(`Analysing '${pkgName}'`);
                 await runPipeline(pkgName)
-                console.log(`Analyzing ${pkgName} complete`);
+                console.error(`Analyzing ${pkgName} complete`);
             }
         } catch (e) {
             console.error(`Could not process '${pkgName}'`);
@@ -517,4 +517,4 @@ async function run() {
     closeConnection();
 }
 
-run().then(() => console.log('done'));
+run().then(() => console.error('done'));

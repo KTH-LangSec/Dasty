@@ -4,6 +4,7 @@ const TaintAnalysis = require('./analysis/taint-analysis');
 const fs = require('fs');
 const {getSinkBlacklist} = require('./utils/utils');
 const resultHandler = require('./utils/result-handler');
+const {DEFAULT_CHECK_DEPTH} = require("./conf/analysis-conf");
 
 // function run() {
 const blacklistFilepath = __dirname + '/conf/sink-blacklist.json';

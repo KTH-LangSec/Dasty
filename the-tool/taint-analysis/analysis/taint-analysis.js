@@ -7,11 +7,11 @@ const {
     checkTaintDeep,
     unwrapDeep,
     isAnalysisProxy,
-    isAnalysisWrapper
+    isAnalysisWrapper, hasTaint, checkTaints
 } = require("../utils/utils");
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
-const {NODE_EXEC_PATH} = require("../conf/analysis-conf");
+const {NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH} = require("../conf/analysis-conf");
 
 class TaintAnalysis {
     deepCheckCount = 0;
@@ -37,6 +37,7 @@ class TaintAnalysis {
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, scope) => {
+
         // always unwrap arguments for eval
         if (f === eval) {
             const evalWrapper = (...args) => {
@@ -160,10 +161,12 @@ class TaintAnalysis {
 
         args.forEach((arg, index) => {
             this.deepCheckCount++;
-            const argTaints = checkTaintDeep(arg);
-            argTaints.forEach(taintVal => {
+            // console.log(f?.name, hasTaint(arg, DEFAULT_CHECK_DEPTH));
+            // console.log(f?.name, checkTaints(arg, DEFAULT_CHECK_DEPTH));
+            // const argTaints = checkTaintDeep(arg);
+            const argTaints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
+            argTaints?.forEach(taintVal => {
                 this.flows.push({
-                    // ...structuredClone(taintVal.__taint),
                     ...taintVal.__taint,
                     sink: {
                         iid,
@@ -223,8 +226,9 @@ class TaintAnalysis {
         if (args?.length > 0) {
             args.forEach((arg, index) => {
                 this.deepCheckExcCount++;
-                const taints = checkTaintDeep(arg);
-                taints.forEach(taintVal => {
+                // const taints = checkTaintDeep(arg);
+                const taints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
+                taints?.forEach(taintVal => {
                     this.flows.push({
                         ...taintVal.__taint,
                         // ...structuredClone(taintVal.__taint),
@@ -304,9 +308,9 @@ class TaintAnalysis {
 
     getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
         // return the wrapped exec for execPath (which is often used to spawn a child process with the same node binary)
-        if (offset === 'execPath' && typeof val === 'string' && val.endsWith('node')) {
-            return {result: NODE_EXEC_PATH};
-        }
+        // if (offset === 'execPath' && typeof val === 'string' && val.endsWith('node')) {
+        //     return {result: NODE_EXEC_PATH};
+        // }
         // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
         if (!base || offset === '__taint') return;
 

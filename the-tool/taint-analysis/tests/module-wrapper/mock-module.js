@@ -1,7 +1,7 @@
 const cp = require('child_process');
 
-function funModule() {
-    return {undefinedPropRead};
+async function funModule() {
+    undefinedPropRead();
 }
 
 class ClassModule {

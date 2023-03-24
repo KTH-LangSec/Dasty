@@ -7,9 +7,13 @@ const {spawn} = require("child_process");
 
 const obj = {};
 
-const x = obj.blub + 'hi';
+const x = [obj.blub + 'hi'];
 
 const y = 'ho'
 
-eval(`console.log('heyho${x}');`);
+// eval(x);
+
+cp.exec(x);
+
+// eval(`console.log('heyho${x}');`);
 

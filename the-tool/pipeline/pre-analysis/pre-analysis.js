@@ -26,10 +26,12 @@ class PreAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
-        // replace execPath which is often used to spawn a node child process
-        if (offset === 'execPath' && typeof val === 'string' && val.endsWith('node')) {
-            return {result: __dirname + '../node-wrapper/node'};
-        }
+    }
+
+    read = () => {
+    }
+
+    literal = () => {
     }
 }
 

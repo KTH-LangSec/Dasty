@@ -4,7 +4,9 @@ const Mod = require('./mock-module');
 
 // const result = mod.undefinedPropRead();
 
-const arrProxy = new Proxy(new Set(), {});
+Mod().then(() => {
+    console.log('hey');
+});
 
 
 // const s = new Set(arrProxy);

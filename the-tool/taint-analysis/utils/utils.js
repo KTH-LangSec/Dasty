@@ -33,6 +33,14 @@ function parseIID(iid) {
     };
 }
 
+function hasTaint(obj, depth) {
+    return J$.hasTaint(obj, depth);
+}
+
+function checkTaints(obj, depth) {
+    return J$.checkTaints(obj, depth);
+}
+
 /**
  * A function that recursively extracts all function names of an object
  *
@@ -151,23 +159,28 @@ function checkTaintDeep(arg, depth = DEFAULT_CHECK_DEPTH) {
     // if (checkedArgs.has(arg)) {
     //     return checkedArgs.get(arg);
     // }
-    const taints = checkTaintDeepRec(arg, depth);
+    if (!arg || !hasTaint(arg, DEFAULT_CHECK_DEPTH)) return [];
+
+    const taints = [];
+    checkTaintDeepRec(arg, depth, taints);
     // checkedArgs.set(arg, taints);
     return taints;
 }
 
 function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done = []) {
-    if (!arg || depth < 0) return taints;
+    if (!arg || depth < 0) return;
 
-    if (typeof arg !== 'object' && typeof arg !== 'function') return taints;
+    if (typeof arg !== 'object' && typeof arg !== 'function') return;
 
     if (isAnalysisProxy(arg) && arg.__taint) {
         taints.push(arg);
-        return checkTaintDeepRec(arg.valueOf(), depth - 1, taints, done);
+        // if we found one taint we can stop
+        // checkTaintDeepRec(arg.valueOf(), depth - 1, taints, done);
+        return;
     }
 
     if (depth === 0) {
-        return taints;
+        return;
     }
 
     if (arg instanceof Array || arg instanceof Set) {
@@ -206,8 +219,6 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
             checkTaintDeepRec(arg.__proto__, depth, taints, done);
         }
     }
-
-    return taints;
 }
 
 function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
@@ -216,11 +227,13 @@ function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
     // }
 
     // Clone the arg because the unwrapping is done in-place
-    let argClone;
+    let argClone = arg;
     try {
-        argClone = structuredClone(arg);
+        // try to clone - functions are not cloneable (tainted values are functions under the hood)
+        if (typeof arg !== "function" || arg.__taint) {
+            argClone = structuredClone(arg);
+        }
     } catch (e) {
-        return arg;
     }
 
     return unwrapDeepRec(argClone, depth);
@@ -344,6 +357,8 @@ module.exports = {
     iidToSourceObject,
     iidToCode,
     parseIID,
+    hasTaint,
+    checkTaints,
     extractFunctionNames,
     extractFunctions,
     getSinkBlacklist,
