@@ -8,10 +8,8 @@ function replaceIID(obj) {
         return obj;
     }
 
-    const iid = obj.iid;
-    delete obj.iid;
-
-    return {...parseIID(iid), ...obj};
+    const {iid, ...rest} = obj;
+    return {...parseIID(iid), ...rest};
 }
 
 const resultHandler = {

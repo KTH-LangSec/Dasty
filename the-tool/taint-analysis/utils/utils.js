@@ -148,11 +148,11 @@ function getSinkBlacklist(filepath) {
 const checkedArgs = new Map();
 
 function checkTaintDeep(arg, depth = DEFAULT_CHECK_DEPTH) {
-    if (checkedArgs.has(arg)) {
-        return checkedArgs.get(arg);
-    }
+    // if (checkedArgs.has(arg)) {
+    //     return checkedArgs.get(arg);
+    // }
     const taints = checkTaintDeepRec(arg, depth);
-    checkedArgs.set(arg, taints);
+    // checkedArgs.set(arg, taints);
     return taints;
 }
 
@@ -211,10 +211,19 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
 }
 
 function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
-    if (checkedArgs.get(arg)?.length === 0) {
+    // if (checkedArgs.get(arg)?.length === 0) {
+    //     return arg;
+    // }
+
+    // Clone the arg because the unwrapping is done in-place
+    let argClone;
+    try {
+        argClone = structuredClone(arg);
+    } catch (e) {
         return arg;
     }
-    return unwrapDeepRec(arg, depth);
+
+    return unwrapDeepRec(argClone, depth);
 }
 
 function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
@@ -246,7 +255,7 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
     } else {
         const unwrappedObj = {};
         for (const prop in arg) {
-        // for (const prop of Reflect.ownKeys(arg)) {
+            // for (const prop of Reflect.ownKeys(arg)) {
             let propVal;
             try {
                 propVal = arg[prop];
