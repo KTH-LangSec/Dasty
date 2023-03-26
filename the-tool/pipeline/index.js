@@ -72,12 +72,18 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
 async function fetchURL(pkgName) {
     let url = await execCmd(`npm view ${pkgName} repository.url`);
 
-    if (!url.startsWith('git+')) {
+    if (!url.startsWith('git')) {
         console.error('No git repository found');
         process.exit(1);
     }
 
-    return url.substring(4).trim();
+    if (url.startsWith('git+')) {
+        return url.substring(4).trim();
+    } else if (url.startsWith('git://')) {
+        return 'https' + url.substring(3);
+    } else {
+        return url;
+    }
 }
 
 function getBin(repoPath, pkgName) {
@@ -167,7 +173,7 @@ async function runPreAnalysis(script, repoName, pkgName) {
         return false;
     }
 
-    await runAnalysis(script, PRE_ANALYSIS, repoName, {pkgName}/*, ['/node_modules']*/);
+    await runAnalysis(script, PRE_ANALYSIS, repoName, {pkgName}, ['/node_modules']);
 
     return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
@@ -311,6 +317,8 @@ function locToSarif(dbLocation, message = null) {
 }
 
 async function runPipeline(pkgName) {
+    const onlyPre = getCliArg('onlyPre') !== null;
+
     console.error('Fetching URL');
     const url = await fetchURL(pkgName);
     const resultBasePath = __dirname + '/results/';
@@ -343,6 +351,8 @@ async function runPipeline(pkgName) {
         return;
     }
 
+    if (onlyPre) return;
+
     console.error('Running analysis');
     let run = 0;
     let propBlacklist = null;
@@ -353,7 +363,8 @@ async function runPipeline(pkgName) {
         await runAnalysisNodeWrapper(
             TAINT_ANALYSIS,
             repoPath,
-            {pkgName, resultFilename, propBlacklist}
+            {pkgName, resultFilename, propBlacklist},
+            ['node_modules/istanbul-lib-instrument/', 'node_modules/mocha/', '.bin/', 'node_modules/jest/', 'node_modules/nyc']
         );
 
         const resultFiles = fs.readdirSync(resultBasePath)

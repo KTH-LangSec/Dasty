@@ -17,9 +17,11 @@ process.argv.splice(scriptIndex, 1);
 process.argv[scriptIndex] = path.resolve(process.argv[scriptIndex]);
 
 // console.log(process.argv);
+
+// console.log(process.argv);
 // console.log(process.execPath, process.argv);
 
 // execute the script
 mod.runMain();
 
-// require(path.resolve(process.argv[scriptIndex]));
+// require(process.argv[scriptIndex]);

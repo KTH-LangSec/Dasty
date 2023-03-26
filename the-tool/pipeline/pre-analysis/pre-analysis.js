@@ -24,15 +24,6 @@ class PreAnalysis {
             this.executionDone();
         }
     }
-
-    getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
-    }
-
-    read = () => {
-    }
-
-    literal = () => {
-    }
 }
 
 module.exports = PreAnalysis;

@@ -3,14 +3,64 @@ import subprocess
 import os
 
 
+def get_flag_idx(flag):
+    if flag in sys.argv:
+        return sys.argv.index(flag)
+    else:
+        for idx, argv in enumerate(sys.argv):
+            if flag + '=' in argv:
+                return idx
+
+    return -1
+
+
+def remove_flag(argv_string, program, flag, length=0):
+    if program not in argv_string:
+        return
+
+    flag_idx = get_flag_idx(flag)
+
+    while flag_idx >= 0:
+        print(sys.argv)
+        arg_len = length
+        while arg_len >= 0:
+            sys.argv.remove(sys.argv[flag_idx])
+            arg_len -= 1
+        flag_idx = get_flag_idx(flag)
+
+
+def set_flag(argv_string, program, flags, value=None):
+    if program not in argv_string:
+        return
+
+    program_idx = -1
+    flag_idx = -1
+
+    for idx, argv in enumerate(sys.argv):
+        if program in argv:
+            program_idx = idx
+
+        if argv in flags:
+            flag_idx = idx
+            break
+
+    if flag_idx >= 0:
+        if value is not None:
+            sys.argv[flag_idx + 1] = value
+    else:
+        sys.argv.insert(program_idx + 1, flags[0])
+        if value is not None:
+            sys.argv.insert(program_idx + 2, value)
+
+
 def main():
-    #     with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
-    #         file.write(' '.join(sys.argv[1:]) + '\n')
+    with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
+        file.write(' '.join(sys.argv[1:]) + '\n')
 
     # Note that printing (stdout or stderr) can change and fuck up the behaviour of some tests (and testing frameworks)
-    # print('\n------------------', file=sys.stderr)
-    # print(' '.join(sys.argv), file=sys.stderr)
-    # print('------------------\n', file=sys.stderr, flush=True)
+    print('\n------------------', file=sys.stderr)
+    print(' '.join(sys.argv), file=sys.stderr)
+    print('------------------\n', file=sys.stderr, flush=True)
 
     # if it already has the instrumentation flags just execute it
     if '--jvm' in sys.argv:
@@ -34,6 +84,15 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1].endswith('npm') and (sys.argv[2] in exclude_npm or (sys.argv[2] == 'run' and all(s not in sys.argv[-1] for s in include_run)) or 'lint' in argv_string):
         sys.exit()
 
+    # skip nyc for improved performance (needs to be tested further)
+    for idx, argv in enumerate(sys.argv):
+        if 'bin/nyc' in argv:
+            while sys.argv[idx + 1].startswith('-'):
+                sys.argv.remove(sys.argv[idx + 1])
+
+            subprocess.run(sys.argv[idx + 1:])
+            return
+
     node_exec = ["/home/pmoosi/.nvm/versions/node/v19.5.0/bin/node"]
     # instrument when testing framework or test directory or is simple node [file].js and not specifically excluded (exclude_instrument)
     instrument_args = []
@@ -52,10 +111,22 @@ def main():
         if 'mocha' in argv_string:
             if '--bail' in sys.argv:
                 sys.argv.remove('--bail')
-            if '--exit' not in sys.argv:
-                sys.argv.append('--exit')
 
-    # check where the script start (i.e. skipping node flags)
+        set_flag(argv_string, 'bin/jest', ['-w', '--maxWorkers'], '1')
+
+    set_flag(argv_string, 'bin/mocha', ['--exit'])
+    # set_flag(argv_string, 'bin/mocha', ['-t', '--timeout', '--timeouts'], '20000')
+
+    # tap flag
+    set_flag(argv_string, 'bin/tap', ['-j'], '1')
+    set_flag(argv_string, 'bin/tap', ['-t'], '180')
+
+    # nyc flags
+    # remove_flag(argv_string, 'bin/nyc', '--reporter=lcov')
+    # set_flag(argv_string, 'bin/nyc', ['--check-coverage=false'])
+    # set_flag(argv_string, 'bin/nyc', ['--instrument=false'])
+
+    # check where the script starts (i.e. skipping node flags)
     script_idx = 1
     while sys.argv[script_idx].startswith('-'):
         script_idx += 1 + (node_flags.get(sys.argv[script_idx]) if sys.argv[script_idx] in node_flags else 0)
@@ -65,7 +136,8 @@ def main():
             + [os.path.dirname(os.path.realpath(__file__)) + '/script-wrapper.js']  # wrapper script that overwrites process.execPath (often used to spawn child processes)
             + sys.argv[script_idx:])  # the actual script
 
-    # print(' '.join(args), file=sys.stderr, flush=True)
+    print(' '.join(args), file=sys.stderr, flush=True)
+
     subprocess.run(args)
 
 
