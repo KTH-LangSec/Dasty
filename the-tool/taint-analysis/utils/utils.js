@@ -226,6 +226,8 @@ function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
     //     return arg;
     // }
 
+    if (!hasTaint(arg, depth)) return arg;
+
     // Clone the arg because the unwrapping is done in-place
     let argClone = arg;
     try {

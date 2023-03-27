@@ -11,8 +11,12 @@ class PreAnalysis {
     }
 
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
-        if (f?.name === 'require' && isBuiltin(args[0]) && !iidToLocation(iid).includes('node_modules/')) {
-            this.builtinDependencies.push(args[0]);
+        // if (f?.name === 'require' && isBuiltin(args[0]) && !iidToLocation(iid).includes('node_modules/')) {
+        //     this.builtinDependencies.push(args[0]);
+        // } else
+        if (functionScope?.startsWith('node:') && !iidToLocation(iid).includes('node_modules/')) {
+            const prefixLength = 'node:'.length;
+            this.builtinDependencies.push(functionScope.substring(prefixLength));
         }
     };
 

@@ -334,3 +334,760 @@ bin/ssl_hotfix.js mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.j
 /home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
 --eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/c8 ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/update-notifier/check.js {"pkg":{"name":"ava","version":"3.15.0"},"distTag":"latest"}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/c8 ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/c8 ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/c8 ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/c8 ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chalk/node_modules/ava/lib/worker/subprocess.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/commander/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test-typings
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/commander/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fs-extra/node_modules/.bin/nyc node test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run unit-esm
+test.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fs-extra/node_modules/.bin/nyc node test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run unit-esm
+test.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/node_modules/.bin/grunt test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/node_modules/node-qunit/lib/child.js /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/node-wrapper/node /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/node_modules/.bin/grunt test {"log":{"assertions":false,"errors":true,"tests":false,"summary":false,"globalSummary":true,"coverage":true,"globalCoverage":true,"testing":false},"coverage":false,"deps":[],"namespace":null,"maxBlockDuration":600000,"code":{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/moment.js"},"tests":[{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/add_subtract.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/calendar.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/create.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/creation-data.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/days_in_month.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/days_in_year.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/deprecate.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/diff.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/duration_from_moments.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/duration_invalid.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/duration.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/format.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/from_to.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/getters_setters.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/instanceof.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/invalid.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_after.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_array.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_before.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_between.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_date.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_moment.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_number.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_same_or_after.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_same_or_before.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_same.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is_valid.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/is-leap-year.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/leapyear.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/listers.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/locale_inheritance.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/locale_update.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/locale.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/min_max.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/mutable.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/normalize_units.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/now.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/parsing_flags.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/preparse_postformat.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/quarter.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/relative_time.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/start_end_of.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/string_prototype.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/to_type.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/utc_offset.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/utc.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/week_year.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/weekday.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/weeks_in_year.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/weeks.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/zone_switching.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/moment/zones.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/af.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar-dz.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar-kw.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar-ly.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar-ma.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar-sa.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar-tn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ar.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/az.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/be.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/bg.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/bm.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/bn-bd.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/bn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/bo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/br.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/bs.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ca.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/cs.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/cv.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/cy.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/da.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/de-at.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/de-ch.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/de.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/dv.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/el.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-au.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-ca.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-gb.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-ie.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-il.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-in.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-nz.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en-sg.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/en.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/eo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/es-do.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/es-mx.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/es-us.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/es.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/et.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/eu.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fa.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fi.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fil.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fr-ca.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fr-ch.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fr.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/fy.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ga.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/gd.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/gl.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/gom-deva.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/gom-latn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/gu.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/he.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/hi.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/hr.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/hu.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/hy-am.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/id.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/is.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/it-ch.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/it.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ja.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/jv.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ka.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/kk.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/km.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/kn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ko.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ku.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ky.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/lb.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/lo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/lt.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/lv.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/me.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/mi.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/mk.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ml.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/mn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/mr.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ms-my.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ms.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/mt.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/my.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/nb.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ne.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/nl-be.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/nl.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/nn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/oc-lnc.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/pa-in.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/pl.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/pt-br.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/pt.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ro.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ru.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sd.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/se.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/si.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sk.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sl.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sq.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sr-cyrl.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sr.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ss.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sv.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/sw.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ta.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/te.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tet.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tg.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/th.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tk.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tl-ph.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tlh.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tr.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tzl.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tzm-latn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/tzm.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ug-cn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/uk.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/ur.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/uz-latn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/uz.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/vi.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/x-pseudo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/yo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/zh-cn.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/zh-hk.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/zh-mo.js"},{"path":"/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/moment/build/umd/test/locale/zh-tw.js"}]}
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run mocha-node-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/mocha/bin/_mocha --exit --no-config --no-package --no-opts --require babel-register --require test/support/setup --ui bdd --diff --extension js --reporter spec --slow 75 --timeout 2000
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run mocha-node-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/mocha/bin/_mocha --exit --no-config --no-package --no-opts --require babel-register --require test/support/setup --ui bdd --diff --extension js --reporter spec --slow 75 --timeout 2000
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run mocha-node-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/mocha/bin/_mocha --exit --no-config --no-package --no-opts --require babel-register --require test/support/setup --ui bdd --diff --extension js --reporter spec --slow 75 --timeout 2000
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/run-s prepare test-raw
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run prepare
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run zxi scripts/prepare.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run test-raw
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/run-s lint-raw bundle-tests test-unit test-promises test-observables test-entries test-compat-data test-compat-tools test-builder check
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run lint-raw
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/run-s test-eslint test-type-definitions bundle-package test-publint
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run test-eslint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run zxi time tests/eslint/runner.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run test-type-definitions
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run zxi time cd tests/type-definitions/runner.mjs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/zx scripts/zxi.mjs time cd tests/type-definitions/runner.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm install --no-audit --no-fund --lockfile-version=3 --loglevel=error
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run bundle-package
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run zxi time scripts/bundle-package/bundle-package.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run test-publint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run zxi time tests/publint/runner.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/lib/node_modules/npm/bin/npm-cli.js run bundle-tests
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run zxi time cd scripts/bundle-tests/bundle-tests.mjs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/zx scripts/zxi.mjs time cd scripts/bundle-tests/bundle-tests.mjs
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm install --no-audit --no-fund --lockfile-version=3 --loglevel=error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/webpack --entry ../../tests/unit-global/index.js --output-filename unit-global.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/core-js/node_modules/.bin/webpack --entry ../../tests/unit-pure/index.js --output-filename unit-pure.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run mocha-node-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/mocha/bin/_mocha --exit --no-config --no-package --no-opts --require babel-register --require test/support/setup --ui bdd --diff --extension js --reporter spec --slow 75 --timeout 2000
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run mocha-node-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/mocha/bin/_mocha --exit --no-config --no-package --no-opts --require babel-register --require test/support/setup --ui bdd --diff --extension js --reporter spec --slow 75 --timeout 2000
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run mocha-node-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/async/node_modules/mocha/bin/_mocha --exit --no-config --no-package --no-opts --require babel-register --require test/support/setup --ui bdd --diff --extension js --reporter spec --slow 75 --timeout 2000
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/mocha/lib/cli/cli.js spec/**/*-spec.ts --exit --no-config --no-package --require ts-node/register --require spec/support/mocha-path-mappings.js --require spec/helpers/setup.ts --ui spec/helpers/testScheduler-ui.ts --reporter dot --extensions ts --extensions js --timeout 5000 --recursive --expose-gc --diff --extension js --extension cjs --extension mjs --slow 75 --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/mocha/lib/cli/cli.js spec/**/*-spec.ts --exit --no-config --no-package --require ts-node/register --require spec/support/mocha-path-mappings.js --require spec/helpers/setup.ts --ui spec/helpers/testScheduler-ui.ts --reporter dot --extensions ts --extensions js --timeout 5000 --recursive --expose-gc --diff --extension js --extension cjs --extension mjs --slow 75 --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/mocha/lib/cli/cli.js spec/**/*-spec.ts --exit --no-config --no-package --require ts-node/register --require spec/support/mocha-path-mappings.js --require spec/helpers/setup.ts --ui spec/helpers/testScheduler-ui.ts --reporter dot --extensions ts --extensions js --timeout 5000 --recursive --expose-gc --diff --extension js --extension cjs --extension mjs --slow 75 --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/mocha/lib/cli/cli.js spec/**/*-spec.ts --exit --no-config --no-package --require ts-node/register --require spec/support/mocha-path-mappings.js --require spec/helpers/setup.ts --ui spec/helpers/testScheduler-ui.ts --reporter dot --extensions ts --extensions js --timeout 5000 --recursive --expose-gc --diff --extension js --extension cjs --extension mjs --slow 75 --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/mocha/lib/cli/cli.js spec/**/*-spec.ts --exit --no-config --no-package --require ts-node/register --require spec/support/mocha-path-mappings.js --require spec/helpers/setup.ts --ui spec/helpers/testScheduler-ui.ts --reporter dot --extensions ts --extensions js --timeout 5000 --recursive --expose-gc --diff --extension js --extension cjs --extension mjs --slow 75 --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+tests/basic-test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/node_modules/.bin/mocha --require test/support/env --reporter spec --check-leaks --bail test/
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/node_modules/.bin/mocha --require test/support/env --reporter spec --check-leaks --bail test/
+tests/safe-test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/.bin/mocha --config spec/support/.mocharc.js spec/**/*-spec.ts
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rxjs/node_modules/mocha/lib/cli/cli.js spec/**/*-spec.ts --exit --no-config --no-package --require ts-node/register --require spec/support/mocha-path-mappings.js --require spec/helpers/setup.ts --ui spec/helpers/testScheduler-ui.ts --reporter dot --extensions ts --extensions js --timeout 5000 --recursive --expose-gc --diff --extension js --extension cjs --extension mjs --slow 75 --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+tests/basic-test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run tests-only
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/minimist/node_modules/.bin/nyc tape test/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/minimist/node_modules/.bin/tape test/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/minimist/node_modules/.bin/aud --production
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm root -g
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm --version
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm --version
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm config get audit-level
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm audit --production
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/body-parser/node_modules/.bin/mocha --require test/support/env --reporter spec --check-leaks --bail test/
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/node_modules/.bin/tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/node_modules/.bin/tap -t 180 -j 1
+test/index.js
+test/map.js
+test/preload.js
+test/bin/semver.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js -i major 1.0.0
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js -i major 1.0.0 1.0.1
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js -i premajor 1.0.0 --preid=beta
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js -i 1.2.3
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js -h
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js -?
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --help
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 3.2.1 2.3.4
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 3.2.1 2.3.4 2.3.4-beta
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 -v 3.2.1 --version 2.3.4
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 -v 3.2.1 --version 2.3.4 -rv
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3foo 1.2.3-bar
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3foo 1.2.3-bar -l
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 3.2.1 -r 2.x 2.3.4
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 3.2.1 2.3.4 2.3.4-beta 2.0.0asdf -r 2.x
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 3.2.1 2.3.4 2.3.4-beta 2.0.0asdf -r 2.x -p
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 3.2.1 2.3.4 2.3.4-beta 2.0.0asdf -r 2.x -p -l
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3 3.2.1 -r 2.x
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3.4.5.6 -c
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3.4.5.6 -c --rtl
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js 1.2.3.4.5.6 -c --rtl --ltr
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js not a version 1.2.3 -c
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js not a version -c
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --version=1.2.3
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --range=1 1.2.3 2.3.4
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --increment=major 1.0.0
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --increment=premajor --preid=beta 1.0.0
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --version 1.2.3
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --range 1 1.2.3 2.3.4
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --increment major 1.0.0
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/semver/bin/semver.js --increment premajor --preid beta 1.0.0
+test/classes/comparator.js
+test/classes/index.js
+test/classes/range.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm install --ignore-scripts --no-shrinkwrap --no-package-lock --no-bin-links
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm install --ignore-scripts --no-shrinkwrap --no-package-lock --no-bin-links
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm install --ignore-scripts --no-shrinkwrap --no-package-lock --no-bin-links
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm install --ignore-scripts --no-shrinkwrap --no-package-lock --no-bin-links
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/node-fetch/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+--engine.WarnInterpreterOnly=false --jvm --experimental-options --engine.WarnInterpreterOnly=false --vm.Dtruffle.class.path.append=/home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//build/nodeprof.jar --nodeprof.Scope=module --nodeprof.IgnoreJalangiException=false --nodeprof /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap -t 180 -j 1 tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+--engine.WarnInterpreterOnly=false --jvm --experimental-options --engine.WarnInterpreterOnly=false --vm.Dtruffle.class.path.append=/home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//build/nodeprof.jar --nodeprof.Scope=module --nodeprof.IgnoreJalangiException=false --nodeprof /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap -t 180 -j 1 tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap -t 180 -j 1 tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+tests/test-cli-options.js
+tests/test-config-cli.js
+-r ./config -e console.log(process.env.BASIC) dotenv_config_encoding=utf8 dotenv_config_path=./tests/.env
+-r ./config -e console.log(process.env.BASIC)
+-r ./config -e console.log(process.env.BASIC) dotenv_config_path=./tests/.env
+tests/test-config.js
+tests/test-env-options.js
+tests/test-parse-multiline.js
+tests/test-parse.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm --help
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+--engine.WarnInterpreterOnly=false --jvm --experimental-options --engine.WarnInterpreterOnly=false --vm.Dtruffle.class.path.append=/home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//build/nodeprof.jar --nodeprof.Scope=module --nodeprof.IgnoreJalangiException=false --nodeprof --nodeprof.ExcludeSource=node_modules/istanbul-lib-instrument/,node_modules/mocha/,.bin/,node_modules/jest/,node_modules/nyc /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap -t 180 -j 1 tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap -t 180 -j 1 tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+tests/test-cli-options.js
+tests/test-config-cli.js
+-r ./config -e console.log(process.env.BASIC) dotenv_config_encoding=utf8 dotenv_config_path=./tests/.env
+-r ./config -e console.log(process.env.BASIC)
+-r ./config -e console.log(process.env.BASIC) dotenv_config_path=./tests/.env
+tests/test-config.js
+tests/test-env-options.js
+tests/test-parse-multiline.js
+tests/test-parse.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run dts-check
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js --100 -Rspec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dotenv/node_modules/.bin/tap -t 180 -j 1 tests/test-cli-options.js tests/test-config-cli.js tests/test-config.js tests/test-env-options.js tests/test-parse-multiline.js tests/test-parse.js -Rspec
+tests/test-cli-options.js
+tests/test-config-cli.js
+-r ./config -e console.log(process.env.BASIC) dotenv_config_encoding=utf8 dotenv_config_path=./tests/.env
+-r ./config -e console.log(process.env.BASIC)
+-r ./config -e console.log(process.env.BASIC) dotenv_config_path=./tests/.env
+tests/test-config.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/ava
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/ava/lib/worker/base.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/ava
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/ava/lib/worker/base.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/ava
+--enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/ava/lib/worker/base.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ora/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_4bde4a18d00d4647dae0
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule {'no-extra-semi': 2} --fix-dry-run --format json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --exit-on-fatal-error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule semi:2
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [1, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [2, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js tests/fixtures/exit-on-fatal-error/fatal-error.js --no-ignore
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --quiet --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore --rule max-len: [2, 10] /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-ignore -c /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/bin/eslint.config.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/_utils/test-lazy-loading-rules.js /tmp/eslint/fixtures/lazy-loading-rules foo.js semi
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_53c5b5ad52ae55d64a83
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_a7d5d05ceedfaa7669bc
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_dcdfde833398511ab1dd
+node_modules/.bin/karma start karma.conf.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_2252fd3194001202e0a7
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule {'no-extra-semi': 2} --fix-dry-run --format json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --exit-on-fatal-error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule semi:2
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [1, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [2, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js tests/fixtures/exit-on-fatal-error/fatal-error.js --no-ignore
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --quiet --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore --rule max-len: [2, 10] /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-ignore -c /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/bin/eslint.config.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/_utils/test-lazy-loading-rules.js /tmp/eslint/fixtures/lazy-loading-rules foo.js semi
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_7a557511ca6c80a577e1
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_1afc0ef59d57b0f0a138
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_c44e72728200c38bafed
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_25e6f96ed2cf8f2c7b88
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_b4b05ed7b54762487cab
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_0888d73a937b7cc48d6c
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_84c9e91c24a31035f5a5
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_a931892adaa3a322c5cd
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_391fe6f11c131f55e911
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_9f09d031020ce82c98b2
+node_modules/.bin/karma start karma.conf.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/yeoman-generator/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/yeoman-generator/node_modules/.bin/c8 mocha --forbid-only
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/yeoman-generator/node_modules/.bin/mocha --forbid-only
+--loader=esmock /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/yeoman-generator/node_modules/mocha/lib/cli/cli.js --exit --no-config --no-package --diff --extension js --extension cjs --extension mjs --reporter spec --slow 75 --timeout 2000 --ui bdd --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/css-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/css-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_6870d8cbe35872e02dfc
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule {'no-extra-semi': 2} --fix-dry-run --format json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --exit-on-fatal-error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule semi:2
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [1, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [2, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js tests/fixtures/exit-on-fatal-error/fatal-error.js --no-ignore
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --quiet --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore --rule max-len: [2, 10] /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-ignore -c /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/bin/eslint.config.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/_utils/test-lazy-loading-rules.js /tmp/eslint/fixtures/lazy-loading-rules foo.js semi
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_e24e5a39ae25d76e366f
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_2a5913b573c6330f06e4
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_f3a201020fbe78cb82bb
+node_modules/.bin/karma start karma.conf.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_18b8ae13cc3c35b62f2e
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule {'no-extra-semi': 2} --fix-dry-run --format json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --exit-on-fatal-error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule semi:2
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [1, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [2, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js tests/fixtures/exit-on-fatal-error/fatal-error.js --no-ignore
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --quiet --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore --rule max-len: [2, 10] /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --rule=no-restricted-syntax:[error, 'Invalid Selector [[['] Makefile.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-ignore -c /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/bin/eslint.config.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/_utils/test-lazy-loading-rules.js /tmp/eslint/fixtures/lazy-loading-rules foo.js semi
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_cfe60bb02583e793f863
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_d311a1a57a962ee44ade
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_d33a15f779ca6bf9505f
+node_modules/.bin/karma start karma.conf.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_142b9e2ed4b5b334f651
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule {'no-extra-semi': 2} --fix-dry-run --format json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --exit-on-fatal-error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule semi:2
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [1, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js bin/eslint.js --no-config-lookup --rule semi: [2, never]
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js tests/fixtures/exit-on-fatal-error/fatal-error.js --no-ignore
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --quiet --no-config-lookup --no-ignore /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --fix --no-config-lookup --no-ignore --rule max-len: [2, 10] /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/tests/fixtures/autofix-integration/temp.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --no-config-lookup --no-ignore tests/fixtures/cache/src/test-file.js --cache-location .temp-eslintcache --cache
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_a2757a5e35b9cf70c7c1
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule {'no-extra-semi': 2} --fix-dry-run --format json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --exit-on-fatal-error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin --no-config-lookup --rule semi:2
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/bin/eslint.js --stdin
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+Makefile.js test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_86017740e9cc348d62b7
+node_modules/.bin/c8 -- ./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+./node_modules/mocha/bin/_mocha --forbid-only -R progress -t 10000 -c tests/{bin,conf,lib,tools}/**/*.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_5175d614d2df734ffec2
+node_modules/.bin/c8 check-coverage --statement 98 --branch 97 --function 98 --lines 98
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/eslint/node_modules/shelljs/src/exec-child.js /tmp/shelljs_a3f4d8c6d36ded13d32b
+node_modules/.bin/webpack --mode=production --output-path=build
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/css-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/css-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run prepare
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rimraf/node_modules/.bin/c8 tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rimraf/node_modules/.bin/tap
+--no-warnings --loader ts-node/esm test/bin.js
+--no-warnings --loader ts-node/esm test/default-tmp.js
+--no-warnings --loader ts-node/esm test/delete-many-files.js
+--no-warnings --loader ts-node/esm test/fix-eperm.js
+--no-warnings --loader ts-node/esm test/fs.ts
+--no-warnings --loader ts-node/esm test/ignore-enoent.js
+--no-warnings --loader ts-node/esm test/index.js
+--no-warnings --loader ts-node/esm test/opt-arg.js
+--no-warnings --loader ts-node/esm test/platform.js
+--no-warnings --loader ts-node/esm test/readdir-or-error.js
+--no-warnings --loader ts-node/esm test/path-arg.js
+--no-warnings --loader ts-node/esm test/retry-busy.js
+--no-warnings --loader ts-node/esm test/rimraf-manual.js
+--no-warnings --loader ts-node/esm test/rimraf-move-remove.js
+--no-warnings --loader ts-node/esm test/rimraf-native.js
+--no-warnings --loader ts-node/esm test/rimraf-posix.js
+--no-warnings --loader ts-node/esm test/rimraf-windows.js
+--no-warnings --loader ts-node/esm test/use-native.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/shelljs/node_modules/.bin/ava test/cat.js test/cd.js test/chmod.js test/cmd.js test/common.js test/config.js test/cp.js test/dirs.js test/echo.js test/env.js test/exec.js test/find.js test/global.js test/grep.js test/head.js test/ln.js test/ls.js test/mkdir.js test/mv.js test/pipe.js test/plugin.js test/popd.js test/pushd.js test/pwd.js test/rm.js test/sed.js test/set.js test/shjs.js test/sort.js test/tail.js test/tempdir.js test/test.js test/to.js test/toEnd.js test/touch.js test/uniq.js test/which.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:node
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/through2/node_modules/.bin/c8 --check-coverage --branches 100 --functions 100 --lines 100 mocha test/test.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:browser
+-e process.exit(process.version.startsWith("v8.") ? 0 : 1)
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cheerio/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/style-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/style-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/js-yaml/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/js-yaml/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/js-yaml/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/js-yaml/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/redux/node_modules/.bin/vitest --run
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/colorize.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/colorize.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/exit-on-error.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/unhandle-exceptions.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/log-string-exception.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/log-exceptions.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/default-exceptions.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/colorize.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/winston/test/helpers/scripts/exit-on-error.js
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/file-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run format:check
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run compile
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/nyc mocha --require ts-node/register --reporter spec --slow 200 --bail --timeout 10000 test/index.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/mocha --require ts-node/register --reporter spec --slow 200 --bail --timeout 10000 test/index.ts
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run format:check
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run compile
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/rimraf ./dist
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/tsc
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/nyc mocha --require ts-node/register --reporter spec --slow 200 --bail --timeout 10000 test/index.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/socket.io/node_modules/.bin/mocha --require ts-node/register --reporter spec --slow 200 --bail --timeout 10000 test/index.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest --forceExit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest -w 1 --forceExit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest -w 1 --forceExit
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest -w 1 --forceExit --collectCoverage false
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest -w 1 --forceExit --collectCoverage=false
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa/node_modules/.bin/jest -w 1 --forceExit --coverage=false
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));

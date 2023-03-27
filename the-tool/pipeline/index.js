@@ -15,6 +15,7 @@ const MAX_RUNS = 3;
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
+const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const PROP_BLACKLISTS_DIR = __dirname + '/blacklists/';
 
 function getCliArg(name, numValues = 1) {
@@ -23,6 +24,8 @@ function getCliArg(name, numValues = 1) {
 }
 
 function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT) {
+    console.error(cmd + '\n');
+
     return new Promise((resolve, reject) => {
         const childProcess = exec(cmd);
         let out = '';
@@ -70,19 +73,17 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
 }
 
 async function fetchURL(pkgName) {
-    let url = await execCmd(`npm view ${pkgName} repository.url`);
-
-    if (!url.startsWith('git')) {
-        console.error('No git repository found');
-        process.exit(1);
-    }
+    let url = (await execCmd(`npm view ${pkgName} repository.url`)).trim();
 
     if (url.startsWith('git+')) {
-        return url.substring(4).trim();
+        return url.substring(4);
     } else if (url.startsWith('git://')) {
         return 'https' + url.substring(3);
-    } else {
+    } else if (url.startsWith('https://')) {
         return url;
+    } else {
+        console.error('No git repository found');
+        process.exit(1);
     }
 }
 
@@ -186,7 +187,7 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
         return false;
     }
 
-    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName});
+    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName},  ['/node_modules']);
 
     return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
@@ -207,6 +208,7 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
     }
 
     params += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
+    params += ` --exec-path ${NODE_WRAPPER}`; // overwrite the exec path in the analysis
 
     for (const initParamName in initParams) {
         const initParam = initParams[initParamName];
@@ -239,14 +241,14 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
     }
 
     cmd += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
+    cmd += ` --exec-path ${NODE_WRAPPER}`; // overwrite the exec path in the analysis
 
     for (const initParamName in initParams) {
         cmd += ` --initParam ${initParamName}:${initParams[initParamName]}`;
+
     }
 
     cmd += ` ${script};`;
-
-    console.error(cmd);
 
     await execCmd(cmd, true, false);
 }
@@ -323,15 +325,16 @@ async function runPipeline(pkgName) {
     const url = await fetchURL(pkgName);
     const resultBasePath = __dirname + '/results/';
 
-    const repoPath = __dirname + `/packages/${pkgName}`;
+    const sanitizedPkgName = pkgName.replace('/', '-').replace('@', '');
+    const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
     if (!fs.existsSync(repoPath)) {
-        console.error(`Fetching repository ${url}`);
-        await execCmd(`cd packages; git clone ${url} ${pkgName}`, true);
+        console.error(`\nFetching repository ${url}`);
+        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
     } else {
-        console.error(`Directory ${repoPath} already exists. Skipping git clone.`)
+        console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
     }
 
-    console.error('Installing dependencies');
+    console.error('\nInstalling dependencies');
     await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
 
     // console.error('Finding test scripts');
@@ -343,66 +346,76 @@ async function runPipeline(pkgName) {
     //     return;
     // }
 
-    console.error('Running pre-analysis');
+    console.error('\nRunning pre-analysis');
     const preAnalysisSuccess = await runPreAnalysisNodeWrapper(repoPath, pkgName);
 
     if (!preAnalysisSuccess) {
-        console.error('No internal dependencies detected');
+        console.error('\nNo internal dependencies detected');
         return;
     }
 
     if (onlyPre) return;
 
-    console.error('Running analysis');
+    console.error('\nRunning analysis');
     let run = 0;
     let propBlacklist = null;
     let blacklistedProps = [];
 
     while (true) {
-        const resultFilename = `${resultBasePath}${pkgName}`;
+        const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
         await runAnalysisNodeWrapper(
             TAINT_ANALYSIS,
             repoPath,
             {pkgName, resultFilename, propBlacklist},
-            ['node_modules/istanbul-lib-instrument/', 'node_modules/mocha/', '.bin/', 'node_modules/jest/', 'node_modules/nyc']
+            [
+                'node_modules/istanbul-lib-instrument/',
+                'node_modules/mocha/',
+                '.bin/',
+                'node_modules/jest/',
+                'node_modules/nyc',
+                'node_modules/jest',
+                'node_modules/@jest',
+                'node_modules/@babel',
+                'node_modules/babel'
+            ]
         );
 
         const resultFiles = fs.readdirSync(resultBasePath)
             .filter(f => f.startsWith(pkgName) && !f.includes('crash-report'))
             .map(f => resultBasePath + f);
 
-        console.error('Writing results to DB');
+        console.error('\nWriting results to DB');
         const runId = await writeResultsToDB(pkgName, resultFiles);
 
-        console.error('Cleaning up result files');
+        console.error('\nCleaning up result files');
         resultFiles.forEach(fs.unlinkSync); // could also be done async
 
         // break if max run or if no flows found
         if (!runId || ++run === MAX_RUNS) break;
 
-        console.error('Checking for exceptions');
+        console.error('\nChecking for exceptions');
         const exceptions = await fetchExceptions(pkgName, runId);
 
         if (!exceptions || exceptions.length === 0) {
-            console.error('No exceptions found');
+            console.error('\nNo exceptions found');
             break;
         }
 
-        console.error('Exceptions found');
+        console.error('\nExceptions found');
 
         const newBlacklistedProps = exceptions.map(e => e.prop).filter(p => !blacklistedProps.includes(p));
 
-        console.error('Adding properties to blacklist');
+        console.error('\nAdding properties to blacklist');
         blacklistedProps.push(...newBlacklistedProps);
         blacklistedProps = Array.from(new Set(blacklistedProps));
 
-        propBlacklist = PROP_BLACKLISTS_DIR + pkgName + '.json';
+        propBlacklist = PROP_BLACKLISTS_DIR + sanitizedPkgName + '.json';
         fs.writeFileSync(propBlacklist, JSON.stringify(blacklistedProps), {encoding: 'utf8'});
 
         console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
     }
 
-    console.error('Cleaning up');
+    console.error('\nCleaning up');
     if (propBlacklist) fs.unlinkSync(propBlacklist);
 
     // let preAnalysisSuccess = false;
@@ -473,7 +486,7 @@ async function getSarif(pkgName) {
                                     `Entry point {callTrace: ${result.entryPoint.entryPoint.join('')}}`
                                 )
                             },
-                            {location: locToSarif(result.source.location, 'Undefined property read')},
+                            {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}}`)},
                             ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
                             {location: locToSarif(result.sink.location, 'Sink')}
                         ]
@@ -501,6 +514,7 @@ function getPkgsFromFile(filename) {
 async function run() {
     const sarif = getCliArg('sarif', 0);
     const fromFile = getCliArg('fromFile', 0);
+    const skipTo = getCliArg('skipTo', 1);
 
     if (args.length < 1) {
         // ToDo - usage info
@@ -510,7 +524,13 @@ async function run() {
 
     const pkgNames = fromFile ? getPkgsFromFile(args[args.length - 1]) : [args[args.length - 1]];
 
+    let skippingDone = skipTo === null;
     for (const pkgName of pkgNames) {
+        if (!skippingDone && skipTo[1] !== pkgName) {
+            continue;
+        }
+        skippingDone = true;
+
         try {
             if (sarif) {
                 console.error(`Getting sarif for '${pkgName}'`);

@@ -224,10 +224,15 @@ class TaintAnalysis {
             });
         }
         if (args?.length > 0) {
+            let tainted = false; // indicator if any argument is tainted
+
             args.forEach((arg, index) => {
                 this.deepCheckExcCount++;
                 // const taints = checkTaintDeep(arg);
                 const taints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
+                if (taints?.length > 0) {
+                    tainted = true;
+                }
                 taints?.forEach(taintVal => {
                     this.flows.push({
                         ...taintVal.__taint,
@@ -242,9 +247,14 @@ class TaintAnalysis {
                     });
                 });
             });
+
+            // only change assertion if it is due to tainted arguments
+            // if (tainted && (e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError')) {
+            //     return {result: true}; // just return something to stop propagation of error
+            // }
         }
 
-        if (e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError') {
+        if ((e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError')) {
             return {result: true}; // just return something to stop propagation of error
         }
     }
@@ -377,6 +387,7 @@ class TaintAnalysis {
     }
 
     uncaughtException = (err, origin) => {
+        console.log(err);
         if (this.executionDoneCallback) {
             this.executionDoneCallback(err);
             this.executionDoneCallback = null;

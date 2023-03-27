@@ -16,7 +16,6 @@ process.argv.splice(scriptIndex, 1);
 // resolve the path for the actual script
 process.argv[scriptIndex] = path.resolve(process.argv[scriptIndex]);
 
-// console.log(process.argv);
 
 // console.log(process.argv);
 // console.log(process.execPath, process.argv);
