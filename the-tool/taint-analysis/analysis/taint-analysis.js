@@ -11,7 +11,7 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
-const {NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH} = require("../conf/analysis-conf");
+const {NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH, INF_LOOP_TIMEOUT, MAX_LOOPS} = require("../conf/analysis-conf");
 
 class TaintAnalysis {
     deepCheckCount = 0;
@@ -27,6 +27,8 @@ class TaintAnalysis {
     spawnIndex = 0; // keeps track of how many child analyses were spawned so far (for result file naming)
 
     lastReadTaint = null;
+
+    loops = new Map(); // a stack of loop timestamp entering times -> this is to timeout infinite loops
 
     constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback) {
         this.pkgName = pkgName;
@@ -51,59 +53,6 @@ class TaintAnalysis {
 
         // We only care for internal node functions
         if (isConstructor || f === undefined || (!scope?.startsWith('node:')) || f === console.log) return;
-
-        // if (scope === 'node:child_process' && f.name === 'spawn') {
-        //     const analysisFilename = __dirname + '/../index.js';
-        //     const resultFilename = `${this.resultFilename}.spawn-${this.spawnIndex}`;
-        //
-        //     // special wrapper child_process.spawn that if a new node process is spawned appends the analysis
-        //     const spawnWrapper = (command, args, options) => {
-        //         const unwrappedCommand = command.__taint ? command.valueOf() : command;
-        //         const unwrappedArgs = args.map(a => a?.__taint ? a.valueOf() : a);
-        //
-        //         if (!unwrappedCommand.endsWith('node')) {
-        //             return f.call(receiver, unwrappedCommand, unwrappedArgs, options);
-        //         }
-        //
-        //         console.log('Spawning child process analysis ' + args.join(' '));
-        //         this.spawnIndex++;
-        //
-        //         const graalNode = process.env.GRAAL_NODE_HOME;
-        //         const nodeProfHome = process.env.NODEPROF_HOME;
-        //         const analysisArgs = [
-        //             '--jvm',
-        //             '--experimental-options',
-        //             '--engine.WarnInterpreterOnly=false',
-        //             `--vm.Dtruffle.class.path.append=${nodeProfHome}/build/nodeprof.jar`,
-        //             '--nodeprof.Scope=module',
-        //             '--nodeprof.ExcludeSource=excluded/',
-        //             '--nodeprof.IgnoreJalangiException=false',
-        //             '--nodeprof=true',
-        //             `${nodeProfHome}/src/ch.usi.inf.nodeprof/js/jalangi.js`,
-        //             '--analysis', analysisFilename,
-        //             '--initParam', `resultFilename:${resultFilename}`,
-        //         ];
-        //
-        //         if (this.pkgName) {
-        //             analysisArgs.push('--initParam', `pkgName:${this.pkgName ?? ''}`);
-        //         }
-        //
-        //         while (unwrappedArgs[0]?.startsWith('-')) unwrappedArgs.shift();
-        //
-        //         analysisArgs.push(...(unwrappedArgs.filter(a => a !== '')));
-        //
-        //         // console.log(analysisArgs);
-        //         const p = f.call(receiver, graalNode, analysisArgs, options);
-        //
-        //         // ToDo - improve (i.e. only on idle)
-        //         const killTimeout = setTimeout(() => p.kill(), 5 * 60 * 1000);
-        //         p.on('exit', () => clearTimeout(killTimeout));
-        //
-        //         return p;
-        //     };
-        //
-        //     return {result: spawnWrapper};
-        // }
 
         // ToDo - unwrap constructor calls
 
@@ -349,7 +298,7 @@ class TaintAnalysis {
             // ToDo - this can lead to problems when injecting when it is not used later
             try {
                 // ToDo - make configurable
-                base[offset] = res;
+                // base[offset] = res;
             } catch (e) {
                 // in some cases injection does not work e.g. read only
             }
@@ -379,15 +328,44 @@ class TaintAnalysis {
         }
     }
 
-    conditional = (iid, result) => {
+    conditional = (iid, result, isValue) => {
         // ToDo - record when branched and change for second run?
         if (result?.__undef) {
             return {result: false};
         }
+
+        // if (this.loops.length > 0 && Date.now() - this.loops[this.loops.length - 1] > INF_LOOP_TIMEOUT) {
+        //     throw new Error('Infinite loop timeout');
+        // }
+    }
+
+    /**
+     * Called whenever a control flow root is executed (e.g. if, while, async function call, ....)
+     * For loops it is called every time the condition is evaluated (i.e. every loop)
+     */
+    controlFlowRootEnter = (iid, loopType, conditionResult) => {
+        if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
+
+        // to prevent infinite loops we keep track of how often the loop is entered and abort on a certain threshold
+        if (this.loops.length === 0 || !this.loops.has(iid)) {
+            this.loops.set(iid, 1);
+        } else {
+            const calls = this.loops.get(iid) + 1;
+            if (calls > MAX_LOOPS) {
+                console.log('Infinite loop detected - aborting');
+                process.exit(0);
+            }
+            this.loops.set(iid, calls);
+        }
+    }
+
+    controlFlowRootExit = (iid, loopType) => {
+        if (loopType === 'Conditional' || loopType === 'Conditional') return;
+
+        this.loops.delete(iid);
     }
 
     uncaughtException = (err, origin) => {
-        console.log(err);
         if (this.executionDoneCallback) {
             this.executionDoneCallback(err);
             this.executionDoneCallback = null;

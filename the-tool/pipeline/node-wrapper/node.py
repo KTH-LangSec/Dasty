@@ -21,7 +21,6 @@ def remove_flag(argv_string, program, flag, length=0):
     flag_idx = get_flag_idx(flag)
 
     while flag_idx >= 0:
-        print(sys.argv)
         arg_len = length
         while arg_len >= 0:
             sys.argv.remove(sys.argv[flag_idx])
@@ -146,11 +145,13 @@ def main():
     remove_flag(argv_string, 'bin/_mocha', '--bail')
     remove_flag(argv_string, 'bin/mocha', '--forbid-only')
     remove_flag(argv_string, 'bin/_mocha', '--forbid-only')
-    # set_flag(argv_string, 'bin/mocha', ['-t', '--timeout', '--timeouts'], '20000')
+    set_flag(argv_string, 'bin/mocha', ['-t', '--timeout', '--timeouts'], '20000')
 
     set_flag(argv_string, 'bin/jest', ['-w', '--maxWorkers'], '1')
     # set_flag(argv_string, 'bin/jest', ['--workerThreads=false'])
     set_flag(argv_string, 'bin/jest', ['--forceExit'])
+    remove_flag(argv_string, 'bin/jest', '--coverage')
+    remove_flag(argv_string, 'bin/jest', '--collectCoverageFrom')
 
     # tap flag
     set_flag(argv_string, 'bin/tap', ['-j'], '1')

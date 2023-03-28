@@ -4,6 +4,7 @@ const {exec} = require('child_process');
 const fs = require('fs');
 const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
+const path = require("path");
 
 const args = process.argv;
 
@@ -17,6 +18,9 @@ const PRE_ANALYSIS = __dirname + '/pre-analysis/';
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const PROP_BLACKLISTS_DIR = __dirname + '/blacklists/';
+
+// keywords of packages that are known to be not interesting (for now)
+const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'eslint', '/types', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
 
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
@@ -187,7 +191,7 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
         return false;
     }
 
-    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName},  ['/node_modules']);
+    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName}, ['/node_modules']);
 
     return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
@@ -268,7 +272,7 @@ async function writeResultsToDB(pkgName, resultFilenames) {
     const db = await getDb();
 
     const resultsColl = await db.collection('results');
-    let pkgId = (await resultsColl.findOne({package: pkgName}, {projection: {_id: 0}}))?._id;
+    let pkgId = (await resultsColl.findOne({package: pkgName}, {_id: 1}))?._id;
     if (!pkgId) {
         pkgId = (await resultsColl.insertOne({package: pkgName, runs: []})).insertedId;
     }
@@ -319,13 +323,20 @@ function locToSarif(dbLocation, message = null) {
 }
 
 async function runPipeline(pkgName) {
+    if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
+        console.log(`${pkgName} is a 'don't analyse' script`);
+        return;
+    }
+
+    fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
+
     const onlyPre = getCliArg('onlyPre') !== null;
 
     console.error('Fetching URL');
     const url = await fetchURL(pkgName);
     const resultBasePath = __dirname + '/results/';
 
-    const sanitizedPkgName = pkgName.replace('/', '-').replace('@', '');
+    const sanitizedPkgName = sanitizePkgName(pkgName);
     const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
     if (!fs.existsSync(repoPath)) {
         console.error(`\nFetching repository ${url}`);
@@ -456,10 +467,38 @@ async function runPipeline(pkgName) {
 }
 
 async function getSarif(pkgName) {
+    let out = getCliArg('out', 1);
+    if (out) out = path.resolve(out[1]);
+    let outDir = getCliArg('outDir', 1);
+    if (outDir) outDir = path.resolve(outDir[1]);
+
+    let pkgNames = args.length > 2 ? [args[2]] : null;
+    console.log(pkgNames);
+
+    if (pkgNames === null) {
+        const db = await getDb();
+        const results = await db.collection('results');
+        pkgNames = new Set(await results.find({}, {package: 1}).map(p => p.package).toArray());
+    }
+
+    for (pkgName of pkgNames) {
+        const sarif = await getSarifData(pkgName);
+        if (!out && !outDir) {
+            console.error('No output file (--out) specified. Writing to stdout.');
+            console.error(JSON.stringify(sarif));
+        } else {
+            const outFile = out ?? (outDir + '/' + sanitizePkgName(pkgName) + '.sarif');
+            fs.writeFileSync(outFile, JSON.stringify(sarif), {encoding: 'utf8'});
+            console.error(`Output written to ${outFile}.`);
+        }
+    }
+}
+
+async function getSarifData(pkgName) {
     const db = await getDb();
     const results = await db.collection('results').findOne({package: pkgName});
 
-    const sarif = {
+    return {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
         runs: results.runs.map(run => ({
@@ -488,22 +527,13 @@ async function getSarif(pkgName) {
                             },
                             {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}}`)},
                             ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
-                            {location: locToSarif(result.sink.location, 'Sink')}
+                            {location: locToSarif(result.sink.location, `{argIndex: ${result.sink.argIndex}}`)}
                         ]
                     }]
                 }]
             }))
         }))
     };
-
-    const out = getCliArg('out', 1);
-    if (!out) {
-        console.error('No output file (--out) specified. Writing to stdout.');
-        console.error(JSON.stringify(sarif));
-    } else {
-        fs.writeFileSync(out[1], JSON.stringify(sarif), {encoding: 'utf8'});
-        console.error(`Output written to ${out[1]}.`);
-    }
 }
 
 function getPkgsFromFile(filename) {
@@ -511,10 +541,27 @@ function getPkgsFromFile(filename) {
     return contents.split('\n').map(pkg => pkg.trim());
 }
 
+function sanitizePkgName(pkgName) {
+    return pkgName.replace('/', '-').replace('@', '');
+}
+
 async function run() {
     const sarif = getCliArg('sarif', 0);
     const fromFile = getCliArg('fromFile', 0);
     const skipTo = getCliArg('skipTo', 1);
+
+    if (sarif) {
+        try {
+            console.error(`Creating sarif`);
+            await getSarif();
+        } catch (e) {
+            console.error(`Could not create sarif`);
+            console.error(e);
+        }
+        closeConnection();
+        return;
+    }
+
 
     if (args.length < 1) {
         // ToDo - usage info
@@ -532,14 +579,9 @@ async function run() {
         skippingDone = true;
 
         try {
-            if (sarif) {
-                console.error(`Getting sarif for '${pkgName}'`);
-                await getSarif(pkgName)
-            } else {
-                console.error(`Analysing '${pkgName}'`);
-                await runPipeline(pkgName)
-                console.error(`Analyzing ${pkgName} complete`);
-            }
+            console.error(`Analysing '${pkgName}'`);
+            await runPipeline(pkgName)
+            console.error(`Analyzing ${pkgName} complete`);
         } catch (e) {
             console.error(`Could not process '${pkgName}'`);
             console.error(e);

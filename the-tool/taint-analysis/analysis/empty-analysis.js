@@ -136,7 +136,7 @@ class EmptyAnalysis {
     /**
      * This callback is called after a conditional expression has been evaluated
      **/
-    conditional = function (iid, result) {
+    conditional = function (iid, result, isValue) {
         // return {result: result};
     };
 
@@ -254,6 +254,14 @@ class EmptyAnalysis {
     awaitPre = function (iid, promiseOrValAwaited) {
     }
     awaitPost = function (iid, promiseOrValAwaited, valResolveOrRejected, isPromiseRejected) {
+    }
+
+    controlFlowRootEnter = function(iid, loopType, condition) {
+        console.log(loopType);
+    }
+
+    controlFlowRootExit = function(iid, loopType, condition) {
+        // console.log(loopType);
     }
 
     // }

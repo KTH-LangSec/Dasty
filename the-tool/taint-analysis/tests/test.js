@@ -1,19 +1,49 @@
-const util = require('node:util');
-const exec = util.promisify(require('child_process').exec);
-const cp = require('child_process');
+// const util = require('node:util');
+// const exec = util.promisify(require('child_process').exec);
+// const cp = require('child_process');
+//
+// const mockModule = require('./module-wrapper/mock-module');
+// const {spawn} = require("child_process");
+//
+// const obj = {};
+//
+// const x = [obj.blub + 'hi'];
+//
+// const y = 'ho'
+//
+// // eval(x);
+//
+// cp.exec(x);
+//
+// // eval(`console.log('heyho${x}');`);
 
-const mockModule = require('./module-wrapper/mock-module');
-const {spawn} = require("child_process");
+// let i = 0;
+let result = true;
+const obj = {t: true};
+// if (result) {
+//     i = 0;
+// }
 
-const obj = {};
+// const x = !!result;
+// if (result) {
+//     console.log('hey');
+// }
 
-const x = [obj.blub + 'hi'];
+async function cond(c) {
+    return c;
+}
 
-const y = 'ho'
+cond(true).then();
 
-// eval(x);
+if (result) {
+    // console.log('hey');
+}
 
-cp.exec(x);
-
-// eval(`console.log('heyho${x}');`);
+let i = 0;
+while (result) {
+    if (i++ >= 0) {
+        result = false;
+        obj.t = undefined;
+    }
+}
 
