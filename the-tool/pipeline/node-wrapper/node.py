@@ -67,7 +67,7 @@ def main():
         sys.exit()
 
     # ToDo - support ava
-    exclude = ['bin/xo', 'bin/ava']  # don't run when included in command
+    exclude = ['bin/xo', 'bin/ava', 'bin/karam']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
@@ -124,7 +124,7 @@ def main():
     else:
         # check where the script starts (i.e. skipping node flags) to find the spot to add the script wrapper
         script_idx = 1
-        while sys.argv[script_idx].startswith('-'):
+        while len(sys.argv) > script_idx and sys.argv[script_idx].startswith('-'):
             if sys.argv[script_idx] in node_flags:
                 arg_length = node_flags.get(sys.argv[script_idx])
 

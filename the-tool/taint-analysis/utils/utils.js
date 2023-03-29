@@ -226,7 +226,7 @@ function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
     //     return arg;
     // }
 
-    if (!hasTaint(arg, depth)) return arg;
+    // if (!hasTaint(arg, depth)) return arg;
 
     // Clone the arg because the unwrapping is done in-place
     let argClone = arg;
@@ -354,6 +354,62 @@ function isBuiltinProto(proto) {
         proto === Promise.prototype
 }
 
+function createInternalFunctionWrapper(iid, f, receiver, isAsync, flows, functionScope) {
+    // ToDo - constructors?
+    if (!f || (!functionScope?.startsWith('node:')) || f === console.log) return null;
+    // if it is an internal function replace it with wrapper function that unwraps taint values
+    // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
+    // ToDo - should the return value be tainted?
+    const fName = f.name;
+
+    return (function wrapper(...args) {
+        const unwrappedArgs = [];
+        const taints = [];
+        args.forEach((arg, index) => {
+            const argTaints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
+            taints.push(argTaints);
+            argTaints?.forEach(taintVal => {
+                flows.push({
+                    ...taintVal.__taint,
+                    sink: {
+                        iid,
+                        type: 'functionCallArg',
+                        module: functionScope,
+                        functionName: fName,
+                        argIndex: index
+                    }
+                });
+            });
+            unwrappedArgs.push(argTaints?.length > 0 ? unwrapDeep(arg) : arg);
+        });
+
+        try {
+            if (new.target) {
+                const newTarget = Reflect.getPrototypeOf(this).constructor;
+                return Reflect.construct(f, unwrappedArgs, newTarget)
+            } else {
+                return Reflect.apply(f, this, unwrappedArgs);
+            }
+        } catch (e) {
+            taints.forEach((t, index) => {
+                t?.forEach(taintVal => {
+                    flows.push({
+                        ...taintVal.__taint,
+                        sink: {
+                            iid,
+                            type: 'functionCallArgException',
+                            value: e.code + ' ' + e.toString(),
+                            argIndex: index,
+                            functionName: fName
+                        }
+                    });
+                });
+            });
+            throw e;
+        }
+    });
+}
+
 module.exports = {
     iidToLocation,
     iidToSourceObject,
@@ -367,5 +423,6 @@ module.exports = {
     checkTaintDeep,
     unwrapDeep,
     isAnalysisProxy,
-    isAnalysisWrapper
+    isAnalysisWrapper,
+    createInternalFunctionWrapper
 }

@@ -7,7 +7,12 @@ const pkgName = J$.initParams.pkgName ?? 'result';
 
 const resultPath = __dirname + '/results';
 
-const analysis = new PreAnalysis(pkgName, () => {
+const analysis = new PreAnalysis(pkgName, (err) => {
+
+    if (err) {
+        fs.appendFileSync(`${resultPath}/err-modules.txt`, pkgName + '\n', {encoding: 'utf8'});
+    }
+
     if (analysis.builtinDependencies.length === 0) {
         fs.appendFileSync(`${resultPath}/frontend-modules.txt`, pkgName + '\n', {encoding: 'utf8'});
         return;

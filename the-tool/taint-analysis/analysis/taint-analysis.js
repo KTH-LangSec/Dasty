@@ -7,11 +7,17 @@ const {
     checkTaintDeep,
     unwrapDeep,
     isAnalysisProxy,
-    isAnalysisWrapper, hasTaint, checkTaints
+    isAnalysisWrapper, hasTaint, checkTaints, createInternalFunctionWrapper
 } = require("../utils/utils");
 const {createModuleWrapper} = require("./module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("./native");
-const {NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH, INF_LOOP_TIMEOUT, MAX_LOOPS} = require("../conf/analysis-conf");
+const {
+    NODE_EXEC_PATH,
+    DEFAULT_CHECK_DEPTH,
+    INF_LOOP_TIMEOUT,
+    MAX_LOOPS,
+    DEFAULT_UNWRAP_DEPTH
+} = require("../conf/analysis-conf");
 
 class TaintAnalysis {
     deepCheckCount = 0;
@@ -24,11 +30,11 @@ class TaintAnalysis {
     entryPointIID = 0;
     entryPoint = [];
 
-    spawnIndex = 0; // keeps track of how many child analyses were spawned so far (for result file naming)
-
     lastReadTaint = null;
 
     loops = new Map(); // a stack of loop timestamp entering times -> this is to timeout infinite loops
+
+    uncaughtErr = null;
 
     constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback) {
         this.pkgName = pkgName;
@@ -39,8 +45,8 @@ class TaintAnalysis {
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, scope) => {
-
         // always unwrap arguments for eval
+
         if (f === eval) {
             const evalWrapper = (...args) => {
                 this.unwrapCount++;
@@ -51,35 +57,49 @@ class TaintAnalysis {
             return {result: evalWrapper};
         }
 
+        // console.log(receiver);
+
         // We only care for internal node functions
-        if (isConstructor || f === undefined || (!scope?.startsWith('node:')) || f === console.log) return;
+        if (isConstructor /*|| receiver === undefined*/ || f === undefined || (!scope?.startsWith('node:')) || f === console.log) return;
 
         // ToDo - unwrap constructor calls
 
-        // if it is an internal function replace it with wrapper function that unwraps taint values
-        // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
-        // ToDo - should the return value be tainted?
-        const internalWrapper = !isAsync
-            ? (...args) => {
-                // to skip unnecessary unwrapping first try without and only unwrap on error
-                try {
-                    return Reflect.apply(f, receiver, args);
-                } catch (e) {
-                    this.unwrapCount++;
-                    const unwrappedArgs = args.map(arg => unwrapDeep(arg));
-                    return Reflect.apply(f, receiver, unwrappedArgs);
-                }
-            } : async (...args) => {
-                try {
-                    return Reflect.apply(f, receiver, args);
-                } catch (e) {
-                    this.unwrapCount++;
-                    const unwrappedArgs = unwrapDeep(args);
-                    return Reflect.apply(f, receiver, unwrappedArgs);
-                }
-            }
+        // // if it is an internal function replace it with wrapper function that unwraps taint values
+        // // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
+        // // ToDo - should the return value be tainted?
+        const internalWrapper = (...args) => {
+            // to skip unnecessary unwrapping first try without and only unwrap on error
+            try {
+                return Reflect.apply(f, receiver, args);
+            } catch (e) {
+                this.unwrapCount++;
+                // const unwrappedArgs = args.map(arg => unwrapDeep(arg));
+                // const unwrappedArgs = [];
 
-        return {result: internalWrapper};
+                // args.forEach((arg, index) => {
+                // const taints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
+                // taints?.forEach(taintVal => {
+                //     this.flows.push({
+                //         ...taintVal.__taint,
+                //         sink: {
+                //             iid,
+                //             type: 'functionCallArgException',
+                //             value: e.code + ' ' + e.toString(),
+                //             argIndex: index,
+                //             functionName: f?.name
+                //         }
+                //     });
+                // });
+
+                // unwrappedArgs.push(taints?.length > 0 ? unwrapDeep(arg) : arg);
+                // });
+
+                const unwrappedArgs = args.map(a => hasTaint(a, DEFAULT_UNWRAP_DEPTH) ? unwrapDeep(a) : a);
+                return Reflect.apply(f, receiver, unwrappedArgs);
+            }
+        }
+
+        return internalWrapper;
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
@@ -110,9 +130,6 @@ class TaintAnalysis {
 
         args.forEach((arg, index) => {
             this.deepCheckCount++;
-            // console.log(f?.name, hasTaint(arg, DEFAULT_CHECK_DEPTH));
-            // console.log(f?.name, checkTaints(arg, DEFAULT_CHECK_DEPTH));
-            // const argTaints = checkTaintDeep(arg);
             const argTaints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
             argTaints?.forEach(taintVal => {
                 this.flows.push({
@@ -265,11 +282,14 @@ class TaintAnalysis {
         }
     }
 
-    getField = (iid, base, offset, val, isComputed, isOpAssign, isMethodCall, scope) => {
-        // return the wrapped exec for execPath (which is often used to spawn a child process with the same node binary)
-        // if (offset === 'execPath' && typeof val === 'string' && val.endsWith('node')) {
-        //     return {result: NODE_EXEC_PATH};
+    getField = (iid, base, offset, val, isComputed, functionScope, isAsync, scope) => {
+        // if (functionScope !== undefined) {
+        //     const internalWrapper = createInternalFunctionWrapper(iid, val, base, isAsync, this.flows, functionScope);
+        //     if (internalWrapper !== null) {
+        //         return internalWrapper;
+        //     }
         // }
+
         // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
         if (!base || offset === '__taint') return;
 
@@ -333,10 +353,6 @@ class TaintAnalysis {
         if (result?.__undef) {
             return {result: false};
         }
-
-        // if (this.loops.length > 0 && Date.now() - this.loops[this.loops.length - 1] > INF_LOOP_TIMEOUT) {
-        //     throw new Error('Infinite loop timeout');
-        // }
     }
 
     /**
@@ -360,16 +376,13 @@ class TaintAnalysis {
     }
 
     controlFlowRootExit = (iid, loopType) => {
-        if (loopType === 'Conditional' || loopType === 'Conditional') return;
+        if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
         this.loops.delete(iid);
     }
 
     uncaughtException = (err, origin) => {
-        if (this.executionDoneCallback) {
-            this.executionDoneCallback(err);
-            this.executionDoneCallback = null;
-        }
+        this.uncaughtErr = err;
     }
 
     endExecution = (code) => {
@@ -377,7 +390,7 @@ class TaintAnalysis {
         // console.log('checkTaintDeepEx', this.deepCheckExcCount);
         // console.log('unwrap', this.unwrapCount);
         if (this.executionDoneCallback) {
-            this.executionDoneCallback();
+            this.executionDoneCallback(this.uncaughtErr);
         }
     }
 }

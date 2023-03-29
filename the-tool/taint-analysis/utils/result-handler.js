@@ -16,10 +16,9 @@ const resultHandler = {
     writeFlowsToFile(flows, resultPath) {
         if (!flows || flows.length === 0) return;
 
-        flows = structuredClone(flows);
         // remove duplicates
         const processed = [];
-        flows = flows.filter(flow => {
+        const filteredFlows = flows.filter(flow => {
             const jsonString = JSON.stringify(flow);
             if (processed.includes(jsonString)) {
                 return false;
@@ -30,7 +29,7 @@ const resultHandler = {
         });
 
         // parse iid
-        flows.forEach(flow => {
+        filteredFlows.forEach(flow => {
             flow.source = replaceIID(flow.source);
             flow.entryPoint = replaceIID(flow.entryPoint);
             flow.codeFlow.forEach((cf, index) => {
@@ -39,13 +38,13 @@ const resultHandler = {
             flow.sink = replaceIID(flow.sink);
         });
 
-        console.log(flows.length + ' are unique');
+        console.log(filteredFlows.length + ' are unique');
 
         if (resultPath) {
-            fs.writeFileSync(resultPath, JSON.stringify(flows), {encoding: 'utf8'});
+            fs.writeFileSync(resultPath, JSON.stringify(filteredFlows), {encoding: 'utf8'});
             console.log(`Results written to ${resultPath}`);
         } else {
-            console.log(JSON.stringify(flows));
+            console.log(JSON.stringify(filteredFlows));
         }
     },
 
@@ -65,8 +64,6 @@ const resultHandler = {
         } else {
             console.log(report);
         }
-
-        // throw err;
     }
 }
 

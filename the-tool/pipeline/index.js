@@ -6,8 +6,6 @@ const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
 const path = require("path");
 
-const args = process.argv;
-
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
 const DEFAULT_TIMEOUT = -1;
@@ -19,12 +17,75 @@ const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const PROP_BLACKLISTS_DIR = __dirname + '/blacklists/';
 
+const PKG_TYPE = {
+    NODE_JS: 0,
+    FRONTEND: 1
+}
+
+const CLI_ARGS = {
+    '--out': 1,
+    '--outDir': 1,
+    '--onlyPre': 0,
+    '--sarif': 0,
+    '--fromFile': 0,
+    '--skipTo': 1,
+    '--force': 0
+}
+
 // keywords of packages that are known to be not interesting (for now)
 const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'eslint', '/types', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
 
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
     return index >= 0 && args.length >= index + numValues ? args.splice(index, numValues + 1) : null;
+}
+
+function parseCliArgs() {
+    // Set default values (also so that the ide linter shuts up)
+    const parsedArgs = {
+        out: undefined,
+        outDir: undefined,
+        onlyPre: false,
+        sarif: false,
+        fromFile: false,
+        skipTo: undefined,
+        force: false,
+        pkgName: undefined
+    };
+
+    // a copy of the args with all parsed args removed
+    const trimmedArgv = process.argv.slice();
+    let removedArgs = 0;
+
+    for (let i = 2; i < process.argv.length; i++) {
+        const arg = process.argv[i];
+        const expectedLength = CLI_ARGS[arg];
+
+        if (expectedLength === undefined) continue;
+
+        if (process.argv.length <= i + expectedLength) {
+            console.log(arg + ' expects ' + expectedLength + ' values');
+            process.exit(1);
+        }
+
+        // remove leading -
+        const argName = arg.replace(/^(-)+/g, '');
+        if (expectedLength === 0) {
+            parsedArgs[argName] = true;
+        } else {
+            const values = process.argv.slice(i + 1, i + 1 + expectedLength);
+            parsedArgs[argName] = expectedLength === 1 ? values[0] : values;
+        }
+
+        trimmedArgv.splice(i - removedArgs, expectedLength + 1);
+        removedArgs += expectedLength + 1;
+
+        i += expectedLength;
+    }
+
+    // the pkgName (or file) should now be the last (and only) arg
+    parsedArgs.pkgName = trimmedArgv.length > 2 ? trimmedArgv[trimmedArgv.length - 1] : null;
+    return parsedArgs;
 }
 
 function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT) {
@@ -172,9 +233,9 @@ function findTestScripts(repoPath) {
 
 async function runPreAnalysis(script, repoName, pkgName) {
     // first check if pre-analysis was already done
-    if (fs.readFileSync(script, PRE_ANALYSIS + '/results/nodejs-modules.txt').split('\n').includes(pkgName)) {
+    if (fs.readFileSync(script, PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return true;
-    } else if (fs.readFileSync(script, PRE_ANALYSIS + '/results/frontend-modules.txt').split('\n').includes(pkgName)) {
+    } else if (fs.readFileSync(script, PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return false;
     }
 
@@ -184,16 +245,21 @@ async function runPreAnalysis(script, repoName, pkgName) {
 }
 
 async function runPreAnalysisNodeWrapper(repoName, pkgName) {
-    // first check if pre-analysis was already done
-    if (fs.readFileSync(PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
-        return true;
-    } else if (fs.readFileSync(PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
-        return false;
+    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName},
+        ['/node_modules', 'tests/', 'test/', 'test-', 'test.js'] // exclude some classic test patterns to avoid false positives
+    );
+
+    const type = getPreAnalysisType(pkgName);
+
+    // if it is still not found it means that it was never instrumented
+    // for now add it to the err-modules to inspect it later
+    if (type === null) {
+        fs.appendFileSync(PRE_ANALYSIS + '/results/err-modules.txt', pkgName + '\n', {encoding: 'utf8'});
     }
 
-    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName}, ['/node_modules']);
+    return type === PKG_TYPE.NODE_JS;
 
-    return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
+    // return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
 
 async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
@@ -322,15 +388,31 @@ function locToSarif(dbLocation, message = null) {
     return sarifLoc;
 }
 
-async function runPipeline(pkgName) {
+function getPreAnalysisType(pkgName) {
+    if (fs.readFileSync(PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        return PKG_TYPE.NODE_JS;
+    } else if (fs.readFileSync(PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
+        || fs.readFileSync(PRE_ANALYSIS + '/results/err-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        return PKG_TYPE.FRONTEND;
+    } else {
+        return null;
+    }
+}
+
+async function runPipeline(pkgName, cliArgs) {
     if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
         console.log(`${pkgName} is a 'don't analyse' script`);
         return;
     }
 
-    fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
+    // first check if pre-analysis was already done
+    const preAnalysisType = getPreAnalysisType(pkgName);
+    if (preAnalysisType === PKG_TYPE.FRONTEND && !cliArgs.force) {
+        console.error(`Looks like ${pkgName} is a frontend module (from a previous analysis). Use --force to force re-evaluation.`);
+        return;
+    }
 
-    const onlyPre = getCliArg('onlyPre') !== null;
+    fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
     console.error('Fetching URL');
     const url = await fetchURL(pkgName);
@@ -358,14 +440,21 @@ async function runPipeline(pkgName) {
     // }
 
     console.error('\nRunning pre-analysis');
-    const preAnalysisSuccess = await runPreAnalysisNodeWrapper(repoPath, pkgName);
+    const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
+        ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
+        : preAnalysisType === PKG_TYPE.NODE_JS;
 
     if (!preAnalysisSuccess) {
-        console.error('\nNo internal dependencies detected');
+        console.error('\nNo internal dependencies detected.');
+        if (preAnalysisType !== null && !cliArgs.force) {
+            console.error('Use force to enforce re-evaluation.');
+        }
+
+        fs.rmSync(repoPath, {recursive: true, force: true});
         return;
     }
 
-    if (onlyPre) return;
+    if (cliArgs.onlyPre) return;
 
     console.error('\nRunning analysis');
     let run = 0;
@@ -466,28 +555,23 @@ async function runPipeline(pkgName) {
     // resultFiles.forEach(fs.unlinkSync); // could also be done async
 }
 
-async function getSarif(pkgName) {
-    let out = getCliArg('out', 1);
-    if (out) out = path.resolve(out[1]);
-    let outDir = getCliArg('outDir', 1);
-    if (outDir) outDir = path.resolve(outDir[1]);
-
-    let pkgNames = args.length > 2 ? [args[2]] : null;
-    console.log(pkgNames);
-
-    if (pkgNames === null) {
+async function getSarif(pkgName, cliArgs) {
+    let pkgNames;
+    if (pkgName === null) {
         const db = await getDb();
         const results = await db.collection('results');
         pkgNames = new Set(await results.find({}, {package: 1}).map(p => p.package).toArray());
+    } else {
+        pkgNames = [pkgName];
     }
 
     for (pkgName of pkgNames) {
         const sarif = await getSarifData(pkgName);
-        if (!out && !outDir) {
+        if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
             console.error(JSON.stringify(sarif));
         } else {
-            const outFile = out ?? (outDir + '/' + sanitizePkgName(pkgName) + '.sarif');
+            const outFile = cliArgs.out ?? (cliArgs.outDir + '/' + sanitizePkgName(pkgName) + '.sarif');
             fs.writeFileSync(outFile, JSON.stringify(sarif), {encoding: 'utf8'});
             console.error(`Output written to ${outFile}.`);
         }
@@ -546,42 +630,36 @@ function sanitizePkgName(pkgName) {
 }
 
 async function run() {
-    const sarif = getCliArg('sarif', 0);
-    const fromFile = getCliArg('fromFile', 0);
-    const skipTo = getCliArg('skipTo', 1);
+    const cliArgs = parseCliArgs();
 
-    if (sarif) {
-        try {
-            console.error(`Creating sarif`);
-            await getSarif();
-        } catch (e) {
-            console.error(`Could not create sarif`);
-            console.error(e);
+    if (cliArgs.pkgName === null) {
+        if (cliArgs.sarif) {
+            console.log('No pkg name or file specified. Creating sarif for all packages.');
+            await getSarif(null, cliArgs);
+        } else {
+            console.error('No package name specified')
+            process.exit(1);
         }
-        closeConnection();
-        return;
     }
 
+    const pkgNames = cliArgs.fromFile ? getPkgsFromFile(cliArgs.pkgName) : [cliArgs.pkgName];
 
-    if (args.length < 1) {
-        // ToDo - usage info
-        console.error('No package name specified')
-        process.exit(1);
-    }
-
-    const pkgNames = fromFile ? getPkgsFromFile(args[args.length - 1]) : [args[args.length - 1]];
-
-    let skippingDone = skipTo === null;
+    let skippingDone = !cliArgs.skipTo;
     for (const pkgName of pkgNames) {
-        if (!skippingDone && skipTo[1] !== pkgName) {
+        if (!skippingDone && cliArgs.skipTo !== pkgName) {
             continue;
         }
         skippingDone = true;
 
         try {
-            console.error(`Analysing '${pkgName}'`);
-            await runPipeline(pkgName)
-            console.error(`Analyzing ${pkgName} complete`);
+            if (cliArgs.sarif) {
+                console.error(`Creating sarif`);
+                await getSarif(pkgName, cliArgs);
+            } else {
+                console.error(`Analysing '${pkgName}'`);
+                await runPipeline(pkgName, cliArgs)
+                console.error(`Analyzing ${pkgName} complete`);
+            }
         } catch (e) {
             console.error(`Could not process '${pkgName}'`);
             console.error(e);
