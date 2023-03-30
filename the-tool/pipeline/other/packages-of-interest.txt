@@ -1283,7 +1283,7 @@ hogan.js
 dot
 coffeescript
 mitt
-apollo-boost
+apollo-bonodeost
 jasmine-core
 range-parser
 @types/glob

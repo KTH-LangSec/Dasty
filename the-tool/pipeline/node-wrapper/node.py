@@ -67,12 +67,12 @@ def main():
         sys.exit()
 
     # ToDo - support ava
-    exclude = ['bin/xo', 'bin/ava', 'bin/karam']  # don't run when included in command
+    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'bin/jest']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
     exclude_instrument = ['bin/nyc', 'bin/tap']
-    include_instrument = ['bin/mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js']  # only instrument if included in arg string
+    include_instrument = ['bin/mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js', 'bin/zap']  # only instrument if included in arg string
 
     # node flags and their expected args (defaults to 0)
     node_flags = {
@@ -95,6 +95,7 @@ def main():
             if sys.argv[idx + 1] == 'check-coverage':
                 return
 
+            # ToDo remove flags properly (non zero length)
             while sys.argv[idx + 1].startswith('-'):
                 sys.argv.remove(sys.argv[idx + 1])
 
@@ -121,23 +122,23 @@ def main():
         if 'mocha' in argv_string:
             if '--bail' in sys.argv:
                 sys.argv.remove('--bail')
-    else:
-        # check where the script starts (i.e. skipping node flags) to find the spot to add the script wrapper
-        script_idx = 1
-        while len(sys.argv) > script_idx and sys.argv[script_idx].startswith('-'):
-            if sys.argv[script_idx] in node_flags:
-                arg_length = node_flags.get(sys.argv[script_idx])
 
-                script_idx += 1
+    # check where the script starts (i.e. skipping node flags) to find the spot to add the script wrapper
+    script_idx = 1
+    while len(sys.argv) > script_idx and sys.argv[script_idx].startswith('-'):
+        if sys.argv[script_idx] in node_flags:
+            arg_length = node_flags.get(sys.argv[script_idx])
 
-                if arg_length >= 0:
-                    script_idx += arg_length
-                else:
-                    # we don't know how many exactly -> go on till next flag or start of some script
-                    while not sys.argv[script_idx].startswith('-') and not sys.argv[script_idx].endswith('.js') and not sys.argv[script_idx].endswith('.ts'):
-                        script_idx += 1
+            script_idx += 1
+
+            if arg_length >= 0:
+                script_idx += arg_length
             else:
-                script_idx += 1
+                # we don't know how many exactly -> go on till next flag or start of some script
+                while not sys.argv[script_idx].startswith('-') and not sys.argv[script_idx].endswith('.js') and not sys.argv[script_idx].endswith('.ts'):
+                    script_idx += 1
+        else:
+            script_idx += 1
 
     set_flag(argv_string, 'bin/mocha', ['--exit'])
     set_flag(argv_string, 'bin/_mocha', ['--exit'])
@@ -161,6 +162,8 @@ def main():
     set_flag(argv_string, 'bin/ava', ['-c'], '1')
     set_flag(argv_string, 'bin/ava', ['--no-worker-threads'])
     set_flag(argv_string, 'bin/ava', ['--timeout'], '180s')
+
+    # remove_flag(argv_string, '', '--integration')
 
     # nyc flags
     # remove_flag(argv_string, 'bin/nyc', '--reporter=lcov')

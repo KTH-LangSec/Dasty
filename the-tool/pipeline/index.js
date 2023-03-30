@@ -9,7 +9,7 @@ const path = require("path");
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
 const DEFAULT_TIMEOUT = -1;
-const MAX_RUNS = 3;
+const MAX_RUNS = 5;
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
@@ -29,11 +29,12 @@ const CLI_ARGS = {
     '--sarif': 0,
     '--fromFile': 0,
     '--skipTo': 1,
+    '--skipToLast': 0,
     '--force': 0
 }
 
 // keywords of packages that are known to be not interesting (for now)
-const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'eslint', '/types', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
+const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'eslint', '/types', '@type/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
 
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
@@ -49,6 +50,7 @@ function parseCliArgs() {
         sarif: false,
         fromFile: false,
         skipTo: undefined,
+        skipToLast: undefined,
         force: false,
         pkgName: undefined
     };
@@ -148,7 +150,7 @@ async function fetchURL(pkgName) {
         return url;
     } else {
         console.error('No git repository found');
-        process.exit(1);
+        return null;
     }
 }
 
@@ -364,7 +366,7 @@ async function fetchExceptions(pkgName, runId) {
         "runs._id": runId,
         "runs.results.sink.type": "functionCallArgException"
     });
-    return pkgResults ? pkgResults.runs[0].results.map(res => res.source) : null;
+    return pkgResults ? pkgResults.runs.find(r => r._id.equals(runId)).results.filter(res => res.sink.type === 'functionCallArgException').map(res => res.source) : null;
 }
 
 function locToSarif(dbLocation, message = null) {
@@ -416,6 +418,8 @@ async function runPipeline(pkgName, cliArgs) {
 
     console.error('Fetching URL');
     const url = await fetchURL(pkgName);
+    if (url === null) return;
+
     const resultBasePath = __dirname + '/results/';
 
     const sanitizedPkgName = sanitizePkgName(pkgName);
@@ -566,26 +570,61 @@ async function getSarif(pkgName, cliArgs) {
     }
 
     for (pkgName of pkgNames) {
-        const sarif = await getSarifData(pkgName);
+        const sarifCalls = await getSarifData(pkgName, 'functionCallArg');
+        const sarifException = await getSarifData(pkgName, 'functionCallArgException');
+
         if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
-            console.error(JSON.stringify(sarif));
+            console.error('Function calls');
+            console.error(JSON.stringify(sarifCalls));
+            console.error('Exceptions');
+            console.error(JSON.stringify(sarifException));
         } else {
-            const outFile = cliArgs.out ?? (cliArgs.outDir + '/' + sanitizePkgName(pkgName) + '.sarif');
-            fs.writeFileSync(outFile, JSON.stringify(sarif), {encoding: 'utf8'});
-            console.error(`Output written to ${outFile}.`);
+            let outFile;
+            if (cliArgs.out) {
+                const endIndex = cliArgs.out.indexOf('.sarif');
+                outFile = endIndex >= 0 ? cliArgs.out.substring(0, endIndex) : cliArgs.out;
+            } else {
+                outFile = cliArgs.outDir + '/' + sanitizePkgName(pkgName);
+            }
+
+            if (sarifCalls) {
+                const outFilename = outFile + '.sarif';
+                fs.writeFileSync(outFilename, JSON.stringify(sarifCalls), {encoding: 'utf8'});
+                console.error(`Function calls written to ${outFilename}.`);
+            }
+            if (sarifException) {
+                const outFilename = outFile + '-exceptions.sarif';
+                fs.writeFileSync(outFilename, JSON.stringify(sarifException), {encoding: 'utf8'});
+                console.error(`Exceptions written to ${outFilename}.`);
+            }
         }
     }
 }
 
-async function getSarifData(pkgName) {
+async function getSarifData(pkgName, sinkType) {
     const db = await getDb();
-    const results = await db.collection('results').findOne({package: pkgName});
+    const query = {package: pkgName};
+    if (sinkType) {
+        query["runs.results.sink.type"] = sinkType
+    }
+
+    let runs = (await db.collection('results').findOne(query))?.runs;
+    if (!runs) return null;
+
+    const filteredRuns = [];
+    runs.forEach(run => {
+        run.results = run.results?.filter(res => res.sink.type === sinkType);
+        if (run.results?.length > 0) {
+            filteredRuns.push(run);
+        }
+    });
+    if (filteredRuns.length === 0) return null;
 
     return {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
-        runs: results.runs.map(run => ({
+        runs: filteredRuns.map(run => ({
             tool: {
                 driver: {
                     name: 'GadgetTaintTracker',
@@ -594,9 +633,9 @@ async function getSarifData(pkgName) {
                 }
             },
             results: run.results.map(result => ({
-                ruleId: 'ToDo',
+                ruleId: run._id,
                 level: 'error',
-                message: {text: `Flow found into sink {type: ${result.sink.type}, value: ${result.sink.value}, code: ${result.sink.code}}`},
+                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},
@@ -611,7 +650,7 @@ async function getSarifData(pkgName) {
                             },
                             {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}}`)},
                             ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
-                            {location: locToSarif(result.sink.location, `{argIndex: ${result.sink.argIndex}}`)}
+                            {location: locToSarif(result.sink.location, `Sink {argIndex: ${result.sink.argIndex}, value: ${result.sink.value}, module: ${result.sink.module}}`)}
                         ]
                     }]
                 }]
@@ -632,24 +671,17 @@ function sanitizePkgName(pkgName) {
 async function run() {
     const cliArgs = parseCliArgs();
 
-    if (cliArgs.pkgName === null) {
-        if (cliArgs.sarif) {
-            console.log('No pkg name or file specified. Creating sarif for all packages.');
-            await getSarif(null, cliArgs);
-        } else {
-            console.error('No package name specified')
-            process.exit(1);
-        }
-    }
-
     const pkgNames = cliArgs.fromFile ? getPkgsFromFile(cliArgs.pkgName) : [cliArgs.pkgName];
 
-    let skippingDone = !cliArgs.skipTo;
+    let skipTo = cliArgs.skipTo;
+    if (!skipTo && cliArgs.skipToLast) {
+        skipTo = fs.readFileSync(__dirname + '/other/last-analyzed.txt', {encoding: 'utf8'});
+    }
     for (const pkgName of pkgNames) {
-        if (!skippingDone && cliArgs.skipTo !== pkgName) {
+        if (skipTo && skipTo !== pkgName) {
             continue;
         }
-        skippingDone = true;
+        skipTo = null;
 
         try {
             if (cliArgs.sarif) {

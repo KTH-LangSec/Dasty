@@ -1774,3 +1774,804 @@ test/ --integration
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/yosay/node_modules/.bin/xo
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/yosay/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+./node_modules/.bin/nyc ./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+--trace-warnings --throw-deprecation /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/superagent/node_modules/mocha/lib/cli/cli.js test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js --diff --require should --reporter spec --slow 2000 --timeout 20000 --exit --no-config --no-package --no-opts --extension js --ui bdd
+./node_modules/.bin/nyc ./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+--trace-warnings --throw-deprecation /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/superagent/node_modules/mocha/lib/cli/cli.js test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js --diff --require should --reporter spec --slow 2000 --timeout 20000 --exit --no-config --no-package --no-opts --extension js --ui bdd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+./node_modules/.bin/nyc ./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+--trace-warnings --throw-deprecation /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/superagent/node_modules/mocha/lib/cli/cli.js test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js --diff --require should --reporter spec --slow 2000 --timeout 20000 --exit --no-config --no-package --no-opts --extension js --ui bdd
+./node_modules/.bin/nyc ./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+./node_modules/.bin/mocha --require should --trace-warnings --throw-deprecation --reporter spec --slow 2000 --timeout 5000 --exit test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js
+--trace-warnings --throw-deprecation /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/superagent/node_modules/mocha/lib/cli/cli.js test/agent-base.js test/basic.js test/content-type.js test/form.js test/json.js test/redirects.js test/request.js test/retry.js test/timeout.js test/use.js test/node/agency.js test/node/basic-auth.js test/node/basic.js test/node/buffers.js test/node/exports.js test/node/flags.js test/node/form.js test/node/http2.js test/node/https.js test/node/image.js test/node/incoming-multipart.js test/node/inflate.js test/node/lookup.js test/node/multipart.js test/node/network-error.js test/node/not-modified.js test/node/parsers.js test/node/pipe-redirect.js test/node/pipe.js test/node/query.js test/node/redirects-other-host.js test/node/redirects.js test/node/response-readable-stream.js test/node/serialize.js test/node/set-host.js test/node/toError.js test/node/unix-sockets.js test/node/user-agent.js test/node/utils.js --diff --require should --reporter spec --slow 2000 --timeout 20000 --exit --no-config --no-package --no-opts --extension js --ui bdd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+--version
+./node_modules/.bin/mocha --require ./test/bootstrap --reporter dot test/assert.js test/configuration.js test/expect.js test/globalErr.js test/globalShould.js test/plugins.js test/should.js test/utilities.js test/esm.mjs
+./node_modules/.bin/browserify --bare --outfile chai.js --standalone chai --entry index.js
+./node_modules/karma/bin/karma start --single-run --browsers HeadlessChrome
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+--version
+./node_modules/.bin/mocha --require ./test/bootstrap --reporter dot test/assert.js test/configuration.js test/expect.js test/globalErr.js test/globalShould.js test/plugins.js test/should.js test/utilities.js test/esm.mjs
+./node_modules/.bin/browserify --bare --outfile chai.js --standalone chai --entry index.js
+./node_modules/karma/bin/karma start --single-run --browsers HeadlessChrome
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+--version
+./node_modules/.bin/mocha --require ./test/bootstrap --reporter dot test/assert.js test/configuration.js test/expect.js test/globalErr.js test/globalShould.js test/plugins.js test/should.js test/utilities.js test/esm.mjs
+./node_modules/.bin/browserify --bare --outfile chai.js --standalone chai --entry index.js
+./node_modules/karma/bin/karma start --single-run --browsers HeadlessChrome
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/.bin/grunt test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+build/rollup.js --browser --out=./tmp/browser/less.min.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/less/packages/less/node_modules/jest-worker/build/workers/processChild.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/prettier/node_modules/.bin/cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/prettier/node_modules/.bin/jest --runInBand
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/.bin/zap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/bom.test.coffee test decoded BOM
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building basic XML structure
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test setting XML declaration
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test pretty by default
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test setting indentation
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test headless option
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test allowSurrogateChars option
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test explicit rootName is always used: 1. when there is only one element
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test explicit rootName is always used: 2. when there are multiple elements
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test default rootName is used when there is more than one element in the hash
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test when there is only one first-level element in the hash, that is used as root
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test parser -> builder roundtrip
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with undefined value
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with null value
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test escapes escaped characters
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test cdata text nodes
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test cdata text nodes with escaped end sequence
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test uses cdata only for chars &, <, >
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test uses cdata for string values of objects
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test does not error on non string values when checking for cdata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test does not error on array values when checking for cdata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with array
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with defaults
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with empty objects and functions
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitCharkey
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with mergeAttrs and not explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with mergeAttrs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and preserveChildrenOrder
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder and includeWhiteChars
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder and includeWhiteChars and normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test element without children
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/.bin/zap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/bom.test.coffee test decoded BOM
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building basic XML structure
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test setting XML declaration
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test pretty by default
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test setting indentation
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test headless option
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test allowSurrogateChars option
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test explicit rootName is always used: 1. when there is only one element
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test explicit rootName is always used: 2. when there are multiple elements
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test default rootName is used when there is more than one element in the hash
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test when there is only one first-level element in the hash, that is used as root
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test parser -> builder roundtrip
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with undefined value
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with null value
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test escapes escaped characters
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test cdata text nodes
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test cdata text nodes with escaped end sequence
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test uses cdata only for chars &, <, >
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test uses cdata for string values of objects
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test does not error on non string values when checking for cdata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test does not error on array values when checking for cdata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with array
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with defaults
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with empty objects and functions
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitCharkey
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with mergeAttrs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with mergeAttrs and not explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and preserveChildrenOrder
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder and includeWhiteChars
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder and includeWhiteChars and normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test element without children
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text trimming, normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text trimming, no normalizing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text no trimming, normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text no trimming, no normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test enabled root node elimination
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test disabled root node elimination
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test default empty tag result
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test empty tag result specified null
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test invalid empty XML file
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test enabled normalizeTags
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with custom char and attribute object keys
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test child node without explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test child node with explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test ignore attributes
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple callback mode
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple callback with options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test double parse
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test element with garbage XML
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple function without options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple function with options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test async execution
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test validator
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test validation error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test error throwing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test error throwing after an error (async)
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test xmlns
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test callback should be called once
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test no error event after end
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test empty CDATA
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test CDATA whitespaces result
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test escaped CDATA result
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test non-strict parsing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test construction with new and without
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test not closed but well formed xml
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test cdata-named node
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test onend with empty xml
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parsing null
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parsing undefined
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test chunked processing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single attrNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple attrNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single attrValueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple attrValueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single valueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple valueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single tagNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single tagNameProcessors in simple callback
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple tagNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test attrValueProcessors key param
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test valueProcessors key param
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parseStringPromise parsing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parseStringPromise with bad input
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test global parseStringPromise parsing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test global parseStringPromise with options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test global parseStringPromise with bad input
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test firstCharLowerCase
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test stripPrefix
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test stripPrefix, ignore xmlns
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test parseNumbers
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test parseBooleans
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test a processor that filters by node name
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test a processor that filters by attr name
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/.bin/zap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/bom.test.coffee test decoded BOM
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building basic XML structure
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test setting XML declaration
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test pretty by default
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test setting indentation
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test headless option
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test allowSurrogateChars option
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test explicit rootName is always used: 1. when there is only one element
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test explicit rootName is always used: 2. when there are multiple elements
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test default rootName is used when there is more than one element in the hash
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test when there is only one first-level element in the hash, that is used as root
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test parser -> builder roundtrip
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with undefined value
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with null value
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test escapes escaped characters
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test cdata text nodes
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test cdata text nodes with escaped end sequence
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test uses cdata only for chars &, <, >
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test uses cdata for string values of objects
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test does not error on non string values when checking for cdata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test does not error on array values when checking for cdata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/builder.test.coffee test building obj with array
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with defaults
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with empty objects and functions
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitCharkey
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with mergeAttrs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with mergeAttrs and not explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and preserveChildrenOrder
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder and includeWhiteChars
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren and preserveChildrenOrder and includeWhiteChars and normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test element without children
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with explicitChildren and charsAsChildren
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text trimming, normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text trimming, no normalizing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text no trimming, normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test text no trimming, no normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test enabled root node elimination
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test disabled root node elimination
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test default empty tag result
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test empty tag result specified null
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test invalid empty XML file
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test enabled normalizeTags
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parse with custom char and attribute object keys
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test child node without explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test child node with explicitArray
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test ignore attributes
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple callback mode
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple callback with options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test double parse
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test element with garbage XML
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple function without options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test simple function with options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test async execution
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test validator
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test validation error
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test error throwing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test error throwing after an error (async)
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test xmlns
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test callback should be called once
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test no error event after end
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test empty CDATA
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test CDATA whitespaces result
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test escaped CDATA result
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test non-strict parsing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test construction with new and without
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test not closed but well formed xml
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test cdata-named node
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test onend with empty xml
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parsing null
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parsing undefined
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test chunked processing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single attrNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple attrNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single attrValueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple attrValueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single valueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple valueProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single tagNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test single tagNameProcessors in simple callback
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test multiple tagNameProcessors
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test attrValueProcessors key param
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test valueProcessors key param
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parseStringPromise parsing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test parseStringPromise with bad input
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test global parseStringPromise parsing
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test global parseStringPromise with options
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/parser.test.coffee test global parseStringPromise with bad input
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test normalize
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test firstCharLowerCase
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test stripPrefix
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test stripPrefix, ignore xmlns
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test parseNumbers
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test parseBooleans
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test a processor that filters by node name
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/node_modules/zap/bin/zap --one /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/xml2js/test/processors.test.coffee test a processor that filters by attr name
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/morgan/node_modules/.bin/mocha --check-leaks --reporter spec --bail
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/morgan/node_modules/.bin/mocha --check-leaks --reporter spec --bail
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/execa/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/execa/node_modules/.bin/c8 ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/execa/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/execa/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/postcss/node_modules/.bin/c8 pnpm unit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/tape test/custom-array-merge.js test/custom-is-mergeable-object.js test/merge-all.js test/merge.js test/prototype-poisoning.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/jsmd readme.md
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:typescript
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/tsc --noEmit test/typescript.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/ts-node test/typescript.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/tape test/custom-array-merge.js test/custom-is-mergeable-object.js test/merge-all.js test/merge.js test/prototype-poisoning.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/jsmd readme.md
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:typescript
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/tsc --noEmit test/typescript.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/deepmerge/node_modules/.bin/ts-node test/typescript.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run --silent tests-only
+mylib/sync
+mylib/async
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/resolve/node_modules/.bin/tape test/dotdot.js test/faulty_basedir.js test/filter.js test/filter_sync.js test/home_paths.js test/home_paths_sync.js test/mock.js test/mock_sync.js test/module_dir.js test/node-modules-paths.js test/node_path.js test/nonstring.js test/pathfilter.js test/pathfilter_sync.js test/precedence.js test/resolver.js test/resolver_sync.js test/shadowed_core.js test/subdirs.js test/symlinks.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:multirepo
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+packages/package-a
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/resolve/node_modules/.bin/aud --production
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm root -g
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm --version
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm --version
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm config get audit-level
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm audit --production
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test -ws --if-present
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-ci
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cors/node_modules/.bin/nyc --reporter=lcov --reporter=text mocha --require test/support/env
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cors/node_modules/.bin/mocha --require test/support/env
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-ci
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cors/node_modules/.bin/nyc --reporter=lcov --reporter=text mocha --require test/support/env
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cors/node_modules/.bin/mocha --require test/support/env
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/nan/node_modules/.bin/tap --gc --stderr test/js/accessors-test.js test/js/accessors2-test.js test/js/asyncprogressqueueworker-test.js test/js/asyncprogressqueueworkerstream-test.js test/js/asyncprogressworker-test.js test/js/asyncprogressworkersignal-test.js test/js/asyncprogressworkerstream-test.js test/js/asyncresource-test.js test/js/asyncworker-test.js test/js/asyncworkererror-test.js test/js/buffer-test.js test/js/bufferworkerpersistent-test.js test/js/callbackcontext-test.js test/js/converters-test.js test/js/error-test.js test/js/gc-test.js test/js/indexedinterceptors-test.js test/js/isolatedata-test.js test/js/json-parse-test.js test/js/json-stringify-test.js test/js/makecallback-test.js test/js/maybe-test.js test/js/methodswithdata-test.js test/js/morenews-test.js test/js/multifile-test.js test/js/namedinterceptors-test.js test/js/nancallback-test.js test/js/nannew-test.js test/js/news-test.js test/js/objectwraphandle-test.js test/js/persistent-test.js test/js/private-test.js test/js/returnemptystring-test.js test/js/returnnull-test.js test/js/returnundefined-test.js test/js/returnvalue-test.js test/js/setcallhandler-test.js test/js/settemplate-test.js test/js/strings-test.js test/js/symbols-test.js test/js/threadlocal-test.js test/js/trycatch-test.js test/js/typedarrays-test.js test/js/weak-test.js test/js/weak2-test.js test/js/wrappedobjectfactory-test.js
+--expose-gc accessors-test.js
+--expose-gc accessors2-test.js
+--expose-gc asyncprogressqueueworker-test.js
+--expose-gc asyncprogressqueueworkerstream-test.js
+--expose-gc asyncprogressworker-test.js
+--expose-gc asyncprogressworkersignal-test.js
+--expose-gc asyncprogressworkerstream-test.js
+--expose-gc asyncresource-test.js
+--expose-gc asyncworker-test.js
+--expose-gc asyncworkererror-test.js
+--expose-gc buffer-test.js
+--expose-gc bufferworkerpersistent-test.js
+--expose-gc callbackcontext-test.js
+--expose-gc converters-test.js
+--expose-gc error-test.js
+--expose-gc gc-test.js
+--expose-gc indexedinterceptors-test.js
+--expose-gc isolatedata-test.js
+--expose-gc json-parse-test.js
+--expose-gc json-stringify-test.js
+--expose-gc makecallback-test.js
+--expose-gc maybe-test.js
+--expose-gc methodswithdata-test.js
+--expose-gc morenews-test.js
+--expose-gc multifile-test.js
+--expose-gc namedinterceptors-test.js
+--expose-gc nancallback-test.js
+--expose-gc nannew-test.js
+--expose-gc news-test.js
+--expose-gc objectwraphandle-test.js
+--expose-gc persistent-test.js
+--expose-gc private-test.js
+--expose-gc returnemptystring-test.js
+--expose-gc returnnull-test.js
+--expose-gc returnundefined-test.js
+--expose-gc returnvalue-test.js
+--expose-gc setcallhandler-test.js
+--expose-gc settemplate-test.js
+--expose-gc strings-test.js
+--expose-gc symbols-test.js
+--expose-gc threadlocal-test.js
+--expose-gc trycatch-test.js
+--expose-gc typedarrays-test.js
+--expose-gc weak-test.js
+--expose-gc weak2-test.js
+--expose-gc wrappedobjectfactory-test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cookie-parser/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cookie-parser/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/marked/node_modules/.bin/jasmine --config=jasmine.json
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_initial_space.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee -b /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee -b /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang.coffee -- ANOTHER
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee -- /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_initial_space.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_initial_space.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffee-script/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee -b /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee -b /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -- ANOTHER
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee -- /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./bin/cake test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/cluster.coffee test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee -abck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang.coffee --
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_extra_args.coffee arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/test/importing/shebang_initial_space_extra_args.coffee -- arg
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee --enable-source-maps
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee ./test/importing/error.coffee
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/coffeescript/bin/coffee test/importing/error.coffee --enable-source-maps
+--eval const patchedPrepareStackTrace = Error.prepareStackTrace = function() {};
+require('./register.js');
+process.stdout.write(Error.prepareStackTrace === patchedPrepareStackTrace ? 'preserved' : 'overwritten');
+--eval require('./lib/coffeescript/coffeescript.js');
+process.stdout.write(Error.prepareStackTrace === undefined ? 'unused' : 'defined');
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mitt/node_modules/.bin/npm-run-all --silent typecheck lint mocha test-types
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --silent typecheck
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mitt/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --silent lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mitt/node_modules/.bin/eslint src test --ext ts --ext js
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --silent mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mitt/node_modules/.bin/mocha test
+--require esm /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mitt/node_modules/mocha/lib/cli/cli.js test test/*_test.ts --timeout 20000 --exit --no-config --no-package --extension ts --require ts-node/register --diff --reporter spec --slow 75 --ui bdd --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --silent test-types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mitt/node_modules/.bin/tsc test/test-types-compilation.ts --noEmit --strict
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/apollo-boost/node_modules/.bin/jest --config ./config/jest.config.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/range-parser/node_modules/.bin/mocha --reporter spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/range-parser/node_modules/mocha/bin/_mocha --timeout 20000 --exit --reporter spec --no-config --no-package --no-opts --diff --extension js --slow 75 --ui bdd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+--require source-map-support/register node_modules/@definitelytyped/dtslint/ types
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dompurify/node_modules/.bin/cross-env NODE_ENV=test BABEL_ENV=rollup npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:jsdom
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/dompurify/node_modules/.bin/cross-env NODE_ENV=test BABEL_ENV=rollup node test/jsdom-node-runner --dot
+test/jsdom-node-runner --dot
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:karma -- --browsers Chrome
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/test-forever.js ./test/integration/test-retry-operation.js ./test/integration/test-retry-wrap.js ./test/integration/test-timeouts.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/multiparty/node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/phosphor-widgets/node_modules/.bin/lerna run test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:coverage
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:only -- --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/imports-loader/node_modules/.bin/cross-env NODE_ENV=test jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/imports-loader/node_modules/.bin/jest --collectCoverageFrom=src/**/*.js --coverage
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/tad/bin/tad
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-translate-core/node_modules/.bin/jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-translate-core/node_modules/@angular/compiler-cli/bundles/ngcc/main-ngcc.js --source /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-translate-core/node_modules/ --properties es2015 main --first-only false --async
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-translate-core/node_modules/@angular/compiler-cli/bundles/ngcc/src/locking/lock_file_with_child_process/ngcc_lock_unlocker.js /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-translate-core/node_modules/@angular/compiler-cli/bundles/ngcc/__ngcc_lock_file__ 1
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/jasmine
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm run test:e2e
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/karma start karma.conf.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm run test:integration
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm pack
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm install
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm install /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/karma-jasmine-4.0.1.tgz
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/karma start --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm install
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm install /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/karma-jasmine-4.0.1.tgz
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/karma-jasmine/node_modules/.bin/karma start --single-run
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/all.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/all.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/all.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/all.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/all.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/sinon-chai/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/readdirp/node_modules/.bin/nyc npm run mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/d3-interpolate/node_modules/.bin/mocha test/**/*-test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/d3-interpolate/node_modules/.bin/eslint src test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run testonly:cover
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-graphql/node_modules/.bin/nyc npm run testonly
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run testonly
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-graphql/node_modules/.bin/mocha src/**/__tests__/**/*.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prettier:check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check:spelling
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build:npm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check:integrations
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run testonly:cover
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-graphql/node_modules/.bin/nyc npm run testonly
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run testonly
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-graphql/node_modules/.bin/mocha src/**/__tests__/**/*.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prettier:check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check:spelling
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build:npm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check:integrations
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/copy-dir/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run testonly:cover
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-graphql/node_modules/.bin/nyc npm run testonly
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run testonly
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-graphql/node_modules/.bin/mocha src/**/__tests__/**/*.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prettier:check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check:spelling
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build:npm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run check:integrations
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run standard
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bs58check/node_modules/.bin/nyc --check-coverage --branches 90 --functions 90 npm run unit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-handlebars/node_modules/.bin/jest --verbose
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:jest
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/entities/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint

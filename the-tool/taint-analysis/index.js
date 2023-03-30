@@ -23,9 +23,9 @@ function executionDone(err) {
     console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
     const ts = Date.now();
     resultHandler.writeFlowsToFile(flows, `${resultFilename}-${ts}.json`);
-    if (err !== undefined && analysis.lastReadTaint) {
-        resultHandler.writeCrashReport(analysis.lastReadTaint, err, resultFilename ? `${resultFilename}-${ts}-crash-report.json` : null);
-    }
+    // if (err !== undefined && analysis.lastReadTaint) {
+    //     resultHandler.writeCrashReport(analysis.lastReadTaint, err, resultFilename ? `${resultFilename}-${ts}-crash-report.json` : null);
+    // }
 }
 
 const analysis = new TaintAnalysis(

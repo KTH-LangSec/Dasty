@@ -1,21 +1,9 @@
-// const cp = require('child_process');
-const fs_1 = require("fs");
+const cp = require('child_process');
+// const fs_1 = require("fs");
 //
 // const path = '';
 //
-const path = '';
-try {
-    // console.log(fs_1.statSync);
-    const obj = {}
-    const x = ((0, fs_1.statSync)(obj.blub + ''));
-    // const x = Reflect.apply(fs_1.statSync, 0, [path]);
-    // const x = fs_1.statSync(path);
-    // console.log(x);
-    // const x = fs.statSync.call(0, path);
-    // console.log(x(path));
-} catch (e) {
-    // console.log(e);
-}
+// const path = '';
 // const testFile = '';
 // const result = statPathSync(testFile);
 //
@@ -35,9 +23,9 @@ try {
 //     }
 // }
 
-// const obj = {};
-//
-// const exec = cp.exec;
+const obj = {};
+
+const exec = cp.exec;
 // // console.log(exec);
 //
-// exec('echo' + obj.blub);
+exec('echo' + obj.blub);

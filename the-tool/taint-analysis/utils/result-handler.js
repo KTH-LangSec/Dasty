@@ -14,11 +14,15 @@ function replaceIID(obj) {
 
 const resultHandler = {
     writeFlowsToFile(flows, resultPath) {
+
         if (!flows || flows.length === 0) return;
 
         // remove duplicates
         const processed = [];
-        const filteredFlows = flows.filter(flow => {
+
+        flows = structuredClone(flows);
+
+        flows = flows.filter(flow => {
             const jsonString = JSON.stringify(flow);
             if (processed.includes(jsonString)) {
                 return false;
@@ -29,22 +33,22 @@ const resultHandler = {
         });
 
         // parse iid
-        filteredFlows.forEach(flow => {
+        flows.forEach(flow => {
             flow.source = replaceIID(flow.source);
             flow.entryPoint = replaceIID(flow.entryPoint);
-            flow.codeFlow.forEach((cf, index) => {
+            flow.codeFlow?.forEach((cf, index) => {
                 flow.codeFlow[index] = replaceIID(cf);
             });
             flow.sink = replaceIID(flow.sink);
         });
 
-        console.log(filteredFlows.length + ' are unique');
+        console.log(flows.length + ' are unique');
 
         if (resultPath) {
-            fs.writeFileSync(resultPath, JSON.stringify(filteredFlows), {encoding: 'utf8'});
+            fs.writeFileSync(resultPath, JSON.stringify(flows), {encoding: 'utf8'});
             console.log(`Results written to ${resultPath}`);
         } else {
-            console.log(JSON.stringify(filteredFlows));
+            console.log(JSON.stringify(flows));
         }
     },
 
