@@ -27,5 +27,7 @@ const obj = {};
 
 const exec = cp.exec;
 // // console.log(exec);
-//
+
 exec('echo' + obj.blub);
+
+while (true) ;

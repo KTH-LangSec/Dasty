@@ -1,5 +1,6 @@
 // DO NOT INSTRUMENT
 
+const {isAnalysisProxy, iidToLocation} = require("../utils/utils");
 const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
     .filter(strProp => strProp in Array.prototype);
 
@@ -14,8 +15,6 @@ class TaintProxyHandler {
 
         this.#type = type;
         this.__val = val ?? this.__getDefaultVal(type);
-
-        // this.__possibleTypes = ['number', 'string', 'array', 'object', 'function'];
     }
 
     #type = null;
@@ -31,6 +30,14 @@ class TaintProxyHandler {
         this.__val = this.__getDefaultVal(type);
     }
 
+    __setValue(val) {
+        if (val !== undefined) {
+            this.__type = getTypeOf(val);
+        }
+        this.__val = val;
+        this.__undef = val === undefined;
+    }
+
     __getDefaultVal(type) {
         // ToDo - boolean, symbol, bigint?
         switch (type) {
@@ -41,11 +48,12 @@ class TaintProxyHandler {
             case 'function':
                 return () => {
                 };
-            case 'non-primitive':
+            case 'boolean':
+                return true;
             case 'object':
                 return {};
             default:
-                return '';
+                return ' ';
         }
     }
 
@@ -57,6 +65,8 @@ class TaintProxyHandler {
                 return 'string';
             case 'number':
                 return 'number';
+            case 'boolean':
+                return 'boolean';
             case 'function':
                 return 'function';
             default:
@@ -98,7 +108,6 @@ class TaintProxyHandler {
         // if no function simply return the property value
         const newVal = this.__val[prop];
         return this.__copyTaint(newVal, createCodeFlow(null, 'propRead', prop), getTypeOf(newVal));
-
     }
 
     __getArrayElem(index) {
@@ -108,9 +117,10 @@ class TaintProxyHandler {
         // ToDo - think about if we should taint every access (it might not always be true -> e.g. if was set after the pollution)
         if (index >= this.__val.length) {
             const cf = createCodeFlow(null, 'arrayElemRead', index);
-            this.__val[index] = this.__copyTaint(null, cf, null, true);
+            return this.__copyTaint(null, cf, null, true);
+        } else {
+            return this.__val[index];
         }
-        return this.__val[index];
     }
 
     /**
@@ -122,20 +132,12 @@ class TaintProxyHandler {
      * @returns {{}} - the new TaintVal with the copied data
      */
     __copyTaint(newVal = undefined, codeFlow = undefined, type = undefined, undef = this.__undef) {
-        // (deep) copy taint val if no newVal is set
-        try {
-            newVal = newVal ?? (this.__val && typeof this.__val === 'object' ? structuredClone(this.__val) : this.__val);
-        } catch (e) {
-            // For some reason not all objects can be cloned - ToDo look into it
-            newVal = this.__val;
-        }
-
         const taintHandler = new TaintProxyHandler(
             null,
             null,
             null,
             undef,
-            newVal,
+            newVal ?? this.__val,
             type !== undefined ? type : this.__type
         );
 
@@ -154,25 +156,14 @@ class TaintProxyHandler {
         }, taintHandler);
     }
 
-    // indicates if the array already contains a tainted value
-    // this is used to add a 'fake' taint value to an array if needed to track element taint
-    // ToDo - adapt to proxy
-    // __arrElemTainted = false;
-    //
-    // __setupArrayTaintElem() {
-    //     if (this.__arrElemTainted) return;
-    //
-    //     this.__val.push(new TaintVal(this.__taint.source));
-    //     this.__arrElemTainted = true;
-    // }
-
     // Convert to primitive
     valueOf() {
-        return this.__val.valueOf();
+        // it might not have value of (e.g. null prototype object)
+        return this.__val?.valueOf();
     }
 
     toString() {
-        return this.__val.toString();
+        return this.__val?.toString();
     }
 
     /**
@@ -210,13 +201,19 @@ class TaintProxyHandler {
         this.__taint.codeFlow.push(cf);
     }
 
+    __getFlowSource() {
+        const taint = structuredClone(this.__taint);
+        taint.source.inferredType = this.__type;
+        return taint;
+    }
+
     // Proxy traps
 
     /**
      * Traps all property accesses
      * @param target - the proxied object (unused)
      * @param prop - the property name that is accessed
-     // * @param receiver - the proxy object (unused)
+     * @param receiver - the proxy object (unused)
      * @returns {any|{}}
      */
     get(target, prop, receiver) {
@@ -239,16 +236,11 @@ class TaintProxyHandler {
         } else {
             // handle all other property accesses
 
-            // we know that it is not a primitive - we actually don't know that as this might be just a check
-            // if (this.__type === null) {
-            //     this.__type = 'non-primitive';
-            // }
-
             // if the property exists copy it -> else set it to null (i.e. 'unknown')
             const newVal = this.__val[prop] ?? null;
 
             // if already tainted simply return it
-            if (newVal?.__taint) {
+            if (isAnalysisProxy(newVal) && newVal?.__taint) {
                 return newVal;
             }
 
@@ -257,21 +249,9 @@ class TaintProxyHandler {
 
             // ToDo - check blacklist
 
-            const taintProxy = this.__copyTaint(newVal, cf, type, newVal === undefined);
-
             // don't inject directly - this can lead to unwanted behavior and does not have any new information as we already track the taint via the base
-
-            // directly inject the new value and return it
-            // try {
-            //     this.__val[prop] = taintProxy;
-            // } catch (e) {
-            //     // might try to set readonly e.g. 'name' of function
-            // }
-            return taintProxy;
+            return this.__copyTaint(newVal, cf, type, newVal === undefined);
         }
-
-        // If nothing matches return untainted value
-        // return Reflect.get(...arguments);
     }
 
     set(target, prop, value, receiver) {
@@ -280,18 +260,15 @@ class TaintProxyHandler {
             return true;
         }
 
-        if (this.__type === null) {
-            this.__type = 'non-primitive';
-        }
-
         return Reflect.set(target, prop, value, receiver);
     }
 
     /** Traps function call (i.e. proxy(...)) */
     apply(target, thisArg, argumentList) {
-        // For now just return true
+        // Return a new tainted value with unknown type and null as value
         this.__type = 'function';
-        return true;
+        const cf = createCodeFlow(null, 'functionCall', '');
+        return this.__copyTaint(null, cf, null, false);
     }
 }
 

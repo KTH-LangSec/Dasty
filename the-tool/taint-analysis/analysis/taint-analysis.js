@@ -17,6 +17,7 @@ const {emulateBuiltin, emulateNodeJs} = require("./native");
 const {
     NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH, INF_LOOP_TIMEOUT, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH
 } = require("../conf/analysis-conf");
+const {addAndWriteFlows, writeFlows} = require('../utils/result-handler');
 
 class TaintAnalysis {
     deepCheckCount = 0;
@@ -35,6 +36,9 @@ class TaintAnalysis {
 
     uncaughtErr = null;
 
+    orExpr = 0; // indicator if we are currently in an or expression
+    undefOrReadVal = null; // temp var to store undef read in an or expression
+
     constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
@@ -43,9 +47,8 @@ class TaintAnalysis {
         this.resultFilename = resultFilename;
     }
 
-    invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope) => {
-        // always unwrap arguments for eval
-
+    invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
+        // also unwrap arguments for eval
         if (f === eval) {
             const evalWrapper = (...args) => {
                 this.unwrapCount++;
@@ -56,16 +59,15 @@ class TaintAnalysis {
             return {result: evalWrapper};
         }
 
-        // console.log(receiver);
-
         // We only care for internal node functions
-        if (isConstructor /*|| receiver === undefined*/ || f === undefined || (!functionScope?.startsWith('node:')) || f === console.log || f?.name === 'require') return;
+        if (isConstructor || f === undefined || (!functionScope?.startsWith('node:')) || f === console.log || f?.name === 'require' || argLength === 0) return;
 
         // ToDo - unwrap constructor calls
 
-        // // if it is an internal function replace it with wrapper function that unwraps taint values
-        // // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
+        // if it is an internal function replace it with wrapper function that unwraps taint values
         // // ToDo - should the return value be tainted?
+
+        // is it blacklisted?
         let blacklisted = false;
         if (this.sinksBlacklist) {
             const blacklistedFunctions = this.sinksBlacklist.get(functionScope);
@@ -81,16 +83,23 @@ class TaintAnalysis {
 
                 // check taints
                 if (!blacklisted) {
+                    const newFlows = [];
                     argTaints?.forEach(taintVal => {
-                        this.flows.push({
-                            ...taintVal.__taint, sink: {
-                                iid, type: 'functionCallArg',
+                        newFlows.push({
+                            ...taintVal.__getFlowSource(),
+                            sink: {
+                                iid,
+                                type: 'functionCallArg',
                                 module: functionScope,
                                 functionName: f?.name,
                                 argIndex: index
                             }
                         });
                     });
+
+                    if (newFlows.length > 0) {
+                        addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+                    }
                 }
 
                 taints.push(argTaints);
@@ -103,9 +112,10 @@ class TaintAnalysis {
                 return Reflect.apply(f, receiver, unwrappedArgs);
             } catch (e) {
                 taints.forEach((t, index) => {
+                    const newFlows = [];
                     t?.forEach(taintVal => {
-                        this.flows.push({
-                            ...taintVal.__taint,
+                        newFlows.push({
+                            ...taintVal.__getFlowSource(),
                             sink: {
                                 iid,
                                 type: 'functionCallArgException',
@@ -115,6 +125,10 @@ class TaintAnalysis {
                             }
                         });
                     });
+
+                    if (newFlows.length > 0) {
+                        addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+                    }
                 });
                 throw e;
             }
@@ -149,17 +163,23 @@ class TaintAnalysis {
             }
         }
 
+        const newFlows = [];
         args.forEach((arg, index) => {
             this.deepCheckCount++;
             const argTaints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
             argTaints?.forEach(taintVal => {
-                this.flows.push({
-                    ...taintVal.__taint, sink: {
+                newFlows.push({
+                    ...taintVal.__getFlowSource(),
+                    sink: {
                         iid, type: 'functionCallArg', module: functionScope, functionName: f?.name, argIndex: index
                     }
                 });
             });
         });
+
+        if (newFlows.length > 0) {
+            addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+        }
     }
 
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
@@ -192,9 +212,10 @@ class TaintAnalysis {
     };
 
     invokeFunException = (iid, e, f, receiver, args) => {
+        const newFlows = [];
         if (isAnalysisProxy(receiver) && receiver.__taint) {
-            this.flows.push({
-                ...receiver.__taint, // ...structuredClone(receiver.__taint),
+            newFlows.push({
+                ...receiver.__getFlowSource(), // ...structuredClone(receiver.__taint),
                 sink: {
                     iid,
                     type: 'functionCallReceiverException',
@@ -217,8 +238,8 @@ class TaintAnalysis {
                     tainted = true;
                 }
                 taints?.forEach(taintVal => {
-                    this.flows.push({
-                        ...taintVal.__taint, // ...structuredClone(taintVal.__taint),
+                    newFlows.push({
+                        ...taintVal.__getFlowSource(),
                         sink: {
                             iid,
                             type: 'functionCallArgException',
@@ -236,6 +257,10 @@ class TaintAnalysis {
             // }
         }
 
+        if (newFlows.length > 0) {
+            addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+        }
+
         if ((e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError')) {
             return {result: true}; // just return something to stop propagation of error
         }
@@ -243,7 +268,7 @@ class TaintAnalysis {
 
     read = (iid, name, val, isGlobal, isScriptLocal) => {
         if (isAnalysisProxy(val) && val?.__taint) {
-            this.lastReadTaint = val.__taint;
+            this.lastReadTaint = val;
         }
     }
 
@@ -257,6 +282,15 @@ class TaintAnalysis {
     };
 
     binary = (iid, op, left, right, result, isLogic) => {
+        if (iid === this.orExpr && (op === '||' || op === '??')) {
+            this.orExpr = 0;
+            if (this.undefOrReadVal !== null) {
+                this.undefOrReadVal.__setValue(result);
+                const val = this.undefOrReadVal;
+                this.undefOrReadVal = null;
+                return {result: val};
+            }
+        }
         // if it is a typeof comparison with a taint value use this information to infer the type
         if (((isAnalysisWrapper(left) && !left.__taint && left?.__typeOfResult) || (isAnalysisWrapper(right) && !right.__taint && right?.__typeOfResult)) && ['==', '===', '!=', '!=='].includes(op)) {
             let taint;
@@ -309,15 +343,14 @@ class TaintAnalysis {
             try {
                 offset.__type = 'string';
                 const cf = createCodeFlow(iid, 'propReadName', offset.valueOf());
-                const newTaint = offset.__copyTaint(base[offset.valueOf()], cf, null);
-                return {result: newTaint};
+                return {result: offset.__copyTaint(base[offset.valueOf()], cf, null)};
             } catch (e) {
                 return;
             }
         }
         if (!base || offset === '__taint') return;
 
-        // // this is probably an array access
+        // this is probably an array access
         if (isComputed && typeof offset === 'number') {
             if (isAnalysisProxy(base) && base.__taint) {
                 return {result: base.__getArrayElem(offset)};
@@ -330,7 +363,7 @@ class TaintAnalysis {
 
         if (isAnalysisProxy(val) && val.__taint) {
             // if it is already tainted report repeated read
-            this.lastReadTaint = val.__taint;
+            this.lastReadTaint = val;
             val.__addCodeFlow(iid, 'read', offset);
             return;
         }
@@ -346,15 +379,21 @@ class TaintAnalysis {
             const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
             // also inject directly (e.g. for cases such as this.undefinedProp || (this.undefinedProp = []))
             // ToDo - this can lead to problems when injecting when it is not used later
-            try {
-                // ToDo - make configurable
-                base[offset] = res;
-            } catch (e) {
-                // in some cases injection does not work e.g. read only
-            }
+            // try {
+            //     // ToDo - make configurable
+            //     base[offset] = res;
+            // } catch (e) {
+            //     // in some cases injection does not work e.g. read only
+            // }
 
-            this.lastReadTaint = res.__taint;
-            return {result: res};
+            this.lastReadTaint = res;
+
+            if (this.orExpr) {
+                // if in or temp store the taint value to return it in the end with the value of the expression
+                this.undefOrReadVal = res;
+            } else {
+                return {result: res};
+            }
         }
     }
 
@@ -382,7 +421,7 @@ class TaintAnalysis {
 
     conditional = (iid, result, isValue) => {
         // ToDo - record when branched and change for second run?
-        if (result?.__undef) {
+        if (isAnalysisProxy(result) && result.__taint && (result.__undef || !result.__val)) {
             return {result: false};
         }
     }
@@ -402,12 +441,16 @@ class TaintAnalysis {
             if (calls > MAX_LOOPS) {
                 console.log('Infinite loop detected - aborting');
 
+                console.log(iidToLocation(iid));
+                console.log(iidToCode(iid));
                 if (this.lastReadTaint) {
-                    this.flows.push({
-                        ...this.lastReadTaint, sink: {
+                    const newFlow = {
+                        ...this.lastReadTaint.__getFlowSource(),
+                        sink: {
                             iid, type: 'functionCallArgException', functionName: '<infiniteLoop>'
                         }
-                    });
+                    };
+                    addAndWriteFlows([newFlow], this.flows, this.resultFilename);
                 }
 
                 process.exit(1);
@@ -424,13 +467,15 @@ class TaintAnalysis {
 
     uncaughtException = (err, origin) => {
         if (this.lastReadTaint) {
-            this.flows.push({
-                ...this.lastReadTaint, sink: {
+            const newFlow = {
+                ...this.lastReadTaint.__getFlowSource(),
+                sink: {
                     type: 'functionCallArgException',
                     value: err.code + ' ' + err.toString(),
                     functionName: '<uncaughtException>'
                 }
-            });
+            };
+            addAndWriteFlows([newFlow], this.flows, this.resultFilename);
         }
         this.uncaughtErr = err;
     }
@@ -439,10 +484,29 @@ class TaintAnalysis {
         // console.log('checkTaintDeepFn', this.deepCheckCount);
         // console.log('checkTaintDeepEx', this.deepCheckExcCount);
         // console.log('unwrap', this.unwrapCount);
+        writeFlows(this.flows, this.resultFilename);
         if (this.executionDoneCallback) {
             this.executionDoneCallback(this.uncaughtErr);
         }
     }
+
+    startExpression = (iid, type) => {
+        if (this.orExpr === 0 && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
+            this.orExpr = iid;
+        }
+    }
+
+    // endExpression = (iid, type, result) => {
+    //     if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
+    //         this.orExpr = 0;
+    //     //     if (this.undefOrReadVal !== null) {
+    //     //         this.undefOrReadVal.__setValue(result);
+    //     //         const val = this.undefOrReadVal;
+    //     //         this.undefOrReadVal = null;
+    //     //         return {result: val};
+    //     //     }
+    //     }
+    // }
 }
 
 module.exports = TaintAnalysis;

@@ -13,14 +13,45 @@ function replaceIID(obj) {
 }
 
 const resultHandler = {
-    writeFlowsToFile(flows, resultPath) {
+    writeFlows(flows, resultPath) {
+        flows.forEach(flow => {
+            flow.source = replaceIID(flow.source);
+            flow.entryPoint = replaceIID(flow.entryPoint);
+            flow.codeFlow?.forEach((cf, index) => {
+                flow.codeFlow[index] = replaceIID(cf);
+            });
+            flow.sink = replaceIID(flow.sink);
+        });
 
-        if (!flows || flows.length === 0) return;
+        if (resultPath) {
+            fs.writeFileSync(resultPath, JSON.stringify(flows), {encoding: 'utf8'});
+        }
+    },
+
+    addAndWriteFlows(flowsToAdd, flows, resultPath) {
+        // flowsToAdd.forEach(flow => {
+        //     flow.source = replaceIID(flow.source);
+        //     flow.entryPoint = replaceIID(flow.entryPoint);
+        //     flow.codeFlow?.forEach((cf, index) => {
+        //         flow.codeFlow[index] = replaceIID(cf);
+        //     });
+        //     flow.sink = replaceIID(flow.sink);
+        // });
+
+        flows.push(...flowsToAdd);
+
+        // if (resultPath) {
+        // fs.writeFileSync(resultPath, JSON.stringify(flows), {encoding: 'utf8'});
+        // } else {
+        // console.log('New flows: ' + JSON.stringify(flowsToAdd));
+        // }
+    },
+
+    removeDuplicateFlows(flows, resultPath) {
+        if (!flows || flows.length === 0) return flows;
 
         // remove duplicates
         const processed = [];
-
-        flows = structuredClone(flows);
 
         flows = flows.filter(flow => {
             const jsonString = JSON.stringify(flow);
@@ -32,24 +63,11 @@ const resultHandler = {
             }
         });
 
-        // parse iid
-        flows.forEach(flow => {
-            flow.source = replaceIID(flow.source);
-            flow.entryPoint = replaceIID(flow.entryPoint);
-            flow.codeFlow?.forEach((cf, index) => {
-                flow.codeFlow[index] = replaceIID(cf);
-            });
-            flow.sink = replaceIID(flow.sink);
-        });
-
-        console.log(flows.length + ' are unique');
-
         if (resultPath) {
+            console.log(flows.length + ' are unique');
             fs.writeFileSync(resultPath, JSON.stringify(flows), {encoding: 'utf8'});
-            console.log(`Results written to ${resultPath}`);
-        } else {
-            console.log(JSON.stringify(flows));
         }
+        return flows;
     },
 
     writeCrashReport(taint, err, filename) {

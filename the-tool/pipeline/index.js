@@ -6,6 +6,7 @@ const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
 const path = require("path");
 const {sanitizePkgName} = require("./utils/utils");
+const resultHandler = require("../taint-analysis/utils/result-handler");
 
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
@@ -329,7 +330,7 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
 }
 
 async function writeResultsToDB(pkgName, resultFilenames) {
-    const results = [];
+    let results = [];
 
     // parse and merge all results
     resultFilenames.forEach(resultFilename => {
@@ -339,6 +340,8 @@ async function writeResultsToDB(pkgName, resultFilenames) {
     });
 
     if (results.length === 0) return null;
+
+    results = resultHandler.removeDuplicateFlows(results);
 
     const db = await getDb();
 
@@ -480,7 +483,6 @@ async function runPipeline(pkgName, cliArgs) {
                     'node_modules/istanbul-lib-instrument/',
                     'node_modules/mocha/',
                     'node_module/.bin/',
-                    'node_modules/jest/',
                     'node_modules/nyc',
                     'node_modules/jest',
                     'node_modules/@jest',

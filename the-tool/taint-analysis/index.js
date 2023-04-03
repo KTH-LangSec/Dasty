@@ -9,8 +9,12 @@ const {DEFAULT_CHECK_DEPTH} = require("./conf/analysis-conf");
 // function run() {
 const blacklistFilepath = __dirname + '/conf/sink-blacklist.json';
 
+const ts = Date.now();
 const pkgName = J$.initParams.pkgName ?? null;
-const resultFilename = J$.initParams.resultFilename ?? __dirname + `/results/${pkgName ?? 'result'}`;
+let resultFilename = J$.initParams.resultFilename ?? (pkgName ? __dirname + `/results/${pkgName}` : null);
+if (resultFilename) {
+    resultFilename += `-${ts}.json`;
+}
 
 let propBlacklist = null;
 if (J$.initParams.propBlacklist) {
@@ -21,18 +25,16 @@ function executionDone(err) {
     const flows = analysis.flows;
 
     console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
-    const ts = Date.now();
-    resultHandler.writeFlowsToFile(flows, `${resultFilename}-${ts}.json`);
-    // if (err !== undefined && analysis.lastReadTaint) {
-    //     resultHandler.writeCrashReport(analysis.lastReadTaint, err, resultFilename ? `${resultFilename}-${ts}-crash-report.json` : null);
-    // }
+
+    // ToDo - might be better to move to pipeline
+    resultHandler.removeDuplicateFlows(flows, resultFilename);
 }
 
 const analysis = new TaintAnalysis(
     pkgName,
     getSinkBlacklist(blacklistFilepath),
     propBlacklist,
-    resultFilename, // for the child process runs
+    resultFilename,
     executionDone
 );
 
