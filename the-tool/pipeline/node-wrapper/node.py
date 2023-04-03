@@ -2,6 +2,9 @@ import sys
 import subprocess
 import os
 
+NVM_NODE_EXEC = "/home/pmoosi/.nvm/versions/node/v18.12.1/bin/node"
+TIMEOUT = 60 * 15 #
+
 
 def get_flag_idx(flag):
     if flag in sys.argv:
@@ -10,6 +13,14 @@ def get_flag_idx(flag):
         for idx, argv in enumerate(sys.argv):
             if flag + '=' in argv:
                 return idx
+
+    return -1
+
+
+def get_program_idx(program):
+    for idx, argv in enumerate(sys.argv):
+        if program in argv:
+            return idx
 
     return -1
 
@@ -67,12 +78,12 @@ def main():
         sys.exit()
 
     # ToDo - support ava
-    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'bin/jest']  # don't run when included in command
+    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'bin/jest', 'bin/tap']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
     exclude_instrument = ['bin/nyc', 'bin/tap']
-    include_instrument = ['bin/mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js', 'bin/zap']  # only instrument if included in arg string
+    include_instrument = ['bin/mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js', 'bin/zap', 'bin/grunt']  # only instrument if included in arg string
 
     # node flags and their expected args (defaults to 0)
     node_flags = {
@@ -103,7 +114,7 @@ def main():
             return
 
     # node_exec = ["/home/pmoosi/.nvm/versions/node/v19.5.0/bin/node"]
-    node_exec = ["/home/pmoosi/.nvm/versions/node/v18.12.1/bin/node"]
+    node_exec = [NVM_NODE_EXEC]
     # instrument when testing framework or test directory or is simple node [file].js and not specifically excluded (exclude_instrument)
     instrument_args = []
     script_idx = 1
@@ -140,13 +151,23 @@ def main():
         else:
             script_idx += 1
 
-    set_flag(argv_string, 'bin/mocha', ['--exit'])
-    set_flag(argv_string, 'bin/_mocha', ['--exit'])
-    remove_flag(argv_string, 'bin/mocha', '--bail')
-    remove_flag(argv_string, 'bin/_mocha', '--bail')
-    remove_flag(argv_string, 'bin/mocha', '--forbid-only')
-    remove_flag(argv_string, 'bin/_mocha', '--forbid-only')
-    set_flag(argv_string, 'bin/mocha', ['-t', '--timeout', '--timeouts'], '20000')
+    mocha_bin = None
+    if 'bin/mocha' in argv_string:
+        mocha_bin = sys.argv[get_program_idx('bin/mocha')]
+    elif 'bin/_mocha' in argv_string:
+        mocha_bin = sys.argv[get_program_idx('bin/_mocha')]
+
+    if mocha_bin is not None:
+        # older mocha versions don't have the --exit flag and exit on default
+        proc = subprocess.run([NVM_NODE_EXEC, mocha_bin, '--help'], capture_output=True, text=True)
+        if '--exit' in str(proc.stdout):
+            set_flag(argv_string, mocha_bin, ['--exit'])
+
+        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '20000')
+
+        remove_flag(argv_string, mocha_bin, '--bail')
+        remove_flag(argv_string, mocha_bin, '--no-exit')
+        remove_flag(argv_string, mocha_bin, '--forbid-only')
 
     set_flag(argv_string, 'bin/jest', ['-w', '--maxWorkers'], '1')
     # set_flag(argv_string, 'bin/jest', ['--workerThreads=false'])
@@ -162,6 +183,8 @@ def main():
     set_flag(argv_string, 'bin/ava', ['-c'], '1')
     set_flag(argv_string, 'bin/ava', ['--no-worker-threads'])
     set_flag(argv_string, 'bin/ava', ['--timeout'], '180s')
+
+    set_flag(argv_string, 'bin/grunt', ['--force'])
 
     # remove_flag(argv_string, '', '--integration')
 
@@ -179,6 +202,7 @@ def main():
 
     print(' '.join(args), file=sys.stderr, flush=True)
 
+    # subprocess.run(args, timeout=TIMEOUT)
     subprocess.run(args)
 
 

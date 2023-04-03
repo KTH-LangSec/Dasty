@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const PreAnalysis = require('./pre-analysis');
+const {sanitizePkgName} = require("../utils/utils");
 
 const pkgName = J$.initParams.pkgName ?? 'result';
 
@@ -20,7 +21,7 @@ const analysis = new PreAnalysis(pkgName, (err) => {
 
     fs.appendFileSync(`${resultPath}/nodejs-modules.txt`, pkgName + '\n', {encoding: 'utf8'});
 
-    const resultFilename = `${resultPath}/${pkgName}.json`;
+    const resultFilename = `${resultPath}/${sanitizePkgName(pkgName)}.json`;
     const dependencies = analysis.builtinDependencies;
     if (fs.existsSync(resultFilename)) {
         dependencies.push(...JSON.parse(fs.readFileSync(resultFilename, {encoding: 'utf8'})));

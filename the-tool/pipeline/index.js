@@ -5,6 +5,7 @@ const fs = require('fs');
 const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
 const path = require("path");
+const {sanitizePkgName} = require("./utils/utils");
 
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
@@ -30,11 +31,12 @@ const CLI_ARGS = {
     '--fromFile': 0,
     '--skipTo': 1,
     '--skipToLast': 0,
+    '--skipDone': 0,
     '--force': 0
 }
 
 // keywords of packages that are known to be not interesting (for now)
-const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'eslint', '/types', '@type/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
+const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'lint', '/types', '@type/', '@types/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
 
 function getCliArg(name, numValues = 1) {
     const index = process.argv.findIndex(arg => arg === `--${name}`);
@@ -50,7 +52,8 @@ function parseCliArgs() {
         sarif: false,
         fromFile: false,
         skipTo: undefined,
-        skipToLast: undefined,
+        skipToLast: false,
+        skipDone: false,
         force: false,
         pkgName: undefined
     };
@@ -143,8 +146,10 @@ async function fetchURL(pkgName) {
     let url = (await execCmd(`npm view ${pkgName} repository.url`)).trim();
 
     if (url.startsWith('git+')) {
-        return url.substring(4);
-    } else if (url.startsWith('git://')) {
+        url = url.substring(4);
+    }
+
+    if (url.startsWith('git://')/* || url.startsWith('ssh://')*/) {
         return 'https' + url.substring(3);
     } else if (url.startsWith('https://')) {
         return url;
@@ -254,14 +259,12 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     const type = getPreAnalysisType(pkgName);
 
     // if it is still not found it means that it was never instrumented
-    // for now add it to the err-modules to inspect it later
+    // add it to the no-pre-modules to inspect it later
     if (type === null) {
-        fs.appendFileSync(PRE_ANALYSIS + '/results/err-modules.txt', pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(__dirname + '/other/no-pre-modules.txt', pkgName + '\n', {encoding: 'utf8'});
     }
 
     return type === PKG_TYPE.NODE_JS;
-
-    // return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
 }
 
 async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
@@ -394,7 +397,8 @@ function getPreAnalysisType(pkgName) {
     if (fs.readFileSync(PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.NODE_JS;
     } else if (fs.readFileSync(PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
-        || fs.readFileSync(PRE_ANALYSIS + '/results/err-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        || fs.readFileSync(PRE_ANALYSIS + '/results/err-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
+        || fs.readFileSync(__dirname + '/other/no-pre-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.FRONTEND;
     } else {
         return null;
@@ -416,111 +420,117 @@ async function runPipeline(pkgName, cliArgs) {
 
     fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
-    console.error('Fetching URL');
-    const url = await fetchURL(pkgName);
-    if (url === null) return;
+    try {
+        console.error('Fetching URL');
+        const url = await fetchURL(pkgName);
+        if (url === null) return;
 
-    const resultBasePath = __dirname + '/results/';
+        const resultBasePath = __dirname + '/results/';
 
-    const sanitizedPkgName = sanitizePkgName(pkgName);
-    const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
-    if (!fs.existsSync(repoPath)) {
-        console.error(`\nFetching repository ${url}`);
-        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
-    } else {
-        console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
-    }
-
-    console.error('\nInstalling dependencies');
-    await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
-
-    // console.error('Finding test scripts');
-    // const testScripts = findTestScripts(repoPath);
-    //
-    // if (testScripts.length === 0) {
-    //     console.error('No test scripts found');
-    //     fs.appendFileSync(resultBasePath + 'no-test-scripts.txt', pkgName + '\n', {encoding: 'utf8'});
-    //     return;
-    // }
-
-    console.error('\nRunning pre-analysis');
-    const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
-        ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
-        : preAnalysisType === PKG_TYPE.NODE_JS;
-
-    if (!preAnalysisSuccess) {
-        console.error('\nNo internal dependencies detected.');
-        if (preAnalysisType !== null && !cliArgs.force) {
-            console.error('Use force to enforce re-evaluation.');
+        const sanitizedPkgName = sanitizePkgName(pkgName);
+        const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
+        if (!fs.existsSync(repoPath)) {
+            console.error(`\nFetching repository ${url}`);
+            await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
+        } else {
+            console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
         }
 
-        fs.rmSync(repoPath, {recursive: true, force: true});
-        return;
-    }
+        console.error('\nInstalling dependencies');
+        await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
 
-    if (cliArgs.onlyPre) return;
+        // console.error('Finding test scripts');
+        // const testScripts = findTestScripts(repoPath);
+        //
+        // if (testScripts.length === 0) {
+        //     console.error('No test scripts found');
+        //     fs.appendFileSync(resultBasePath + 'no-test-scripts.txt', pkgName + '\n', {encoding: 'utf8'});
+        //     return;
+        // }
 
-    console.error('\nRunning analysis');
-    let run = 0;
-    let propBlacklist = null;
-    let blacklistedProps = [];
+        console.error('\nRunning pre-analysis');
+        const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
+            ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
+            : preAnalysisType === PKG_TYPE.NODE_JS;
 
-    while (true) {
-        const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
-        await runAnalysisNodeWrapper(
-            TAINT_ANALYSIS,
-            repoPath,
-            {pkgName, resultFilename, propBlacklist},
-            [
-                'node_modules/istanbul-lib-instrument/',
-                'node_modules/mocha/',
-                '.bin/',
-                'node_modules/jest/',
-                'node_modules/nyc',
-                'node_modules/jest',
-                'node_modules/@jest',
-                'node_modules/@babel',
-                'node_modules/babel'
-            ]
-        );
+        if (!preAnalysisSuccess) {
+            console.error('\nNo internal dependencies detected.');
+            if (preAnalysisType !== null && !cliArgs.force) {
+                console.error('Use force to enforce re-evaluation.');
+            }
 
-        const resultFiles = fs.readdirSync(resultBasePath)
-            .filter(f => f.startsWith(pkgName) && !f.includes('crash-report'))
-            .map(f => resultBasePath + f);
-
-        console.error('\nWriting results to DB');
-        const runId = await writeResultsToDB(pkgName, resultFiles);
-
-        console.error('\nCleaning up result files');
-        resultFiles.forEach(fs.unlinkSync); // could also be done async
-
-        // break if max run or if no flows found
-        if (!runId || ++run === MAX_RUNS) break;
-
-        console.error('\nChecking for exceptions');
-        const exceptions = await fetchExceptions(pkgName, runId);
-
-        if (!exceptions || exceptions.length === 0) {
-            console.error('\nNo exceptions found');
-            break;
+            // fs.rmSync(repoPath, {recursive: true, force: true});
+            return;
         }
 
-        console.error('\nExceptions found');
+        if (cliArgs.onlyPre) return;
 
-        const newBlacklistedProps = exceptions.map(e => e.prop).filter(p => !blacklistedProps.includes(p));
+        console.error('\nRunning analysis');
+        let run = 0;
+        let propBlacklist = null;
+        let blacklistedProps = [];
 
-        console.error('\nAdding properties to blacklist');
-        blacklistedProps.push(...newBlacklistedProps);
-        blacklistedProps = Array.from(new Set(blacklistedProps));
+        while (true) {
+            const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
+            await runAnalysisNodeWrapper(
+                TAINT_ANALYSIS,
+                repoPath,
+                {pkgName, resultFilename, propBlacklist},
+                [
+                    'node_modules/istanbul-lib-instrument/',
+                    'node_modules/mocha/',
+                    'node_module/.bin/',
+                    'node_modules/jest/',
+                    'node_modules/nyc',
+                    'node_modules/jest',
+                    'node_modules/@jest',
+                    'node_modules/@babel',
+                    'node_modules/babel',
+                    'node_modules/grunt',
+                    'eslint'
+                ]
+            );
 
-        propBlacklist = PROP_BLACKLISTS_DIR + sanitizedPkgName + '.json';
-        fs.writeFileSync(propBlacklist, JSON.stringify(blacklistedProps), {encoding: 'utf8'});
+            const resultFiles = fs.readdirSync(resultBasePath)
+                .filter(f => f.startsWith(pkgName) && !f.includes('crash-report'))
+                .map(f => resultBasePath + f);
 
-        console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
+            console.error('\nWriting results to DB');
+            const runId = await writeResultsToDB(pkgName, resultFiles);
+
+            console.error('\nCleaning up result files');
+            resultFiles.forEach(fs.unlinkSync); // could also be done async
+
+            // break if max run or if no flows found
+            if (!runId || ++run === MAX_RUNS) break;
+
+            console.error('\nChecking for exceptions');
+            const exceptions = await fetchExceptions(pkgName, runId);
+
+            if (!exceptions || exceptions.length === 0) {
+                console.error('\nNo exceptions found');
+                break;
+            }
+
+            console.error('\nExceptions found');
+
+            const newBlacklistedProps = exceptions.map(e => e.prop).filter(p => !blacklistedProps.includes(p));
+
+            console.error('\nAdding properties to blacklist');
+            blacklistedProps.push(...newBlacklistedProps);
+            blacklistedProps = Array.from(new Set(blacklistedProps));
+
+            propBlacklist = PROP_BLACKLISTS_DIR + sanitizedPkgName + '.json';
+            fs.writeFileSync(propBlacklist, JSON.stringify(blacklistedProps), {encoding: 'utf8'});
+
+            console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
+        }
+
+        console.error('\nCleaning up');
+        if (propBlacklist) fs.unlinkSync(propBlacklist);
+    } finally {
+        fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
-
-    console.error('\nCleaning up');
-    if (propBlacklist) fs.unlinkSync(propBlacklist);
 
     // let preAnalysisSuccess = false;
     // for (const testScript of testScripts) {
@@ -664,10 +674,6 @@ function getPkgsFromFile(filename) {
     return contents.split('\n').map(pkg => pkg.trim());
 }
 
-function sanitizePkgName(pkgName) {
-    return pkgName.replace('/', '-').replace('@', '');
-}
-
 async function run() {
     const cliArgs = parseCliArgs();
 
@@ -677,11 +683,20 @@ async function run() {
     if (!skipTo && cliArgs.skipToLast) {
         skipTo = fs.readFileSync(__dirname + '/other/last-analyzed.txt', {encoding: 'utf8'});
     }
+
+    let packagesToSkip = [];
+    if (cliArgs.skipDone) {
+        packagesToSkip = fs.readFileSync(__dirname + '/other/already-analyzed.txt', {encoding: 'utf8'}).split('\n').map(p => p.trim());
+    }
+
     for (const pkgName of pkgNames) {
         if (skipTo && skipTo !== pkgName) {
             continue;
         }
         skipTo = null;
+        if (packagesToSkip.includes(pkgName)) {
+            continue;
+        }
 
         try {
             if (cliArgs.sarif) {
