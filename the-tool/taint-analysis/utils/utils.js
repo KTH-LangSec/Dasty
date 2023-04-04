@@ -172,7 +172,7 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return;
 
-    if (isAnalysisProxy(arg) && arg.__taint) {
+    if (isTaintProxy(arg)) {
         taints.push(arg);
         // if we found one taint we can stop
         // checkTaintDeepRec(arg.valueOf(), depth - 1, taints, done);
@@ -246,7 +246,7 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
         return arg;
     }
 
-    if (isAnalysisProxy(arg) && arg.__taint) {
+    if (isTaintProxy(arg)) {
         return unwrapDeepRec(arg.valueOf(), depth - 1, done);
     }
 
@@ -304,11 +304,11 @@ function isAnalysisWrapper(obj) {
     }
 }
 
-function isAnalysisProxy(obj) {
+function isTaintProxy(obj) {
     try {
         return obj !== null && obj !== undefined
             && typeof obj === 'function'
-            && obj.__isAnalysisProxy;
+            && obj.__taint;
     } catch (e) {
         // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
         return false;
@@ -422,7 +422,7 @@ module.exports = {
     getSinkBlacklist,
     checkTaintDeep,
     unwrapDeep,
-    isAnalysisProxy,
+    isTaintProxy,
     isAnalysisWrapper,
     createInternalFunctionWrapper
 }

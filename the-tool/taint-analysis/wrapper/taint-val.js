@@ -1,6 +1,6 @@
 // DO NOT INSTRUMENT
 
-const {isAnalysisProxy, iidToLocation} = require("../utils/utils");
+const {iidToLocation, isTaintProxy} = require("../utils/utils");
 const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
     .filter(strProp => strProp in Array.prototype);
 
@@ -227,6 +227,8 @@ class TaintProxyHandler {
             // ToDo - handle symbol access
             return undefined;
             // return this.__val[prop] ? this.__val[prop] : undefined;
+        } else if (typeof prop === 'string' && prop.startsWith('__')) {
+            return undefined;
         } else if (this.__type === null && STRING_AND_ARRAY_PROPS.includes(prop)) {
             return this.__handleDefaultPropAccess(null, prop, typeof String.prototype[prop] === 'function');
         } else if (this.__type === 'string' || (this.__type === null && prop in String.prototype)) {
@@ -240,7 +242,7 @@ class TaintProxyHandler {
             const newVal = this.__val[prop] ?? null;
 
             // if already tainted simply return it
-            if (isAnalysisProxy(newVal) && newVal?.__taint) {
+            if (isTaintProxy(newVal)) {
                 return newVal;
             }
 

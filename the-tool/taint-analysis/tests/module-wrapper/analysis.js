@@ -1,6 +1,6 @@
 // DO NOT INSTRUMENT
 
-const {createModuleWrapper} = require("../../analysis/module-wrapper");
+const {createModuleWrapper} = require("../../wrapper/module-wrapper");
 
 class Analysis {
     // an object that keeps track of the current entry point (is updated by the module wrapper object)

@@ -3,6 +3,8 @@
 const {createCodeFlow} = require('./taint-val');
 const url = require('url');
 
+// Todo - deep taint check
+
 const builtins = new Map([
     [
         Array.prototype.join,

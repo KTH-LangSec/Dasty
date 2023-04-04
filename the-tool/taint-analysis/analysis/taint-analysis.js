@@ -1,23 +1,30 @@
 // DO NOT INSTRUMENT
-const {TaintVal, joinTaintValues, createStringTaintVal, createTaintVal, createCodeFlow} = require("./taint-val");
+const {
+    TaintVal,
+    joinTaintValues,
+    createStringTaintVal,
+    createTaintVal,
+    createCodeFlow
+} = require("../wrapper/taint-val");
 const {
     parseIID,
     iidToLocation,
     iidToCode,
     checkTaintDeep,
     unwrapDeep,
-    isAnalysisProxy,
     isAnalysisWrapper,
     hasTaint,
     checkTaints,
-    createInternalFunctionWrapper
+    createInternalFunctionWrapper,
+    isTaintProxy
 } = require("../utils/utils");
-const {createModuleWrapper} = require("./module-wrapper");
-const {emulateBuiltin, emulateNodeJs} = require("./native");
+const {createModuleWrapper} = require("../wrapper/module-wrapper");
+const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
 const {
     NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH, INF_LOOP_TIMEOUT, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH
 } = require("../conf/analysis-conf");
 const {addAndWriteFlows, writeFlows} = require('../utils/result-handler');
+const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
 class TaintAnalysis {
     deepCheckCount = 0;
@@ -42,15 +49,21 @@ class TaintAnalysis {
     lastExprResult = null; // stores the result of the last expression for use in successive expressions (e.g. obj and for of)
     forInObjects = []; // stores all for in object to reset them when the loop is done
 
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback) {
+    branchedOn = []; // stores taint values on which was branched
+
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback, forceBranchProp = null) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
         this.executionDoneCallback = executionDoneCallback;
         this.resultFilename = resultFilename;
+        this.forceBranchProp = forceBranchProp;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
+        // small optimization - don't do anything if nothing was injected so far
+        if (this.lastReadTaint === null) return;
+
         // also unwrap arguments for eval
         if (f === eval) {
             const evalWrapper = (...args) => {
@@ -112,7 +125,11 @@ class TaintAnalysis {
             });
 
             try {
-                return Reflect.apply(f, receiver, unwrappedArgs);
+                const result = Reflect.apply(f, receiver, unwrappedArgs);
+
+                // emulate the taint propagation
+                const emulatedResult = emulateNodeJs(functionScope, iid, result, receiver, f, args);
+                return emulatedResult ?? result;
             } catch (e) {
                 taints.forEach((t, index) => {
                     const newFlows = [];
@@ -141,7 +158,7 @@ class TaintAnalysis {
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
-        if (proxy && isAnalysisProxy(proxy) && !proxy.__taint && proxy?.__entryPoint) {
+        if (proxy && isAnalysisWrapper(proxy) && proxy?.__entryPoint) {
             this.entryPoint = proxy.__entryPoint;
             this.entryPointIID = iid;
         }
@@ -154,7 +171,7 @@ class TaintAnalysis {
         //     }
         // });
 
-        if (f === undefined || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') && f !== eval || f === console.log) return;
+        if (this.lastReadTaint === null || f === undefined || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') && f !== eval || f === console.log) return;
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
@@ -199,8 +216,10 @@ class TaintAnalysis {
         //     }
         // }
 
+        if (this.lastReadTaint === null) return;
+
         // emulate taint propagation for builtins
-        if (functionScope && !isAnalysisProxy(f)) {
+        if (functionScope && !isTaintProxy(f)) {
             let taintedResult = null;
             if (functionScope === '<builtin>') {
                 taintedResult = emulateBuiltin(iid, result, base, f, args);
@@ -215,8 +234,10 @@ class TaintAnalysis {
     };
 
     invokeFunException = (iid, e, f, receiver, args) => {
+        if (this.lastReadTaint === null) return;
+
         const newFlows = [];
-        if (isAnalysisProxy(receiver) && receiver.__taint) {
+        if (isTaintProxy(receiver)) {
             newFlows.push({
                 ...receiver.__getFlowSource(), // ...structuredClone(receiver.__taint),
                 sink: {
@@ -260,6 +281,20 @@ class TaintAnalysis {
             // }
         }
 
+        // if we only inject one property record all exceptions
+        if (this.forceBranchProp && this.lastReadTaint) {
+            newFlows.push({
+                    ...this.lastReadTaint.__getFlowSource(),
+                    sink: {
+                        iid,
+                        type: 'functionCallArgException',
+                        value: e.code + ' ' + e.toString(),
+                        functionName: f?.name
+                    }
+                }
+            )
+        }
+
         if (newFlows.length > 0) {
             addAndWriteFlows(newFlows, this.flows, this.resultFilename);
         }
@@ -270,7 +305,7 @@ class TaintAnalysis {
     }
 
     read = (iid, name, val, isGlobal, isScriptLocal) => {
-        if (isAnalysisProxy(val) && val?.__taint) {
+        if (isTaintProxy(val)) {
             this.lastReadTaint = val;
         }
     }
@@ -294,15 +329,18 @@ class TaintAnalysis {
                 return {result: val};
             }
         }
+
+        if (this.lastReadTaint === null) return;
+
         // if it is a typeof comparison with a taint value use this information to infer the type
-        if (((isAnalysisWrapper(left) && !left.__taint && left?.__typeOfResult) || (isAnalysisWrapper(right) && !right.__taint && right?.__typeOfResult)) && ['==', '===', '!=', '!=='].includes(op)) {
+        if (((isAnalysisWrapper(left) && left?.__isInfoWrapper && left.__type === INFO_TYPE.TYPE_OF) || (isAnalysisWrapper(right) && right?.__isInfoWrapper && right.__type === INFO_TYPE.TYPE_OF)) && ['==', '===', '!=', '!=='].includes(op)) {
             let taint;
             let type;
-            if (left.__typeOfResult) {
-                taint = left.__taintVal;
+            if (left.__info) {
+                taint = left.__info;
                 type = right;
             } else {
-                taint = right.__taintVal;
+                taint = right.__info;
                 type = left;
             }
 
@@ -312,7 +350,7 @@ class TaintAnalysis {
 
         // ToDo - look into not undefined or (default value for object deconstruction e.g. {prop = []})
 
-        if ((!isAnalysisProxy(left) || left?.__taint === undefined) && (!isAnalysisProxy(right) || right?.__taint === undefined)) return;
+        if (!isTaintProxy(left) && !isTaintProxy(right)) return;
 
         switch (op) {
             case '===':
@@ -320,7 +358,9 @@ class TaintAnalysis {
             case '!==':
             case '!=':
                 if (left?.__taint && right === undefined || right?.__taint && left === undefined) {
-                    return {result: op === '===' || op === '=='};
+                    // return {result: op === '===' || op === '=='};
+                    const res = op === '===' || op === '==';
+                    return {result: new InfoWrapper(res, left?.__taint ? left : right, INFO_TYPE.UNDEF_COMP)};
                 }
                 break;
             case '&&':
@@ -342,7 +382,7 @@ class TaintAnalysis {
         // }
 
         // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
-        if (isAnalysisProxy(offset) && offset.__taint) {
+        if (isTaintProxy(offset)) {
             try {
                 offset.__type = 'string';
                 const cf = createCodeFlow(iid, 'propReadName', offset.valueOf());
@@ -355,7 +395,7 @@ class TaintAnalysis {
 
         // this is probably an array access
         if (isComputed && typeof offset === 'number') {
-            if (isAnalysisProxy(base) && base.__taint) {
+            if (isTaintProxy(base)) {
                 return {result: base.__getArrayElem(offset)};
             } else {
                 return;
@@ -364,7 +404,7 @@ class TaintAnalysis {
 
         if (typeof offset !== 'string') return;
 
-        if (isAnalysisProxy(val) && val.__taint) {
+        if (isTaintProxy(val)) {
             // if it is already tainted report repeated read
             this.lastReadTaint = val;
             val.__addCodeFlow(iid, 'read', offset);
@@ -375,7 +415,7 @@ class TaintAnalysis {
         // we also don't handle undefined property accesses of tainted values here
         // this is instead handled in the proxy itself
         // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
-        if (!scope?.startsWith('file:') || base.__taint) return;
+        if ((this.forceBranchProp && this.forceBranchProp !== offset) || !scope?.startsWith('file:') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         if (val === undefined && Object.prototype.isPrototypeOf(base) && !this.propBlacklist?.includes(offset)) {
@@ -403,7 +443,7 @@ class TaintAnalysis {
     unary = (iid, op, left, result) => {
         // change typeof of tainted object to circumvent type checks
         // ToDo - check if it leads to other problems
-        if (!isAnalysisProxy(left) || !left.__taint) return;
+        if (!isTaintProxy(left)) return;
 
         switch (op) {
             case 'typeof':
@@ -411,11 +451,9 @@ class TaintAnalysis {
                  this is used further up in the comparison to assign the correct type */
                 // return {result: left.__typeof()};
                 return {
-                    result: (left.__type !== null && left.__type !== 'non-primitive') ? left.__typeof() : {
-                        __typeOfResult: true,
-                        __taintVal: left,
-                        __isAnalysisProxy: true
-                    }
+                    result: left.__type !== null
+                        ? left.__typeof()
+                        : new InfoWrapper(true, left, INFO_TYPE.TYPE_OF)
                 };
             case '!':
                 return {result: left.__undef};
@@ -423,9 +461,23 @@ class TaintAnalysis {
     }
 
     conditional = (iid, result, isValue) => {
-        // ToDo - record when branched and change for second run?
-        if (isAnalysisProxy(result) && result.__taint && (result.__undef || !result.__val)) {
-            return {result: false};
+        // ToDo - add brancing info also for &&
+        if (!this.forceBranchProp) {
+            if (isTaintProxy(result)) {
+                this.branchedOn.push(result.__taint.source.prop);
+                if (result.__undef || !result.__val) {
+                    return {result: false};
+                }
+            } else if (isAnalysisWrapper(result) && result.__isInfoWrapper && result.__type === INFO_TYPE.UNDEF_COMP) {
+                this.branchedOn.push(result.__info.__taint.source.prop);
+                return {result: result.__val};
+            }
+        } else {
+            if (isTaintProxy(result) && result.__taint.source.prop === this.forceBranchProp) {
+                return {result: result.__undef || !result.__val};
+            } else if (isAnalysisWrapper(result) && result.__isInfoWrapper && result.__type === INFO_TYPE.UNDEF_COMP && result.__info.__taint.source.prop === this.forceBranchProp) {
+                return {result: !result.__val};
+            }
         }
     }
 
@@ -436,7 +488,7 @@ class TaintAnalysis {
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
-        if (loopType === 'ForInIteration' && !this.loops.has(iid)) {
+        if (!this.forceBranchProp && loopType === 'ForInIteration' && !this.loops.has(iid)) {
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult)) { // this should always be the case - but just to be safe
                 // inject 'fake' property as source for ... in
                 if (!this.lastExprResult.__forInTaint) {
@@ -483,7 +535,7 @@ class TaintAnalysis {
     controlFlowRootExit = (iid, loopType) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
-        if (loopType === 'ForInIteration' && this.forInObjects.length > 0) {
+        if (!this.forceBranchProp && loopType === 'ForInIteration' && this.forInObjects.length > 0) {
             const obj = this.forInObjects.pop();
             if (obj) {
                 delete obj.__forInTaint;
@@ -516,6 +568,9 @@ class TaintAnalysis {
         if (this.executionDoneCallback) {
             this.executionDoneCallback(this.uncaughtErr);
         }
+
+        // ToDo - store it somewhere
+        console.log(new Set(this.branchedOn));
     }
 
     startExpression = (iid, type) => {

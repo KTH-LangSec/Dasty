@@ -15,6 +15,7 @@ let resultFilename = J$.initParams.resultFilename ?? (pkgName ? __dirname + `/re
 if (resultFilename) {
     resultFilename += `-${ts}.json`;
 }
+const forceBranchProp = J$.initParams.forceBranchProp ?? null;
 
 let propBlacklist = null;
 if (J$.initParams.propBlacklist) {
@@ -35,7 +36,8 @@ const analysis = new TaintAnalysis(
     getSinkBlacklist(blacklistFilepath),
     propBlacklist,
     resultFilename,
-    executionDone
+    executionDone,
+    forceBranchProp
 );
 
 J$.addAnalysis(analysis);

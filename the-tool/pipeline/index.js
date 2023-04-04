@@ -503,7 +503,7 @@ async function runPipeline(pkgName, cliArgs) {
             resultFiles.forEach(fs.unlinkSync); // could also be done async
 
             // break if max run or if no flows found
-            if (!runId || ++run === MAX_RUNS) break;
+            if (!runId || ++run === +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
             const exceptions = await fetchExceptions(pkgName, runId);
