@@ -1,4 +1,4 @@
-const cp = require('child_process');
+// const cp = require('child_process');
 // const fs_1 = require("fs");
 //
 // const path = '';
@@ -23,11 +23,17 @@ const cp = require('child_process');
 //     }
 // }
 
+// const obj = {};
+//
+// const exec = cp.exec;
+// // // console.log(exec);
+//
+// exec('echo' + obj.blub);
+//
+// while (true) ;
+
 const obj = {};
 
-const exec = cp.exec;
-// // console.log(exec);
+for (const prop in obj) {
 
-exec('echo' + obj.blub);
-
-while (true) ;
+}

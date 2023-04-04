@@ -314,6 +314,21 @@ class LogAnalysis {
         }));
     }
 
+    controlFlowRootEnter = (iid, loopType, conditionResult) => {
+        console.log(this.hookToString('controlFlowRootEnter', {
+            iid,
+            loopType,
+            conditionResult
+        }));
+    }
+
+    controlFlowRootExit = (iid, loopType) => {
+        console.log(this.hookToString('controlFlowRootExit', {
+            iid,
+            loopType
+        }));
+    }
+
     // }
 
     // if(false) {

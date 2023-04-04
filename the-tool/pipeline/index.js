@@ -33,16 +33,13 @@ const CLI_ARGS = {
     '--skipTo': 1,
     '--skipToLast': 0,
     '--skipDone': 0,
-    '--force': 0
+    '--force': 0,
+    '--exportRuns': 1,
+    '--maxRuns': 1
 }
 
 // keywords of packages that are known to be not interesting (for now)
 const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'lint', '/types', '@type/', '@types/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
-
-function getCliArg(name, numValues = 1) {
-    const index = process.argv.findIndex(arg => arg === `--${name}`);
-    return index >= 0 && args.length >= index + numValues ? args.splice(index, numValues + 1) : null;
-}
 
 function parseCliArgs() {
     // Set default values (also so that the ide linter shuts up)
@@ -56,7 +53,9 @@ function parseCliArgs() {
         skipToLast: false,
         skipDone: false,
         force: false,
-        pkgName: undefined
+        pkgName: undefined,
+        maxRuns: MAX_RUNS,
+        exportRuns: undefined
     };
 
     // a copy of the args with all parsed args removed
@@ -582,8 +581,8 @@ async function getSarif(pkgName, cliArgs) {
     }
 
     for (pkgName of pkgNames) {
-        const sarifCalls = await getSarifData(pkgName, 'functionCallArg');
-        const sarifException = await getSarifData(pkgName, 'functionCallArgException');
+        const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.exportRuns);
+        const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.exportRuns);
 
         if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
@@ -614,7 +613,7 @@ async function getSarif(pkgName, cliArgs) {
     }
 }
 
-async function getSarifData(pkgName, sinkType) {
+async function getSarifData(pkgName, sinkType, amountRuns = undefined) {
     const db = await getDb();
     const query = {package: pkgName};
     if (sinkType) {
@@ -623,6 +622,10 @@ async function getSarifData(pkgName, sinkType) {
 
     let runs = (await db.collection('results').findOne(query))?.runs;
     if (!runs) return null;
+
+    if (amountRuns) {
+        runs = runs.slice(-amountRuns);
+    }
 
     const filteredRuns = [];
     runs.forEach(run => {

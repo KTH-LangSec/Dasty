@@ -9,4 +9,4 @@ function runAnalysis(sandbox, log) {
 
 // console.log = () => {};
 
-runAnalysis(J$, false);
+runAnalysis(J$, true);

@@ -39,6 +39,9 @@ class TaintAnalysis {
     orExpr = 0; // indicator if we are currently in an or expression
     undefOrReadVal = null; // temp var to store undef read in an or expression
 
+    lastExprResult = null; // stores the result of the last expression for use in successive expressions (e.g. obj and for of)
+    forInObjects = []; // stores all for in object to reset them when the loop is done
+
     constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
@@ -433,8 +436,26 @@ class TaintAnalysis {
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
+        if (loopType === 'ForInIteration' && !this.loops.has(iid)) {
+            if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult)) { // this should always be the case - but just to be safe
+                // inject 'fake' property as source for ... in
+                if (!this.lastExprResult.__forInTaint) {
+                    this.lastExprResult.__forInTaint = createTaintVal(iid, 'forIntProp', {
+                        iid: this.entryPointIID,
+                        entryPoint: this.entryPoint
+                    }, false);
+                    this.forInObjects.push(this.lastExprResult);
+                } else {
+                    // in case of a nested for in over the same object don't inject again but add null to the stack, so we don't reset the property when returning from the inner loop
+                    this.forInObjects.push(null);
+                }
+
+                // store the object to reset it after the loop (stack for nested for ins)
+            }
+        }
+
         // to prevent infinite loops we keep track of how often the loop is entered and abort on a certain threshold
-        if (this.loops.length === 0 || !this.loops.has(iid)) {
+        if (!this.loops.has(iid)) {
             this.loops.set(iid, 1);
         } else {
             const calls = this.loops.get(iid) + 1;
@@ -461,6 +482,13 @@ class TaintAnalysis {
 
     controlFlowRootExit = (iid, loopType) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
+
+        if (loopType === 'ForInIteration' && this.forInObjects.length > 0) {
+            const obj = this.forInObjects.pop();
+            if (obj) {
+                delete obj.__forInTaint;
+            }
+        }
 
         this.loops.delete(iid);
     }
@@ -496,17 +524,18 @@ class TaintAnalysis {
         }
     }
 
-    // endExpression = (iid, type, result) => {
-    //     if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
-    //         this.orExpr = 0;
-    //     //     if (this.undefOrReadVal !== null) {
-    //     //         this.undefOrReadVal.__setValue(result);
-    //     //         const val = this.undefOrReadVal;
-    //     //         this.undefOrReadVal = null;
-    //     //         return {result: val};
-    //     //     }
-    //     }
-    // }
+    endExpression = (iid, type, result) => {
+        this.lastExprResult = result;
+        // if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
+        //     this.orExpr = 0;
+        // //     if (this.undefOrReadVal !== null) {
+        // //         this.undefOrReadVal.__setValue(result);
+        // //         const val = this.undefOrReadVal;
+        // //         this.undefOrReadVal = null;
+        // //         return {result: val};
+        // //     }
+        // }
+    }
 }
 
 module.exports = TaintAnalysis;

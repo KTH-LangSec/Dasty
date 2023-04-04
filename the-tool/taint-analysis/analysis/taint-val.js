@@ -159,11 +159,11 @@ class TaintProxyHandler {
     // Convert to primitive
     valueOf() {
         // it might not have value of (e.g. null prototype object)
-        return this.__val?.valueOf();
+        return this.__val.valueOf ? this.__val?.valueOf() : this.__val;
     }
 
     toString() {
-        return this.__val?.toString();
+        return this.__val.toString ? this.__val?.toString() : this.__val;
     }
 
     /**
