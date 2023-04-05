@@ -23,15 +23,20 @@ const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
 const {
     NODE_EXEC_PATH, DEFAULT_CHECK_DEPTH, INF_LOOP_TIMEOUT, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH
 } = require("../conf/analysis-conf");
-const {addAndWriteFlows, writeFlows} = require('../utils/result-handler');
+const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
+/**
+ * The analysis class that is registered with nodeprof and implements the hooks
+ */
+
 class TaintAnalysis {
+    // debug counters
     deepCheckCount = 0;
     deepCheckExcCount = 0;
     unwrapCount = 0;
 
-    flows = [];
+    flows = []; // an array of all detected flows
 
     // an object that keeps track of the current entry point (is updated by the module wrapper object)
     entryPointIID = 0;
@@ -47,27 +52,35 @@ class TaintAnalysis {
     undefOrReadVal = null; // temp var to store undef read in an or expression
 
     lastExprResult = null; // stores the result of the last expression for use in successive expressions (e.g. obj and for of)
-    forInObjects = []; // stores all for in object to reset them when the loop is done
+    forInInjectedProps = []; // stores all for in object to reset them when the loop is done
 
     branchedOn = []; // stores taint values on which was branched
 
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename, executionDoneCallback, forceBranchProp = null) {
+    processedFlow = new Map(); // keeps track of found flows to not write them repeatedly
+
+    /**
+     * @param pkgName
+     * @param sinksBlacklist a blacklist of node internal function and modules that should not be considered sinks
+     * @param propBlacklist a blacklist of props that should not be injected; is ignored when forceBranchProp is set
+     * @param resultFilename the filename to write the result to; if set flows are written immediately when found; to write only once when done do so in the callback
+     * @param branchedOnFilename the filename to write tainted property names to if branched on them; is written immediately if set
+     * @param executionDoneCallback is called when the execution is done (i.e. on process.exit)
+     * @param forceBranchProp specifies a specific property; if set only this property is injected and all branching conditions affected by it ar 'inversed'
+     */
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranchProp = null) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
         this.executionDoneCallback = executionDoneCallback;
         this.resultFilename = resultFilename;
+        this.branchedOnFilename = branchedOnFilename;
         this.forceBranchProp = forceBranchProp;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
-        // small optimization - don't do anything if nothing was injected so far
-        if (this.lastReadTaint === null) return;
-
         // also unwrap arguments for eval
         if (f === eval) {
             const evalWrapper = (...args) => {
-                this.unwrapCount++;
                 const unwrappedArgs = args.map(arg => unwrapDeep(arg));
                 return Reflect.apply(f, receiver, unwrappedArgs);
             }
@@ -75,8 +88,13 @@ class TaintAnalysis {
             return {result: evalWrapper};
         }
 
-        // We only care for internal node functions
-        if (isConstructor || f === undefined || (!functionScope?.startsWith('node:')) || f === console.log || f?.name === 'require' || argLength === 0) return;
+        if (isConstructor
+            || f === undefined
+            || (!functionScope?.startsWith('node:')) // We only care for internal node functions
+            || f === console.log
+            || f.name === 'require'
+            || f.name === 'emit'
+            || argLength === 0) return;
 
         // ToDo - unwrap constructor calls
 
@@ -114,7 +132,7 @@ class TaintAnalysis {
                     });
 
                     if (newFlows.length > 0) {
-                        addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+                        addAndWriteFlows(newFlows, this.flows, this.processedFlow, this.resultFilename);
                     }
                 }
 
@@ -147,7 +165,7 @@ class TaintAnalysis {
                     });
 
                     if (newFlows.length > 0) {
-                        addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+                        addAndWriteFlows(newFlows, this.flows, this.processedFlow, this.resultFilename);
                     }
                 });
                 throw e;
@@ -198,7 +216,7 @@ class TaintAnalysis {
         });
 
         if (newFlows.length > 0) {
-            addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+            addAndWriteFlows(newFlows, this.flows, this.processedFlow, this.resultFilename);
         }
     }
 
@@ -237,9 +255,10 @@ class TaintAnalysis {
         if (this.lastReadTaint === null) return;
 
         const newFlows = [];
+        // record tainted receiver
         if (isTaintProxy(receiver)) {
             newFlows.push({
-                ...receiver.__getFlowSource(), // ...structuredClone(receiver.__taint),
+                ...receiver.__getFlowSource(),
                 sink: {
                     iid,
                     type: 'functionCallReceiverException',
@@ -250,6 +269,7 @@ class TaintAnalysis {
             });
         }
 
+        // check if any arguments are tainted
         if (args?.length > 0) {
             let tainted = false; // indicator if any argument is tainted
 
@@ -296,7 +316,7 @@ class TaintAnalysis {
         }
 
         if (newFlows.length > 0) {
-            addAndWriteFlows(newFlows, this.flows, this.resultFilename);
+            addAndWriteFlows(newFlows, this.flows, this.processedFlow, this.resultFilename);
         }
 
         if ((e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError')) {
@@ -312,7 +332,6 @@ class TaintAnalysis {
 
 
     // this is needed to trigger instrumentation of object destructor syntax ({someProp})
-    // ToDo - check why
     write = function (iid, name, val, lhs, isGlobal, isScriptLocal) {
         // if (val?.__taint) {
         //     val.__addCodeFlow(iid, 'write', name);
@@ -330,8 +349,6 @@ class TaintAnalysis {
             }
         }
 
-        if (this.lastReadTaint === null) return;
-
         // if it is a typeof comparison with a taint value use this information to infer the type
         if (((isAnalysisWrapper(left) && left?.__isInfoWrapper && left.__type === INFO_TYPE.TYPE_OF) || (isAnalysisWrapper(right) && right?.__isInfoWrapper && right.__type === INFO_TYPE.TYPE_OF)) && ['==', '===', '!=', '!=='].includes(op)) {
             let taint;
@@ -348,7 +365,7 @@ class TaintAnalysis {
             return {result: op === '===' || op === '=='};
         }
 
-        // ToDo - look into not undefined or (default value for object deconstruction e.g. {prop = []})
+        // ToDo - look into notUndefinedOr (default value for object deconstruction e.g. {prop = []})
 
         if (!isTaintProxy(left) && !isTaintProxy(right)) return;
 
@@ -374,14 +391,6 @@ class TaintAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, functionScope, isAsync, scope) => {
-        // if (functionScope !== undefined) {
-        //     const internalWrapper = createInternalFunctionWrapper(iid, val, base, isAsync, this.flows, functionScope);
-        //     if (internalWrapper !== null) {
-        //         return internalWrapper;
-        //     }
-        // }
-
-        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
         if (isTaintProxy(offset)) {
             try {
                 offset.__type = 'string';
@@ -391,6 +400,8 @@ class TaintAnalysis {
                 return;
             }
         }
+
+        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
         if (!base || offset === '__taint') return;
 
         // this is probably an array access
@@ -404,8 +415,8 @@ class TaintAnalysis {
 
         if (typeof offset !== 'string') return;
 
+        // if it is already tainted report repeated read
         if (isTaintProxy(val)) {
-            // if it is already tainted report repeated read
             this.lastReadTaint = val;
             val.__addCodeFlow(iid, 'read', offset);
             return;
@@ -418,16 +429,15 @@ class TaintAnalysis {
         if ((this.forceBranchProp && this.forceBranchProp !== offset) || !scope?.startsWith('file:') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
-        if (val === undefined && Object.prototype.isPrototypeOf(base) && !this.propBlacklist?.includes(offset)) {
+        if (val === undefined && Object.prototype.isPrototypeOf(base) && (this.forceBranchProp || !this.propBlacklist?.includes(offset))) {
             const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
-            // also inject directly (e.g. for cases such as this.undefinedProp || (this.undefinedProp = []))
-            // ToDo - this can lead to problems when injecting when it is not used later
-            // try {
-            //     // ToDo - make configurable
-            //     base[offset] = res;
-            // } catch (e) {
-            //     // in some cases injection does not work e.g. read only
-            // }
+
+            try {
+                // ({})['__proto__'][offset] = res; ToDo - this might be better but causes problems when unwrapping
+                base[offset] = res;
+            } catch (e) {
+                // in some cases injection does not work e.g. read only
+            }
 
             this.lastReadTaint = res;
 
@@ -442,14 +452,12 @@ class TaintAnalysis {
 
     unary = (iid, op, left, result) => {
         // change typeof of tainted object to circumvent type checks
-        // ToDo - check if it leads to other problems
         if (!isTaintProxy(left)) return;
 
         switch (op) {
             case 'typeof':
                 /** if we don't know the type yet return the proxy object and an information that it is the result of typeof
                  this is used further up in the comparison to assign the correct type */
-                // return {result: left.__typeof()};
                 return {
                     result: left.__type !== null
                         ? left.__typeof()
@@ -461,15 +469,16 @@ class TaintAnalysis {
     }
 
     conditional = (iid, result, isValue) => {
-        // ToDo - add brancing info also for &&
+        // ToDo - add branching info also for &&
+
         if (!this.forceBranchProp) {
             if (isTaintProxy(result)) {
-                this.branchedOn.push(result.__taint.source.prop);
+                addAndWriteBranchedOn(result.__taint.source.prop, this.branchedOn, this.branchedOnFilename);
                 if (result.__undef || !result.__val) {
                     return {result: false};
                 }
             } else if (isAnalysisWrapper(result) && result.__isInfoWrapper && result.__type === INFO_TYPE.UNDEF_COMP) {
-                this.branchedOn.push(result.__info.__taint.source.prop);
+                addAndWriteBranchedOn(result.__info.__taint.source.prop, this.branchedOn, this.branchedOnFilename);
                 return {result: result.__val};
             }
         } else {
@@ -490,17 +499,24 @@ class TaintAnalysis {
 
         if (!this.forceBranchProp && loopType === 'ForInIteration' && !this.loops.has(iid)) {
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult)) { // this should always be the case - but just to be safe
+                const propName = `__forInTaint${iid}`;
+                ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
+                    iid: this.entryPointIID,
+                    entryPoint: this.entryPoint
+                }, false);
+
+                this.forInInjectedProps.push(propName);
                 // inject 'fake' property as source for ... in
-                if (!this.lastExprResult.__forInTaint) {
-                    this.lastExprResult.__forInTaint = createTaintVal(iid, 'forIntProp', {
-                        iid: this.entryPointIID,
-                        entryPoint: this.entryPoint
-                    }, false);
-                    this.forInObjects.push(this.lastExprResult);
-                } else {
-                    // in case of a nested for in over the same object don't inject again but add null to the stack, so we don't reset the property when returning from the inner loop
-                    this.forInObjects.push(null);
-                }
+                // if (!this.lastExprResult.__forInTaint) {
+                //     this.lastExprResult.__forInTaint = createTaintVal(iid, 'forIntProp', {
+                //         iid: this.entryPointIID,
+                //         entryPoint: this.entryPoint
+                //     }, false);
+                //     this.forInObjects.push(this.lastExprResult);
+                // } else {
+                //     // in case of a nested for in over the same object don't inject again but add null to the stack, so we don't reset the property when returning from the inner loop
+                //     this.forInObjects.push(null);
+                // }
 
                 // store the object to reset it after the loop (stack for nested for ins)
             }
@@ -514,8 +530,6 @@ class TaintAnalysis {
             if (calls > MAX_LOOPS) {
                 console.log('Infinite loop detected - aborting');
 
-                console.log(iidToLocation(iid));
-                console.log(iidToCode(iid));
                 if (this.lastReadTaint) {
                     const newFlow = {
                         ...this.lastReadTaint.__getFlowSource(),
@@ -523,7 +537,7 @@ class TaintAnalysis {
                             iid, type: 'functionCallArgException', functionName: '<infiniteLoop>'
                         }
                     };
-                    addAndWriteFlows([newFlow], this.flows, this.resultFilename);
+                    addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
                 }
 
                 process.exit(1);
@@ -535,10 +549,11 @@ class TaintAnalysis {
     controlFlowRootExit = (iid, loopType) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
-        if (!this.forceBranchProp && loopType === 'ForInIteration' && this.forInObjects.length > 0) {
-            const obj = this.forInObjects.pop();
-            if (obj) {
-                delete obj.__forInTaint;
+        // just to be safe delete the injected property after a for in iteration
+        if (!this.forceBranchProp && loopType === 'ForInIteration' && this.forInInjectedProps.length > 0) {
+            const injectedProp = this.forInInjectedProps.pop();
+            if (injectedProp) {
+                delete ({})['__proto__'][injectedProp];
             }
         }
 
@@ -555,22 +570,18 @@ class TaintAnalysis {
                     functionName: '<uncaughtException>'
                 }
             };
-            addAndWriteFlows([newFlow], this.flows, this.resultFilename);
+            addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
         }
         this.uncaughtErr = err;
     }
 
     endExecution = (code) => {
-        // console.log('checkTaintDeepFn', this.deepCheckCount);
-        // console.log('checkTaintDeepEx', this.deepCheckExcCount);
-        // console.log('unwrap', this.unwrapCount);
-        writeFlows(this.flows, this.resultFilename);
         if (this.executionDoneCallback) {
             this.executionDoneCallback(this.uncaughtErr);
         }
 
         // ToDo - store it somewhere
-        console.log(new Set(this.branchedOn));
+        // console.log(new Set(this.branchedOn));
     }
 
     startExpression = (iid, type) => {

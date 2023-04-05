@@ -6,7 +6,7 @@ const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
 const path = require("path");
 const {sanitizePkgName} = require("./utils/utils");
-const resultHandler = require("../taint-analysis/utils/result-handler");
+const {removeDuplicateFlows} = require("../taint-analysis/utils/result-handler");
 
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
@@ -35,7 +35,8 @@ const CLI_ARGS = {
     '--skipDone': 0,
     '--force': 0,
     '--exportRuns': 1,
-    '--maxRuns': 1
+    '--maxRuns': 1,
+    '--forceBranchExec': 0
 }
 
 // keywords of packages that are known to be not interesting (for now)
@@ -55,7 +56,8 @@ function parseCliArgs() {
         force: false,
         pkgName: undefined,
         maxRuns: MAX_RUNS,
-        exportRuns: undefined
+        exportRuns: undefined,
+        forceBranchExec: false
     };
 
     // a copy of the args with all parsed args removed
@@ -328,7 +330,7 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
     await execCmd(cmd, true, false);
 }
 
-async function writeResultsToDB(pkgName, resultFilenames) {
+async function writeResultsToDB(pkgName, resultId, runName, resultFilenames) {
     let results = [];
 
     // parse and merge all results
@@ -338,40 +340,41 @@ async function writeResultsToDB(pkgName, resultFilenames) {
         results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf8')));
     });
 
-    if (results.length === 0) return null;
+    if (results.length === 0) return {resultId, runId: null};
 
-    results = resultHandler.removeDuplicateFlows(results);
+    results = removeDuplicateFlows(results);
 
     const db = await getDb();
 
     const resultsColl = await db.collection('results');
-    let pkgId = (await resultsColl.findOne({package: pkgName}, {_id: 1}))?._id;
-    if (!pkgId) {
-        pkgId = (await resultsColl.insertOne({package: pkgName, runs: []})).insertedId;
+    if (!resultId) {
+        resultId = (await resultsColl.insertOne({package: pkgName, timestamp: Date.now(), runs: []})).insertedId;
     }
 
     const run = {
         _id: new ObjectId(),
-        timestamp: Date.now(),
+        runName,
         results
     };
 
-    await resultsColl.updateOne({_id: pkgId}, {$push: {runs: run}});
+    await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
 
-    return run._id;
+    return {resultId, runId: run._id};
 }
 
-async function fetchExceptions(pkgName, runId) {
+async function fetchExceptions(resultId, runId) {
     const db = await getDb();
 
     const resultColl = await db.collection('results');
 
-    const pkgResults = await resultColl.findOne({
-        package: pkgName,
+    const query = {
+        "_id": resultId,
         "runs._id": runId,
         "runs.results.sink.type": "functionCallArgException"
-    });
-    return pkgResults ? pkgResults.runs.find(r => r._id.equals(runId)).results.filter(res => res.sink.type === 'functionCallArgException').map(res => res.source) : null;
+    };
+    const pkgResults = await resultColl.findOne(query);
+
+    return pkgResults?.runs.find(r => r._id.equals(runId)).results.filter(res => res.sink.type === 'functionCallArgException').map(res => res.source) ?? null;
 }
 
 function locToSarif(dbLocation, message = null) {
@@ -472,12 +475,17 @@ async function runPipeline(pkgName, cliArgs) {
         let propBlacklist = null;
         let blacklistedProps = [];
 
+        let branchedOn = [];
+        let forceBranchProp = null; // the property that is currently force branch executed
+
+        let dbResultId = null; // the db id for the current analysis run
+
         while (true) {
             const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
-                {pkgName, resultFilename, propBlacklist},
+                {pkgName, resultFilename, propBlacklist, writeOnDetect: true, forceBranchProp},
                 [
                     'node_modules/istanbul-lib-instrument/',
                     'node_modules/mocha/',
@@ -492,25 +500,64 @@ async function runPipeline(pkgName, cliArgs) {
                 ]
             );
 
-            const resultFiles = fs.readdirSync(resultBasePath)
-                .filter(f => f.startsWith(pkgName) && !f.includes('crash-report'))
+            const resultDirFilenames = fs.readdirSync(resultBasePath);
+            const resultFiles = resultDirFilenames
+                .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on'))
                 .map(f => resultBasePath + f);
 
             console.error('\nWriting results to DB');
-            const runId = await writeResultsToDB(pkgName, resultFiles);
+
+            const runName = forceBranchProp ? `forceBranchProp: ${forceBranchProp}` : `run: ${run + 1}`;
+            const {resultId, runId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFiles);
+            dbResultId = resultId;
+
+            const branchedOnFilenames = resultDirFilenames.filter(f => f.includes('branched-on')).map(f => resultBasePath + f);
+            if (cliArgs.forceBranchExec) {
+                branchedOnFilenames.forEach(branchedOnFilename => {
+                    branchedOn.push(...JSON.parse(fs.readFileSync(branchedOnFilename, {encoding: 'utf8'})))
+                });
+            }
 
             console.error('\nCleaning up result files');
-            resultFiles.forEach(fs.unlinkSync); // could also be done async
+            resultFiles.forEach(fs.unlinkSync);
+            branchedOnFilenames.forEach(fs.unlinkSync);
 
-            // break if max run or if no flows found
-            if (!runId || ++run === +cliArgs.maxRuns) break;
+            // as long as we have forcedBranchProps continue
+            if (forceBranchProp) {
+                if (branchedOn.length > 0) {
+                    forceBranchProp = branchedOn.shift();
+                    console.log(`\nRunning analysis with forced branch execution for '${forceBranchProp}'`);
+                    continue;
+                }
+                break;
+            }
+
+            // if max run or if no flows found check start forcedBranchExecution
+            if (!runId || ++run === +cliArgs.maxRuns) {
+                branchedOn = Array.from(new Set(branchedOn)); // remove duplicates
+                // get the first property
+                if (cliArgs.forceBranchExec && branchedOn.length > 0) {
+                    forceBranchProp = branchedOn.shift();
+                    console.log(`\nStarting analysis with forced branch execution for '${forceBranchProp}'`);
+                    continue;
+                } else {
+                    break;
+                }
+            }
 
             console.error('\nChecking for exceptions');
-            const exceptions = await fetchExceptions(pkgName, runId);
+            const exceptions = await fetchExceptions(resultId, runId);
 
             if (!exceptions || exceptions.length === 0) {
                 console.error('\nNo exceptions found');
-                break;
+
+                if (cliArgs.forceBranchExec && branchedOn.size > 0) {
+                    forceBranchProp = branchedOn.shift();
+                    console.log(`\nStarting analysis with forced branch execution for '${forceBranchProp}'`);
+                    continue;
+                } else {
+                    break;
+                }
             }
 
             console.error('\nExceptions found');
@@ -532,42 +579,6 @@ async function runPipeline(pkgName, cliArgs) {
     } finally {
         fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
-
-    // let preAnalysisSuccess = false;
-    // for (const testScript of testScripts) {
-    //     if (await runPreAnalysis(testScript, repoPath, pkgName) === true) {
-    //         preAnalysisSuccess = true;
-    //     }
-    // }
-    //
-    // if (!preAnalysisSuccess) {
-    //     console.error('No internal dependencies detected');
-    //     return;
-    // }
-    //
-    // console.error('Running analysis');
-    // for (const [index, testScript] of testScripts.entries()) {
-    //     console.error(`Running test '${testScript}'`);
-    //
-    //     const resultFilename = `${resultBasePath}${pkgName}-${index}`;
-    //     await runAnalysis(
-    //         testScript,
-    //         TAINT_ANALYSIS,
-    //         repoPath,
-    //         {pkgName, resultFilename}
-    //     );
-    // }
-    //
-    // // fetch all result files (it could be that child processes create their own result files)
-    // const resultFiles = fs.readdirSync(resultBasePath)
-    //     .filter(f => f.startsWith(pkgName + '-'))
-    //     .map(f => resultBasePath + f);
-    //
-    // console.error('Writing results to DB');
-    // // await writeResultsToDB(pkgName, resultFiles);
-    //
-    // console.error('Cleaning up');
-    // resultFiles.forEach(fs.unlinkSync); // could also be done async
 }
 
 async function getSarif(pkgName, cliArgs) {
@@ -613,19 +624,22 @@ async function getSarif(pkgName, cliArgs) {
     }
 }
 
-async function getSarifData(pkgName, sinkType, amountRuns = undefined) {
+async function getSarifData(pkgName, sinkType, amountRuns = 1) {
     const db = await getDb();
     const query = {package: pkgName};
     if (sinkType) {
         query["runs.results.sink.type"] = sinkType
     }
 
-    let runs = (await db.collection('results').findOne(query))?.runs;
-    if (!runs) return null;
+    let results = await db.collection('results').find(query).toArray();
+    if (!results) return null;
 
-    if (amountRuns) {
-        runs = runs.slice(-amountRuns);
+    if (amountRuns >= 0) {
+        results = results.slice(-amountRuns);
     }
+
+    const runs = results.flatMap(r => r.runs);
+    if (runs.length === 0) return null;
 
     const filteredRuns = [];
     runs.forEach(run => {
@@ -640,6 +654,7 @@ async function getSarifData(pkgName, sinkType, amountRuns = undefined) {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
         runs: filteredRuns.map(run => ({
+            runName: run.runName,
             tool: {
                 driver: {
                     name: 'GadgetTaintTracker',
@@ -650,7 +665,7 @@ async function getSarifData(pkgName, sinkType, amountRuns = undefined) {
             results: run.results.map(result => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}}`},
+                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},

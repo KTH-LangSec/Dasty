@@ -26,9 +26,8 @@ function parseIID(iid) {
     const code = iidToCode(iid);
 
     return {
-        // iid,
+        iid,
         location,
-        // filename: sourceObject.name,
         code
     };
 }

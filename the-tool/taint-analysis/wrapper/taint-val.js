@@ -142,12 +142,7 @@ class TaintProxyHandler {
         );
 
         // copy the taint
-        try {
-            taintHandler.__taint = structuredClone(this.__taint);
-        } catch (e) {
-            console.log(this.__taint);
-            throw e;
-        }
+        taintHandler.__taint = structuredClone(this.__taint);
         // add codeFlow
         if (codeFlow) {
             taintHandler.__taint.codeFlow.push(codeFlow);
@@ -159,11 +154,11 @@ class TaintProxyHandler {
     // Convert to primitive
     valueOf() {
         // it might not have value of (e.g. null prototype object)
-        return this.__val.valueOf ? this.__val?.valueOf() : this.__val;
+        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
     }
 
     toString() {
-        return this.__val.toString ? this.__val?.toString() : this.__val;
+        return this.__val?.toString ? this.__val.toString() : this.__val;
     }
 
     /**

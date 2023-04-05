@@ -1,7 +1,13 @@
 const cp = require('child_process');
 
-for (const prop in obj) {
-    cp.exec('echo' + obj[prop]);
-}
+const obj = {};
 
-console.log(obj);
+for (let i = 0; i < 2; i++) {
+    for (const prop in obj) {
+        if (Object.hasOwn(obj, prop)) {
+            console.log('nope');
+        }
+
+        cp.exec('echo' + obj[prop]);
+    }
+}

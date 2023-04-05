@@ -15,7 +15,7 @@ async function getDb() {
         }
     }
 
-    return conn.db('analysis_results')
+    return conn.db('analysis_results_v2')
 }
 
 function closeConnection() {
