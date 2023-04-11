@@ -16,7 +16,7 @@ const {
     hasTaint,
     checkTaints,
     createInternalFunctionWrapper,
-    isTaintProxy
+    isTaintProxy, taintCompResult
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
@@ -85,6 +85,7 @@ class TaintAnalysis {
                 return Reflect.apply(f, receiver, unwrappedArgs);
             }
 
+            evalWrapper.__isWrapperFun = true;
             return {result: evalWrapper};
         }
 
@@ -172,24 +173,28 @@ class TaintAnalysis {
             }
         }
 
+        internalWrapper.__isWrapperFun = true; // indicator that it is a internal wrapper function
+
         return {result: internalWrapper};
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
+        if (f === undefined || f.__isWrapperFun) return;
+
         if (proxy && isAnalysisWrapper(proxy) && proxy?.__entryPoint) {
             this.entryPoint = proxy.__entryPoint;
             this.entryPointIID = iid;
         }
 
-        // record if called as function (only depth 0)
-        // args.forEach(arg => {
-        //     // const argTaints = checkTaintDeep(arg, 1);
-        //     if (isAnalysisProxy(arg) && arg.__taint) {
-        //         arg.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>');
-        //     }
-        // });
+        // record code flows for function calls (only depth 3)
+        args.forEach((arg, index) => {
+            const taintVals = checkTaints(arg, 3);
+            taintVals?.forEach(taintVal => {
+                taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
+            });
+        });
 
-        if (this.lastReadTaint === null || f === undefined || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') && f !== eval || f === console.log) return;
+        if (this.lastReadTaint === null || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') && f !== eval || f === console.log) return;
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
@@ -223,12 +228,13 @@ class TaintAnalysis {
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
 
-        // ToDo - the dynamic wrapping of functions introduces some overhead, maybe there is a better way to record entry points
+        // ToDo - does not work perfectly - maybe there is a better way to record entry points
         // if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
-        //     && (typeof result === 'object' || typeof result === 'function')) {
+        //     && (typeof result === 'object' || typeof result === 'function')
+        //     && !iidToLocation(iid).includes('node_modules/')) {
         //     // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
         //     const moduleName = args[0];
-        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === './' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
+        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
         //         const wrapper = createModuleWrapper(result, moduleName);
         //         return {result: wrapper};
         //     }
@@ -374,14 +380,15 @@ class TaintAnalysis {
             case '==':
             case '!==':
             case '!=':
-                if (left?.__taint && right === undefined || right?.__taint && left === undefined) {
-                    // return {result: op === '===' || op === '=='};
-                    const res = op === '===' || op === '==';
-                    return {result: new InfoWrapper(res, left?.__taint ? left : right, INFO_TYPE.UNDEF_COMP)};
+                let compRes = taintCompResult(left, right, op);
+
+                // if branch execution is forced inverse the comparison result
+                if (this.forceBranchProp && left?.__taint?.source.prop === this.forceBranchProp || right?.__taint?.source.prop === this.forceBranchProp) {
+                    compRes = !compRes;
                 }
-                break;
+                return {result: compRes};
             case '&&':
-                if (!result?.__taint && left?.__undef) return {result: false};
+                if (!result?.__taint && left?.__val === undefined) return {result: false};
                 break;
             case '+':
                 // Todo - look into string Template Literals (it works but the other side is always '')
@@ -404,13 +411,17 @@ class TaintAnalysis {
         // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
         if (!base || offset === '__taint') return;
 
-        // this is probably an array access
+        // this is probably an array access (don't inject)
         if (isComputed && typeof offset === 'number') {
             if (isTaintProxy(base)) {
-                return {result: base.__getArrayElem(offset)};
-            } else {
-                return;
+                base.__type = 'array';
             }
+            return;
+            // if (isTaintProxy(base)) {
+            //     return {result: base.__getArrayElem(iid, offset)};
+            // } else {
+            //     return;
+            // }
         }
 
         if (typeof offset !== 'string') return;
@@ -464,7 +475,7 @@ class TaintAnalysis {
                         : new InfoWrapper(true, left, INFO_TYPE.TYPE_OF)
                 };
             case '!':
-                return {result: left.__undef};
+                return {result: !left.__val};
         }
     }
 
@@ -474,17 +485,12 @@ class TaintAnalysis {
         if (!this.forceBranchProp) {
             if (isTaintProxy(result)) {
                 addAndWriteBranchedOn(result.__taint.source.prop, this.branchedOn, this.branchedOnFilename);
-                if (result.__undef || !result.__val) {
+                if (!result.__val) {
                     return {result: false};
                 }
-            } else if (isAnalysisWrapper(result) && result.__isInfoWrapper && result.__type === INFO_TYPE.UNDEF_COMP) {
-                addAndWriteBranchedOn(result.__info.__taint.source.prop, this.branchedOn, this.branchedOnFilename);
-                return {result: result.__val};
             }
         } else {
             if (isTaintProxy(result) && result.__taint.source.prop === this.forceBranchProp) {
-                return {result: result.__undef || !result.__val};
-            } else if (isAnalysisWrapper(result) && result.__isInfoWrapper && result.__type === INFO_TYPE.UNDEF_COMP && result.__info.__taint.source.prop === this.forceBranchProp) {
                 return {result: !result.__val};
             }
         }
@@ -506,6 +512,7 @@ class TaintAnalysis {
                 }, false);
 
                 this.forInInjectedProps.push(propName);
+
                 // inject 'fake' property as source for ... in
                 // if (!this.lastExprResult.__forInTaint) {
                 //     this.lastExprResult.__forInTaint = createTaintVal(iid, 'forIntProp', {

@@ -314,6 +314,19 @@ function isTaintProxy(obj) {
     }
 }
 
+function taintCompResult(left, right, op) {
+    switch (op) {
+        case '===':
+            return left?.__taint ? left.__val === right : right.__val === left;
+        case '==':
+            return left?.__taint ? left.__val == right : right.__val == left;
+        case '!==':
+            return left?.__taint ? left.__val !== right : right.__val !== left;
+        case '!=':
+            return left?.__taint ? left.__val != right : right.__val != left;
+    }
+}
+
 function isBuiltinProto(proto) {
     return proto === Array.prototype ||
         proto === ArrayBuffer.prototype ||
@@ -423,5 +436,6 @@ module.exports = {
     unwrapDeep,
     isTaintProxy,
     isAnalysisWrapper,
-    createInternalFunctionWrapper
+    createInternalFunctionWrapper,
+    taintCompResult
 }

@@ -9,9 +9,8 @@ const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
 class TaintProxyHandler {
     __isAnalysisProxy = true;
 
-    constructor(sourceIID, prop, entryPoint, undef = true, val = null, type = null) {
+    constructor(sourceIID, prop, entryPoint, val = null, type = null) {
         this.__taint = sourceIID ? {source: {iid: sourceIID, prop}, entryPoint, codeFlow: []} : null;
-        this.__undef = undef;
 
         this.#type = type;
         this.__val = val ?? this.__getDefaultVal(type);
@@ -35,11 +34,10 @@ class TaintProxyHandler {
             this.__type = getTypeOf(val);
         }
         this.__val = val;
-        this.__undef = val === undefined;
     }
 
     __getDefaultVal(type) {
-        // ToDo - boolean, symbol, bigint?
+        // ToDo - symbol, bigint?
         switch (type) {
             case 'number':
                 return 0;
@@ -52,26 +50,29 @@ class TaintProxyHandler {
                 return true;
             case 'object':
                 return {};
+            case 'string':
+                return '';
             default:
-                return ' ';
+                return undefined;
         }
     }
 
     __typeof() {
         // ToDo - boolean, symbol, bigint?
-        switch (this.__type) {
-            case null:
-            case 'string':
-                return 'string';
-            case 'number':
-                return 'number';
-            case 'boolean':
-                return 'boolean';
-            case 'function':
-                return 'function';
-            default:
-                return 'object';
-        }
+        return this.__type ?? typeof this.__val;
+        // switch (this.__type) {
+        //     case null:
+        //     case 'string':
+        //         return 'string';
+        //     case 'number':
+        //         return 'number';
+        //     case 'boolean':
+        //         return 'boolean';
+        //     case 'function':
+        //         return 'function';
+        //     default:
+        //         return 'object';
+        // }
     }
 
     /**
@@ -107,20 +108,34 @@ class TaintProxyHandler {
 
         // if no function simply return the property value
         const newVal = this.__val[prop];
-        return this.__copyTaint(newVal, createCodeFlow(null, 'propRead', prop), getTypeOf(newVal));
+        const cf = createCodeFlow(null, 'propRead', prop);
+        if (!isTaintProxy(newVal)) {
+            return this.__copyTaint(newVal, cf, getTypeOf(newVal));
+        } else {
+            newVal.__taint.codeFlow.push(cf);
+            return newVal;
+        }
     }
 
-    __getArrayElem(index) {
+    __getArrayElem(iid, index) {
         this.__type = 'array';
 
         // inject new taint value if access is undefined
         // ToDo - think about if we should taint every access (it might not always be true -> e.g. if was set after the pollution)
-        if (index >= this.__val.length) {
-            const cf = createCodeFlow(null, 'arrayElemRead', index);
-            return this.__copyTaint(null, cf, null, true);
-        } else {
-            return this.__val[index];
+        // if (index >= this.__val.length) {
+        //     const cf = createCodeFlow(null, 'arrayElemRead', index);
+        //     return this.__copyTaint(undefined, cf, null);
+        // } else {
+        //     return this.__val[index];
+        // }
+
+        const val = this.__val[index];
+        if (isTaintProxy(val)) {
+            return val;
         }
+
+        const cf = createCodeFlow(iid, 'arrayElemRead', index);
+        return this.__copyTaint(val, cf, null);
     }
 
     /**
@@ -128,15 +143,13 @@ class TaintProxyHandler {
      * @param newVal - an optional new value, if not set the old one is used
      * @param codeFlow - an optional codeFlow to add
      * @param type - an optional type for the injected value
-     * @param undef - an optional indicator if the value correspond to undefined
      * @returns {{}} - the new TaintVal with the copied data
      */
-    __copyTaint(newVal = undefined, codeFlow = undefined, type = undefined, undef = this.__undef) {
+    __copyTaint(newVal = undefined, codeFlow = undefined, type = undefined) {
         const taintHandler = new TaintProxyHandler(
             null,
             null,
             null,
-            undef,
             newVal ?? this.__val,
             type !== undefined ? type : this.__type
         );
@@ -212,8 +225,8 @@ class TaintProxyHandler {
      * @returns {any|{}}
      */
     get(target, prop, receiver) {
-        // ToDo
         if (prop === 'constructor') {
+            // ToDo
             return Reflect.get(target, prop, receiver);
         } else if (this.hasOwnProperty(prop) || TaintProxyHandler.prototype.hasOwnProperty(prop)) {
             // if the property is defined in the class delegate to it (this makes it straightforward to overwrite specific functions/members)
@@ -223,6 +236,7 @@ class TaintProxyHandler {
             return undefined;
             // return this.__val[prop] ? this.__val[prop] : undefined;
         } else if (typeof prop === 'string' && prop.startsWith('__')) {
+            // access to other analysis wrappers
             return undefined;
         } else if (this.__type === null && STRING_AND_ARRAY_PROPS.includes(prop)) {
             return this.__handleDefaultPropAccess(null, prop, typeof String.prototype[prop] === 'function');
@@ -233,21 +247,28 @@ class TaintProxyHandler {
         } else {
             // handle all other property accesses
 
+            // if the value is currently undefined change it to an empty object
+            // this can e.g. be the case when a for in injected object property is accessed
+            if (this.__val === undefined) {
+                this.__val = {};
+            }
+
             // if the property exists copy it -> else set it to null (i.e. 'unknown')
             const newVal = this.__val[prop] ?? null;
+            const cf = createCodeFlow(null, 'propRead', prop);
 
             // if already tainted simply return it
             if (isTaintProxy(newVal)) {
+                newVal.__taint.codeFlow.push(cf);
                 return newVal;
             }
 
             const type = getTypeOf(newVal);
-            const cf = createCodeFlow(null, 'propRead', prop);
 
             // ToDo - check blacklist
 
             // don't inject directly - this can lead to unwanted behavior and does not have any new information as we already track the taint via the base
-            return this.__copyTaint(newVal, cf, type, newVal === undefined);
+            return this.__copyTaint(newVal, cf, type);
         }
     }
 
@@ -265,7 +286,7 @@ class TaintProxyHandler {
         // Return a new tainted value with unknown type and null as value
         this.__type = 'function';
         const cf = createCodeFlow(null, 'functionCall', '');
-        return this.__copyTaint(null, cf, null, false);
+        return this.__copyTaint('', cf, null);
     }
 }
 
@@ -290,8 +311,8 @@ function createCodeFlow(iid, type, name, values = undefined) {
     return transformation;
 }
 
-function createTaintVal(sourceIID, prop, entryPoint, undef = true, val = null, type = null) {
-    const handler = new TaintProxyHandler(sourceIID, prop, entryPoint, undef, val, type);
+function createTaintVal(sourceIID, prop, entryPoint, val = undefined, type = null) {
+    const handler = new TaintProxyHandler(sourceIID, prop, entryPoint, val, type);
 
     // the target is a function as it makes it callable while still being an object
     return new Proxy(() => {

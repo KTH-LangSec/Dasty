@@ -30,7 +30,7 @@ function executionDone(err) {
 
     console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
 
-    if (!writeOnDetect) {
+    if (!writeOnDetect && resultFilename) {
         writeFlows(flows, resultFilename);
         if (analysis.branchedOn.length > 0) {
             fs.writeFileSync(branchedOnFilename, JSON.stringify(analysis.branchedOn), {encoding: 'utf8'});
