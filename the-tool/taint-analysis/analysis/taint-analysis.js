@@ -383,9 +383,24 @@ class TaintAnalysis {
                 let compRes = taintCompResult(left, right, op);
 
                 // if branch execution is forced inverse the comparison result
-                if (this.forceBranchProp && left?.__taint?.source.prop === this.forceBranchProp || right?.__taint?.source.prop === this.forceBranchProp) {
+                if (this.forceBranchProp && (left?.__taint?.source.prop === this.forceBranchProp || right?.__taint?.source.prop === this.forceBranchProp)) {
                     compRes = !compRes;
+
+                    // infer type and set value based on comparison
+                    if (compRes && (op === '===' || op === '==') || !compRes && (op === '!==' || op === '!=')) {
+                        const taintVal = isTaintProxy(left) ? left : right;
+                        const otherVal = taintVal === left ? right : left;
+
+                        if (!isTaintProxy(otherVal)) {
+                            taintVal.__setValue(otherVal);
+                        } else {
+                            // if both are taint values just set value of the other
+                            // ToDo - maybe check which one to assign (e.g. if one is not undefined take this one)?
+                            taintVal.__setValue(otherVal.__val);
+                        }
+                    }
                 }
+
                 return {result: compRes};
             case '&&':
                 if (!result?.__taint && left?.__val === undefined) return {result: false};
@@ -491,7 +506,12 @@ class TaintAnalysis {
             }
         } else {
             if (isTaintProxy(result) && result.__taint.source.prop === this.forceBranchProp) {
-                return {result: !result.__val};
+                const res = !result.__val;
+                if (res && res.__type === null) {
+                    result.__val = 'TAINTED';
+                }
+
+                return {result: res};
             }
         }
     }

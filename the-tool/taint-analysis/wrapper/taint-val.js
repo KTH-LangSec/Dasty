@@ -36,11 +36,14 @@ class TaintProxyHandler {
         this.__val = val;
     }
 
+    /**
+     * Defines a (non-falsy) default values based on a type
+     */
     __getDefaultVal(type) {
         // ToDo - symbol, bigint?
         switch (type) {
             case 'number':
-                return 0;
+                return 1;
             case 'array':
                 return [];
             case 'function':
@@ -51,9 +54,20 @@ class TaintProxyHandler {
             case 'object':
                 return {};
             case 'string':
-                return '';
+                return 'TAINTED';
             default:
                 return undefined;
+        }
+    }
+
+    /**
+     * Set non-undefined (truish) default value based on the inferred type
+     */
+    __setNonUndefinedDefaultVal() {
+        if (this.#type !== null) {
+            this.__val = this.__getDefaultVal(this.#type);
+        } else {
+            this.__val = 'TAINTED';
         }
     }
 
