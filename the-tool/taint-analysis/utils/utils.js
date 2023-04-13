@@ -315,9 +315,15 @@ function isTaintProxy(obj) {
 }
 
 function taintCompResult(left, right, op) {
-    const taintVal = isTaintProxy(left) ? left.__val : right.__val;
-
-    let otherVal = taintVal === left ? right : left;
+    let taintVal;
+    let otherVal;
+    if (isTaintProxy(left)) {
+        taintVal = left.__val;
+        otherVal = right;
+    } else {
+        taintVal = right.__val;
+        otherVal = left;
+    }
     if (isTaintProxy(otherVal)) {
         // if both are tainted get the value of both
         otherVal = otherVal.__val;

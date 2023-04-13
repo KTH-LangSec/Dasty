@@ -8,6 +8,7 @@ const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
 
 class TaintProxyHandler {
     __isAnalysisProxy = true;
+    __isFixated = false; // indicates if the underlying value can not be freely set anymore (e.g. after a comparison)
 
     constructor(sourceIID, prop, entryPoint, val = null, type = null) {
         this.__taint = sourceIID ? {source: {iid: sourceIID, prop}, entryPoint, codeFlow: []} : null;
@@ -61,7 +62,7 @@ class TaintProxyHandler {
     }
 
     /**
-     * Set non-undefined (truish) default value based on the inferred type
+     * Set non-undefined (non-falsy) default value based on the inferred type
      */
     __setNonUndefinedDefaultVal() {
         if (this.#type !== null) {

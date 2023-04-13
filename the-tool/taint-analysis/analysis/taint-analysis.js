@@ -54,7 +54,8 @@ class TaintAnalysis {
     lastExprResult = null; // stores the result of the last expression for use in successive expressions (e.g. obj and for of)
     forInInjectedProps = []; // stores all for in object to reset them when the loop is done
 
-    branchedOn = []; // stores taint values on which was branched
+    // branchedOn = []; // stores taint values on which was branched
+    branchedOn = new Map(); // stores taint values on which was branched
 
     processedFlow = new Map(); // keeps track of found flows to not write them repeatedly
 
@@ -382,28 +383,44 @@ class TaintAnalysis {
             case '!=':
                 let compRes = taintCompResult(left, right, op);
 
+                const taintVal = isTaintProxy(left) ? left : right;
+                const otherVal = taintVal === left ? right : left;
+
+                addAndWriteBranchedOn(taintVal.__taint.source.prop, iid, compRes, this.branchedOn, this.resultFilename);
+
                 // if branch execution is forced inverse the comparison result
-                if (this.forceBranchProp && (left?.__taint?.source.prop === this.forceBranchProp || right?.__taint?.source.prop === this.forceBranchProp)) {
-                    compRes = !compRes;
-
-                    // infer type and set value based on comparison
-                    if (compRes && (op === '===' || op === '==') || !compRes && (op === '!==' || op === '!=')) {
-                        const taintVal = isTaintProxy(left) ? left : right;
-                        const otherVal = taintVal === left ? right : left;
-
-                        if (!isTaintProxy(otherVal)) {
-                            taintVal.__setValue(otherVal);
-                        } else {
-                            // if both are taint values just set value of the other
-                            // ToDo - maybe check which one to assign (e.g. if one is not undefined take this one)?
-                            taintVal.__setValue(otherVal.__val);
-                        }
-                    }
-                }
+                // if (this.forceBranchProp && (left?.__taint?.source.prop === this.forceBranchProp || right?.__taint?.source.prop === this.forceBranchProp)) {
+                //     compRes = !compRes;
+                //
+                //     // infer type and set value based on comparison
+                //     if (compRes && (op === '===' || op === '==') || !compRes && (op === '!==' || op === '!=')) {
+                //         const taintVal = isTaintProxy(left) ? left : right;
+                //         const otherVal = taintVal === left ? right : left;
+                //
+                //         if (!isTaintProxy(otherVal)) {
+                //             taintVal.__setValue(otherVal);
+                //         } else {
+                //             // if both are taint values just set value of the other
+                //             // ToDo - maybe check which one to assign (e.g. if one is not undefined take this one)?
+                //             taintVal.__setValue(otherVal.__val);
+                //         }
+                //     }
+                // }
 
                 return {result: compRes};
             case '&&':
-                if (!result?.__taint && left?.__val === undefined) return {result: false};
+                if (isTaintProxy(left) && left?.val === undefined) {
+                    if (!this.forceBranchProp) {
+                        return {result: false};
+                    } else if (this.forceBranchProp === left.__taint.source.prop) {
+                        // if we force execute
+                        // left.__setNonUndefinedDefaultVal();
+                        break;
+                    }
+                }
+                if (isTaintProxy(result)) {
+
+                }
                 break;
             case '+':
                 // Todo - look into string Template Literals (it works but the other side is always '')
@@ -452,7 +469,7 @@ class TaintAnalysis {
         // we also don't handle undefined property accesses of tainted values here
         // this is instead handled in the proxy itself
         // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
-        if ((this.forceBranchProp && this.forceBranchProp !== offset) || !scope?.startsWith('file:') || base.__taint) return;
+        if (!scope?.startsWith('file:') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         if (val === undefined && Object.prototype.isPrototypeOf(base) && (this.forceBranchProp || !this.propBlacklist?.includes(offset))) {
@@ -495,25 +512,15 @@ class TaintAnalysis {
     }
 
     conditional = (iid, result, isValue) => {
-        // ToDo - add branching info also for &&
-
-        if (!this.forceBranchProp) {
-            if (isTaintProxy(result)) {
-                addAndWriteBranchedOn(result.__taint.source.prop, this.branchedOn, this.branchedOnFilename);
-                if (!result.__val) {
-                    return {result: false};
-                }
-            }
-        } else {
-            if (isTaintProxy(result) && result.__taint.source.prop === this.forceBranchProp) {
-                const res = !result.__val;
-                if (res && res.__type === null) {
-                    result.__val = 'TAINTED';
-                }
-
-                return {result: res};
+        // if it is a taint proxy and the underlying value is undefined result to false
+        if (isTaintProxy(result)) {
+            addAndWriteBranchedOn(result.__taint.source.prop, iid, result, this.branchedOn, this.branchedOnFilename);
+            if (!result.__val) {
+                return {result: false};
             }
         }
+
+        // The taint value is non-falsy so nothing to do here (it acts as it would when injected)
     }
 
     /**

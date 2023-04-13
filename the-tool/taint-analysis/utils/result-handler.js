@@ -1,7 +1,7 @@
 // DO NOT INSTRUMENT
 
 const fs = require('fs');
-const {parseIID} = require("./utils");
+const {parseIID, iidToLocation} = require("./utils");
 
 function replaceIID(obj) {
     // skip if already parsed or invalid iid
@@ -97,11 +97,11 @@ function writeCrashReport(taint, err, filename) {
     }
 }
 
-function addAndWriteBranchedOn(propName, branchedOn, resultPath) {
-    if (branchedOn.includes(propName)) return;
+function addAndWriteBranchedOn(propName, iid, result, branchedOn, resultPath) {
+    if (branchedOn.has(iid)) return;
 
-    branchedOn.push(propName);
-    if  (resultPath) {
+    branchedOn.set(iid, [iidToLocation(iid), result]);
+    if (resultPath) {
         fs.writeFileSync(resultPath, JSON.stringify(branchedOn), {encoding: 'utf8'});
     }
 }
