@@ -61,14 +61,19 @@ function removeDuplicateFlows(flows, processedFlows = new Map(), resultPath = nu
     // remove duplicates flows by checking sources and sinks
     flows = flows.filter(flow => {
         // const jsonString = JSON.stringify(flow);
-        if (processedFlows.get(flow.source.iid)?.includes(flow.sink.iid)) {
-            return false;
-        } else {
-            if (!processedFlows.has(flow.source.iid)) {
-                processedFlows.set(flow.source.iid, []);
+        try {
+            if (processedFlows.get(flow.source.iid)?.includes(flow.sink.iid)) {
+                return false;
+            } else {
+                if (!processedFlows.has(flow.source.iid)) {
+                    processedFlows.set(flow.source.iid, []);
+                }
+                processedFlows.get(flow.source.iid).push(flow.sink.iid);
+                return true;
             }
-            processedFlows.get(flow.source.iid).push(flow.sink.iid);
-            return true;
+        } catch (e) {
+            console.log(flow);
+            throw e;
         }
     });
 
@@ -100,9 +105,9 @@ function writeCrashReport(taint, err, filename) {
 function addAndWriteBranchedOn(propName, iid, result, branchedOn, resultPath) {
     if (branchedOn.has(iid)) return;
 
-    branchedOn.set(iid, [iidToLocation(iid), result]);
+    branchedOn.set(iid, {prop: propName, loc: iidToLocation(iid), result});
     if (resultPath) {
-        fs.writeFileSync(resultPath, JSON.stringify(branchedOn), {encoding: 'utf8'});
+        fs.writeFileSync(resultPath, JSON.stringify(Array.from(branchedOn.values())), {encoding: 'utf8'});
     }
 }
 

@@ -17,7 +17,12 @@ if (resultFilename) {
     branchedOnFilename = resultFilename + `-branched-on-${ts}.json`;
     resultFilename += `-${ts}.json`;
 }
-const forceBranchProp = J$.initParams.forceBranchProp ?? null;
+let forceBranches = null;
+if (J$.initParams.forceBranchesFilename) {
+    const forceBranchesArr = JSON.parse(fs.readFileSync(J$.initParams.forceBranchesFilename, {encoding: "utf8"}));
+    forceBranches = new Map(forceBranchesArr);
+}
+
 const writeOnDetect = J$.initParams.writeOnDetect ?? false;
 
 let propBlacklist = null;
@@ -34,7 +39,7 @@ function executionDone(err) {
         if (flows.length > 0) writeFlows(flows, resultFilename);
 
         if (analysis.branchedOn.size > 0) {
-            fs.writeFileSync(branchedOnFilename, JSON.stringify(Array.from(analysis.branchedOn)), {encoding: 'utf8'});
+            fs.writeFileSync(branchedOnFilename, JSON.stringify(Array.from(analysis.branchedOn.values())), {encoding: 'utf8'});
         }
     }
 }
@@ -46,7 +51,7 @@ const analysis = new TaintAnalysis(
     writeOnDetect ? resultFilename : null,
     writeOnDetect ? branchedOnFilename : null,
     executionDone,
-    forceBranchProp
+    forceBranches
 );
 
 J$.addAnalysis(analysis);

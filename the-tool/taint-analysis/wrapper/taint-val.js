@@ -264,12 +264,12 @@ class TaintProxyHandler {
 
             // if the value is currently undefined change it to an empty object
             // this can e.g. be the case when a for in injected object property is accessed
-            if (this.__val === undefined) {
-                this.__val = {};
-            }
+            // if (this.__val === undefined) {
+            //     this.__val = {};
+            // }
 
             // if the property exists copy it -> else set it to null (i.e. 'unknown')
-            const newVal = this.__val[prop] ?? null;
+            const newVal = this.__val && this.__val[prop] ? this.__val[prop] : null;
             const cf = createCodeFlow(null, 'propRead', prop);
 
             // if already tainted simply return it

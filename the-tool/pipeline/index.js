@@ -17,7 +17,20 @@ const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
-const PROP_BLACKLISTS_DIR = __dirname + '/blacklists/';
+const TMP_DIR = __dirname + '/tmp';
+
+const EXCLUDE_ANALYSIS_KEYWORDS = [
+    'node_modules/istanbul-lib-instrument/',
+    'node_modules/mocha/',
+    'node_module/.bin/',
+    'node_modules/nyc',
+    'node_modules/jest',
+    'node_modules/@jest',
+    'node_modules/@babel',
+    'node_modules/babel',
+    'node_modules/grunt',
+    'eslint'
+];
 
 const PKG_TYPE = {
     NODE_JS: 0,
@@ -36,7 +49,8 @@ const CLI_ARGS = {
     '--force': 0,
     '--exportRuns': 1,
     '--maxRuns': 1,
-    '--forceBranchExec': 0
+    '--forceBranchExec': 0,
+    '--execFile': 1
 }
 
 // keywords of packages that are known to be not interesting (for now)
@@ -57,7 +71,8 @@ function parseCliArgs() {
         pkgName: undefined,
         maxRuns: MAX_RUNS,
         exportRuns: undefined,
-        forceBranchExec: false
+        forceBranchExec: false,
+        execFile: undefined
     };
 
     // a copy of the args with all parsed args removed
@@ -269,12 +284,11 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     return type === PKG_TYPE.NODE_JS;
 }
 
-async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
+async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFile = null) {
     const nodeprofHome = process.env.NODEPROF_HOME;
 
     let params = ' --jvm '
         + ' --experimental-options'
-        + ' --engine.WarnInterpreterOnly=false'
         + ` --vm.Dtruffle.class.path.append=${nodeprofHome}/build/nodeprof.jar`
         + ' --nodeprof.Scope=module'
         + ' --nodeprof.IgnoreJalangiException=false'
@@ -296,7 +310,8 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude) {
 
     fs.writeFileSync(__dirname + '/node-wrapper/params.txt', params, {encoding: 'utf8'});
 
-    await execCmd(`cd ${dir}; ` + NPM_WRAPPER + ' test', true, false);
+    const exec = execFile ? NODE_WRAPPER + ' ' + execFile : NPM_WRAPPER + ' test';
+    await execCmd(`cd ${dir}; ${exec}`, true, false);
 }
 
 async function runAnalysis(script, analysis, dir, initParams, exclude) {
@@ -307,7 +322,6 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
     cmd += graalNode
         + ' --jvm '
         + ' --experimental-options'
-        + ' --engine.WarnInterpreterOnly=false'
         + ` --vm.Dtruffle.class.path.append=${nodeprofHome}/build/nodeprof.jar`
         + ' --nodeprof.Scope=module'
         + ' --nodeprof.IgnoreJalangiException=false'
@@ -410,6 +424,134 @@ function getPreAnalysisType(pkgName) {
     }
 }
 
+async function runForceBranching(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFilenames) {
+    const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
+    const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
+
+    // parse files
+    branchedOnFilenames.forEach(branchedOnFilename => {
+        const branchedOn = JSON.parse(fs.readFileSync(branchedOnFilename, {encoding: 'utf8'}));
+        branchedOn.forEach(b => {
+            allBranchedOns.set(b.loc, b.result);
+            if (!branchedOnPerProp.has(b.prop)) {
+                branchedOnPerProp.set(b.prop, new Map());
+            }
+            branchedOnPerProp.get(b.prop).set(b.loc, b.result);
+        });
+    });
+
+    branchedOnFilenames.forEach(fs.unlinkSync);
+
+    const forcedProps = new Set(); // keeps track of al force executed props
+
+    // force branching for every property separately
+    for (const [prop, b] of branchedOnPerProp.entries()) {
+        // check if already done (this can be the case when a prop was force executed with another one)
+        if (forcedProps.has(prop)) continue;
+        forcedProps.add(prop);
+
+        let newBranchingFound = b.size > 0;
+
+        const props = new Set([prop]); // keeps track of all properties that are currently enforced
+
+        while (newBranchingFound) {
+            console.log(`\nRunning force branching for: ${Array.from(props).join(', ')}\n`);
+
+            // write to branched on file
+            const forceBranchesFilename = `${TMP_DIR}/force-branching/${pkgName}.json`;
+            fs.writeFileSync(forceBranchesFilename, JSON.stringify(Array.from(b)), {encoding: 'utf8'});
+
+            // run analysis
+            await runAnalysisNodeWrapper(
+                TAINT_ANALYSIS,
+                repoPath,
+                {pkgName, resultFilename, writeOnDetect: true, forceBranchesFilename},
+                EXCLUDE_ANALYSIS_KEYWORDS,
+                execFile
+            );
+
+            const {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+
+            const runName = `forceBranchProps: ${Array.from(props).join(', ')}`;
+            const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames);
+            dbResultId = resultId; // if no results found dbResultId might be still null
+
+
+            // check for new branchings
+            newBranchingFound = false;
+            branchedOnFilenames.forEach(branchedOnFilename => {
+                const branchedOn = JSON.parse(fs.readFileSync(branchedOnFilename, {encoding: 'utf8'}));
+                branchedOn.forEach(b => {
+                    if (allBranchedOns.has(b.loc)) return;
+
+                    allBranchedOns.set(b.loc, b.result);
+                    branchedOnPerProp.get(prop).set(b.loc, b.result);
+
+                    if (!props.has(b.prop)) {
+                        // add all branchings from the other property
+                        branchedOnPerProp.get(b.prop)?.forEach((res, loc) => {
+                            if (!branchedOnPerProp.get(prop).has(loc)) {
+                                branchedOnPerProp.get(prop).set(loc, res);
+                            }
+                        });
+
+                        forcedProps.add(b.prop); // add to all props that were already force executed
+                        props.add(b.prop); // add to props for the next run
+                    }
+
+                    newBranchingFound = true;
+                });
+            });
+
+            console.error('\nCleaning up result files');
+            resultFilenames.forEach(fs.unlinkSync);
+            branchedOnFilenames.forEach(fs.unlinkSync);
+
+            if (newBranchingFound) {
+                console.log('\nNew (sub-)branches found');
+            }
+        }
+    }
+}
+
+/**
+ * Returns filtered result files from in the result base path as {resultFilenames, branchedOnFilenames}
+ */
+function getResultFilenames(pkgName, resultBasePath) {
+    const resultDirFilenames = fs.readdirSync(resultBasePath);
+    const resultFilenames = resultDirFilenames
+        .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on'))
+        .map(f => resultBasePath + f);
+    const branchedOnFilenames = resultDirFilenames.filter(f => f.includes('branched-on')).map(f => resultBasePath + f);
+
+    return {resultFilenames, branchedOnFilenames};
+}
+
+/**
+ * Sets up package by fetching the git repository and installing the dependencies
+ * @param pkgName - the actual name of the package
+ * @param sanitizedPkgName - a sanitized version the is used as the directory name of the repository
+ * @returns path to local repository
+ */
+async function setupPkg(pkgName, sanitizedPkgName) {
+    console.error('Fetching URL');
+    const url = await fetchURL(pkgName);
+    if (url === null) return;
+
+    const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
+    if (!fs.existsSync(repoPath)) {
+        console.error(`\nFetching repository ${url}`);
+        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
+    } else {
+        console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
+    }
+
+    console.error('\nInstalling dependencies');
+    await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
+
+    return repoPath;
+}
+
 async function runPipeline(pkgName, cliArgs) {
     if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
         console.log(`${pkgName} is a 'don't analyse' script`);
@@ -423,49 +565,41 @@ async function runPipeline(pkgName, cliArgs) {
         return;
     }
 
+    const sanitizedPkgName = sanitizePkgName(pkgName);
+
+    // set repo path and execFile (if specified)
+    let repoPath;
+    let execFile;
+    if (!cliArgs.execFile) {
+        // if no execFile is specified fetch the pkg repository and install the dependencies
+        repoPath = await setupPkg(pkgName, sanitizedPkgName);
+    } else {
+        // if a execFile is specified, set its directory as the repository path
+        execFile = path.resolve(cliArgs.execFile);
+        repoPath = path.dirname(execFile);
+    }
+
+    const resultBasePath = __dirname + '/results/';
+
     fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
     try {
-        console.error('Fetching URL');
-        const url = await fetchURL(pkgName);
-        if (url === null) return;
+        // only run the pre analysis for fetched packages
+        if (!execFile) {
+            console.error('\nRunning pre-analysis');
+            const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
+                ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
+                : preAnalysisType === PKG_TYPE.NODE_JS;
 
-        const resultBasePath = __dirname + '/results/';
+            if (!preAnalysisSuccess) {
+                console.error('\nNo internal dependencies detected.');
+                if (preAnalysisType !== null && !cliArgs.force) {
+                    console.error('Use force to enforce re-evaluation.');
+                }
 
-        const sanitizedPkgName = sanitizePkgName(pkgName);
-        const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
-        if (!fs.existsSync(repoPath)) {
-            console.error(`\nFetching repository ${url}`);
-            await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
-        } else {
-            console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
-        }
-
-        console.error('\nInstalling dependencies');
-        await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
-
-        // console.error('Finding test scripts');
-        // const testScripts = findTestScripts(repoPath);
-        //
-        // if (testScripts.length === 0) {
-        //     console.error('No test scripts found');
-        //     fs.appendFileSync(resultBasePath + 'no-test-scripts.txt', pkgName + '\n', {encoding: 'utf8'});
-        //     return;
-        // }
-
-        console.error('\nRunning pre-analysis');
-        const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
-            ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
-            : preAnalysisType === PKG_TYPE.NODE_JS;
-
-        if (!preAnalysisSuccess) {
-            console.error('\nNo internal dependencies detected.');
-            if (preAnalysisType !== null && !cliArgs.force) {
-                console.error('Use force to enforce re-evaluation.');
+                // fs.rmSync(repoPath, {recursive: true, force: true});
+                return;
             }
-
-            // fs.rmSync(repoPath, {recursive: true, force: true});
-            return;
         }
 
         if (cliArgs.onlyPre) return;
@@ -474,108 +608,70 @@ async function runPipeline(pkgName, cliArgs) {
         let run = 0;
         let propBlacklist = null;
         let blacklistedProps = [];
-
-        let branchedOn = [];
+        const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
         let forceBranchProp = null; // the property that is currently force branch executed
-
         let dbResultId = null; // the db id for the current analysis run
+        let branchedOnFiles = [];
 
         while (true) {
-            const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
                 {pkgName, resultFilename, propBlacklist, writeOnDetect: true, forceBranchProp},
-                [
-                    'node_modules/istanbul-lib-instrument/',
-                    'node_modules/mocha/',
-                    'node_module/.bin/',
-                    'node_modules/nyc',
-                    'node_modules/jest',
-                    'node_modules/@jest',
-                    'node_modules/@babel',
-                    'node_modules/babel',
-                    'node_modules/grunt',
-                    'eslint'
-                ]
+                EXCLUDE_ANALYSIS_KEYWORDS,
+                execFile
             );
 
-            const resultDirFilenames = fs.readdirSync(resultBasePath);
-            const resultFiles = resultDirFilenames
-                .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on'))
-                .map(f => resultBasePath + f);
+            const {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+
+            // we currently only care for branchings in the first run
+            // because we do not blacklist properties in the force branching (for now)
+            if (run === 0) {
+                branchedOnFiles = branchedOnFilenames;
+            }
 
             console.error('\nWriting results to DB');
 
-            const runName = forceBranchProp ? `forceBranchProp: ${forceBranchProp}` : `run: ${run + 1}`;
-            const {resultId, runId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFiles);
+            const runName = `run: ${run + 1}`;
+            const {resultId, runId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames);
             dbResultId = resultId;
 
-            const branchedOnFilenames = resultDirFilenames.filter(f => f.includes('branched-on')).map(f => resultBasePath + f);
-            if (cliArgs.forceBranchExec) {
-                branchedOnFilenames.forEach(branchedOnFilename => {
-                    branchedOn.push(...JSON.parse(fs.readFileSync(branchedOnFilename, {encoding: 'utf8'})))
-                });
-            }
-
             console.error('\nCleaning up result files');
-            resultFiles.forEach(fs.unlinkSync);
-            branchedOnFilenames.forEach(fs.unlinkSync);
+            resultFilenames.forEach(fs.unlinkSync);
 
-            // as long as we have forcedBranchProps continue
-            if (forceBranchProp) {
-                if (branchedOn.length > 0) {
-                    forceBranchProp = branchedOn.shift();
-                    console.log(`\nRunning analysis with forced branch execution for '${forceBranchProp}'`);
-                    continue;
-                }
-                break;
-            }
-
-            // if max run or if no flows found check start forcedBranchExecution
-            if (!runId || ++run === +cliArgs.maxRuns) {
-                branchedOn = Array.from(new Set(branchedOn)); // remove duplicates
-                // get the first property
-                if (cliArgs.forceBranchExec && branchedOn.length > 0) {
-                    forceBranchProp = branchedOn.shift();
-                    console.log(`\nStarting analysis with forced branch execution for '${forceBranchProp}'`);
-                    continue;
-                } else {
-                    break;
-                }
-            }
+            // if max run or if no flows stop
+            if (!runId || ++run === +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
             const exceptions = await fetchExceptions(resultId, runId);
 
-            if (!exceptions || exceptions.length === 0) {
-                console.error('\nNo exceptions found');
-
-                if (cliArgs.forceBranchExec && branchedOn.size > 0) {
-                    forceBranchProp = branchedOn.shift();
-                    console.log(`\nStarting analysis with forced branch execution for '${forceBranchProp}'`);
-                    continue;
-                } else {
-                    break;
-                }
-            }
+            // if no exceptions found stop
+            if (!exceptions || exceptions.length === 0) break;
 
             console.error('\nExceptions found');
 
+            // add properties to blacklist
             const newBlacklistedProps = exceptions.map(e => e.prop).filter(p => !blacklistedProps.includes(p));
 
             console.error('\nAdding properties to blacklist');
             blacklistedProps.push(...newBlacklistedProps);
             blacklistedProps = Array.from(new Set(blacklistedProps));
 
-            propBlacklist = PROP_BLACKLISTS_DIR + sanitizedPkgName + '.json';
+            propBlacklist = `${TMP_DIR}/blacklists/${sanitizedPkgName}.json`;
             fs.writeFileSync(propBlacklist, JSON.stringify(blacklistedProps), {encoding: 'utf8'});
 
             console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
         }
 
+        if (cliArgs.forceBranchExec && branchedOnFiles.length > 0) {
+            console.log('\nFound branchings on injected properties. Force executing.');
+            await runForceBranching(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFiles);
+        }
+
         console.error('\nCleaning up');
         if (propBlacklist) fs.unlinkSync(propBlacklist);
+        // only delete when not force executing -> else runForceBranching takes care of it
+        if (!cliArgs.forceBranchExec) branchedOnFiles.forEach(fs.unlinkSync);
     } finally {
         fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }

@@ -3,7 +3,7 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = "/home/pmoosi/.nvm/versions/node/v18.12.1/bin/node"
-TIMEOUT = 60 * 15 #
+TIMEOUT = 60 * 15
 
 
 def get_flag_idx(flag):
@@ -68,9 +68,9 @@ def main():
         file.write(' '.join(sys.argv[1:]) + '\n')
 
     # Note that printing (stdout or stderr) can change and fuck up the behaviour of some tests (and testing frameworks)
-    print('\n------------------', file=sys.stderr)
-    print(' '.join(sys.argv), file=sys.stderr)
-    print('------------------\n', file=sys.stderr, flush=True)
+    # print('\n------------------', file=sys.stderr)
+    # print(' '.join(sys.argv), file=sys.stderr)
+    # print('------------------\n', file=sys.stderr, flush=True)
 
     # if it already has the instrumentation flags just execute it
     if '--jvm' in sys.argv:
@@ -202,7 +202,7 @@ def main():
 
     print(' '.join(args), file=sys.stderr, flush=True)
 
-    # subprocess.run(args, timeout=TIMEOUT)
+    subprocess.run(args, timeout=TIMEOUT)
     subprocess.run(args)
 
 

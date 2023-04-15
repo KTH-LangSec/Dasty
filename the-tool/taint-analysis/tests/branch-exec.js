@@ -1,5 +1,6 @@
 const utils = require('util');
-const exec = utils.promisify(require('child_process').exec);
+const cp = require('child_process');
+// const exec = utils.promisify(require('child_process').exec);
 
 const obj = {};
 
@@ -8,19 +9,32 @@ const obj = {};
 //     console.log('oh no');
 // }
 
-const x = obj.additionalArgs || 'blub';
-
-if (x === 'flub') {
-    console.log('yes');
-} else if (x === 'blub') {
-    console.log('oh no');
-} else if (x === 'drub') {
-    console.log('oh no no');
+if (obj.blub) {
+    console.log('ho');
 }
 
-if (x === 'hub') {
-    console.log('hub');
+const x = obj.additionalArgs || 'flub';
+
+for (let i = 0; i < 100; i++) {
+    if (x !== 'flub') {
+        if (obj.blub) {
+            console.log('exec');
+            cp.exec('echo' + obj.blub);
+        }
+    }
 }
+
+// if (x === 'flub') {
+//     console.log('yes');
+// } else if (x === 'blub') {
+//     console.log('oh no');
+// } else if (x === 'drub') {
+//     console.log('oh no no');
+// }
+//
+// if (x === 'hub') {
+//     console.log('hub');
+// }
 
 // async function processArgs(args) {
 //

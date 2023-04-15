@@ -341,6 +341,22 @@ function taintCompResult(left, right, op) {
     }
 }
 
+function updateAndCheckBranchCounter(branchCounter, loc) {
+    branchCounter.set(loc, branchCounter.get(loc) + 1);
+
+    let done = true;
+    branchCounter.forEach(c => {
+        if (c < 2) {
+            done = false;
+        }
+    });
+
+    if (done) {
+        console.log('Done');
+        process.exit(0);
+    }
+}
+
 function isBuiltinProto(proto) {
     return proto === Array.prototype ||
         proto === ArrayBuffer.prototype ||
@@ -451,5 +467,6 @@ module.exports = {
     isTaintProxy,
     isAnalysisWrapper,
     createInternalFunctionWrapper,
-    taintCompResult
+    taintCompResult,
+    updateAndCheckBranchCounter
 }
