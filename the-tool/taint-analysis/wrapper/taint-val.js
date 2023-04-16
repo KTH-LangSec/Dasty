@@ -6,6 +6,8 @@ const STRING_AND_ARRAY_PROPS = Object.getOwnPropertyNames(String.prototype)
 
 // console.log(STRING_AND_ARRAY_PROPS);
 
+const allTaintValues = []; // stores all taint values
+
 class TaintProxyHandler {
     __isAnalysisProxy = true;
     __isFixated = false; // indicates if the underlying value can not be freely set anymore (e.g. after a comparison)
@@ -15,6 +17,8 @@ class TaintProxyHandler {
 
         this.#type = type;
         this.__val = val ?? this.__getDefaultVal(type);
+
+        allTaintValues.push(this);
     }
 
     #type = null;
@@ -132,6 +136,7 @@ class TaintProxyHandler {
         }
     }
 
+    // unused (handled by get())
     __getArrayElem(iid, index) {
         this.__type = 'array';
 
@@ -335,4 +340,4 @@ function createTaintVal(sourceIID, prop, entryPoint, val = undefined, type = nul
     }, handler);
 }
 
-module.exports = {createTaintVal, createCodeFlow};
+module.exports = {createTaintVal, createCodeFlow, allTaintValues};

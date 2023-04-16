@@ -1,5 +1,5 @@
 // DO NOT INSTRUMENT
-const {createTaintVal, createCodeFlow} = require("../wrapper/taint-val");
+const {createTaintVal, createCodeFlow, allTaintValues} = require("../wrapper/taint-val");
 const {
     iidToLocation,
     unwrapDeep,
@@ -49,8 +49,6 @@ class TaintAnalysis {
 
     branchCounter = new Map(); // keeps track of how often we visited the same branch when force executing
 
-    injectedProps = []; // stores all injected properties and their taint independent of them ending up in a sink (this is only used when 'recordAll' is set)
-
     /**
      * @param pkgName
      * @param sinksBlacklist a blacklist of node internal function and modules that should not be considered sinks
@@ -59,9 +57,9 @@ class TaintAnalysis {
      * @param branchedOnFilename the filename to write tainted property names to if branched on them; is written immediately if set
      * @param executionDoneCallback is called when the execution is done (i.e. on process.exit)
      * @param forceBranches is a map in the form of (loc -> result) that specifies all the conditions that should be 'inversed'
-     * @param recordAll specifies if all function calls with tainted parameters should be recorded; if true every injected property is stored in 'injectedProps'
+     * @param recordAllFunCalls specifies if all function calls with tainted parameters should be recorded
      */
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAll = false) {
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
@@ -74,7 +72,7 @@ class TaintAnalysis {
             this.branchCounter.set(loc, 0);
         });
 
-        this.recordAll = recordAll;
+        this.recordAllFunCalls = recordAllFunCalls;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
@@ -105,6 +103,13 @@ class TaintAnalysis {
             // unwrap and check args
             const unwrappedArgs = args.map((a, index) => {
                 const argTaints = checkTaints(a, DEFAULT_UNWRAP_DEPTH);
+
+                // add code flow (redundant but might still be interesting when looking at the full flow)
+                if (self.recordAllFunCalls) {
+                    argTaints?.forEach(taintVal => {
+                        taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
+                    });
+                }
 
                 // check taints
                 if (!blacklisted) {
@@ -178,14 +183,15 @@ class TaintAnalysis {
             this.entryPointIID = iid;
         }
 
-        // ToDo - store all
         // record code flows for function calls (only depth 3)
-        // args.forEach((arg, index) => {
-        //     const taintVals = checkTaints(arg, 3);
-        //     taintVals?.forEach(taintVal => {
-        //         taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
-        //     });
-        // });
+        if (this.recordAllFunCalls) {
+            args.forEach((arg, index) => {
+                const taintVals = checkTaints(arg, 3);
+                taintVals?.forEach(taintVal => {
+                    taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
+                });
+            });
+        }
 
         if (this.lastReadTaint === null || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') || f === console.log) return;
 
@@ -270,16 +276,10 @@ class TaintAnalysis {
 
         // check if any arguments are tainted
         if (args?.length > 0) {
-            let tainted = false; // indicator if any argument is tainted
-
             args.forEach((arg, index) => {
                 this.deepCheckExcCount++;
-                // const taints = checkTaintDeep(arg);
                 const taints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
 
-                if (taints?.length > 0) {
-                    tainted = true;
-                }
                 taints?.forEach(taintVal => {
                     newFlows.push({
                         ...taintVal.__getFlowSource(),
@@ -293,11 +293,6 @@ class TaintAnalysis {
                     });
                 });
             });
-
-            // only change assertion if it is due to tainted arguments
-            // if (tainted && (e?.code === 'ERR_ASSERTION' || e?.name === 'AssertionError')) {
-            //     return {result: true}; // just return something to stop propagation of error
-            // }
         }
 
         // if we only inject one property record all exceptions
@@ -401,14 +396,14 @@ class TaintAnalysis {
                     }
                 }
 
-                taintVal.__addCodeFlow(iid, 'conditional', op, [compRes]);
+                taintVal.__addCodeFlow(iid, 'conditional', op, {result: compRes});
                 return {result: compRes};
             case '&&':
                 // we currently only check for && when undefined -- ToDo - maybe for all?
                 if (isTaintProxy(left) && left.__val === undefined) {
                     if (!this.forceBranches) {
                         addAndWriteBranchedOn(left.__taint.source.prop, iid, false, this.branchedOn, this.branchedOnFilename);
-                        left.__addCodeFlow(iid, 'conditional', '&&', [false]);
+                        left.__addCodeFlow(iid, 'conditional', '&&', {result: false});
 
                         return {result: false};
                     }
@@ -417,11 +412,10 @@ class TaintAnalysis {
                         updateAndCheckBranchCounter(this.branchCounter, loc);
                         // if we force execute
                         const res = !this.forceBranches.get(loc);
-                        left.__addCodeFlow(iid, 'conditional', '&&', [res]);
+                        left.__addCodeFlow(iid, 'conditional', '&&', {result: res});
                         return {result: res};
                     }
                 }
-                left.__addCodeFlow(iid, 'conditional', '&&', [result]);
 
                 // if (isTaintProxy(result) && !result.__val) {
                 //     // for now return false (e.g. for filter functions)
@@ -526,7 +520,7 @@ class TaintAnalysis {
         if (!this.forceBranches?.has(loc)) {
             // if it is a taint proxy and the underlying value is undefined result to false
             addAndWriteBranchedOn(result.__taint.source.prop, iid, result.__val, this.branchedOn, this.branchedOnFilename);
-            result.__addCodeFlow(iid, 'conditional', '-', [result.__val]);
+            result.__addCodeFlow(iid, 'conditional', '-', {result: result.__val});
             if (!result.__val) {
                 return {result: result.__val};
             }
@@ -536,7 +530,7 @@ class TaintAnalysis {
 
             // when enforcing branching inverse the result
             const res = !this.forceBranches.get(loc);
-            result.__addCodeFlow(iid, 'conditional', '-', [res]);
+            result.__addCodeFlow(iid, 'conditional', '-', {result: res});
             return {result: res};
         }
     }
@@ -630,7 +624,7 @@ class TaintAnalysis {
 
     endExecution = (code) => {
         if (this.executionDoneCallback) {
-            this.executionDoneCallback(this.uncaughtErr);
+            this.executionDoneCallback(allTaintValues, this.uncaughtErr);
         }
 
         // ToDo - store it somewhere

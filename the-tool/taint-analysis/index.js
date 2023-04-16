@@ -4,17 +4,20 @@ const TaintAnalysis = require('./analysis/taint-analysis');
 const fs = require('fs');
 const {getSinkBlacklist} = require('./utils/utils');
 const {DEFAULT_CHECK_DEPTH} = require("./conf/analysis-conf");
-const {writeFlows} = require("./utils/result-handler");
+const {writeFlows, writeTaints} = require("./utils/result-handler");
 
 // function run() {
 const blacklistFilepath = __dirname + '/conf/sink-blacklist.json';
 
 const ts = Date.now();
 const pkgName = J$.initParams.pkgName ?? null;
+
 let resultFilename = J$.initParams.resultFilename ?? (pkgName ? __dirname + `/results/${pkgName}` : null);
 let branchedOnFilename = null;
+let taintsFilename = null;
 if (resultFilename) {
     branchedOnFilename = resultFilename + `-branched-on-${ts}.json`;
+    taintsFilename = resultFilename + `-taints-${ts}.json`;
     resultFilename += `-${ts}.json`;
 }
 let forceBranches = null;
@@ -30,7 +33,9 @@ if (J$.initParams.propBlacklist) {
     propBlacklist = JSON.parse(fs.readFileSync(J$.initParams.propBlacklist, {encoding: 'utf8'}));
 }
 
-function executionDone(err) {
+const recordAllFunCalls = J$.initParams.recordAllFunCalls ?? false;
+
+function executionDone(allTaintValues, err) {
     const flows = analysis.flows;
 
     console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
@@ -42,6 +47,10 @@ function executionDone(err) {
             fs.writeFileSync(branchedOnFilename, JSON.stringify(Array.from(analysis.branchedOn.values())), {encoding: 'utf8'});
         }
     }
+
+    if (taintsFilename) {
+        writeTaints(allTaintValues, taintsFilename);
+    }
 }
 
 const analysis = new TaintAnalysis(
@@ -51,7 +60,8 @@ const analysis = new TaintAnalysis(
     writeOnDetect ? resultFilename : null,
     writeOnDetect ? branchedOnFilename : null,
     executionDone,
-    forceBranches
+    forceBranches,
+    recordAllFunCalls
 );
 
 J$.addAnalysis(analysis);

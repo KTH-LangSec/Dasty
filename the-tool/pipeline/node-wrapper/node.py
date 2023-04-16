@@ -163,7 +163,7 @@ def main():
         if '--exit' in str(proc.stdout):
             set_flag(argv_string, mocha_bin, ['--exit'])
 
-        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '20000')
+        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '10000')
 
         remove_flag(argv_string, mocha_bin, '--bail')
         remove_flag(argv_string, mocha_bin, '--no-exit')
@@ -203,7 +203,7 @@ def main():
     print(' '.join(args), file=sys.stderr, flush=True)
 
     subprocess.run(args, timeout=TIMEOUT)
-    subprocess.run(args)
+    # subprocess.run(args)
 
 
 if __name__ == '__main__':

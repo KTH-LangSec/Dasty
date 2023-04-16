@@ -6,7 +6,7 @@ const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
 const path = require("path");
 const {sanitizePkgName} = require("./utils/utils");
-const {removeDuplicateFlows} = require("../taint-analysis/utils/result-handler");
+const {removeDuplicateFlows, removeDuplicateTaints} = require("../taint-analysis/utils/result-handler");
 
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
@@ -344,19 +344,23 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
     await execCmd(cmd, true, false);
 }
 
-async function writeResultsToDB(pkgName, resultId, runName, resultFilenames) {
+async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames) {
     let results = [];
+    let taints = [];
 
     // parse and merge all results
-    resultFilenames.forEach(resultFilename => {
-        if (!fs.existsSync(resultFilename)) return;
-
+    resultFilenames?.forEach(resultFilename => {
         results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf8')));
     });
 
-    if (results.length === 0) return {resultId, runId: null};
+    taintsFilenames?.forEach(taintsFilename => {
+        taints.push(...JSON.parse(fs.readFileSync(taintsFilename, 'utf8')));
+    });
+
+    if (results.length === 0 && taints.length === 0) return {resultId, runId: null, nowFlows: true};
 
     results = removeDuplicateFlows(results);
+    taints = removeDuplicateTaints(taints);
 
     const db = await getDb();
 
@@ -368,12 +372,13 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames) {
     const run = {
         _id: new ObjectId(),
         runName,
-        results
+        results,
+        taints
     };
 
     await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
 
-    return {resultId, runId: run._id};
+    return {resultId, runId: run._id, nowFlows: results.length === 0};
 }
 
 async function fetchExceptions(resultId, runId) {
@@ -424,7 +429,7 @@ function getPreAnalysisType(pkgName) {
     }
 }
 
-async function runForceBranching(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFilenames) {
+async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFilenames) {
     const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
     const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
 
@@ -520,11 +525,12 @@ async function runForceBranching(pkgName, resultBasePath, resultFilename, dbResu
 function getResultFilenames(pkgName, resultBasePath) {
     const resultDirFilenames = fs.readdirSync(resultBasePath);
     const resultFilenames = resultDirFilenames
-        .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on'))
+        .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints-'))
         .map(f => resultBasePath + f);
     const branchedOnFilenames = resultDirFilenames.filter(f => f.includes('branched-on')).map(f => resultBasePath + f);
+    const taintsFilenames = resultDirFilenames.filter(f => f.includes('-taints-')).map(f => resultBasePath + f);
 
-    return {resultFilenames, branchedOnFilenames};
+    return {resultFilenames, branchedOnFilenames, taintsFilenames};
 }
 
 /**
@@ -617,12 +623,12 @@ async function runPipeline(pkgName, cliArgs) {
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
-                {pkgName, resultFilename, propBlacklist, writeOnDetect: true, forceBranchProp},
+                {pkgName, resultFilename, propBlacklist, writeOnDetect: true, forceBranchProp, recordAllFunCalls: true},
                 EXCLUDE_ANALYSIS_KEYWORDS,
                 execFile
             );
 
-            const {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+            const {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
 
             // we currently only care for branchings in the first run
             // because we do not blacklist properties in the force branching (for now)
@@ -633,14 +639,19 @@ async function runPipeline(pkgName, cliArgs) {
             console.error('\nWriting results to DB');
 
             const runName = `run: ${run + 1}`;
-            const {resultId, runId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames);
+            const {
+                resultId,
+                runId,
+                nowFlows
+            } = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames);
             dbResultId = resultId;
 
             console.error('\nCleaning up result files');
             resultFilenames.forEach(fs.unlinkSync);
+            taintsFilenames.forEach(fs.unlinkSync);
 
             // if max run or if no flows stop
-            if (!runId || ++run === +cliArgs.maxRuns) break;
+            if (nowFlows || ++run === +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
             const exceptions = await fetchExceptions(resultId, runId);
@@ -665,7 +676,7 @@ async function runPipeline(pkgName, cliArgs) {
 
         if (cliArgs.forceBranchExec && branchedOnFiles.length > 0) {
             console.log('\nFound branchings on injected properties. Force executing.');
-            await runForceBranching(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFiles);
+            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFiles);
         }
 
         console.error('\nCleaning up');

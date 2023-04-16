@@ -5138,3 +5138,31 @@ test/ --integration
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+test/ --integration
+--engine.WarnInterpreterOnly=false --jvm --experimental-options --vm.Dtruffle.class.path.append=/home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//build/nodeprof.jar --nodeprof.Scope=module --nodeprof.IgnoreJalangiException=false --nodeprof --nodeprof.ExcludeSource=node_modules/istanbul-lib-instrument/,node_modules/mocha/,node_module/.bin/,node_modules/nyc,node_modules/jest,node_modules/@jest,node_modules/@babel,node_modules/babel,node_modules/grunt,eslint /home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//src/ch.usi.inf.nodeprof/js/jalangi.js --analysis /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/../taint-analysis/ --exec-path /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/node-wrapper/node --initParam pkgName:gm --initParam resultFilename:/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/results/gm --initParam writeOnDetect:true --initParam recordAllFunCalls:true test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
