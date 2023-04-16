@@ -449,6 +449,8 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
     const forcedProps = new Set(); // keeps track of al force executed props
 
+    console.log(`\nFound ${branchedOnPerProp.size} injected properties used for branching.`)
+
     // force branching for every property separately
     for (const [prop, b] of branchedOnPerProp.entries()) {
         // check if already done (this can be the case when a prop was force executed with another one)
@@ -460,7 +462,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
         const props = new Set([prop]); // keeps track of all properties that are currently enforced
 
         while (newBranchingFound) {
-            console.log(`\nRunning force branching for: ${Array.from(props).join(', ')}\n`);
+            console.log(`\nRunning force branch execution for: ${Array.from(props).join(', ')}\n`);
 
             // write to branched on file
             const forceBranchesFilename = `${TMP_DIR}/force-branching/${pkgName}.json`;
@@ -525,10 +527,10 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 function getResultFilenames(pkgName, resultBasePath) {
     const resultDirFilenames = fs.readdirSync(resultBasePath);
     const resultFilenames = resultDirFilenames
-        .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints-'))
+        .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints'))
         .map(f => resultBasePath + f);
-    const branchedOnFilenames = resultDirFilenames.filter(f => f.includes('branched-on')).map(f => resultBasePath + f);
-    const taintsFilenames = resultDirFilenames.filter(f => f.includes('-taints-')).map(f => resultBasePath + f);
+    const branchedOnFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-branched-on`)).map(f => resultBasePath + f);
+    const taintsFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-taints`)).map(f => resultBasePath + f);
 
     return {resultFilenames, branchedOnFilenames, taintsFilenames};
 }
@@ -681,8 +683,13 @@ async function runPipeline(pkgName, cliArgs) {
 
         console.error('\nCleaning up');
         if (propBlacklist) fs.unlinkSync(propBlacklist);
-        // only delete when not force executing -> else runForceBranching takes care of it
-        if (!cliArgs.forceBranchExec) branchedOnFiles.forEach(fs.unlinkSync);
+
+        // fetch all files that are still remaining
+        const {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
+        resultFilenames.forEach(fs.unlinkSync);
+        branchedOnFilenames.forEach(fs.unlinkSync);
+        taintsFilenames.forEach(fs.unlinkSync);
+
     } finally {
         fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
@@ -772,7 +779,7 @@ async function getSarifData(pkgName, sinkType, amountRuns = 1) {
             results: run.results.map(result => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}}`},
+                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}, runName: ${run.runName}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},

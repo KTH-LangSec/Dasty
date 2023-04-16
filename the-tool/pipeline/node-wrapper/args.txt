@@ -5166,3 +5166,212 @@ test/ --integration
 test/ --integration
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express/node_modules/.bin/mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ejs/node_modules/.bin/mocha -u tdd
+bin/cli.js -m $ test/fixtures/user.ejs name=foo
+bin/cli.js -m $ -f ./test/fixtures/user_data.json test/fixtures/user.ejs
+bin/cli.js -m $ -i %7B%22name%22%3A%20%22foo%22%7D test/fixtures/user.ejs
+./bin/cli.js -m $ ./test/fixtures/user.ejs
+bin/cli.js -m $ -f test/fixtures/user_data.json test/fixtures/user.ejs name=frang
+bin/cli.js --rm-whitespace test/fixtures/rmWhitespace.ejs
+bin/cli.js test/fixtures/include-simple.ejs

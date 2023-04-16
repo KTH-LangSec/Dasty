@@ -126,7 +126,7 @@ class TaintProxyHandler {
         }
 
         // if no function simply return the property value
-        const newVal = this.__val[prop];
+        const newVal = this.__val && this.__val[prop] ? this.__val[prop] : undefined;
         const cf = createCodeFlow(null, 'propRead', prop);
         if (!isTaintProxy(newVal)) {
             return this.__copyTaint(newVal, cf, getTypeOf(newVal));
@@ -185,14 +185,24 @@ class TaintProxyHandler {
     }
 
     // Convert to primitive
+    // when type coercing the toPrimitive symbol is checked first and then falls back to valueOf toString
+    [Symbol.toPrimitive](hint) {
+        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
+    }
+
+    // trap valueOf and toString and return tainted values
+    // these are only used when called explicitly as type coercion is handles by Symbol.toPrimitive
     valueOf() {
         // it might not have value of (e.g. null prototype object)
-        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
+        const newVal = this.__val?.valueOf ? this.__val.valueOf() : this.__val;
+        return this.__copyTaint(newVal, undefined, this.__type);
+        // return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
     }
 
     toString() {
         // if to string is possible, use to string
-        return this.__val?.toString ? this.__val.toString() : (this.__val ?? '');
+        const newVal = this.__val?.toString ? this.__val.toString() : (this.__val ?? 'TAINTED');
+        return this.__copyTaint(newVal, undefined, 'string');
     }
 
     /**

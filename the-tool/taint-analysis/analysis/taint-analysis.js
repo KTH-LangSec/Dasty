@@ -176,7 +176,7 @@ class TaintAnalysis {
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
-        if (f === undefined || f.__isWrapperFun) return;
+        if (f === undefined || functionScope === undefined || f.__isWrapperFun) return;
 
         if (proxy && isAnalysisWrapper(proxy) && proxy?.__entryPoint) {
             this.entryPoint = proxy.__entryPoint;
