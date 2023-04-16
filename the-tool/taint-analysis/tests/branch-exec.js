@@ -9,10 +9,6 @@ const obj = {};
 //     console.log('oh no');
 // }
 
-if (obj.blub) {
-    console.log('ho');
-}
-
 const x = obj.additionalArgs || 'flub';
 
 for (let i = 0; i < 100; i++) {
@@ -22,6 +18,10 @@ for (let i = 0; i < 100; i++) {
             cp.exec('echo' + obj.blub);
         }
     }
+}
+
+if (obj.blub) {
+    console.log('ho');
 }
 
 // if (x === 'flub') {

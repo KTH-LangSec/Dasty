@@ -186,7 +186,8 @@ class TaintProxyHandler {
     }
 
     toString() {
-        return this.__val?.toString ? this.__val.toString() : this.__val;
+        // if to string is possible, use to string
+        return this.__val?.toString ? this.__val.toString() : (this.__val ?? '');
     }
 
     /**
