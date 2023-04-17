@@ -58,8 +58,9 @@ class TaintAnalysis {
      * @param executionDoneCallback is called when the execution is done (i.e. on process.exit)
      * @param forceBranches is a map in the form of (loc -> result) that specifies all the conditions that should be 'inversed'
      * @param recordAllFunCalls specifies if all function calls with tainted parameters should be recorded
+     * @param injectForIn specifies if for 'for in' iterations a taint value should be injected as source (might lead to unexpected behaviour)
      */
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false) {
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
@@ -73,6 +74,7 @@ class TaintAnalysis {
         });
 
         this.recordAllFunCalls = recordAllFunCalls;
+        this.injectForIn = injectForIn;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
@@ -470,7 +472,7 @@ class TaintAnalysis {
         // we also don't handle undefined property accesses of tainted values here
         // this is instead handled in the proxy itself
         // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
-        if (!scope?.startsWith('file:') || base.__taint) return;
+        if (!scope?.startsWith('file:') || scope.includes('test/') || scope.includes('tests/') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         if (val === undefined && Object.prototype.isPrototypeOf(base) && !this.propBlacklist?.includes(offset)) {
@@ -543,8 +545,11 @@ class TaintAnalysis {
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
-        if (loopType === 'ForInIteration' && !this.loops.has(iid)) {
-            if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult)) { // this should always be the case - but just to be safe
+        if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
+            const loc = iidToLocation(iid);
+            if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
+                && !loc.includes('test/') && !loc.includes('tests/')) { // try to avoid injecting in testing files
+
                 const propName = `__forInTaint${iid}`;
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
@@ -597,10 +602,13 @@ class TaintAnalysis {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
         // just to be safe delete the injected property after a for in iteration
-        if (loopType === 'ForInIteration' && this.forInInjectedProps.length > 0) {
-            const injectedProp = this.forInInjectedProps.pop();
-            if (injectedProp) {
-                delete ({})['__proto__'][injectedProp];
+        if (this.injectForIn && loopType === 'ForInIteration' && this.forInInjectedProps.length > 0) {
+            const loc = iidToLocation(iid);
+            if (!loc.includes('test/') && !loc.includes('tests/')) {
+                const injectedProp = this.forInInjectedProps.pop();
+                if (injectedProp) {
+                    delete ({})['__proto__'][injectedProp];
+                }
             }
         }
 

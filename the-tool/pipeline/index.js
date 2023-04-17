@@ -29,7 +29,9 @@ const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/@babel',
     'node_modules/babel',
     'node_modules/grunt',
-    'eslint'
+    'eslint',
+    'Gruntfile.js',
+    'jest'
 ];
 
 const PKG_TYPE = {
@@ -429,9 +431,11 @@ function getPreAnalysisType(pkgName) {
     }
 }
 
-async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFilenames) {
+async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile) {
     const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
     const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
+
+    const {branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
 
     // parse files
     branchedOnFilenames.forEach(branchedOnFilename => {
@@ -447,7 +451,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
     branchedOnFilenames.forEach(fs.unlinkSync);
 
-    const forcedProps = new Set(); // keeps track of al force executed props
+    const forcedProps = new Set(); // keeps track of all force executed props
 
     console.log(`\nFound ${branchedOnPerProp.size} injected properties used for branching.`)
 
@@ -555,7 +559,7 @@ async function setupPkg(pkgName, sanitizedPkgName) {
     }
 
     console.error('\nInstalling dependencies');
-    await execCmd(`cd ${repoPath}; npm install;`, true, true, -1);
+    await execCmd(`cd ${repoPath}; npm install --force;`, true, true, -1);
 
     return repoPath;
 }
@@ -591,9 +595,14 @@ async function runPipeline(pkgName, cliArgs) {
 
     fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
+    let propBlacklist = null;
     try {
         // only run the pre analysis for fetched packages
         if (!execFile) {
+            // run a non-instrumented run that does e.g. all the compiling/building, so we can skip it for the multiple instrumented runs
+            // console.error('\nRunning non-instrumented run');
+            // await execCmd(`cd ${repoPath}; npm test;`, true, false);
+
             console.error('\nRunning pre-analysis');
             const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
                 ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
@@ -614,33 +623,37 @@ async function runPipeline(pkgName, cliArgs) {
 
         console.error('\nRunning analysis');
         let run = 0;
-        let propBlacklist = null;
         let blacklistedProps = [];
         const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
         let forceBranchProp = null; // the property that is currently force branch executed
         let dbResultId = null; // the db id for the current analysis run
-        let branchedOnFiles = [];
+
+        let forInRun = true; // make one for in run
 
         while (true) {
+            const runName = `run: ${forInRun ? 'forIn' : run + 1}`;
+            console.log(`\nStarting ${runName}`);
+
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
-                {pkgName, resultFilename, propBlacklist, writeOnDetect: true, forceBranchProp, recordAllFunCalls: true},
+                {
+                    pkgName,
+                    resultFilename,
+                    propBlacklist,
+                    writeOnDetect: true,
+                    forceBranchProp,
+                    recordAllFunCalls: true,
+                    injectForIn: forInRun
+                },
                 EXCLUDE_ANALYSIS_KEYWORDS,
                 execFile
             );
 
             const {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
 
-            // we currently only care for branchings in the first run
-            // because we do not blacklist properties in the force branching (for now)
-            if (run === 0) {
-                branchedOnFiles = branchedOnFilenames;
-            }
-
             console.error('\nWriting results to DB');
 
-            const runName = `run: ${run + 1}`;
             const {
                 resultId,
                 runId,
@@ -651,6 +664,18 @@ async function runPipeline(pkgName, cliArgs) {
             console.error('\nCleaning up result files');
             resultFilenames.forEach(fs.unlinkSync);
             taintsFilenames.forEach(fs.unlinkSync);
+
+            // we currently only care for branchings of the first run
+            // because we do not blacklist properties in the force branching (for now)
+            if (run !== 0 || forInRun) {
+                branchedOnFilenames.forEach(fs.unlinkSync);
+            }
+
+            // if it was a forInRun continue without checking for exceptions
+            if (forInRun) {
+                forInRun = false;
+                continue;
+            }
 
             // if max run or if no flows stop
             if (nowFlows || ++run === +cliArgs.maxRuns) break;
@@ -678,9 +703,10 @@ async function runPipeline(pkgName, cliArgs) {
 
         if (cliArgs.forceBranchExec && branchedOnFiles.length > 0) {
             console.log('\nFound branchings on injected properties. Force executing.');
-            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, branchedOnFiles);
+            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile);
         }
 
+    } finally {
         console.error('\nCleaning up');
         if (propBlacklist) fs.unlinkSync(propBlacklist);
 
@@ -690,7 +716,6 @@ async function runPipeline(pkgName, cliArgs) {
         branchedOnFilenames.forEach(fs.unlinkSync);
         taintsFilenames.forEach(fs.unlinkSync);
 
-    } finally {
         fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
 }

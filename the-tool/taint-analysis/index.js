@@ -34,6 +34,7 @@ if (J$.initParams.propBlacklist) {
 }
 
 const recordAllFunCalls = J$.initParams.recordAllFunCalls ?? false;
+const injectForIn = J$.initParams.recordAllFunCalls ?? false;
 
 function executionDone(allTaintValues, err) {
     const flows = analysis.flows;
@@ -48,7 +49,8 @@ function executionDone(allTaintValues, err) {
         }
     }
 
-    if (taintsFilename) {
+    // only write taints when recordAllFunCalls is set
+    if (recordAllFunCalls && taintsFilename) {
         writeTaints(allTaintValues, taintsFilename);
     }
 }
@@ -61,7 +63,8 @@ const analysis = new TaintAnalysis(
     writeOnDetect ? branchedOnFilename : null,
     executionDone,
     forceBranches,
-    recordAllFunCalls
+    recordAllFunCalls,
+    injectForIn
 );
 
 J$.addAnalysis(analysis);

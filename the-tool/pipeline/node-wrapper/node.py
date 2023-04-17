@@ -78,11 +78,11 @@ def main():
         sys.exit()
 
     # ToDo - support ava
-    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'bin/tap']  # don't run when included in command
+    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'bin/tap', 'npm run test:instrument']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
-    exclude_instrument = ['bin/nyc', 'bin/tap']
+    exclude_instrument = ['bin/nyc', 'bin/tap', '.bin/grunt --force build', '.bin/grunt build']
     include_instrument = ['bin/mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js', 'bin/zap', 'bin/grunt']  # only instrument if included in arg string
 
     # node flags and their expected args (defaults to 0)

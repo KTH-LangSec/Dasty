@@ -130,6 +130,8 @@ function writeCrashReport(taint, err, filename) {
  * Adds branching information to 'branchedOn' and optionally writes it to the resultPath (if given)
  */
 function addAndWriteBranchedOn(propName, iid, result, branchedOn, resultPath = undefined) {
+    if (propName === 'forInProp') return; // ToDo - investigate why this is often the case and remove when fixed
+
     if (branchedOn.has(iid)) return;
 
     branchedOn.set(iid, {prop: propName, loc: iidToLocation(iid), result});

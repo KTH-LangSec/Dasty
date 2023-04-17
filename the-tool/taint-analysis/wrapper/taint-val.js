@@ -187,7 +187,8 @@ class TaintProxyHandler {
     // Convert to primitive
     // when type coercing the toPrimitive symbol is checked first and then falls back to valueOf toString
     [Symbol.toPrimitive](hint) {
-        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
+        this.__type = 'string';
+        return this.__val.valueOf();
     }
 
     // trap valueOf and toString and return tainted values
