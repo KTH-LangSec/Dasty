@@ -7449,3 +7449,15 @@ test/ --integration
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/.bin/mocha test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/mocha/bin/_mocha -t 10000 test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/taint-analysis/testi/sinks.js

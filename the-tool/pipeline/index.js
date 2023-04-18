@@ -18,6 +18,7 @@ const PRE_ANALYSIS = __dirname + '/pre-analysis/';
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const TMP_DIR = __dirname + '/tmp';
+const FAILED_DB_WRITE = __dirname + '/results/failed-db-write';
 
 const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/istanbul-lib-instrument/',
@@ -384,7 +385,20 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
 
     await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
 
-    return {resultId, runId: run._id, nowFlows: results.length === 0};
+
+    // we are storing every taint set in as separate document as it might be too big
+    const taintsColl = await db.collection('taints');
+    const taintVals = {
+        resultId: resultId,
+        runId: run._id,
+        package: pkgName,
+        timestamp: Date.now(),
+        taints
+    }
+
+    await taintsColl.insertOne(taintVals);
+
+    return {resultId, runId: run._id, noFlows: results.length === 0};
 }
 
 async function fetchExceptions(resultId, runId) {
@@ -485,11 +499,20 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
                 execFile
             );
 
-            const {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+            let {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
 
             const runName = `forceBranchProps: ${Array.from(props).join(', ')}`;
-            const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames);
-            dbResultId = resultId; // if no results found dbResultId might be still null
+            try {
+                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames);
+                dbResultId = resultId; // if no results found dbResultId might be still null
+            } catch (e) {
+                // if there is a problem writing to the database move files to not lose the data
+                resultFilenames.forEach(file => {
+                    const filename = path.basename(file);
+                    fs.renameSync(file, `${FAILED_DB_WRITE}/${filename}`);
+                });
+                resultFilenames = [];
+            }
 
 
             // check for new branchings
@@ -660,16 +683,24 @@ async function runPipeline(pkgName, cliArgs) {
 
             console.error('\nWriting results to DB');
 
-            const {
-                resultId,
-                runId,
-                nowFlows
-            } = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames);
-            dbResultId = resultId;
+            let noFlows = false;
+            let runId = null;
+            try {
+                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames);
+                dbResultId = result.resultId;
+                runId = result.runId;
+                noFlows = result.noFlows;
 
-            console.error('\nCleaning up result files');
-            resultFilenames.forEach(fs.unlinkSync);
-            taintsFilenames.forEach(fs.unlinkSync);
+                console.error('\nCleaning up result files');
+                resultFilenames.forEach(fs.unlinkSync);
+                taintsFilenames.forEach(fs.unlinkSync);
+            } catch {
+                // if there is a problem writing to the database move files to not lose the data
+                resultFilenames.concat(taintsFilenames).forEach(file => {
+                    const filename = path.basename(file);
+                    fs.renameSync(file, `${FAILED_DB_WRITE}/${filename}`);
+                });
+            }
 
             // we currently only care for branchings of the first run
             // because we do not blacklist properties in the force branching (for now)
@@ -684,10 +715,10 @@ async function runPipeline(pkgName, cliArgs) {
             }
 
             // if max run or if no flows stop
-            if (nowFlows || ++run === +cliArgs.maxRuns) break;
+            if (noFlows || ++run === +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
-            const exceptions = await fetchExceptions(resultId, runId);
+            const exceptions = await fetchExceptions(dbResultId, runId);
 
             // if no exceptions found stop
             if (!exceptions || exceptions.length === 0) break;
