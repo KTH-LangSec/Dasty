@@ -246,7 +246,7 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
     }
 
     if (isTaintProxy(arg)) {
-        return unwrapDeepRec(arg.valueOf(), depth - 1, done);
+        return unwrapDeepRec(arg.__val, depth - 1, done);
     }
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;

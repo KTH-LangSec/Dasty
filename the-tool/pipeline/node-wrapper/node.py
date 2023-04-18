@@ -6,14 +6,18 @@ NVM_NODE_EXEC = "/home/pmoosi/.nvm/versions/node/v18.12.1/bin/node"
 TIMEOUT = 60 * 15
 
 
-def get_flag_idx(flag):
-    if flag in sys.argv:
-        return sys.argv.index(flag)
+def get_flag_idx(flag, exact_match=True):
+    if exact_match:
+        if flag in sys.argv:
+            return sys.argv.index(flag)
+        else:
+            for idx, argv in enumerate(sys.argv):
+                if flag + '=' in argv:
+                    return idx
     else:
         for idx, argv in enumerate(sys.argv):
-            if flag + '=' in argv:
+            if flag in argv:
                 return idx
-
     return -1
 
 
@@ -25,11 +29,11 @@ def get_program_idx(program):
     return -1
 
 
-def remove_flag(argv_string, program, flag, length=0):
+def remove_flag(argv_string, program, flag, length=0, exact_match=True):
     if program not in argv_string:
         return
 
-    flag_idx = get_flag_idx(flag)
+    flag_idx = get_flag_idx(flag, exact_match)
 
     while flag_idx >= 0:
         arg_len = length
@@ -68,22 +72,18 @@ def main():
         file.write(' '.join(sys.argv[1:]) + '\n')
 
     # Note that printing (stdout or stderr) can change and fuck up the behaviour of some tests (and testing frameworks)
-    # print('\n------------------', file=sys.stderr)
-    # print(' '.join(sys.argv), file=sys.stderr)
-    # print('------------------\n', file=sys.stderr, flush=True)
-
-    # if it already has the instrumentation flags just execute it
-    if '--jvm' in sys.argv:
-        subprocess.run([os.environ['GRAAL_NODE_HOME']] + sys.argv[1:])
-        sys.exit()
+    print('\n------------------', file=sys.stderr)
+    print(' '.join(sys.argv), file=sys.stderr)
+    print('------------------\n', file=sys.stderr, flush=True)
 
     # ToDo - support ava
-    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'bin/tap', 'npm run test:instrument']  # don't run when included in command
+    # 'bin/tap ',
+    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'npm run test:instrument']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
     exclude_instrument = ['bin/nyc', 'bin/tap', '.bin/grunt --force build', '.bin/grunt build']
-    include_instrument = ['bin/mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js', 'bin/zap', 'bin/grunt']  # only instrument if included in arg string
+    include_instrument = ['bin/mocha', 'bin/_mocha', 'bin/jest', '/test', 'test/', 'tests/', 'test.js', 'bin/zap', 'bin/grunt', 'bin/taper']  # only instrument if included in arg string
 
     # node flags and their expected args (defaults to 0)
     node_flags = {
@@ -93,6 +93,15 @@ def main():
     }
 
     argv_string = ' '.join(sys.argv[1:])
+
+    # sometimes a for in injection ends up as parameter
+    remove_flag(argv_string, '', '=TAINTED', length=0, exact_match=False)
+    remove_flag(argv_string, '', '--__forInTaint', length=1, exact_match=False)
+
+    # if it already has the instrumentation flags just execute it
+    if '--jvm' in sys.argv:
+        subprocess.run([os.environ['GRAAL_NODE_HOME']] + sys.argv[1:])
+        sys.exit()
 
     # check npm
     if ((len(sys.argv) > 1 and sys.argv[1].endswith('npm')
@@ -162,6 +171,8 @@ def main():
         proc = subprocess.run([NVM_NODE_EXEC, mocha_bin, '--help'], capture_output=True, text=True)
         if '--exit' in str(proc.stdout):
             set_flag(argv_string, mocha_bin, ['--exit'])
+        if '--jobs' in str(proc.stdout):
+            set_flag(argv_string, mocha_bin, ['-j', '--jobs'], '1')
 
         set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '10000')
 
@@ -176,9 +187,17 @@ def main():
     remove_flag(argv_string, 'bin/jest', '--collectCoverageFrom')
 
     # tap flag
-    set_flag(argv_string, 'bin/tap', ['-j'], '1')
-    set_flag(argv_string, 'bin/tap', ['-t'], '180')
-    remove_flag(argv_string, 'bin/tap', '--100')
+    if 'bin/tap' in argv_string:
+        tap_bin = sys.argv[get_program_idx('bin/tap')]
+
+        proc = subprocess.run([NVM_NODE_EXEC, tap_bin, '--help'], capture_output=True, text=True)
+        if '--jobs' in str(proc.stdout):
+            set_flag(argv_string, 'bin/tap', ['-j'], '1')
+
+        set_flag(argv_string, 'bin/tap', ['-t'], '180')
+        remove_flag(argv_string, 'bin/tap', '--100')
+        remove_flag(argv_string, 'bin/tap', '--coverage')
+        remove_flag(argv_string, 'bin/tap', '--jobs-auto')
 
     set_flag(argv_string, 'bin/ava', ['-c'], '1')
     set_flag(argv_string, 'bin/ava', ['--no-worker-threads'])

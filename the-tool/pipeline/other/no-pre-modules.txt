@@ -75,3 +75,6 @@ cluster
 cryptiles
 dns
 dust
+sequelize
+bunyan
+file-exists

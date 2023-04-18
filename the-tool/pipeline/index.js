@@ -31,7 +31,8 @@ const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/grunt',
     'eslint',
     'Gruntfile.js',
-    'jest'
+    'jest',
+    '.node'
 ];
 
 const PKG_TYPE = {
@@ -44,6 +45,7 @@ const CLI_ARGS = {
     '--outDir': 1,
     '--onlyPre': 0,
     '--sarif': 0,
+    '--allTaints': 0,
     '--fromFile': 0,
     '--skipTo': 1,
     '--skipToLast': 0,
@@ -65,6 +67,7 @@ function parseCliArgs() {
         outDir: undefined,
         onlyPre: false,
         sarif: false,
+        allTaints: false,
         fromFile: false,
         skipTo: undefined,
         skipToLast: false,
@@ -168,7 +171,7 @@ async function fetchURL(pkgName) {
         url = url.substring(4);
     }
 
-    if (url.startsWith('git://')/* || url.startsWith('ssh://')*/) {
+    if (url.startsWith('git://') || url.startsWith('ssh://')) {
         return 'https' + url.substring(3);
     } else if (url.startsWith('https://')) {
         return url;
@@ -453,7 +456,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
     const forcedProps = new Set(); // keeps track of all force executed props
 
-    console.log(`\nFound ${branchedOnPerProp.size} injected properties used for branching.`)
+    console.log(`\nFound ${branchedOnPerProp.size} injected properties used for branching. Force executing.`)
 
     // force branching for every property separately
     for (const [prop, b] of branchedOnPerProp.entries()) {
@@ -672,7 +675,7 @@ async function runPipeline(pkgName, cliArgs) {
             }
 
             // if it was a forInRun continue without checking for exceptions
-            if (forInRun) {
+            if (forInRun && run < cliArgs.maxRuns) {
                 forInRun = false;
                 continue;
             }
@@ -701,8 +704,7 @@ async function runPipeline(pkgName, cliArgs) {
             console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
         }
 
-        if (cliArgs.forceBranchExec && branchedOnFiles.length > 0) {
-            console.log('\nFound branchings on injected properties. Force executing.');
+        if (cliArgs.forceBranchExec) {
             await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile);
         }
 
@@ -733,6 +735,7 @@ async function getSarif(pkgName, cliArgs) {
     for (pkgName of pkgNames) {
         const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.exportRuns);
         const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.exportRuns);
+        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName, cliArgs.exportRuns) : null;
 
         if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
@@ -758,6 +761,11 @@ async function getSarif(pkgName, cliArgs) {
                 const outFilename = outFile + '-exceptions.sarif';
                 fs.writeFileSync(outFilename, JSON.stringify(sarifException), {encoding: 'utf8'});
                 console.error(`Exceptions written to ${outFilename}.`);
+            }
+            if (sarifAllTaints) {
+                const outFilename = outFile + '-all-taints.sarif';
+                fs.writeFileSync(outFilename, JSON.stringify(sarifAllTaints), {encoding: 'utf8'});
+                console.error(`All taints written to ${outFilename}.`);
             }
         }
     }
@@ -804,7 +812,7 @@ async function getSarifData(pkgName, sinkType, amountRuns = 1) {
             results: run.results.map(result => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}, runName: ${run.runName}`},
+                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}, runName: ${run.runName}}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},
@@ -817,9 +825,59 @@ async function getSarifData(pkgName, sinkType, amountRuns = 1) {
                                     `Entry point {callTrace: ${result.entryPoint.entryPoint.join('')}}`
                                 )
                             },
-                            {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}}`)},
+                            {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}, inferredType ${result.source.inferredType}}`)},
                             ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
                             {location: locToSarif(result.sink.location, `Sink {argIndex: ${result.sink.argIndex}, value: ${result.sink.value}, module: ${result.sink.module}}`)}
+                        ]
+                    }]
+                }]
+            }))
+        }))
+    };
+}
+
+async function getAllTaintsSarifData(pkgName, amountRuns = 1) {
+    const db = await getDb();
+
+    let results = await db.collection('results').find({package: pkgName}).toArray();
+    if (!results) return null;
+
+    if (amountRuns >= 0) {
+        results = results.slice(-amountRuns);
+    }
+
+    const runs = results.flatMap(res => res.runs).filter(run => run.taints.length > 0);
+    if (runs.length === 0) return null;
+
+    return {
+        version: '2.1.0',
+        $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+        runs: runs.map(run => ({
+            runName: run.runName,
+            tool: {
+                driver: {
+                    name: 'GadgetTaintTracker',
+                    version: '0.1',
+                    informationUri: "https://ToDoLinktoRepo.com"
+                }
+            },
+            results: run.taints.map(taint => ({
+                ruleId: run._id,
+                level: 'error',
+                message: {text: `TaintValue {prop: ${taint.source.prop}}, runName: ${run.runName}}`},
+                locations: [locToSarif(taint.source.location)],
+                codeFlows: [{
+                    message: {text: 'ToDo'},
+                    threadFlows: [{
+                        locations: [
+                            {
+                                location: locToSarif(
+                                    taint.entryPoint.location,
+                                    `Entry point {callTrace: ${taint.entryPoint.entryPoint.join('')}}`
+                                )
+                            },
+                            {location: locToSarif(taint.source.location, `Undefined property read {prop: ${taint.source.prop}}`)},
+                            ...taint.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)}))
                         ]
                     }]
                 }]

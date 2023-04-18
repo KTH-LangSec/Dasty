@@ -1,6 +1,5 @@
 // DO NOT INSTRUMENT
 
-const {isBuiltin} = require('node:module');
 const {iidToLocation} = require("../../taint-analysis/utils/utils");
 
 const MODULE_EXCEPTION = ['node:assert']; // These are not sufficient for a package to be regarded 'node.js'

@@ -191,6 +191,11 @@ class TaintProxyHandler {
         return this.__val.valueOf();
     }
 
+    [Symbol.iterator]() {
+        this.__type = 'array';
+        return this.__val.values();
+    }
+
     // trap valueOf and toString and return tainted values
     // these are only used when called explicitly as type coercion is handles by Symbol.toPrimitive
     valueOf() {

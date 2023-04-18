@@ -83,7 +83,6 @@ class TaintAnalysis {
             && (f === undefined // check if node internal function
                 || (!functionScope?.startsWith('node:')) // We only care for internal node functions
                 || f === console.log
-                || f.name === 'require'
                 || f.name === 'emit'
                 || argLength === 0)) return;
 
@@ -323,11 +322,22 @@ class TaintAnalysis {
     read = (iid, name, val, isGlobal, isScriptLocal) => {
         if (isTaintProxy(val)) {
             this.lastReadTaint = val;
+            // val.__addCodeFlow(iid, 'read', offset);
+
+            const taintVal = val.__copyTaint();
+
+            // if an or ad falsy return value
+            if (this.orExpr && !val.__val) {
+                this.undefOrReadVal = taintVal;
+                return {result: val.__val};
+            }
+
+            return {result: taintVal};
         }
     }
 
 
-    // this is needed to trigger instrumentation of object destructor syntax ({someProp})
+// this is needed to trigger instrumentation of object destructor syntax ({someProp})
     write = function (iid, name, val, lhs, isGlobal, isScriptLocal) {
         // if (val?.__taint) {
         //     val.__addCodeFlow(iid, 'write', name);
@@ -340,6 +350,7 @@ class TaintAnalysis {
             if (this.undefOrReadVal !== null) {
                 result = isTaintProxy(result) ? result.__val : result;
 
+                // ToDo - think about it
                 this.undefOrReadVal.__setValue(result);
                 const val = this.undefOrReadVal;
                 this.undefOrReadVal = null;
@@ -418,12 +429,6 @@ class TaintAnalysis {
                         return {result: res};
                     }
                 }
-
-                // if (isTaintProxy(result) && !result.__val) {
-                //     // for now return false (e.g. for filter functions)
-                //     // ToDo - record branching?
-                //     return {result: false};
-                // }
                 break;
             case '+':
                 // Todo - look into string Template Literals (it works but the other side is always '')
@@ -436,8 +441,8 @@ class TaintAnalysis {
         if (isTaintProxy(offset)) {
             try {
                 offset.__type = 'string';
-                const cf = createCodeFlow(iid, 'propReadName', offset.valueOf());
-                return {result: offset.__copyTaint(base[offset.valueOf()], cf, null)};
+                const cf = createCodeFlow(iid, 'propReadName', offset.__val);
+                return {result: offset.__copyTaint(base[offset.__val], cf, null)};
             } catch (e) {
                 return;
             }
@@ -465,6 +470,12 @@ class TaintAnalysis {
         if (isTaintProxy(val)) {
             this.lastReadTaint = val;
             val.__addCodeFlow(iid, 'read', offset);
+
+            // if an or ad falsy return value and create a new taint value that is returned from the or expression
+            if (this.orExpr && !val.__val) {
+                this.undefOrReadVal = val.__copyTaint();
+                return {result: val.__val};
+            }
             return;
         }
 
@@ -478,11 +489,12 @@ class TaintAnalysis {
         if (val === undefined && Object.prototype.isPrototypeOf(base) && !this.propBlacklist?.includes(offset)) {
             const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
 
-            try {
-                // ({})['__proto__'][offset] = res; ToDo - this might be better but causes problems when unwrapping
-                base[offset] = res;
-            } catch (e) {
-                // in some cases injection does not work e.g. read only
+            if (this.forceBranches) {
+                try {
+                    // base[offset] = res;
+                } catch (e) {
+                    // in some cases injection does not work e.g. read only
+                }
             }
 
             this.lastReadTaint = res;
@@ -542,14 +554,17 @@ class TaintAnalysis {
      * Called whenever a control flow root is executed (e.g. if, while, async function call, ....)
      * For loops it is called every time the condition is evaluated (i.e. every loop)
      */
+    #forInLoops = new Map();
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
-        if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
-            const loc = iidToLocation(iid);
+        const loc = iidToLocation(iid);
+        if (this.injectForIn && loopType === 'ForInIteration' && !this.#forInLoops.has(loc)) {
+            // console.log(loc);
+            this.#forInLoops.set(loc, true);
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
                 && !loc.includes('test/') && !loc.includes('tests/')) { // try to avoid injecting in testing files
-
+                //
                 const propName = `__forInTaint${iid}`;
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
@@ -560,7 +575,7 @@ class TaintAnalysis {
 
                 // inject 'fake' property as source for ... in
                 // if (!this.lastExprResult.__forInTaint) {
-                //     this.lastExprResult.__forInTaint = createTaintVal(iid, 'forIntProp', {
+                //     this.lastExprResult.__forInTaint = createTaintVal(iid, 'forInProp', {
                 //         iid: this.entryPointIID,
                 //         entryPoint: this.entryPoint
                 //     }, false);
@@ -610,6 +625,7 @@ class TaintAnalysis {
                     delete ({})['__proto__'][injectedProp];
                 }
             }
+            this.#forInLoops.delete(loc);
         }
 
         this.loops.delete(iid);
@@ -659,5 +675,4 @@ class TaintAnalysis {
     }
 }
 
-module
-    .exports = TaintAnalysis;
+module.exports = TaintAnalysis;

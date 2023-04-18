@@ -26,15 +26,15 @@ if (J$.initParams.forceBranchesFilename) {
     forceBranches = new Map(forceBranchesArr);
 }
 
-const writeOnDetect = J$.initParams.writeOnDetect ?? false;
+const writeOnDetect = J$.initParams.writeOnDetect === 'true';
 
 let propBlacklist = null;
 if (J$.initParams.propBlacklist) {
     propBlacklist = JSON.parse(fs.readFileSync(J$.initParams.propBlacklist, {encoding: 'utf8'}));
 }
 
-const recordAllFunCalls = J$.initParams.recordAllFunCalls ?? false;
-const injectForIn = J$.initParams.recordAllFunCalls ?? false;
+const recordAllFunCalls = J$.initParams.recordAllFunCalls === 'true';
+const injectForIn = J$.initParams.injectForIn === 'true';
 
 function executionDone(allTaintValues, err) {
     const flows = analysis.flows;
