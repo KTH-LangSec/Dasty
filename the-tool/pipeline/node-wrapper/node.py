@@ -78,7 +78,7 @@ def main():
 
     # ToDo - support ava
     # 'bin/tap ',
-    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'npm run test:instrument']  # don't run when included in command
+    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'npm run test:instrument', 'bin/ng']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
@@ -124,6 +124,7 @@ def main():
 
     # node_exec = ["/home/pmoosi/.nvm/versions/node/v19.5.0/bin/node"]
     node_exec = [NVM_NODE_EXEC]
+    # node_exec = [os.environ['GRAAL_NODE_HOME'], '--engine.WarnInterpreterOnly=false']
     # instrument when testing framework or test directory or is simple node [file].js and not specifically excluded (exclude_instrument)
     instrument_args = []
     script_idx = 1
@@ -180,9 +181,13 @@ def main():
         remove_flag(argv_string, mocha_bin, '--no-exit')
         remove_flag(argv_string, mocha_bin, '--forbid-only')
 
-    set_flag(argv_string, 'bin/jest', ['-w', '--maxWorkers'], '1')
+    # set_flag(argv_string, 'bin/jest', ['-w', '--maxWorkers'], '1')
     # set_flag(argv_string, 'bin/jest', ['--workerThreads=false'])
+    set_flag(argv_string, 'bin/jest', ['-i', '--runInBand'])
     set_flag(argv_string, 'bin/jest', ['--forceExit'])
+    set_flag(argv_string, 'bin/jest', ['--testTimeout'], '10000')
+    remove_flag(argv_string, 'bin/jest', '-w', 1)
+    remove_flag(argv_string, 'bin/jest', '--maxWorkers', 1)
     remove_flag(argv_string, 'bin/jest', '--coverage')
     remove_flag(argv_string, 'bin/jest', '--collectCoverageFrom')
 

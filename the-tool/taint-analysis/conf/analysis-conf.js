@@ -4,5 +4,10 @@ module.exports = {
     DEFAULT_UNWRAP_DEPTH: 5,
     DEFAULT_CHECK_DEPTH: 5,
     NODE_EXEC_PATH: __dirname + '../../pipeline/node-wrapper/node',
-    MAX_LOOPS: 500000
+    MAX_LOOPS: 500000,
+    EXCLUDE_FOR_IN: [
+        'acorn',
+        'test/',
+        'tests/'
+    ]
 }

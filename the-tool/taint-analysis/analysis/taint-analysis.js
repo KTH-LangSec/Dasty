@@ -10,7 +10,7 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
-const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH} = require("../conf/analysis-conf");
+const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_FOR_IN} = require("../conf/analysis-conf");
 const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
@@ -554,17 +554,20 @@ class TaintAnalysis {
      * Called whenever a control flow root is executed (e.g. if, while, async function call, ....)
      * For loops it is called every time the condition is evaluated (i.e. every loop)
      */
-    #forInLoops = new Map();
+    #forInLoops = new Map(); // keeps track of the locations of all for in loops
+    #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
         const loc = iidToLocation(iid);
         if (this.injectForIn && loopType === 'ForInIteration' && !this.#forInLoops.has(loc)) {
-            // console.log(loc);
             this.#forInLoops.set(loc, true);
+            // console.log(loc);
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
-                && !loc.includes('test/') && !loc.includes('tests/')) { // try to avoid injecting in testing files
-                //
+                && !EXCLUDE_FOR_IN.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+
+                this.#injectedForInLoop.set(iid, true);
+
                 const propName = `__forInTaint${iid}`;
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
@@ -572,20 +575,6 @@ class TaintAnalysis {
                 }, false);
 
                 this.forInInjectedProps.push(propName);
-
-                // inject 'fake' property as source for ... in
-                // if (!this.lastExprResult.__forInTaint) {
-                //     this.lastExprResult.__forInTaint = createTaintVal(iid, 'forInProp', {
-                //         iid: this.entryPointIID,
-                //         entryPoint: this.entryPoint
-                //     }, false);
-                //     this.forInObjects.push(this.lastExprResult);
-                // } else {
-                //     // in case of a nested for in over the same object don't inject again but add null to the stack, so we don't reset the property when returning from the inner loop
-                //     this.forInObjects.push(null);
-                // }
-
-                // store the object to reset it after the loop (stack for nested for ins)
             }
         }
 
@@ -617,7 +606,7 @@ class TaintAnalysis {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
         // just to be safe delete the injected property after a for in iteration
-        if (this.injectForIn && loopType === 'ForInIteration' && this.forInInjectedProps.length > 0) {
+        if (this.injectForIn && loopType === 'ForInIteration' && this.#injectedForInLoop.has(iid)) {
             const loc = iidToLocation(iid);
             if (!loc.includes('test/') && !loc.includes('tests/')) {
                 const injectedProp = this.forInInjectedProps.pop();

@@ -6356,3 +6356,1096 @@ test/index.js
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ecstatic/lib/bin.js .
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ecstatic/lib/bin.js . --port 30691
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ecstatic/lib/bin.js /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ecstatic/test/public --port 51188 --mimeTypes { "application/x-my-type": ["opml"] }
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdfkit/node_modules/.bin/jest -i
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdfkit/node_modules/.bin/jest -i
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdfkit/node_modules/.bin/jest -i
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdfkit/node_modules/.bin/jest -i
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdf-lib/node_modules/.bin/jest --config jest.json --runInBand
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdf-lib/node_modules/.bin/jest --config jest.json --runInBand
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdf-lib/node_modules/.bin/jest --config jest.json --runInBand
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdf-lib/node_modules/.bin/jest --config jest.json --runInBand
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pdf-lib/node_modules/.bin/jest --config jest.json --runInBand
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/wTools/node_modules/.bin/wtest .run proto/** rapidity:-1
+--expose-gc --stack-trace-limit=999 --max_old_space_size=14498238464 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/wTools/node_modules/wTesting/proto/wtools/atop/testing/entry/Exec .run proto/** rapidity:-1
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/run.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/sqlstring/test/unit/test-SqlString.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/run.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/sqlstring/test/unit/test-SqlString.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/run.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/sqlstring/test/unit/test-SqlString.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/smartfile/node_modules/.bin/tstest test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+tests/format.js
+tests/func.js
+tests/object.js
+tests/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+tests/format.js
+tests/func.js
+tests/object.js
+tests/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+tests/format.js
+tests/func.js
+tests/object.js
+tests/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/git-log-parser/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/git-log-parser/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/git-log-parser/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/git-log-parser/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/git-log-parser/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/git-log-parser/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:sources
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-inquire/node_modules/.bin/tape -r ./lib/tape-adapter tests/api_Class.js tests/api_common.js tests/api_converters.js tests/api_enum.js tests/api_field.js tests/api_inheritance.js tests/api_longbits.js tests/api_mapfield.js tests/api_namespace.js tests/api_object.js tests/api_oneof.js tests/api_reader-writer-reuse.js tests/api_root-deferred.js tests/api_root-expose.js tests/api_root.js tests/api_service-rpc-streaming.js tests/api_service-rpc.js tests/api_service.js tests/api_tokenize.js tests/api_type.js tests/api_util.js tests/api_writer-reader.js tests/cli.js tests/comment_serialization.js tests/comp_ambiguous-names.js tests/comp_bytes.js tests/comp_empty-encode.js tests/comp_empty-inner-fields.js tests/comp_extend.js tests/comp_fixed64-grpc.js tests/comp_google_protobuf_any.js tests/comp_groups.js tests/comp_import_extend.js tests/comp_jspb-test.js tests/comp_long-tags.js tests/comp_maps.js tests/comp_negative-int32.js tests/comp_oneof.js tests/comp_optional.js tests/comp_options-parse.js tests/comp_options-textformat.js tests/comp_options.js tests/comp_packed-repeated.js tests/comp_parse-uncommon.js tests/comp_repeated-message.js tests/comp_sfixed64-grpc.js tests/comp_typescript.js tests/comp_whitespace-in-type.js tests/docs_comments.js tests/docs_comments_alternate_parse.js tests/gen_type_url.js tests/lib_aspromise.js tests/lib_base64.js tests/lib_codegen.js tests/lib_eventemitter.js tests/lib_inquire.js tests/lib_path.js tests/lib_pool.js tests/other_basics-debug.js tests/other_bench.js tests/other_classes.js tests/other_node-or-browser.js tests/other_protocolerror.js tests/node/api_load-sync.js tests/node/comp_loaders.js tests/node/lib_fetch.js tests/node/lib_float.js tests/node/lib_utf8.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-inquire/node_modules/.bin/tsc tests/comp_typescript.ts --lib es2015 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-inquire/node_modules/.bin/tsc tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-inquire/node_modules/.bin/tsc tests/data/comments.d.ts tests/data/convert.d.ts tests/data/package.d.ts tests/data/rpc-es6.d.ts tests/data/rpc-reserved.d.ts tests/data/rpc.d.ts tests/data/rpc.ts tests/data/test.d.ts tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/latinize/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lodash.uniqwith/node_modules/.bin/mocha -r esm test/Strings-category-methods.test.js test/add.test.js test/after.test.js test/at.test.js test/attempt.test.js test/camelCase.test.js test/capitalize.test.js test/case-methods.test.js test/castArray.test.js test/chunk.test.js test/create.test.js test/debounce.test.js test/deburr.test.js test/defaultTo.test.js test/defaults.test.js test/defer.test.js test/differenceWith.test.js test/divide.test.js test/drop.test.js test/dropRight.test.js test/endsWith.test.js test/eq.test.js test/escape.test.js test/escapeRegExp.test.js test/filter.test.js test/findLast.test.js test/findLastIndex-and-lastIndexOf.test.js test/flip.test.js test/flow-methods.test.js test/forEach.test.js test/forEachRight.test.js test/functions.test.js test/gt.test.js test/gte.test.js test/indexOf.test.js test/intersectionWith.test.js test/invert.test.js test/isArguments.test.js test/isArrayBuffer.test.js test/isArrayLike.test.js test/isBoolean.test.js test/isBuffer.test.js test/isDate.test.js test/isElement.test.js test/isError.test.js test/isIndex.test.js test/isLength.test.js test/isMap.test.js test/isNil.test.js test/isNull.test.js test/isNumber.test.js test/isObject.test.js test/isObjectLike.test.js test/isRegExp.test.js test/isSet.test.js test/isString.test.js test/isSymbol.test.js test/isUndefined.test.js test/isWeakMap.test.js test/isWeakSet.test.js test/lowerCase.test.js test/lowerFirst.test.js test/lt.test.js test/lte.test.js test/mean.test.js test/memoize.test.js test/memoizeCapped.test.js test/merge.test.js test/multiply.test.js test/once.test.js test/pickBy.test.js test/property.test.js test/propertyOf.test.js test/pullAll.test.js test/pullAllBy.test.js test/pullAllWith.test.js test/reject.test.js test/replace.test.js test/result.test.js test/size.test.js test/sortedUniq.test.js test/startCase.test.js test/subtract.test.js test/toArray.test.js test/toLength.test.js test/toString.test.js test/unionWith.test.js test/uniqWith.test.js test/uniqueId.test.js test/upperCase.test.js test/upperFirst.test.js test/without.test.js test/words.test.js test/xorWith.test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lodash.uniqwith/node_modules/mocha/bin/_mocha -t 10000 --exit -r esm test/Strings-category-methods.test.js test/add.test.js test/after.test.js test/at.test.js test/attempt.test.js test/camelCase.test.js test/capitalize.test.js test/case-methods.test.js test/castArray.test.js test/chunk.test.js test/create.test.js test/debounce.test.js test/deburr.test.js test/defaultTo.test.js test/defaults.test.js test/defer.test.js test/differenceWith.test.js test/divide.test.js test/drop.test.js test/dropRight.test.js test/endsWith.test.js test/eq.test.js test/escape.test.js test/escapeRegExp.test.js test/filter.test.js test/findLast.test.js test/findLastIndex-and-lastIndexOf.test.js test/flip.test.js test/flow-methods.test.js test/forEach.test.js test/forEachRight.test.js test/functions.test.js test/gt.test.js test/gte.test.js test/indexOf.test.js test/intersectionWith.test.js test/invert.test.js test/isArguments.test.js test/isArrayBuffer.test.js test/isArrayLike.test.js test/isBoolean.test.js test/isBuffer.test.js test/isDate.test.js test/isElement.test.js test/isError.test.js test/isIndex.test.js test/isLength.test.js test/isMap.test.js test/isNil.test.js test/isNull.test.js test/isNumber.test.js test/isObject.test.js test/isObjectLike.test.js test/isRegExp.test.js test/isSet.test.js test/isString.test.js test/isSymbol.test.js test/isUndefined.test.js test/isWeakMap.test.js test/isWeakSet.test.js test/lowerCase.test.js test/lowerFirst.test.js test/lt.test.js test/lte.test.js test/mean.test.js test/memoize.test.js test/memoizeCapped.test.js test/merge.test.js test/multiply.test.js test/once.test.js test/pickBy.test.js test/property.test.js test/propertyOf.test.js test/pullAll.test.js test/pullAllBy.test.js test/pullAllWith.test.js test/reject.test.js test/replace.test.js test/result.test.js test/size.test.js test/sortedUniq.test.js test/startCase.test.js test/subtract.test.js test/toArray.test.js test/toLength.test.js test/toString.test.js test/unionWith.test.js test/uniqWith.test.js test/uniqueId.test.js test/upperCase.test.js test/upperFirst.test.js test/without.test.js test/words.test.js test/xorWith.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-empty/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-empty/node_modules/mocha/bin/_mocha -t 10000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-empty/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-empty/node_modules/mocha/bin/_mocha -t 10000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-empty/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-empty/node_modules/mocha/bin/_mocha -t 10000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/nodeunit/bin/nodeunit test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/compute-scroll-into-view/node_modules/.bin/npx cross-env JEST_PUPPETEER_CONFIG=jest-puppeteer.config.cjs jest -c integration/jest.config.cjs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/compute-scroll-into-view/node_modules/.bin/cross-env JEST_PUPPETEER_CONFIG=jest-puppeteer.config.cjs jest -c integration/jest.config.cjs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/compute-scroll-into-view/node_modules/.bin/jest -c integration/jest.config.cjs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/compute-scroll-into-view/node_modules/.bin/serve -l 3000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/libnpm/node_modules/.bin/standard
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/libnpm/node_modules/.bin/tap -J --coverage test/index.js
+test/index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/potpack/node_modules/.bin/eslint bench.js index.js test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/phosphor-domutils/node_modules/.bin/lerna run test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/num2fraction/node_modules/.bin/tape test/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/mocha --reporter spec --bail --check-leaks test/
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/json-cycle/node_modules/mocha/bin/_mocha -t 10000 --reporter spec --check-leaks test/
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/blink-diff/node_modules/.bin/istanbul cover -- _mocha --reporter spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/require-resolve/node_modules/.bin/gulp test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/text-extensions/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/text-extensions/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/text-extensions/node_modules/.bin/tsd
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/text-extensions/node_modules/update-notifier/check.js {"pkg":{"name":"tsd","version":"0.7.4"}}
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/.bin/es-shim-api --bound
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/@es-shims/api/autoTest.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run tests-only
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/.bin/tape tests/*.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/.bin/es-shim-api --bound
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/@es-shims/api/autoTest.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run tests-only
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/.bin/tape tests/*.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/.bin/es-shim-api --bound
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/@es-shims/api/autoTest.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run tests-only
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string.fromcodepoint/node_modules/.bin/tape tests/*.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/graphql-tools-types/node_modules/.bin/babel-node --presets @babel/preset-env tst/gtt.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/graphql-tools-types/node_modules/@babel/node/lib/_babel-node --presets @babel/preset-env tst/gtt.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mnemonist/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mnemonist/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mnemonist/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/backpressure.js
+test/close.js
+test/data-event.js
+test/error.js
+test/index.js
+test/pipe.js
+test/test2.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/backpressure.js
+test/close.js
+test/data-event.js
+test/error.js
+test/index.js
+test/pipe.js
+test/test2.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/backpressure.js
+test/close.js
+test/data-event.js
+test/error.js
+test/index.js
+test/pipe.js
+test/test2.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/passport-linkedin-oauth2/node_modules/.bin/mocha -t 5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/passport-linkedin-oauth2/node_modules/mocha/bin/_mocha --exit -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/passport-linkedin-oauth2/node_modules/.bin/mocha -t 5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/passport-linkedin-oauth2/node_modules/mocha/bin/_mocha --exit -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/passport-linkedin-oauth2/node_modules/.bin/mocha -t 5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/passport-linkedin-oauth2/node_modules/mocha/bin/_mocha --exit -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa-proxies/node_modules/.bin/nyc mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa-proxies/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa-proxies/node_modules/.bin/nyc mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa-proxies/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa-proxies/node_modules/.bin/nyc mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/koa-proxies/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/material-slider/node_modules/.bin/karma start --single-run
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:dependency
+scripts/check-pkg-for-release.js packages/mdc-progress-indicator/package.json
+scripts/check-pkg-for-release.js packages/mdc-snackbar/package.json
+scripts/check-pkg-for-release.js packages/mdc-tab-bar/package.json
+scripts/check-pkg-for-release.js packages/mdc-shape/package.json
+scripts/check-pkg-for-release.js packages/mdc-typography/package.json
+scripts/check-pkg-for-release.js packages/mdc-touch-target/package.json
+scripts/check-pkg-for-release.js packages/mdc-linear-progress/package.json
+scripts/check-pkg-for-release.js packages/mdc-form-field/package.json
+scripts/check-pkg-for-release.js packages/mdc-dialog/package.json
+scripts/check-pkg-for-release.js packages/mdc-floating-label/package.json
+scripts/check-pkg-for-release.js packages/mdc-menu-surface/package.json
+scripts/check-pkg-for-release.js packages/mdc-density/package.json
+scripts/check-pkg-for-release.js packages/mdc-tab/package.json
+scripts/check-pkg-for-release.js packages/mdc-drawer/package.json
+scripts/check-pkg-for-release.js packages/mdc-select/package.json
+scripts/check-pkg-for-release.js packages/mdc-icon-button/package.json
+scripts/check-pkg-for-release.js packages/mdc-animation/package.json
+scripts/check-pkg-for-release.js packages/mdc-tab-scroller/package.json
+scripts/check-pkg-for-release.js packages/mdc-card/package.json
+scripts/check-pkg-for-release.js packages/mdc-theme/package.json
+scripts/check-pkg-for-release.js packages/mdc-chips/package.json
+scripts/check-pkg-for-release.js packages/mdc-auto-init/package.json
+scripts/check-pkg-for-release.js packages/mdc-top-app-bar/package.json
+scripts/check-pkg-for-release.js packages/mdc-list/package.json
+scripts/check-pkg-for-release.js packages/mdc-checkbox/package.json
+scripts/check-pkg-for-release.js packages/mdc-segmented-button/package.json
+scripts/check-pkg-for-release.js packages/mdc-ripple/package.json
+scripts/check-pkg-for-release.js packages/mdc-feature-targeting/package.json
+scripts/check-pkg-for-release.js packages/mdc-radio/package.json
+scripts/check-pkg-for-release.js packages/mdc-data-table/package.json
+scripts/check-pkg-for-release.js packages/mdc-rtl/package.json
+scripts/check-pkg-for-release.js packages/mdc-base/package.json
+scripts/check-pkg-for-release.js packages/mdc-line-ripple/package.json
+scripts/check-pkg-for-release.js packages/mdc-textfield/package.json
+scripts/check-pkg-for-release.js packages/mdc-tokens/package.json
+scripts/check-pkg-for-release.js packages/mdc-menu/package.json
+scripts/check-pkg-for-release.js packages/mdc-tab-indicator/package.json
+scripts/check-pkg-for-release.js packages/mdc-focus-ring/package.json
+scripts/check-pkg-for-release.js packages/material-components-web/package.json
+scripts/check-pkg-for-release.js packages/mdc-layout-grid/package.json
+scripts/check-pkg-for-release.js packages/mdc-image-list/package.json
+scripts/check-pkg-for-release.js packages/mdc-notched-outline/package.json
+scripts/check-pkg-for-release.js packages/mdc-tooltip/package.json
+scripts/check-pkg-for-release.js packages/mdc-switch/package.json
+scripts/check-pkg-for-release.js packages/mdc-fab/package.json
+scripts/check-pkg-for-release.js packages/mdc-focus/package.json
+scripts/check-pkg-for-release.js packages/mdc-banner/package.json
+scripts/check-pkg-for-release.js packages/mdc-elevation/package.json
+scripts/check-pkg-for-release.js packages/mdc-slider/package.json
+scripts/check-pkg-for-release.js packages/mdc-dom/package.json
+scripts/check-pkg-for-release.js packages/mdc-button/package.json
+scripts/check-pkg-for-release.js packages/mdc-circular-progress/package.json
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run clean
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/*
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vitalets-google-translate-api/node_modules/.bin/mocha -n loader=ts-node/esm test/setup.ts test/specs/index.spec.ts
+--loader=ts-node/esm /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vitalets-google-translate-api/node_modules/mocha/lib/cli/cli.js test/setup.ts test/specs/index.spec.ts --timeout 10000 --jobs 1 --exit --no-config --no-package --diff --extension js --extension cjs --extension mjs --reporter spec --slow 75 --ui bdd --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+node_modules/.bin/mocha --ui bdd --reporter spec ./test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/raptor-async/node_modules/mocha/bin/_mocha -t 10000 --ui bdd --reporter spec ./test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+node_modules/.bin/mocha --ui bdd --reporter spec ./test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/raptor-async/node_modules/mocha/bin/_mocha -t 10000 --ui bdd --reporter spec ./test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+node_modules/.bin/mocha --ui bdd --reporter spec ./test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/raptor-async/node_modules/mocha/bin/_mocha -t 10000 --ui bdd --reporter spec ./test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/retry-axios/node_modules/.bin/npm run compile
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/retry-axios/node_modules/.bin/tsc -p .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/retry-axios/node_modules/.bin/c8 mocha build/test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/retry-axios/node_modules/.bin/mocha build/test
+--throw-deprecation --enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/retry-axios/node_modules/mocha/lib/cli/cli.js build/test --timeout 10000 --jobs 1 --exit --no-config --no-package --check-leaks --diff --extension js --extension cjs --extension mjs --reporter spec --slow 75 --ui bdd --watch-ignore node_modules --watch-ignore .git
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run custom-tests
+./node_modules/mocha/bin/mocha -R dot test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/anchor/node_modules/mocha/bin/_mocha -t 10000 -R dot test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run custom-tests
+./node_modules/mocha/bin/mocha -R dot test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/anchor/node_modules/mocha/bin/_mocha -t 10000 -R dot test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run custom-tests
+./node_modules/mocha/bin/mocha -R dot test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/anchor/node_modules/mocha/bin/_mocha -t 10000 -R dot test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run flow
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rollup-plugin-multi-entry/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rollup-plugin-multi-entry/node_modules/mocha/bin/_mocha --timeout 10000 --exit --no-config --no-package --no-opts --require @babel/register --diff --extension js --reporter spec --slow 75 --ui bdd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run flow
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rollup-plugin-multi-entry/node_modules/.bin/mocha
+--__forInTaint4399=TAINTED --__forInTaint10777=TAINTED /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rollup-plugin-multi-entry/node_modules/mocha/bin/_mocha --timeout 10000 --exit --no-config --no-package --no-opts --require @babel/register --diff --extension js --reporter spec --slow 75 --ui bdd --__forInTaint4399 TAINTED --__forInTaint10777 TAINTED
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run flow
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rollup-plugin-multi-entry/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/rollup-plugin-multi-entry/node_modules/mocha/bin/_mocha --timeout 10000 --exit --no-config --no-package --no-opts --require @babel/register --diff --extension js --reporter spec --slow 75 --ui bdd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/optional-require/node_modules/.bin/xrun --serial build xarc/test-only
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/optional-require/node_modules/.bin/tsc
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/optional-require/node_modules/.bin/mocha --extension ts,js,tsx,jsx,cjs,mjs -c test/spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/optional-require/node_modules/.bin/xrun --serial build xarc/test-only
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/optional-require/node_modules/.bin/xrun --serial build xarc/test-only
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/arraybuffer-loader/node_modules/.bin/npm-run-all test-browser test-node
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run test-browser
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/arraybuffer-loader/node_modules/.bin/karma start --single-run
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run test-node
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/arraybuffer-loader/node_modules/.bin/webpack
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/arraybuffer-loader/node_modules/.bin/mocha test/arraybuffer-loader.bundle.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/node_modules/.bin/ng test ngx-clipboard
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/node_modules/@angular/compiler-cli/bundles/ngcc/main-ngcc.js --source /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/node_modules --properties es2020 es2015 browser module main --first-only --create-ivy-entry-points --async --tsconfig /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/projects/ngx-clipboard/tsconfig.spec.json --use-program-dependencies
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/node_modules/@angular/compiler-cli/bundles/ngcc/src/locking/lock_file_with_child_process/ngcc_lock_unlocker.js /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/node_modules/.ngcc_lock_file 1
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ngx-clipboard/node_modules/.bin/ng test ngx-clipboard
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/class-extend/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/class-extend/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/class-extend/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/class-extend/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/class-extend/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/class-extend/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/jscs client/js/ajax.requester.js client/js/azure client/js/blob-proxy.js client/js/button.js client/js/deletefile.ajax.requester.js client/js/dnd.js client/js/error client/js/export.js client/js/features.js client/js/form-support.js client/js/identify.js client/js/iframe.xss.response.js client/js/image-support client/js/jquery-dnd.js client/js/jquery-plugin.js client/js/non-traditional-common client/js/paste.js client/js/promise.js client/js/s3 client/js/session.ajax.requester.js client/js/session.js client/js/templating.js client/js/third-party client/js/total-progress.js client/js/traditional client/js/ui.handler.click.filebuttons.js client/js/ui.handler.click.filename.js client/js/ui.handler.edit.filename.js client/js/ui.handler.events.js client/js/ui.handler.focus.filenameinput.js client/js/ui.handler.focusin.filenameinput.js client/js/upload-data.js client/js/upload-handler client/js/uploader.api.js client/js/uploader.basic.api.js client/js/uploader.basic.js client/js/uploader.js client/js/uploadsuccess.ajax.requester.js client/js/util.js client/js/version.js client/js/window.receive.message.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/jshint client/js/ajax.requester.js client/js/azure client/js/blob-proxy.js client/js/button.js client/js/deletefile.ajax.requester.js client/js/dnd.js client/js/error client/js/export.js client/js/features.js client/js/form-support.js client/js/identify.js client/js/iframe.xss.response.js client/js/image-support client/js/jquery-dnd.js client/js/jquery-plugin.js client/js/non-traditional-common client/js/paste.js client/js/promise.js client/js/s3 client/js/session.ajax.requester.js client/js/session.js client/js/templating.js client/js/third-party client/js/total-progress.js client/js/traditional client/js/ui.handler.click.filebuttons.js client/js/ui.handler.click.filename.js client/js/ui.handler.edit.filename.js client/js/ui.handler.events.js client/js/ui.handler.focus.filenameinput.js client/js/ui.handler.focusin.filenameinput.js client/js/upload-data.js client/js/upload-handler client/js/uploader.api.js client/js/uploader.basic.api.js client/js/uploader.basic.js client/js/uploader.js client/js/uploadsuccess.ajax.requester.js client/js/util.js client/js/version.js client/js/window.receive.message.js test/unit/azure test/unit/basic.js test/unit/button.js test/unit/chunked-uploads.js test/unit/concurrent-chunks.js test/unit/delete-file.js test/unit/dnd.js test/unit/exif.js test/unit/file-upload-params-and-headers.js test/unit/form-support.js test/unit/identify.js test/unit/iframe.xss.response.js test/unit/image.js test/unit/on-all-complete.js test/unit/promise.js test/unit/resources test/unit/s3 test/unit/scaling.js test/unit/session.js test/unit/set-status.js test/unit/simple-file-uploads.js test/unit/submit-validate-cancel.js test/unit/templating.js test/unit/total-progress.js test/unit/ui.handler.click.filebuttons.js test/unit/ui.handler.click.filename.js test/unit/upload-data.js test/unit/uploader.basic.api.js test/unit/util.js test/unit/validation.image.js test/unit/workarounds.js test/static/local/blob-maker.js test/static/local/client.js test/static/local/formdata.js test/static/local/helpme.js test/static/local/karma-runner.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/static test/unit/resources -H {"Access-Control-Allow-Origin": "*"} -p 4000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/static test/unit/resources -H {"Access-Control-Allow-Origin": "*"} -p 4000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/static . -p 4001
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/cleancss --source-map _build/fine-uploader.css -o _build/fine-uploader.min.css
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/cleancss --source-map _build/fine-uploader-gallery.css -o _build/fine-uploader-gallery.min.css
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/cleancss --source-map _build/fine-uploader-new.css -o _build/fine-uploader-new.min.css
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+-pe require('./package.json').version
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/uglifyjs -b --preamble // Fine Uploader  - MIT licensed. http://fineuploader.com -e window:global -p relative --source-map-include-sources client/js/util.js client/js/export.js client/js/error/error.js client/js/version.js client/js/features.js client/js/promise.js client/js/blob-proxy.js client/js/button.js client/js/upload-data.js client/js/uploader.basic.api.js client/js/uploader.basic.js client/js/ajax.requester.js client/js/upload-handler/upload.handler.js client/js/upload-handler/upload.handler.controller.js client/js/window.receive.message.js client/js/upload-handler/form.upload.handler.js client/js/upload-handler/xhr.upload.handler.js client/js/deletefile.ajax.requester.js client/js/image-support/megapix-image.js client/js/image-support/image.js client/js/image-support/exif.js client/js/identify.js client/js/image-support/validation.image.js client/js/session.js client/js/session.ajax.requester.js client/js/image-support/scaler.js client/js/third-party/ExifRestorer.js client/js/total-progress.js client/js/paste.js client/js/form-support.js client/js/traditional/traditional.form.upload.handler.js client/js/traditional/traditional.xhr.upload.handler.js client/js/traditional/all-chunks-done.ajax.requester.js client/js/dnd.js client/js/uploader.api.js client/js/uploader.js client/js/templating.js client/js/ui.handler.events.js client/js/ui.handler.click.filebuttons.js client/js/ui.handler.click.filename.js client/js/ui.handler.focusin.filenameinput.js client/js/ui.handler.focus.filenameinput.js client/js/ui.handler.edit.filename.js client/js/third-party/crypto-js/core.js client/js/third-party/crypto-js/enc-base64.js client/js/third-party/crypto-js/hmac.js client/js/third-party/crypto-js/sha1.js client/js/third-party/crypto-js/sha256.js client/js/third-party/crypto-js/lib-typedarrays.js client/js/s3/util.js client/js/non-traditional-common/uploader.basic.api.js client/js/s3/uploader.basic.js client/js/s3/request-signer.js client/js/uploadsuccess.ajax.requester.js client/js/s3/multipart.initiate.ajax.requester.js client/js/s3/multipart.complete.ajax.requester.js client/js/s3/multipart.abort.ajax.requester.js client/js/s3/s3.xhr.upload.handler.js client/js/s3/s3.form.upload.handler.js client/js/s3/uploader.js client/js/azure/util.js client/js/non-traditional-common/uploader.basic.api.js client/js/azure/uploader.basic.js client/js/azure/azure.xhr.upload.handler.js client/js/azure/get-sas.js client/js/uploadsuccess.ajax.requester.js client/js/azure/rest/delete-blob.js client/js/azure/rest/put-blob.js client/js/azure/rest/put-block.js client/js/azure/rest/put-block-list.js client/js/azure/uploader.js -o _build/all.fine-uploader.js --source-map _build/all.fine-uploader.js.map
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fine-uploader/node_modules/.bin/karma start config/karma.conf.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm bin
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vdom-to-html/node_modules/.bin/mocha --reporter spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vdom-to-html/node_modules/mocha/bin/_mocha -t 10000 --reporter spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vdom-to-html/node_modules/.bin/mocha --reporter spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vdom-to-html/node_modules/mocha/bin/_mocha -t 10000 --reporter spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vdom-to-html/node_modules/.bin/mocha --reporter spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/vdom-to-html/node_modules/mocha/bin/_mocha -t 10000 --reporter spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/surge/node_modules/.bin/mocha ./test/basic.js -t 5000
+./lib/cli.js logout
+./lib/cli.js --foo
+./lib/cli.js --version
+./lib/cli.js -V
+./lib/cli.js logout
+./lib/cli.js
+./lib/cli.js logout
+./lib/cli.js list
+./lib/cli.js logout
+./lib/cli.js
+./lib/cli.js logout
+./lib/cli.js teardown
+./lib/cli.js logout
+./lib/cli.js list
+./lib/cli.js logout
+./lib/cli.js login
+./lib/cli.js whoami
+./lib/cli.js logout
+./lib/cli.js whoami
+./lib/cli.js logout
+./lib/cli.js login
+./lib/cli.js
+./lib/cli.js list
+./lib/cli.js
+./lib/cli.js teardown
+./lib/cli.js list
+./lib/cli.js token
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/surge/node_modules/.bin/mocha ./test/basic.js -t 5000
+./lib/cli.js logout
+./lib/cli.js --foo
+./lib/cli.js --version
+./lib/cli.js -V
+./lib/cli.js logout
+./lib/cli.js
+./lib/cli.js logout
+./lib/cli.js list
+./lib/cli.js logout
+./lib/cli.js
+./lib/cli.js logout
+./lib/cli.js teardown
+./lib/cli.js logout
+./lib/cli.js list
+./lib/cli.js logout
+./lib/cli.js login
+./lib/cli.js whoami
+./lib/cli.js logout
+./lib/cli.js whoami
+./lib/cli.js logout
+./lib/cli.js login
+./lib/cli.js
+./lib/cli.js list
+./lib/cli.js
+./lib/cli.js teardown
+./lib/cli.js list
+./lib/cli.js token
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/surge/node_modules/.bin/mocha ./test/basic.js -t 5000
+./lib/cli.js logout
+./lib/cli.js --foo
+./lib/cli.js --version
+./lib/cli.js -V
+./lib/cli.js logout
+./lib/cli.js
+./lib/cli.js logout
+./lib/cli.js list
+./lib/cli.js logout
+./lib/cli.js
+./lib/cli.js logout
+./lib/cli.js teardown
+./lib/cli.js logout
+./lib/cli.js list
+./lib/cli.js logout
+./lib/cli.js login
+./lib/cli.js whoami
+./lib/cli.js logout
+./lib/cli.js whoami
+./lib/cli.js logout
+./lib/cli.js login
+./lib/cli.js
+./lib/cli.js list
+./lib/cli.js
+./lib/cli.js teardown
+./lib/cli.js list
+./lib/cli.js token
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/simplify-js/node_modules/.bin/jshint simplify.js test/test.js
+test/test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/simplify-js/node_modules/.bin/faucet
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run eslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run stylelint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fraction.js/node_modules/.bin/mocha tests/fraction.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mdn-polyfills/node_modules/.bin/ava --tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mdn-polyfills/node_modules/.bin/tap-nyan
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bundle-collapser/node_modules/.bin/tape test/collapse.js test/non-ascii.js test/return.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bundle-collapser/test/../bin/cmd.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bundle-collapser/node_modules/.bin/tape test/collapse.js test/non-ascii.js test/return.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bundle-collapser/test/../bin/cmd.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bundle-collapser/node_modules/.bin/tape test/collapse.js test/non-ascii.js test/return.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bundle-collapser/test/../bin/cmd.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ibm-watson/node_modules/.bin/jest test/
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/heimdalljs-logger/node_modules/.bin/mocha dist/tests/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/heimdalljs-logger/node_modules/mocha/bin/_mocha -t 10000 dist/tests/index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/.bin/nyc --reporter=lcov --reporter=text-summary mocha --require intelli-espower-loader --recursive test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/.bin/mocha --require intelli-espower-loader --recursive test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/mocha/bin/_mocha -t 10000 --require intelli-espower-loader --recursive test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/.bin/nyc --reporter=lcov --reporter=text-summary mocha --require intelli-espower-loader --recursive test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/.bin/mocha --require intelli-espower-loader --recursive test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/mocha/bin/_mocha -t 10000 --require intelli-espower-loader --recursive test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/.bin/nyc --reporter=lcov --reporter=text-summary mocha --require intelli-espower-loader --recursive test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/.bin/mocha --require intelli-espower-loader --recursive test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cloudflare/node_modules/mocha/bin/_mocha -t 10000 --require intelli-espower-loader --recursive test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/mocha/bin/_mocha -R spec -t 20000 test/api_card.test.js test/api_common.test.js test/api_custom_service.test.js test/api_customer.test.js test/api_feedback.test.js test/api_group.test.js test/api_ip.test.js test/api_mass_send.test.js test/api_media.test.js test/api_menu.test.js test/api_payment.test.js test/api_poi.test.js test/api_qrcode.test.js test/api_semantic.test.js test/api_shop_common.test.js test/api_shop_express.test.js test/api_shop_goods.test.js test/api_shop_group.test.js test/api_shop_order.test.js test/api_shop_shelf.test.js test/api_shop_stock.test.js test/api_tag.test.js test/api_template.test.js test/api_url.test.js test/api_user.test.js test/config.js
+./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- -t 20000 -R spec test/api_card.test.js test/api_common.test.js test/api_custom_service.test.js test/api_customer.test.js test/api_feedback.test.js test/api_group.test.js test/api_ip.test.js test/api_mass_send.test.js test/api_media.test.js test/api_menu.test.js test/api_payment.test.js test/api_poi.test.js test/api_qrcode.test.js test/api_semantic.test.js test/api_shop_common.test.js test/api_shop_express.test.js test/api_shop_goods.test.js test/api_shop_group.test.js test/api_shop_order.test.js test/api_shop_shelf.test.js test/api_shop_stock.test.js test/api_tag.test.js test/api_template.test.js test/api_url.test.js test/api_user.test.js test/config.js
+./node_modules/coveralls/bin/coveralls.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/mocha/bin/_mocha -R spec -t 20000 test/api_card.test.js test/api_common.test.js test/api_custom_service.test.js test/api_customer.test.js test/api_feedback.test.js test/api_group.test.js test/api_ip.test.js test/api_mass_send.test.js test/api_media.test.js test/api_menu.test.js test/api_payment.test.js test/api_poi.test.js test/api_qrcode.test.js test/api_semantic.test.js test/api_shop_common.test.js test/api_shop_express.test.js test/api_shop_goods.test.js test/api_shop_group.test.js test/api_shop_order.test.js test/api_shop_shelf.test.js test/api_shop_stock.test.js test/api_tag.test.js test/api_template.test.js test/api_url.test.js test/api_user.test.js test/config.js
+./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- -t 20000 -R spec test/api_card.test.js test/api_common.test.js test/api_custom_service.test.js test/api_customer.test.js test/api_feedback.test.js test/api_group.test.js test/api_ip.test.js test/api_mass_send.test.js test/api_media.test.js test/api_menu.test.js test/api_payment.test.js test/api_poi.test.js test/api_qrcode.test.js test/api_semantic.test.js test/api_shop_common.test.js test/api_shop_express.test.js test/api_shop_goods.test.js test/api_shop_group.test.js test/api_shop_order.test.js test/api_shop_shelf.test.js test/api_shop_stock.test.js test/api_tag.test.js test/api_template.test.js test/api_url.test.js test/api_user.test.js test/config.js
+./node_modules/coveralls/bin/coveralls.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/mocha/bin/_mocha -R spec -t 20000 test/api_card.test.js test/api_common.test.js test/api_custom_service.test.js test/api_customer.test.js test/api_feedback.test.js test/api_group.test.js test/api_ip.test.js test/api_mass_send.test.js test/api_media.test.js test/api_menu.test.js test/api_payment.test.js test/api_poi.test.js test/api_qrcode.test.js test/api_semantic.test.js test/api_shop_common.test.js test/api_shop_express.test.js test/api_shop_goods.test.js test/api_shop_group.test.js test/api_shop_order.test.js test/api_shop_shelf.test.js test/api_shop_stock.test.js test/api_tag.test.js test/api_template.test.js test/api_url.test.js test/api_user.test.js test/config.js
+./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- -t 20000 -R spec test/api_card.test.js test/api_common.test.js test/api_custom_service.test.js test/api_customer.test.js test/api_feedback.test.js test/api_group.test.js test/api_ip.test.js test/api_mass_send.test.js test/api_media.test.js test/api_menu.test.js test/api_payment.test.js test/api_poi.test.js test/api_qrcode.test.js test/api_semantic.test.js test/api_shop_common.test.js test/api_shop_express.test.js test/api_shop_goods.test.js test/api_shop_group.test.js test/api_shop_order.test.js test/api_shop_shelf.test.js test/api_shop_stock.test.js test/api_tag.test.js test/api_template.test.js test/api_url.test.js test/api_user.test.js test/config.js
+./node_modules/coveralls/bin/coveralls.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/color-namer/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/color-namer/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/color-namer/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/color-namer/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/color-namer/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/color-namer/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run unit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run wdio
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run wdio -- conf/firefox.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/promisepipe/node_modules/.bin/mocha test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/promisepipe/node_modules/mocha/bin/_mocha -t 10000 test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/promisepipe/node_modules/.bin/mocha test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/promisepipe/node_modules/mocha/bin/_mocha -t 10000 test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/promisepipe/node_modules/.bin/mocha test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/promisepipe/node_modules/mocha/bin/_mocha -t 10000 test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run format:check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run flow-typed
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run flow
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run karma
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/run-s build test:*
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/run-s clean
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog clean
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/trash build test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/run-p build:*
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog build:main
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog build:module
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/tsc -p tsconfig.module.json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/tsc -p tsconfig.json
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog test:lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/tslint --project .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/prettier src/**/*.ts --list-different
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/nyc --silent ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/ava
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run --figma-js:commitizen_path=cz-conventional-changelog test:nsp
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/figma-js/node_modules/.bin/nsp check
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ionic-native-sqlite/node_modules/.bin/jest
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/npm-run-all lint dist test:unit test:e2e
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/npm-run-all lint:es lint:ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run lint:es
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/eslint --ignore-pattern tests/fixtures/ {bin,examples,scripts,src,tests}/**/*.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run lint:ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/tsc --isolatedModules --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run dist
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/npm-run-all clean build dist:commonjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run clean
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/shx rm -fr dist/*
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/tsc
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/tsc -p tsconfig.cjs.json
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run dist:commonjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/cross-env NODE_OPTIONS=--no-warnings --loader=ts-node/esm tap -R tap src/**/*.spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/tap -R tap src/**/*.spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/tap -t 180 -j 1 -R tap src/**/*.spec.ts
+src/brolog.spec.ts
+src/version.spec.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/lib/node_modules/npm/bin/npm-cli.js run test:e2e
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run dist
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm pack
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npx webdriver-manager update --gecko=false
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/webdriver-manager update --gecko=false
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install brolog-1.15.1.tgz
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm start
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npx protractor tests/protractor.conf.cjs
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/brolog/node_modules/.bin/protractor tests/protractor.conf.cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm stop
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-local
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/.bin/egg-bin test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/node_modules/mocha/bin/_mocha --espower --tscompiler=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/ts-node/register/index.js --egg-ts-helper=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-ts-helper/register.js --timeout=60000 --exit --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/egg-bin/lib/mocha-clean.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/co-mocha/lib/co-mocha.js --require=/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/await-first/node_modules/intelli-espower-loader/intelli-espower-loader.js test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/cssstats/node_modules/.bin/ava -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lykmapipo-mongoose-common/node_modules/.bin/nyc --reporter=html --reporter=text mocha --exit --timeout=8000 --require @babel/register test/integration/error.spec.js test/integration/seed.spec.js test/unit/unit.spec.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lykmapipo-mongoose-common/node_modules/.bin/mocha --exit --timeout=8000 --require @babel/register test/integration/error.spec.js test/integration/seed.spec.js test/unit/unit.spec.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lykmapipo-mongoose-common/node_modules/.bin/nyc --reporter=html --reporter=text mocha --exit --timeout=8000 --require @babel/register test/integration/error.spec.js test/integration/seed.spec.js test/unit/unit.spec.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lykmapipo-mongoose-common/node_modules/.bin/mocha --exit --timeout=8000 --require @babel/register test/integration/error.spec.js test/integration/seed.spec.js test/unit/unit.spec.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lykmapipo-mongoose-common/node_modules/.bin/nyc --reporter=html --reporter=text mocha --exit --timeout=8000 --require @babel/register test/integration/error.spec.js test/integration/seed.spec.js test/unit/unit.spec.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/lykmapipo-mongoose-common/node_modules/.bin/mocha --exit --timeout=8000 --require @babel/register test/integration/error.spec.js test/integration/seed.spec.js test/unit/unit.spec.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/object-to-formdata/node_modules/.bin/jest --coverage
+--eval import("node:fs").then(() => console.log(true), () => console.log(false));
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/server/node_modules/.bin/jest --coverage --forceExit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-request-language/node_modules/.bin/eslint .
+./node_modules/mocha/bin/mocha test/test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-request-language/node_modules/mocha/bin/_mocha -t 10000 test/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-request-language/node_modules/.bin/eslint .
+./node_modules/mocha/bin/mocha test/test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-request-language/node_modules/mocha/bin/_mocha -t 10000 test/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-request-language/node_modules/.bin/eslint .
+./node_modules/mocha/bin/mocha test/test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/express-request-language/node_modules/mocha/bin/_mocha -t 10000 test/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/aegir test --files test/**/*.spec.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/mocha test/**/*.spec.js --ui bdd --timeout=5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/pw-test test/**/*.spec.js --mode main --config /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/aegir/src/config/pw-test.js --timeout=5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/pw-test test/**/*.spec.js --mode worker --config /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/aegir/src/config/pw-test.js --timeout=5000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/aegir test --files test/**/*.spec.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/mocha test/**/*.spec.js --ui bdd --timeout=5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/pw-test test/**/*.spec.js --mode main --config /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/aegir/src/config/pw-test.js --timeout=5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/pw-test test/**/*.spec.js --mode worker --config /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/aegir/src/config/pw-test.js --timeout=5000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/aegir test --files test/**/*.spec.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/mocha test/**/*.spec.js --ui bdd --timeout=5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/pw-test test/**/*.spec.js --mode main --config /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/aegir/src/config/pw-test.js --timeout=5000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/.bin/pw-test test/**/*.spec.js --mode worker --config /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/borc/node_modules/aegir/src/config/pw-test.js --timeout=5000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mapbox-geojson-normalize/node_modules/.bin/eslint index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/mapbox-geojson-normalize/node_modules/.bin/tap test/test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/test-esm.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
+-v
+./node_modules/coveralls/bin/coveralls.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/.bin/lerna run test --scope @jupyterlab/!(galata|template)* --concurrency 1 --stream
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/coreutils","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/testing","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/observables","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/nbformat","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/statedb","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/settingregistry","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/services","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/translation","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/ui-components","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/statusbar","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/apputils","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/rendermime","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/codeeditor","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/docregistry","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/documentsearch","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/codemirror","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/application","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/toc","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/outputarea","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/lsp","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/docmanager","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/filebrowser","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/cells","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/notebook","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/console","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/fileeditor","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/mainmenu","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/completer","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/inspector","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/logconsole","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/metadataform","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/debugger","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/csvviewer","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/imageviewer","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/terminal","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/shortcuts-extension","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/cell-toolbar","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/vega5-extension","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/evolab-application/node_modules/nx/bin/run-executor.js {"targetDescription":{"project":"@jupyterlab/metapackage","target":"test"},"overrides":{"__overrides_unparsed__":[]},"isVerbose":false}
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/memjs/node_modules/.bin/eslint ./lib/memjs/ ./test/
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/memjs/node_modules/.bin/tap -R spec ./test/client_test.js ./test/header_test.js ./test/server_test.js ./test/utils_test.js
+./test/client_test.js
+./test/header_test.js
+./test/server_test.js
+./test/utils_test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/memjs/node_modules/.bin/eslint ./lib/memjs/ ./test/
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/memjs/node_modules/.bin/tap -R spec ./test/client_test.js ./test/header_test.js ./test/server_test.js ./test/utils_test.js
+./test/client_test.js
+./test/header_test.js
+./test/server_test.js
+./test/utils_test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/turf-point/node_modules/.bin/tape test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/pleeease-filters/node_modules/.bin/jasmine-node spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run unit-test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/streaming-iterables/node_modules/.bin/c8 -r html -r text mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/standard --verbose
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/snazzy
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/cross-env NODE_ENV=test mocha test/**/*.test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/mocha test/**/*.test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/mocha/bin/_mocha --full-trace --compilers js:babel-register --reporter dot --slow 1000 --timeout 1500 --reporter spec --require test/support/helper -t 10000 test/**/*.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:lint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/snazzy
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/standard --verbose
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/cross-env NODE_ENV=test mocha test/**/*.test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/.bin/mocha test/**/*.test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/chai-enzyme/node_modules/mocha/bin/_mocha --full-trace --compilers js:babel-register --reporter dot --slow 1000 --timeout 1500 --reporter spec --require test/support/helper -t 10000 test/**/*.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/backbone-events-standalone/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/backbone-events-standalone/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/backbone-events-standalone/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/backbone-events-standalone/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/valine/node_modules/.bin/webpack
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/portastic/node_modules/.bin/mocha --tdd --bail test/**/*-test.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/portastic/node_modules/mocha/bin/_mocha -t 10000 --tdd test/**/*-test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/default-passive-events/node_modules/.bin/jest
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/docker-cli-js/node_modules/.bin/ts-node node_modules/blue-tape/bin/blue-tape.js src/**/*.spec.ts
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/docker-cli-js/node_modules/.bin/tap-diff
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+japaFile.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+japaFile.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/weather-js/node_modules/.bin/istanbul cover _mocha -- --timeout 10000 -R mocha-multi
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/weather-js/node_modules/.bin/istanbul check-coverage
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run node-test
+tests/node-all-tests.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/osc/node_modules/.bin/grunt
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run browser-test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npx testem ci --file tests/testem.json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/osc/node_modules/.bin/testem ci --file tests/testem.json
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run node-test
+tests/node-all-tests.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/osc/node_modules/.bin/grunt
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run browser-test
+/home/pmoosi/.nvm/versions/node/v19.5.0/bin/npx testem ci --file tests/testem.json
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/osc/node_modules/.bin/testem ci --file tests/testem.json
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run runtime-install
+scripts/runtime-install.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run jshint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/.bin/jshint lib --reporter=jslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit-msrestazure
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run-script tsc
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/.bin/tsc index.d.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run-script jshint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/.bin/jshint lib --reporter=jslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run-script unit
+test/unit.js testlist.txt
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit-arm
+scripts/unit-arm.js testlistarm.txt
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/mocha/bin/_mocha -u tdd -t 5000000 test/services/cognitiveServicesLanguage/spellCheckAPIClient-tests.js test/services/cognitiveServicesSearch/entitySearch-tests.js test/services/cognitiveServicesSearch/webSearch-tests.js test/services/cognitiveServicesSearch/videoSearch-tests.js test/services/cognitiveServicesSearch/newsSearch-tests.js test/services/cognitiveServicesSearch/imageSearch-tests.js test/services/batchaiManagement/batchaiManagementClient-tests.js test/common/framework-tests.js test/runtimeTests/rpRegistrationFilterTest.js test/runtimeTests/rpRegistrationFilterTestNewSubscription.js test/services/computeManagement/computeManagementClient-tests.js test/services/computeManagement/diskManagementClient-tests.js test/services/resourceManagement/resourceManagementClient-tests.js test/services/resourceManagement/authorizationClient-tests.js test/services/resourceManagement/featureClient-tests.js test/services/resourceManagement/subscriptionClient-tests.js test/services/storageManagement/storageManagementClient-tests.js test/services/intune/intuneResourceManagementClient-tests.js test/services/dataLakeAnalyticsManagement/dataLakeAnalyticsManagementClient-tests.js test/services/dataLakeStoreManagement/dataLakeStoreManagementClient-tests.js test/services/cdnManagement/cdnProfile-tests.js test/services/cdnManagement/cdnEndpoint-tests.js test/services/cdnManagement/cdnOrigin-tests.js test/services/cdnManagement/cdnCustomDomain-tests.js test/services/cdnManagement/cdnCheckResourceUsage-tests.js test/services/cdnManagement/cdnEdgeNode-tests.js test/services/cdnManagement/cdnCheckNameAvailability-tests.js test/services/cdnManagement/cdnOperation-tests.js test/services/batchManagement/batchManagementClient-tests.js test/services/batch/batchClient-tests.js test/services/servermanagement/servermanagement-tests.js test/services/notificationHubsManagement/namespace-tests.js test/services/notificationHubsManagement/notificationHub-tests.js test/services/devTestLabs/devTestLabsClient-tests.js test/services/iothub/iothubClient-tests.js test/services/postgresqlManagement/postgreSQLManagementClient-tests.js test/services/mysqlManagement/mySQLManagementClient-tests.js test/services/loganalytics/loganalytics-query-tests.js test/services/keyVault/keyVault-key-tests.js test/services/keyVault/keyVault-secret-tests.js test/services/keyVault/keyVault-certificate-tests.js test/services/keyVault/keyVault-storage-tests.js test/services/keyVaultManagement/keyVaultManagement-tests.js -R list
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit
+scripts/unit.js testlist.txt
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/mocha/bin/_mocha -u tdd -t 200000 test/common/credentials/cert-tests.js test/common/credentials/token-tests.js test/common/filters/linearretrypolicyfilter-unittests.js test/common/filters/exponentialretrypolicyfilter-unittests.js test/common/filters/exponentialretrypolicyfilter-tests.js test/common/filters/linearretrypolicyfilter-tests.js test/common/filters/proxyfilter-tests.js test/common/connectionstringparser-tests.js test/common/serviceclient-tests.js test/common/hmacsha256sign-tests.js test/common/servicesettings-tests.js test/common/servicebussettings-tests.js test/common/servicemanagementsettings-tests.js test/common/storageservicesettings-tests.js test/serviceruntime/roleenvironment-tests.js test/serviceruntime/runtimeversionmanager-tests.js test/serviceruntime/runtimeversionprotocolclient-tests.js test/services/blob/internal/sharedaccesssignature-tests.js test/services/blob/internal/sharedkey-tests.js test/services/blob/internal/sharedkeylite-tests.js test/services/blob/blobservice-tests.js test/services/blob/blobservice-stream-tests.js test/services/blob/blobservice-gb-tests.js test/services/blob/blobservice-uploaddownload-tests.js test/services/blob/models/blobpagerangestream-test.js test/services/blob/filters-tests.js test/services/queue/queueservice-tests.js test/services/serviceBus/internal/wraptokenmanager-tests.js test/services/serviceBus/wrapservice-tests.js test/services/sql/sqlmanagementservice-tests.js test/services/sql/sqlservice-tests.js test/services/table/internal/sharedkeytable-tests.js test/services/table/internal/sharedkeylitetable-tests.js test/services/table/batchserviceclient-tests.js test/services/table/tabledatatype-tests.js test/services/table/tablequery-tests.js test/services/table/tableservice-batch-tests.js test/services/table/tableservice-tablequery-tests.js test/services/table/tableservice-tests.js test/services/storageManagement/storageManagementClient-tests.js test/util/date-tests.js test/util/edmtype-tests.js test/util/iso8061date-tests.js test/util/js2xml-tests.js test/util/odatahandler-tests.js test/util/util-tests.js test/util/validate-tests.js test/azure-tests.js -R list
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit-msrest
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run jshint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run unit
+test/unit.js testlist.txt
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run runtime-install
+scripts/runtime-install.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run jshint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/.bin/jshint lib --reporter=jslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit-msrestazure
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run-script tsc
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/.bin/tsc index.d.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run-script jshint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/.bin/jshint lib --reporter=jslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run-script unit
+test/unit.js testlist.txt
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit-arm
+scripts/unit-arm.js testlistarm.txt
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/mocha/bin/_mocha -u tdd -t 5000000 test/services/cognitiveServicesLanguage/spellCheckAPIClient-tests.js test/services/cognitiveServicesSearch/entitySearch-tests.js test/services/cognitiveServicesSearch/webSearch-tests.js test/services/cognitiveServicesSearch/videoSearch-tests.js test/services/cognitiveServicesSearch/newsSearch-tests.js test/services/cognitiveServicesSearch/imageSearch-tests.js test/services/batchaiManagement/batchaiManagementClient-tests.js test/common/framework-tests.js test/runtimeTests/rpRegistrationFilterTest.js test/runtimeTests/rpRegistrationFilterTestNewSubscription.js test/services/computeManagement/computeManagementClient-tests.js test/services/computeManagement/diskManagementClient-tests.js test/services/resourceManagement/resourceManagementClient-tests.js test/services/resourceManagement/authorizationClient-tests.js test/services/resourceManagement/featureClient-tests.js test/services/resourceManagement/subscriptionClient-tests.js test/services/storageManagement/storageManagementClient-tests.js test/services/intune/intuneResourceManagementClient-tests.js test/services/dataLakeAnalyticsManagement/dataLakeAnalyticsManagementClient-tests.js test/services/dataLakeStoreManagement/dataLakeStoreManagementClient-tests.js test/services/cdnManagement/cdnProfile-tests.js test/services/cdnManagement/cdnEndpoint-tests.js test/services/cdnManagement/cdnOrigin-tests.js test/services/cdnManagement/cdnCustomDomain-tests.js test/services/cdnManagement/cdnCheckResourceUsage-tests.js test/services/cdnManagement/cdnEdgeNode-tests.js test/services/cdnManagement/cdnCheckNameAvailability-tests.js test/services/cdnManagement/cdnOperation-tests.js test/services/batchManagement/batchManagementClient-tests.js test/services/batch/batchClient-tests.js test/services/servermanagement/servermanagement-tests.js test/services/notificationHubsManagement/namespace-tests.js test/services/notificationHubsManagement/notificationHub-tests.js test/services/devTestLabs/devTestLabsClient-tests.js test/services/iothub/iothubClient-tests.js test/services/postgresqlManagement/postgreSQLManagementClient-tests.js test/services/mysqlManagement/mySQLManagementClient-tests.js test/services/loganalytics/loganalytics-query-tests.js test/services/keyVault/keyVault-key-tests.js test/services/keyVault/keyVault-secret-tests.js test/services/keyVault/keyVault-certificate-tests.js test/services/keyVault/keyVault-storage-tests.js test/services/keyVaultManagement/keyVaultManagement-tests.js -R list
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit
+scripts/unit.js testlist.txt
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/azure-sb/node_modules/mocha/bin/_mocha -u tdd -t 200000 test/common/credentials/cert-tests.js test/common/credentials/token-tests.js test/common/filters/linearretrypolicyfilter-unittests.js test/common/filters/exponentialretrypolicyfilter-unittests.js test/common/filters/exponentialretrypolicyfilter-tests.js test/common/filters/linearretrypolicyfilter-tests.js test/common/filters/proxyfilter-tests.js test/common/connectionstringparser-tests.js test/common/serviceclient-tests.js test/common/hmacsha256sign-tests.js test/common/servicesettings-tests.js test/common/servicebussettings-tests.js test/common/servicemanagementsettings-tests.js test/common/storageservicesettings-tests.js test/serviceruntime/roleenvironment-tests.js test/serviceruntime/runtimeversionmanager-tests.js test/serviceruntime/runtimeversionprotocolclient-tests.js test/services/blob/internal/sharedaccesssignature-tests.js test/services/blob/internal/sharedkey-tests.js test/services/blob/internal/sharedkeylite-tests.js test/services/blob/blobservice-tests.js test/services/blob/blobservice-stream-tests.js test/services/blob/blobservice-gb-tests.js test/services/blob/blobservice-uploaddownload-tests.js test/services/blob/models/blobpagerangestream-test.js test/services/blob/filters-tests.js test/services/queue/queueservice-tests.js test/services/serviceBus/internal/wraptokenmanager-tests.js test/services/serviceBus/wrapservice-tests.js test/services/sql/sqlmanagementservice-tests.js test/services/sql/sqlservice-tests.js test/services/table/internal/sharedkeytable-tests.js test/services/table/internal/sharedkeylitetable-tests.js test/services/table/batchserviceclient-tests.js test/services/table/tabledatatype-tests.js test/services/table/tablequery-tests.js test/services/table/tableservice-batch-tests.js test/services/table/tableservice-tablequery-tests.js test/services/table/tableservice-tests.js test/services/storageManagement/storageManagementClient-tests.js test/util/date-tests.js test/util/edmtype-tests.js test/util/iso8061date-tests.js test/util/js2xml-tests.js test/util/odatahandler-tests.js test/util/util-tests.js test/util/validate-tests.js test/azure-tests.js -R list
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm -s run unit-msrest
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run jshint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run unit
+test/unit.js testlist.txt
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/index.js
+test/pause-end.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+test/index.js
+test/pause-end.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/nav-frontend-typografi-style/node_modules/.bin/yarn workspaces foreach -p run test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/nav-frontend-typografi-style/.yarn/releases/yarn-3.2.1.cjs workspaces foreach -p run test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/jshint -e js,json ./lib ./test
+./node_modules/.bin/mocha -b -R spec ./test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/jjv/node_modules/mocha/bin/_mocha -t 10000 -b -R spec ./test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/jshint -e js,json ./lib ./test
+./node_modules/.bin/mocha -b -R spec ./test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/jjv/node_modules/mocha/bin/_mocha -t 10000 -b -R spec ./test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/mocha --compilers coffee:coffee-script
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/githubot/node_modules/mocha/bin/_mocha --require coffee-script/register --compilers coffee:coffee-script/register -t 10000 --compilers coffee:coffee-script
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/.bin/mocha --compilers coffee:coffee-script
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/githubot/node_modules/mocha/bin/_mocha --require coffee-script/register --compilers coffee:coffee-script/register -t 10000 --compilers coffee:coffee-script
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/sinoui-core/node_modules/.bin/ts-lib-tools test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/filewalker/node_modules/.bin/mocha -R spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/filewalker/node_modules/mocha/bin/_mocha -t 10000 -R spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/filewalker/node_modules/.bin/mocha -R spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/filewalker/node_modules/mocha/bin/_mocha -t 10000 -R spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/filewalker/node_modules/.bin/mocha -R spec
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/filewalker/node_modules/mocha/bin/_mocha -t 10000 -R spec
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/component-builder/node_modules/.bin/gnode ./node_modules/.bin/mocha --harmony-generators --require should --reporter spec --timeout 30s --bail
+--v8-options
+--engine.WarnInterpreterOnly=false --jvm --experimental-options --vm.Dtruffle.class.path.append=/home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//build/nodeprof.jar --nodeprof.Scope=module --nodeprof.IgnoreJalangiException=false --nodeprof --nodeprof.ExcludeSource=/node_modules,tests/,test/,test-,test.js /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/component-builder/node_modules/gnode/fallback.js --harmony-generators --require should --reporter spec --timeout 10000
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/component-builder/node_modules/gnode/bin/gnode --harmony-generators /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/component-builder/node_modules/mocha/bin/_mocha --require should --reporter spec --timeout 10000
+--v8-options
+--engine.WarnInterpreterOnly=false --jvm --experimental-options --vm.Dtruffle.class.path.append=/home/pmoosi/Documents/KTH/2023-ss/thesis/nodeprof-graalvm/nodeprof.js//build/nodeprof.jar --nodeprof.Scope=module --nodeprof.IgnoreJalangiException=false --nodeprof --nodeprof.ExcludeSource=/node_modules,tests/,test/,test-,test.js /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/component-builder/node_modules/gnode/fallback.js --require should --reporter spec --timeout 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run clear
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+shft-test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run formal
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run clear
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+shft-test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run formal
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run clear
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+shft-test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run formal
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/razorpay/node_modules/.bin/mocha --recursive --require babel-register test/
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/razorpay/node_modules/.bin/nyc --reporter=text mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/razorpay/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/razorpay/node_modules/.bin/mocha --recursive --require babel-register test/
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/razorpay/node_modules/.bin/nyc --reporter=text mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/razorpay/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/grunt-env/node_modules/.bin/grunt --stack
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/grunt-env/node_modules/.bin/grunt --stack
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/strip-bom-stream/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/strip-bom-stream/node_modules/.bin/ava
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/strip-bom-stream/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/npm-cache-filename/node_modules/.bin/tap test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/npm-cache-filename/node_modules/.bin/tap test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/npm-cache-filename/node_modules/.bin/tap test.js
+test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/readdir-scoped-modules/node_modules/.bin/tap test/basic.js
+test/basic.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/readdir-scoped-modules/node_modules/.bin/tap test/basic.js
+test/basic.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run karma
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-esm
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ethersproject-abstract-signer/node_modules/.bin/mocha --reporter ./reporter.cjs ./lib.esm/_tests/test-abi.js ./lib.esm/_tests/test-address.js ./lib.esm/_tests/test-contract-integ.js ./lib.esm/_tests/test-contract.js ./lib.esm/_tests/test-crypto-algoswap.js ./lib.esm/_tests/test-crypto.js ./lib.esm/_tests/test-hash-typeddata.js ./lib.esm/_tests/test-hash.js ./lib.esm/_tests/test-providers-avatar.js ./lib.esm/_tests/test-providers-ccip.js ./lib.esm/_tests/test-providers-data.js ./lib.esm/_tests/test-providers-errors.js ./lib.esm/_tests/test-providers-extra.js ./lib.esm/_tests/test-providers-send.js ./lib.esm/_tests/test-providers-wildcard.js ./lib.esm/_tests/test-rlp.js ./lib.esm/_tests/test-transaction.js ./lib.esm/_tests/test-utils-maths.js ./lib.esm/_tests/test-utils-misc.js ./lib.esm/_tests/test-utils-units.js ./lib.esm/_tests/test-utils-utf8.js ./lib.esm/_tests/test-wallet-hd.js ./lib.esm/_tests/test-wallet-json.js ./lib.esm/_tests/test-wallet-mnemonic.js ./lib.esm/_tests/test-wallet.js ./lib.esm/_tests/test-wordlists.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-esm
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ethersproject-abstract-signer/node_modules/.bin/mocha --reporter ./reporter.cjs ./lib.esm/_tests/test-abi.js ./lib.esm/_tests/test-address.js ./lib.esm/_tests/test-contract-integ.js ./lib.esm/_tests/test-contract.js ./lib.esm/_tests/test-crypto-algoswap.js ./lib.esm/_tests/test-crypto.js ./lib.esm/_tests/test-hash-typeddata.js ./lib.esm/_tests/test-hash.js ./lib.esm/_tests/test-providers-avatar.js ./lib.esm/_tests/test-providers-ccip.js ./lib.esm/_tests/test-providers-data.js ./lib.esm/_tests/test-providers-errors.js ./lib.esm/_tests/test-providers-extra.js ./lib.esm/_tests/test-providers-send.js ./lib.esm/_tests/test-providers-wildcard.js ./lib.esm/_tests/test-rlp.js ./lib.esm/_tests/test-transaction.js ./lib.esm/_tests/test-utils-maths.js ./lib.esm/_tests/test-utils-misc.js ./lib.esm/_tests/test-utils-units.js ./lib.esm/_tests/test-utils-utf8.js ./lib.esm/_tests/test-wallet-hd.js ./lib.esm/_tests/test-wallet-json.js ./lib.esm/_tests/test-wallet-mnemonic.js ./lib.esm/_tests/test-wallet.js ./lib.esm/_tests/test-wordlists.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-esm
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ethersproject-abstract-signer/node_modules/.bin/mocha --reporter ./reporter.cjs ./lib.esm/_tests/test-abi.js ./lib.esm/_tests/test-address.js ./lib.esm/_tests/test-contract-integ.js ./lib.esm/_tests/test-contract.js ./lib.esm/_tests/test-crypto-algoswap.js ./lib.esm/_tests/test-crypto.js ./lib.esm/_tests/test-hash-typeddata.js ./lib.esm/_tests/test-hash.js ./lib.esm/_tests/test-providers-avatar.js ./lib.esm/_tests/test-providers-ccip.js ./lib.esm/_tests/test-providers-data.js ./lib.esm/_tests/test-providers-errors.js ./lib.esm/_tests/test-providers-extra.js ./lib.esm/_tests/test-providers-send.js ./lib.esm/_tests/test-providers-wildcard.js ./lib.esm/_tests/test-rlp.js ./lib.esm/_tests/test-transaction.js ./lib.esm/_tests/test-utils-maths.js ./lib.esm/_tests/test-utils-misc.js ./lib.esm/_tests/test-utils-units.js ./lib.esm/_tests/test-utils-utf8.js ./lib.esm/_tests/test-wallet-hd.js ./lib.esm/_tests/test-wallet-json.js ./lib.esm/_tests/test-wallet-mnemonic.js ./lib.esm/_tests/test-wallet.js ./lib.esm/_tests/test-wordlists.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/zero-fill/node_modules/.bin/standard
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/zero-fill/node_modules/.bin/tape test/basic.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/bitcoin/node_modules/.bin/standard --verbose
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string-natural-compare/node_modules/.bin/eslint .
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string-natural-compare/node_modules/.bin/nyc mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/string-natural-compare/node_modules/.bin/mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/geojson-rewind/node_modules/.bin/tape test/rewind.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/restart-hooks/node_modules/.bin/jest --coverage
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/scroll-tabs/node_modules/.bin/karma start
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-deep/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-deep/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-deep/node_modules/.bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/omit-deep/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/wicg-inert/node_modules/.bin/karma start
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./edition-es5/test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/intel/node_modules/.bin/nyc mocha --ui exports -R dot
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/intel/node_modules/.bin/mocha --ui exports -R dot
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/intel/node_modules/mocha/bin/_mocha -t 10000 --ui exports -R dot
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/intel/node_modules/.bin/nyc mocha --ui exports -R dot
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/intel/node_modules/.bin/mocha --ui exports -R dot
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/intel/node_modules/mocha/bin/_mocha -t 10000 --ui exports -R dot
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/openwhisk/node_modules/.bin/ava test/unit/actions.test.js test/unit/activations.test.js test/unit/base_operation.test.js test/unit/client.test.js test/unit/feeds.test.js test/unit/names.test.js test/unit/namespaces.test.js test/unit/packages.test.js test/unit/resources.test.js test/unit/routes.test.js test/unit/rules.test.js test/unit/triggers.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+-r @adonisjs/require-ts/build/register bin/test.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+-r @adonisjs/require-ts/build/register bin/test.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run lint
+-r @adonisjs/require-ts/build/register bin/test.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:sources
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-aspromise/node_modules/.bin/tape -r ./lib/tape-adapter tests/api_Class.js tests/api_common.js tests/api_converters.js tests/api_enum.js tests/api_field.js tests/api_inheritance.js tests/api_longbits.js tests/api_mapfield.js tests/api_namespace.js tests/api_object.js tests/api_oneof.js tests/api_reader-writer-reuse.js tests/api_root-deferred.js tests/api_root-expose.js tests/api_root.js tests/api_service-rpc-streaming.js tests/api_service-rpc.js tests/api_service.js tests/api_tokenize.js tests/api_type.js tests/api_util.js tests/api_writer-reader.js tests/cli.js tests/comment_serialization.js tests/comp_ambiguous-names.js tests/comp_bytes.js tests/comp_empty-encode.js tests/comp_empty-inner-fields.js tests/comp_extend.js tests/comp_fixed64-grpc.js tests/comp_google_protobuf_any.js tests/comp_groups.js tests/comp_import_extend.js tests/comp_jspb-test.js tests/comp_long-tags.js tests/comp_maps.js tests/comp_negative-int32.js tests/comp_oneof.js tests/comp_optional.js tests/comp_options-parse.js tests/comp_options-textformat.js tests/comp_options.js tests/comp_packed-repeated.js tests/comp_parse-uncommon.js tests/comp_repeated-message.js tests/comp_sfixed64-grpc.js tests/comp_typescript.js tests/comp_whitespace-in-type.js tests/docs_comments.js tests/docs_comments_alternate_parse.js tests/gen_type_url.js tests/lib_aspromise.js tests/lib_base64.js tests/lib_codegen.js tests/lib_eventemitter.js tests/lib_inquire.js tests/lib_path.js tests/lib_pool.js tests/other_basics-debug.js tests/other_bench.js tests/other_classes.js tests/other_node-or-browser.js tests/other_protocolerror.js tests/node/api_load-sync.js tests/node/comp_loaders.js tests/node/lib_fetch.js tests/node/lib_float.js tests/node/lib_utf8.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-aspromise/node_modules/.bin/tsc tests/comp_typescript.ts --lib es2015 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-aspromise/node_modules/.bin/tsc tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-aspromise/node_modules/.bin/tsc tests/data/comments.d.ts tests/data/convert.d.ts tests/data/package.d.ts tests/data/rpc-es6.d.ts tests/data/rpc-reserved.d.ts tests/data/rpc.d.ts tests/data/rpc.ts tests/data/test.d.ts tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:sources
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-eventemitter/node_modules/.bin/tape -r ./lib/tape-adapter tests/api_Class.js tests/api_common.js tests/api_converters.js tests/api_enum.js tests/api_field.js tests/api_inheritance.js tests/api_longbits.js tests/api_mapfield.js tests/api_namespace.js tests/api_object.js tests/api_oneof.js tests/api_reader-writer-reuse.js tests/api_root-deferred.js tests/api_root-expose.js tests/api_root.js tests/api_service-rpc-streaming.js tests/api_service-rpc.js tests/api_service.js tests/api_tokenize.js tests/api_type.js tests/api_util.js tests/api_writer-reader.js tests/cli.js tests/comment_serialization.js tests/comp_ambiguous-names.js tests/comp_bytes.js tests/comp_empty-encode.js tests/comp_empty-inner-fields.js tests/comp_extend.js tests/comp_fixed64-grpc.js tests/comp_google_protobuf_any.js tests/comp_groups.js tests/comp_import_extend.js tests/comp_jspb-test.js tests/comp_long-tags.js tests/comp_maps.js tests/comp_negative-int32.js tests/comp_oneof.js tests/comp_optional.js tests/comp_options-parse.js tests/comp_options-textformat.js tests/comp_options.js tests/comp_packed-repeated.js tests/comp_parse-uncommon.js tests/comp_repeated-message.js tests/comp_sfixed64-grpc.js tests/comp_typescript.js tests/comp_whitespace-in-type.js tests/docs_comments.js tests/docs_comments_alternate_parse.js tests/gen_type_url.js tests/lib_aspromise.js tests/lib_base64.js tests/lib_codegen.js tests/lib_eventemitter.js tests/lib_inquire.js tests/lib_path.js tests/lib_pool.js tests/other_basics-debug.js tests/other_bench.js tests/other_classes.js tests/other_node-or-browser.js tests/other_protocolerror.js tests/node/api_load-sync.js tests/node/comp_loaders.js tests/node/lib_fetch.js tests/node/lib_float.js tests/node/lib_utf8.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-eventemitter/node_modules/.bin/tsc tests/comp_typescript.ts --lib es2015 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-eventemitter/node_modules/.bin/tsc tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/protobufjs-eventemitter/node_modules/.bin/tsc tests/data/comments.d.ts tests/data/convert.d.ts tests/data/package.d.ts tests/data/rpc-es6.d.ts tests/data/rpc-reserved.d.ts tests/data/rpc.d.ts tests/data/rpc.ts tests/data/test.d.ts tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/mocha/bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ip-range-check/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+./node_modules/mocha/bin/mocha
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/ip-range-check/node_modules/mocha/bin/_mocha -t 10000
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/snarkdown/node_modules/.bin/eslint src test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/snarkdown/node_modules/.bin/mocha --compilers @babel/register
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/snarkdown/node_modules/mocha/bin/_mocha -t 10000 --exit --compilers @babel/register
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run format
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-coverage
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/remark-squeeze-paragraphs/node_modules/.bin/c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov npm run test-api
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/run-parallel-limit/node_modules/.bin/standard
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-node
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/run-parallel-limit/node_modules/.bin/tape test/array.js test/empty-tasks.js test/error.js test/no-callback.js test/object.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-browser
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/run-parallel-limit/node_modules/.bin/airtap -- test/array.js test/empty-tasks.js test/error.js test/no-callback.js test/object.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fast-sort/node_modules/.bin/mocha -r ts-node/register test/sort.spec.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fast-sort/node_modules/.bin/mocha -r ts-node/register test/sort.spec.ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/al-core/node_modules/.bin/karma start
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/.bin/mocha test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/mocha/bin/_mocha -t 10000 test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/.bin/mocha test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/mocha/bin/_mocha -t 10000 test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/.bin/mocha test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/mocha/bin/_mocha -t 10000 test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/readline-promise/node_modules/.bin/babel-node ./node_modules/.bin/_mocha
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run security
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration
+test/ --integration
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/.bin/mocha test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/mocha/bin/_mocha -t 10000 test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/.bin/mocha test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/tablestore/node_modules/mocha/bin/_mocha -t 10000 test

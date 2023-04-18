@@ -29,6 +29,7 @@ const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/@babel',
     'node_modules/babel',
     'node_modules/grunt',
+    'typescript',
     'eslint',
     'Gruntfile.js',
     'jest',
@@ -582,24 +583,26 @@ async function runPipeline(pkgName, cliArgs) {
 
     const sanitizedPkgName = sanitizePkgName(pkgName);
 
-    // set repo path and execFile (if specified)
-    let repoPath;
-    let execFile;
-    if (!cliArgs.execFile) {
-        // if no execFile is specified fetch the pkg repository and install the dependencies
-        repoPath = await setupPkg(pkgName, sanitizedPkgName);
-    } else {
-        // if a execFile is specified, set its directory as the repository path
-        execFile = path.resolve(cliArgs.execFile);
-        repoPath = path.dirname(execFile);
-    }
-
     const resultBasePath = __dirname + '/results/';
 
     fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
     let propBlacklist = null;
     try {
+        // set repo path and execFile (if specified)
+        let repoPath;
+        let execFile;
+        if (!cliArgs.execFile) {
+            // if no execFile is specified fetch the pkg repository and install the dependencies
+            repoPath = await setupPkg(pkgName, sanitizedPkgName);
+        } else {
+            // if a execFile is specified, set its directory as the repository path
+            execFile = path.resolve(cliArgs.execFile);
+            repoPath = path.dirname(execFile);
+        }
+
+        if (!repoPath) return;
+
         // only run the pre analysis for fetched packages
         if (!execFile) {
             // run a non-instrumented run that does e.g. all the compiling/building, so we can skip it for the multiple instrumented runs
@@ -617,7 +620,7 @@ async function runPipeline(pkgName, cliArgs) {
                     console.error('Use force to enforce re-evaluation.');
                 }
 
-                // fs.rmSync(repoPath, {recursive: true, force: true});
+                fs.rmSync(repoPath, {recursive: true, force: true});
                 return;
             }
         }
@@ -714,9 +717,9 @@ async function runPipeline(pkgName, cliArgs) {
 
         // fetch all files that are still remaining
         const {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
-        resultFilenames.forEach(fs.unlinkSync);
-        branchedOnFilenames.forEach(fs.unlinkSync);
-        taintsFilenames.forEach(fs.unlinkSync);
+        // resultFilenames.forEach(fs.unlinkSync);
+        // branchedOnFilenames.forEach(fs.unlinkSync);
+        // taintsFilenames.forEach(fs.unlinkSync);
 
         fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
@@ -846,7 +849,7 @@ async function getAllTaintsSarifData(pkgName, amountRuns = 1) {
         results = results.slice(-amountRuns);
     }
 
-    const runs = results.flatMap(res => res.runs).filter(run => run.taints.length > 0);
+    const runs = results.flatMap(res => res.runs).filter(run => run.taints?.length > 0);
     if (runs.length === 0) return null;
 
     return {
