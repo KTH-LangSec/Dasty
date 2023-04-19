@@ -8,6 +8,7 @@ module.exports = {
     EXCLUDE_FOR_IN: [
         'acorn',
         'test/',
-        'tests/'
+        'tests/',
+        'examples/'
     ]
 }

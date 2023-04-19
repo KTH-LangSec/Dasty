@@ -1,5 +1,16 @@
 const x = require('util');
 
+const obj = {};
+
+const t = [];
+
+for (let i = 0; i < 2; i++) {
+    t[i] = obj.blub;
+}
+
+console.log(t[0].__taint.source.iid);
+console.log(t[1].__taint.source.iid);
+
 // const obj = {};
 //
 // // const arr = obj.arr || [];

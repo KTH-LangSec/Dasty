@@ -16,7 +16,6 @@ const obj = {};
 function copy(obj) {
     const copy = {};
     for (const key in obj) {
-        console.log(key);
         copy[key] = obj[key];
     }
     return copy;
@@ -24,6 +23,7 @@ function copy(obj) {
 
 const c = copy(obj);
 
+console.log(Object.prototype);
 console.log(obj);
 console.log(c);
 

@@ -31,6 +31,9 @@ const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/babel',
     'node_modules/grunt',
     'typescript',
+    'ts-node',
+    'tslib',
+    'tsutils',
     'eslint',
     'Gruntfile.js',
     'jest',
@@ -56,11 +59,12 @@ const CLI_ARGS = {
     '--exportRuns': 1,
     '--maxRuns': 1,
     '--forceBranchExec': 0,
-    '--execFile': 1
+    '--execFile': 1,
+    '--noForIn': 0
 }
 
 // keywords of packages that are known to be not interesting (for now)
-const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'lint', '/types', '@type/', '@types/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery'];
+const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'lint', '/types', '@type/', '@types/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery', 'browser'];
 
 function parseCliArgs() {
     // Set default values (also so that the ide linter shuts up)
@@ -79,7 +83,8 @@ function parseCliArgs() {
         maxRuns: MAX_RUNS,
         exportRuns: undefined,
         forceBranchExec: false,
-        execFile: undefined
+        execFile: undefined,
+        noForIn: false
     };
 
     // a copy of the args with all parsed args removed
@@ -351,23 +356,17 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
     await execCmd(cmd, true, false);
 }
 
-async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames) {
+async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames) {
     let results = [];
-    let taints = [];
 
     // parse and merge all results
     resultFilenames?.forEach(resultFilename => {
-        results.push(...JSON.parse(fs.readFileSync(resultFilename, 'utf8')));
-    });
-
-    taintsFilenames?.forEach(taintsFilename => {
-        taints.push(...JSON.parse(fs.readFileSync(taintsFilename, 'utf8')));
+        results.push(...JSON.parse(fs.readFileSync(resultFilename, {encoding: 'utf8'})));
     });
 
     if (results.length === 0 && taints.length === 0) return {resultId, runId: null, nowFlows: true};
 
     results = removeDuplicateFlows(results);
-    taints = removeDuplicateTaints(taints);
 
     const db = await getDb();
 
@@ -379,24 +378,52 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
     const run = {
         _id: new ObjectId(),
         runName,
-        results,
-        taints
+        results
     };
 
     await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
 
+    // store branched on
 
-    // we are storing every taint set in as separate document as it might be too big
-    const taintsColl = await db.collection('taints');
-    const taintVals = {
-        resultId: resultId,
-        runId: run._id,
-        package: pkgName,
-        timestamp: Date.now(),
-        taints
+    const branchedOn = [];
+    branchedOnFilenames?.forEach(boFilenames => {
+        const bo = JSON.parse(fs.readFileSync(boFilenames, {encoding: 'utf8'}));
+        branchedOn.push(...bo.map(b => ({prop: b.prop, loc: b.src})));
+    });
+
+    if (branchedOn.length > 0) {
+        const branchedOnColl = await db.collection('branchedOn');
+
+        const bo = {
+            resultId: resultId,
+            runId: run._id,
+            package: pkgName,
+            timestamp: Date.now(),
+            branchedOn
+        }
+
+        await branchedOnColl.insertOne(bo);
     }
 
-    await taintsColl.insertOne(taintVals);
+    let taints = [];
+    taintsFilenames?.forEach(taintsFilename => {
+        taints.push(...JSON.parse(fs.readFileSync(taintsFilename, {encoding: 'utf8'})));
+    });
+    taints = removeDuplicateTaints(taints);
+
+    // we are storing every taint set in as separate document as it might be too big
+    if (taints.length > 0) {
+        const taintsColl = await db.collection('taints');
+        const taintVals = {
+            resultId: resultId,
+            runId: run._id,
+            package: pkgName,
+            timestamp: Date.now(),
+            taints
+        }
+
+        await taintsColl.insertOne(taintVals);
+    }
 
     return {resultId, runId: run._id, noFlows: results.length === 0};
 }
@@ -580,7 +607,7 @@ async function setupPkg(pkgName, sanitizedPkgName) {
     const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
     if (!fs.existsSync(repoPath)) {
         console.error(`\nFetching repository ${url}`);
-        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
+        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName} && echo ""`, true);
     } else {
         console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
     }
@@ -657,7 +684,7 @@ async function runPipeline(pkgName, cliArgs) {
         let forceBranchProp = null; // the property that is currently force branch executed
         let dbResultId = null; // the db id for the current analysis run
 
-        let forInRun = true; // make one for in run
+        let forInRun = !cliArgs.noForIn; // make one for in run
 
         while (true) {
             const runName = `run: ${forInRun ? 'forIn' : run + 1}`;
@@ -686,7 +713,7 @@ async function runPipeline(pkgName, cliArgs) {
             let noFlows = false;
             let runId = null;
             try {
-                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames);
+                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames);
                 dbResultId = result.resultId;
                 runId = result.runId;
                 noFlows = result.noFlows;
@@ -748,9 +775,9 @@ async function runPipeline(pkgName, cliArgs) {
 
         // fetch all files that are still remaining
         const {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
-        // resultFilenames.forEach(fs.unlinkSync);
-        // branchedOnFilenames.forEach(fs.unlinkSync);
-        // taintsFilenames.forEach(fs.unlinkSync);
+        resultFilenames.forEach(fs.unlinkSync);
+        branchedOnFilenames.forEach(fs.unlinkSync);
+        taintsFilenames.forEach(fs.unlinkSync);
 
         fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
@@ -870,24 +897,24 @@ async function getSarifData(pkgName, sinkType, amountRuns = 1) {
     };
 }
 
-async function getAllTaintsSarifData(pkgName, amountRuns = 1) {
+async function getAllTaintsSarifData(pkgName) {
     const db = await getDb();
 
-    let results = await db.collection('results').find({package: pkgName}).toArray();
-    if (!results) return null;
+    const taintsColl = db.collection('taints');
+    const pkgRuns = (await taintsColl.find({package: pkgName}).toArray());
+    if (pkgRuns.length === 0) return null;
+    const resId = pkgRuns[pkgRuns.length - 1]?.resultId;
+    if (!resId) return null;
 
-    if (amountRuns >= 0) {
-        results = results.slice(-amountRuns);
-    }
+    let runs = await taintsColl.find({resultId: resId}).toArray();
 
-    const runs = results.flatMap(res => res.runs).filter(run => run.taints?.length > 0);
-    if (runs.length === 0) return null;
+    if (!runs || runs.length === 0) return null;
 
     return {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
         runs: runs.map(run => ({
-            runName: run.runName,
+            runName: run.runId,
             tool: {
                 driver: {
                     name: 'GadgetTaintTracker',
@@ -898,7 +925,7 @@ async function getAllTaintsSarifData(pkgName, amountRuns = 1) {
             results: run.taints.map(taint => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `TaintValue {prop: ${taint.source.prop}}, runName: ${run.runName}}`},
+                message: {text: `TaintValue {prop: ${taint.source.prop}}, runName: ${run.runId}}`},
                 locations: [locToSarif(taint.source.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},

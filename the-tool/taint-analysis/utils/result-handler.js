@@ -1,7 +1,7 @@
 // DO NOT INSTRUMENT
 
 const fs = require('fs');
-const {parseIID, iidToLocation} = require("./utils");
+const {parseIID, iidToLocation, iidToSourceObject} = require("./utils");
 
 /**
  * Helper function that parses an iid and attaches the information to the passed object
@@ -134,7 +134,13 @@ function addAndWriteBranchedOn(propName, iid, result, branchedOn, resultPath = u
 
     if (branchedOn.has(iid)) return;
 
-    branchedOn.set(iid, {prop: propName, loc: iidToLocation(iid), result});
+    const srcObj = iidToSourceObject(iid);
+    branchedOn.set(iid, {
+        prop: propName,
+        loc: iidToLocation(iid),
+        src: {artifact: srcObj.name, region: srcObj.loc},
+        result
+    });
     if (resultPath) {
         fs.writeFileSync(resultPath, JSON.stringify(Array.from(branchedOn.values())), {encoding: 'utf8'});
     }

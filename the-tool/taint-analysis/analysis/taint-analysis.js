@@ -324,15 +324,14 @@ class TaintAnalysis {
             this.lastReadTaint = val;
             // val.__addCodeFlow(iid, 'read', offset);
 
-            const taintVal = val.__copyTaint();
-
             // if an or ad falsy return value
             if (this.orExpr && !val.__val) {
+                const taintVal = val.__copyTaint();
                 this.undefOrReadVal = taintVal;
                 return {result: val.__val};
-            }
+                return {result: taintVal};
 
-            return {result: taintVal};
+            }
         }
     }
 
@@ -558,11 +557,9 @@ class TaintAnalysis {
     #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
+        if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
 
-        const loc = iidToLocation(iid);
-        if (this.injectForIn && loopType === 'ForInIteration' && !this.#forInLoops.has(loc)) {
-            this.#forInLoops.set(loc, true);
-            // console.log(loc);
+            const loc = iidToLocation(iid);
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
                 && !EXCLUDE_FOR_IN.some(e => loc.includes(e))) { // try to avoid injecting in testing files
 
@@ -605,16 +602,12 @@ class TaintAnalysis {
     controlFlowRootExit = (iid, loopType) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
-        // just to be safe delete the injected property after a for in iteration
+        // delete the injected property after a for in iteration
         if (this.injectForIn && loopType === 'ForInIteration' && this.#injectedForInLoop.has(iid)) {
-            const loc = iidToLocation(iid);
-            if (!loc.includes('test/') && !loc.includes('tests/')) {
-                const injectedProp = this.forInInjectedProps.pop();
-                if (injectedProp) {
-                    delete ({})['__proto__'][injectedProp];
-                }
+            const injectedProp = this.forInInjectedProps.pop();
+            if (injectedProp) {
+                delete ({})['__proto__'][injectedProp];
             }
-            this.#forInLoops.delete(loc);
         }
 
         this.loops.delete(iid);
