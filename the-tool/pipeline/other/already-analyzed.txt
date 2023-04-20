@@ -2019,3 +2019,8 @@ loglevel
 sax
 figures
 inversify
+got
+jsdom
+vue
+@fastify/nextjs
+axios

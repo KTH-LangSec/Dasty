@@ -9017,3 +9017,237 @@ test/stand-alone-comment.js
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/inversify/node_modules/.bin/tslint --project .
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/inversify/node_modules/.bin/nyc --reporter=lcov --require ts-node/register mocha test/annotation/decorator_utils.test.ts test/annotation/inject.test.ts test/annotation/injectable.test.ts test/annotation/multi_inject.test.ts test/annotation/named.test.ts test/annotation/optional.test.ts test/annotation/post_construct.test.ts test/annotation/tagged.test.ts test/annotation/target_name.test.ts test/bindings/binding.test.ts test/bugs/bugs.test.ts test/bugs/issue_1190.test.ts test/bugs/issue_1297.test.ts test/bugs/issue_543.test.ts test/bugs/issue_549.test.ts test/bugs/issue_633.test.ts test/bugs/issue_706.test.ts test/bugs/issue_928.test.ts test/constants/error_message.test.ts test/container/container.test.ts test/container/container_module.test.ts test/container/lookup.test.ts test/container/module_activation_store.test.ts test/features/metadata_reader.test.ts test/features/named_default.test.ts test/features/property_injection.test.ts test/features/provider.test.ts test/features/request_scope.test.ts test/features/resolve_unbinded.test.ts test/features/transitive_bindings.test.ts test/middleware/middleware.test.ts test/node/error_messages.test.ts test/node/exceptions.test.ts test/node/performance.test.ts test/node/proxies.test.ts test/planning/context.test.ts test/planning/metadata.test.ts test/planning/plan.test.ts test/planning/planner.test.ts test/planning/queryable_string.test.ts test/planning/request.test.ts test/planning/target.test.ts test/resolution/resolver.test.ts test/syntax/binding_in_syntax.test.ts test/syntax/binding_in_when_on_syntax.test.ts test/syntax/binding_on_syntax.test.ts test/syntax/binding_to_syntax.test.ts test/syntax/binding_when_on_syntax.test.ts test/syntax/binding_when_syntax.test.ts test/syntax/constraint_helpers.test.ts test/utils/binding_utils.test.ts test/utils/id.test.ts test/utils/reflection.test.ts test/utils/serialization.test.ts --reporter spec --retries 3 --require node_modules/reflect-metadata/Reflect.js --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/.bin/tsc --noEmit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/.bin/ava
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build:prod
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/standard
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/cross-env NODE_ENV=production tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tap -t 180 -j 1
+test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:typescript
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build:prod
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/standard
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/cross-env NODE_ENV=production tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tap -t 180 -j 1
+test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:typescript
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:unit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build:prod
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/standard
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/cross-env NODE_ENV=production tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tap
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tap -t 180 -j 1
+test/index.test.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:typescript
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/fastify-nextjs/node_modules/.bin/tsd
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/.bin/xo
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/.bin/tsc --noEmit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/.bin/ava
+--loader=ts-node/esm --enable-source-maps /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/got/node_modules/ava/lib/worker/base.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:eslint
+bin/ssl_hotfix.js eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:mocha
+bin/ssl_hotfix.js mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:karma
+bin/ssl_hotfix.js cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/karma start karma.conf.cjs --single-run
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:dtslint
+bin/ssl_hotfix.js dtslint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider dtslint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/dtslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:exports
+bin/ssl_hotfix.js mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/esm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts-require
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts-require-default
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm/node_modules/.bin/tsc -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:eslint
+bin/ssl_hotfix.js eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:mocha
+bin/ssl_hotfix.js mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:karma
+bin/ssl_hotfix.js cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/karma start karma.conf.cjs --single-run
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:dtslint
+bin/ssl_hotfix.js dtslint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider dtslint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/dtslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:exports
+bin/ssl_hotfix.js mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/esm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts-require
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts-require-default
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm/node_modules/.bin/tsc -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:eslint
+bin/ssl_hotfix.js eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/eslint lib/adapters/adapters.js lib/adapters/http.js lib/adapters/xhr.js lib/cancel/CancelToken.js lib/cancel/CanceledError.js lib/cancel/isCancel.js lib/core/Axios.js lib/core/AxiosError.js lib/core/AxiosHeaders.js lib/core/InterceptorManager.js lib/core/buildFullPath.js lib/core/dispatchRequest.js lib/core/mergeConfig.js lib/core/settle.js lib/core/transformData.js lib/defaults/index.js lib/defaults/transitional.js lib/env/data.js lib/helpers/AxiosTransformStream.js lib/helpers/AxiosURLSearchParams.js lib/helpers/HttpStatusCode.js lib/helpers/ZlibHeaderTransformStream.js lib/helpers/bind.js lib/helpers/buildURL.js lib/helpers/combineURLs.js lib/helpers/cookies.js lib/helpers/deprecatedMethod.js lib/helpers/formDataToJSON.js lib/helpers/formDataToStream.js lib/helpers/fromDataURI.js lib/helpers/isAbsoluteURL.js lib/helpers/isAxiosError.js lib/helpers/isURLSameOrigin.js lib/helpers/null.js lib/helpers/parseHeaders.js lib/helpers/parseProtocol.js lib/helpers/readBlob.js lib/helpers/speedometer.js lib/helpers/spread.js lib/helpers/throttle.js lib/helpers/toFormData.js lib/helpers/toURLEncodedForm.js lib/helpers/validator.js lib/platform/index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:mocha
+bin/ssl_hotfix.js mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/mocha test/unit/adapters/http.js test/unit/core/AxiosHeaders.js test/unit/defaults/transformReponse.js test/unit/helpers/fromDataURI.js test/unit/helpers/parseProtocol.js test/unit/regression/SNYK-JS-AXIOS-1038255.js test/unit/regression/bugs.js test/unit/utils/utils.js --timeout 30000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:karma
+bin/ssl_hotfix.js cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env LISTEN_ADDR=:: karma start karma.conf.cjs --single-run
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/karma start karma.conf.cjs --single-run
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:dtslint
+bin/ssl_hotfix.js dtslint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider dtslint
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/dtslint
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:exports
+bin/ssl_hotfix.js mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/cross-env NODE_OPTIONS=--openssl-legacy-provider mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/mocha test/module/test.js --timeout 30000 --exit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/esm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts-require
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/ts-require-default
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run build
+index.js
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm/node_modules/.bin/tsc -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/esm/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test --prefix /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm i --no-save --no-package-lock
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/node_modules/.bin/husky install
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run prepare:hooks
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc -v
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc --noEmit

@@ -64,7 +64,28 @@ const CLI_ARGS = {
 }
 
 // keywords of packages that are known to be not interesting (for now)
-const DONT_ANALYSE = ['react', 'angular', 'vue', 'webpack', 'vite', 'babel', 'gulp', 'bower', 'lint', '/types', '@type/', '@types/', 'electron', 'tailwind', 'jest', 'mocha', 'nyc', 'typescript', 'jquery', 'browser'];
+const DONT_ANALYSE = [
+    'react',
+    'angular',
+    // 'vue',
+    'webpack',
+    'vite',
+    'babel',
+    'gulp',
+    'bower',
+    'lint',
+    '/types',
+    '@type/',
+    '@types/',
+    'electron',
+    'tailwind',
+    'jest',
+    'mocha',
+    'nyc',
+    'typescript',
+    'jquery',
+    'browser'
+];
 
 function parseCliArgs() {
     // Set default values (also so that the ide linter shuts up)
