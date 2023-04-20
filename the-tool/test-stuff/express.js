@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+const serveStatic = require('serve-static');
 
 
 app.get('/users/:id', (req, res) => {
@@ -34,8 +35,6 @@ app.get('/ejs', (req, res) => {
     const data = {name: 'John', age: 30};
     res.render('ejs', data);
 });
-
-// cors
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');

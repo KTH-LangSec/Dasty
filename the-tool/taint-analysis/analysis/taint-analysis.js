@@ -10,7 +10,7 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
-const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_FOR_IN} = require("../conf/analysis-conf");
+const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_INJECTION} = require("../conf/analysis-conf");
 const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
@@ -485,7 +485,8 @@ class TaintAnalysis {
         if (!scope?.startsWith('file:') || scope.includes('test/') || scope.includes('tests/') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
-        if (val === undefined && Object.prototype.isPrototypeOf(base) && !this.propBlacklist?.includes(offset)) {
+        const loc = iidToLocation(iid);
+        if (val === undefined && Object.prototype.isPrototypeOf(base) && !base.hasOwnProperty(offset) && !this.propBlacklist?.includes(offset) && !EXCLUDE_INJECTION.some(e => loc.includes(e))) {
             const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
 
             if (this.forceBranches) {
@@ -561,7 +562,7 @@ class TaintAnalysis {
 
             const loc = iidToLocation(iid);
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
-                && !EXCLUDE_FOR_IN.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+                && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
 
                 this.#injectedForInLoop.set(iid, true);
 

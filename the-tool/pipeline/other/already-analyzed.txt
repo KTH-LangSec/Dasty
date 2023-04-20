@@ -2024,3 +2024,5 @@ jsdom
 vue
 @fastify/nextjs
 axios
+morgan
+morgan

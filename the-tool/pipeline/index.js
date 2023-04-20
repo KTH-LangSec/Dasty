@@ -378,6 +378,15 @@ async function runAnalysis(script, analysis, dir, initParams, exclude) {
 }
 
 async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames) {
+    const db = await getDb();
+    const runId = new ObjectId();
+
+    const resultsColl = await db.collection('results');
+    // create an empty result document
+    if (!resultId) {
+        resultId = (await resultsColl.insertOne({package: pkgName, timestamp: Date.now(), runs: []})).insertedId;
+    }
+
     let results = [];
 
     // parse and merge all results
@@ -385,31 +394,24 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
         results.push(...JSON.parse(fs.readFileSync(resultFilename, {encoding: 'utf8'})));
     });
 
-    if (results.length === 0 && taints.length === 0) return {resultId, runId: null, nowFlows: true};
+    if (results.length > 0) {
+        results = removeDuplicateFlows(results);
 
-    results = removeDuplicateFlows(results);
+        const run = {
+            _id: runId,
+            runName,
+            results
+        };
 
-    const db = await getDb();
-
-    const resultsColl = await db.collection('results');
-    if (!resultId) {
-        resultId = (await resultsColl.insertOne({package: pkgName, timestamp: Date.now(), runs: []})).insertedId;
+        await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
     }
-
-    const run = {
-        _id: new ObjectId(),
-        runName,
-        results
-    };
-
-    await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
 
     // store branched on
 
     const branchedOn = [];
     branchedOnFilenames?.forEach(boFilenames => {
         const bo = JSON.parse(fs.readFileSync(boFilenames, {encoding: 'utf8'}));
-        branchedOn.push(...bo.map(b => ({prop: b.prop, loc: b.src})));
+        branchedOn.push(...bo.map(b => ({prop: b.prop, loc: b.src, result: b.result})));
     });
 
     if (branchedOn.length > 0) {
@@ -417,7 +419,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
 
         const bo = {
             resultId: resultId,
-            runId: run._id,
+            runId: runId,
             package: pkgName,
             timestamp: Date.now(),
             branchedOn
@@ -437,7 +439,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
         const taintsColl = await db.collection('taints');
         const taintVals = {
             resultId: resultId,
-            runId: run._id,
+            runId: runId,
             package: pkgName,
             timestamp: Date.now(),
             taints
@@ -446,7 +448,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
         await taintsColl.insertOne(taintVals);
     }
 
-    return {resultId, runId: run._id, noFlows: results.length === 0};
+    return {resultId, runId: runId, noFlows: results.length === 0};
 }
 
 async function fetchExceptions(resultId, runId) {
@@ -817,7 +819,8 @@ async function getSarif(pkgName, cliArgs) {
     for (pkgName of pkgNames) {
         const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.exportRuns);
         const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.exportRuns);
-        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName, cliArgs.exportRuns) : null;
+        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName) : null;
+        const sarifBranchedOn = cliArgs.allTaints ? await getBranchedOnSarifData(pkgName) : null;
 
         if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
@@ -848,6 +851,11 @@ async function getSarif(pkgName, cliArgs) {
                 const outFilename = outFile + '-all-taints.sarif';
                 fs.writeFileSync(outFilename, JSON.stringify(sarifAllTaints), {encoding: 'utf8'});
                 console.error(`All taints written to ${outFilename}.`);
+            }
+            if (sarifBranchedOn) {
+                const outFilename = outFile + '-branched-on.sarif';
+                fs.writeFileSync(outFilename, JSON.stringify(sarifBranchedOn), {encoding: 'utf8'});
+                console.error(`Branchings written to ${outFilename}.`);
             }
         }
     }
@@ -963,6 +971,41 @@ async function getAllTaintsSarifData(pkgName) {
                         ]
                     }]
                 }]
+            }))
+        }))
+    };
+}
+
+async function getBranchedOnSarifData(pkgName) {
+    const db = await getDb();
+
+    const branchedOnColl = db.collection('branchedOn');
+    const pkgRuns = (await branchedOnColl.find({package: pkgName}).toArray());
+    if (pkgRuns.length === 0) return null;
+    const resId = pkgRuns[pkgRuns.length - 1]?.resultId;
+    if (!resId) return null;
+
+    let runs = await branchedOnColl.find({resultId: resId}).toArray();
+
+    if (!runs || runs.length === 0) return null;
+
+    return {
+        version: '2.1.0',
+        $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+        runs: runs.map(run => ({
+            runName: run.runId,
+            tool: {
+                driver: {
+                    name: 'GadgetTaintTracker',
+                    version: '0.1',
+                    informationUri: "https://ToDoLinktoRepo.com"
+                }
+            },
+            results: run.branchedOn.map(bo => ({
+                ruleId: run._id,
+                level: 'error',
+                message: {text: `BranchedOn {prop: ${bo.prop}}, result: ${bo.result}}`},
+                locations: [locToSarif(bo.loc)]
             }))
         }))
     };

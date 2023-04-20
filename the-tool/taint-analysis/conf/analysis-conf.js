@@ -5,7 +5,7 @@ module.exports = {
     DEFAULT_CHECK_DEPTH: 5,
     NODE_EXEC_PATH: __dirname + '../../pipeline/node-wrapper/node',
     MAX_LOOPS: 500000,
-    EXCLUDE_FOR_IN: [
+    EXCLUDE_INJECTION: [
         'acorn',
         'test/',
         'tests/',

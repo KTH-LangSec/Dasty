@@ -9251,3 +9251,11 @@ index.js
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc -v
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test:types
 /home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/axios/test/module/typings/cjs/node_modules/.bin/tsc --noEmit
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/morgan/node_modules/.bin/mocha --check-leaks --reporter spec --bail
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/morgan/node_modules/.bin/mocha --check-leaks --reporter spec --bail
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/morgan/node_modules/.bin/mocha --check-leaks --reporter spec --bail
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test
+/home/pmoosi/Documents/KTH/2023-ss/thesis/the-tool/pipeline/packages/morgan/node_modules/.bin/mocha --check-leaks --reporter spec --bail
