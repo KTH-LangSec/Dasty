@@ -257,7 +257,7 @@ class EmptyAnalysis {
     }
 
     controlFlowRootEnter = function(iid, loopType, condition) {
-        console.log(loopType);
+        // console.log(loopType);
     }
 
     controlFlowRootExit = function(iid, loopType, condition) {

@@ -12,10 +12,14 @@ app.get('/hey', (req, res) => {
 });
 
 app.get('/inject', (req, res) => {
-    Object.prototype['originalUrl'] = 'http://localhost/flub';
+    Object.prototype['originalUrl'] = 'http://localhost/injected';
 
     res.sendStatus(200);
 });
+
+// app.use((req, res, next) => {
+//     res.status(404).send("Sorry can't find that!")
+// });
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');

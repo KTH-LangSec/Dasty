@@ -1,15 +1,40 @@
-const x = require('util');
+// const obj = {};
+//
+// const t = [];
 
-const obj = {};
+let i = 0;
 
-const t = [];
-
-for (let i = 0; i < 2; i++) {
-    t[i] = obj.blub;
+while (i < 200) {
+    i++;
 }
 
-console.log(t[0].__taint.source.iid);
-console.log(t[1].__taint.source.iid);
+let j;
+for (j = 0; j < 1000; j++) {
+
+}
+
+console.log(i);
+console.log(j);
+
+// for (let i = 0; i < 2; i++) {
+//     t[i] = obj.blub;
+// }
+//
+// console.log(t[0].__taint.source.iid);
+// console.log(t[1].__taint.source.iid);
+
+// cacheTreshold = Number(obj.cacheTreshold) || 1000;
+//
+// console.log(cacheTreshold.__type);
+// console.log(cacheTreshold.__val >= 1000);
+
+// let x = obj.flub;
+//
+// while (x?.length !== 2) {
+//     x.push('hey');
+// }
+//
+// console.log(x.__val);
 
 // const obj = {};
 //

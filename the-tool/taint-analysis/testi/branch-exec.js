@@ -9,20 +9,26 @@ const obj = {};
 //     console.log('oh no');
 // }
 
-const x = obj.additionalArgs || 'flub';
+// const x = obj.additionalArgs || 'flub';
 
-for (let i = 0; i < 100; i++) {
-    if (x !== 'flub') {
-        if (obj.blub) {
-            console.log('exec');
-            cp.exec('echo' + obj.blub);
-        }
-    }
+// for (let i = 0; i < 100; i++) {
+//     if (x !== 'flub') {
+//         if (obj.blub) {
+//             console.log('exec');
+//             cp.exec('echo' + obj.blub);
+//         }
+//     }
+// }
+
+if (!obj.blub) {
+    console.log('hey');
+} else {
+    console.log('oh no');
 }
 
-if (obj.blub) {
-    console.log('ho');
-}
+// if (obj.blub) {
+//     console.log('ho');
+// }
 
 // if (x === 'flub') {
 //     console.log('yes');

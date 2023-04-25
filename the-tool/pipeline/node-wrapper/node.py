@@ -3,7 +3,7 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = "/home/pmoosi/.nvm/versions/node/v18.12.1/bin/node"
-TIMEOUT = 60 * 15
+TIMEOUT = 60 * 2
 
 
 def get_flag_idx(flag, exact_match=True):
@@ -78,7 +78,7 @@ def main():
 
     # ToDo - support ava
     # 'bin/tap ',
-    exclude = ['bin/xo','bin/ava', 'bin/karma', 'npm run test:instrument', 'bin/ng', 'bin/jest']  # don't run when included in command
+    exclude = ['bin/xo', 'bin/ava', 'bin/karma', 'npm run test:instrument', 'bin/ng']  # don't run when included in command
     exclude_npm = ['install', 'audit', 'init']  # don't run npm [...]
     include_run = ['test', 'unit', 'coverage', 'compile']  # only npm run these -> npm run [...]
     # exclude_instrument = ['bin/nyc']  # don't instrument if included in arg string
@@ -209,9 +209,19 @@ def main():
     set_flag(argv_string, 'bin/ava', ['--no-worker-threads'])
     set_flag(argv_string, 'bin/ava', ['--timeout'], '180s')
 
-    set_flag(argv_string, 'bin/grunt', ['--force'])
+    if 'bin/grunt' in argv_string:
+        set_flag(argv_string, 'bin/grunt', ['--force'])
+        grunt_bin = sys.argv[get_program_idx('bin/grunt')]
 
-    # remove_flag(argv_string, '', '--integration')
+        proc = subprocess.run([NVM_NODE_EXEC, grunt_bin, '--help'], capture_output=True, text=True)
+
+        # try to identify the actual test tasks and skip tasks such as linting
+        if 'test  ' in proc.stdout:
+            set_flag(argv_string, 'bin/grunt', ['test'])
+        if 'jest  ' in proc.stdout:
+            set_flag(argv_string, 'bin/grunt', ['jest'])
+        if 'mochaTest  ' in proc.stdout:
+            set_flag(argv_string, 'bin/grunt', ['mochaTest'])
 
     # nyc flags
     # remove_flag(argv_string, 'bin/nyc', '--reporter=lcov')
@@ -227,8 +237,8 @@ def main():
 
     print(' '.join(args), file=sys.stderr, flush=True)
 
-    subprocess.run(args, timeout=TIMEOUT)
-    # subprocess.run(args)
+    # subprocess.run(args, timeout=TIMEOUT)
+    subprocess.run(args)
 
 
 if __name__ == '__main__':

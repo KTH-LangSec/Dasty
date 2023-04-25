@@ -137,8 +137,8 @@ class TaintAnalysis {
 
                 // only unwrap if necessary
                 return argTaints?.length > 0 ? unwrapDeep(a) : a;
+                // return a;
             });
-
             try {
                 const result = !isConstructor
                     ? Reflect.apply(f, receiver, unwrappedArgs)
@@ -171,7 +171,7 @@ class TaintAnalysis {
             }
         }
 
-        internalWrapper.__isWrapperFun = true; // indicator that it is a internal wrapper function
+        internalWrapper.__isWrapperFun = true; // indicator that it is an internal wrapper function
 
         return {result: internalWrapper};
     }
@@ -324,12 +324,11 @@ class TaintAnalysis {
             this.lastReadTaint = val;
             // val.__addCodeFlow(iid, 'read', offset);
 
-            // if an or ad falsy return value
+            // if an or add falsy return value
             if (this.orExpr && !val.__val) {
-                const taintVal = val.__copyTaint();
-                this.undefOrReadVal = taintVal;
+                this.undefOrReadVal = val.__copyTaint();
                 return {result: val.__val};
-                return {result: taintVal};
+                // return {result: taintVal};
 
             }
         }
@@ -491,7 +490,7 @@ class TaintAnalysis {
 
             if (this.forceBranches) {
                 try {
-                    // base[offset] = res;
+                    base[offset] = res;
                 } catch (e) {
                     // in some cases injection does not work e.g. read only
                 }
@@ -556,10 +555,11 @@ class TaintAnalysis {
      */
     #forInLoops = new Map(); // keeps track of the locations of all for in loops
     #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
+
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
-        if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
 
+        if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
             const loc = iidToLocation(iid);
             if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
                 && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
@@ -582,7 +582,7 @@ class TaintAnalysis {
         } else {
             const calls = this.loops.get(iid) + 1;
             if (calls > MAX_LOOPS) {
-                console.log('Infinite loop detected - aborting');
+                // console.log('Infinite loop detected');
 
                 if (this.lastReadTaint) {
                     const newFlow = {
@@ -594,7 +594,10 @@ class TaintAnalysis {
                     addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
                 }
 
-                process.exit(1);
+                this.loops.delete(iid);
+                return {result: null};
+                // throw new Error('infinite loop');
+                // process.exit(1);
             }
             this.loops.set(iid, calls);
         }
@@ -646,15 +649,15 @@ class TaintAnalysis {
 
     endExpression = (iid, type, result) => {
         this.lastExprResult = result;
-        // if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
-        //     this.orExpr = 0;
-        // //     if (this.undefOrReadVal !== null) {
-        // //         this.undefOrReadVal.__setValue(result);
-        // //         const val = this.undefOrReadVal;
-        // //         this.undefOrReadVal = null;
-        // //         return {result: val};
-        // //     }
-        // }
+        if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
+            this.orExpr = 0;
+        //     if (this.undefOrReadVal !== null) {
+        //         this.undefOrReadVal.__setValue(result);
+        //         const val = this.undefOrReadVal;
+        //         this.undefOrReadVal = null;
+        //         return {result: val};
+        //     }
+        }
     }
 }
 
