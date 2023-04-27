@@ -15,6 +15,7 @@ const MAX_RUNS = 5;
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
+const PACKAGE_DATA = __dirname + '/package-data/';
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const TMP_DIR = __dirname + '/tmp';
@@ -271,36 +272,6 @@ function adaptTestScript(script, scripts, repoPath) {
     }
 }
 
-function findTestScripts(repoPath) {
-    const pkgJson = fs.readFileSync(`${repoPath}/package.json`, 'utf8');
-    const pkg = JSON.parse(pkgJson);
-
-    // ToDo - it's not always defined with 'test'
-    if (!pkg.scripts.test) {
-        console.error('No test found');
-        process.exit(1);
-    }
-
-    // split multiple scripts
-    const cmds = pkg.scripts.test.split(/(&&)|;/);
-    return cmds.map(cmd =>
-        cmd !== '&&' && cmd !== ';' ? adaptTestScript(cmd, pkg.scripts, repoPath) : null
-    ).filter(s => s !== null);
-}
-
-async function runPreAnalysis(script, repoName, pkgName) {
-    // first check if pre-analysis was already done
-    if (fs.readFileSync(script, PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
-        return true;
-    } else if (fs.readFileSync(script, PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
-        return false;
-    }
-
-    await runAnalysis(script, PRE_ANALYSIS, repoName, {pkgName}, ['/node_modules']);
-
-    return fs.existsSync(PRE_ANALYSIS + `/results/${pkgName}.json`);
-}
-
 async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName},
         ['/node_modules', 'tests/', 'test/', 'test-', 'test.js'] // exclude some classic test patterns to avoid false positives
@@ -309,9 +280,9 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     const type = getPreAnalysisType(pkgName);
 
     // if it is still not found it means that it was never instrumented
-    // add it to the no-pre-modules to inspect it later
+    // save it separately to inspect it later
     if (type === null) {
-        fs.appendFileSync(__dirname + '/other/no-pre-modules.txt', pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', pkgName + '\n', {encoding: 'utf8'});
     }
 
     return type === PKG_TYPE.NODE_JS;
@@ -347,42 +318,13 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
     await execCmd(`cd ${dir}; ${exec}`, true, false);
 }
 
-async function runAnalysis(script, analysis, dir, initParams, exclude) {
-    const graalNode = process.env.GRAAL_NODE_HOME;
-    const nodeprofHome = process.env.NODEPROF_HOME;
-
-    let cmd = `cd ${dir}; `
-    cmd += graalNode
-        + ' --jvm '
-        + ' --experimental-options'
-        + ` --vm.Dtruffle.class.path.append=${nodeprofHome}/build/nodeprof.jar`
-        + ' --nodeprof.Scope=module'
-        + ' --nodeprof.IgnoreJalangiException=false'
-        + ' --nodeprof';
-
-    if (exclude && exclude.length > 0) {
-        cmd += ` --nodeprof.ExcludeSource=${exclude.join(',')}`
-    }
-
-    cmd += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
-    cmd += ` --exec-path ${NODE_WRAPPER}`; // overwrite the exec path in the analysis
-
-    for (const initParamName in initParams) {
-        cmd += ` --initParam ${initParamName}:${initParams[initParamName]}`;
-
-    }
-
-    cmd += ` ${script};`;
-
-    await execCmd(cmd, true, false);
-}
-
 async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames) {
     const db = await getDb();
     const runId = new ObjectId();
 
     const resultsColl = await db.collection('results');
-    // create an empty result document
+
+    // create an empty result document (if it does not exist yet)
     if (!resultId) {
         resultId = (await resultsColl.insertOne({package: pkgName, timestamp: Date.now(), runs: []})).insertedId;
     }
@@ -407,7 +349,6 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
     }
 
     // store branched on
-
     const branchedOn = [];
     branchedOnFilenames?.forEach(boFilenames => {
         const bo = JSON.parse(fs.readFileSync(boFilenames, {encoding: 'utf8'}));
@@ -487,12 +428,16 @@ function locToSarif(dbLocation, message = null) {
     return sarifLoc;
 }
 
+/**
+ * Checks the results of the pre analysis
+ * First checks nodejs-packages then frontend-packages, err-packages and non-instrumented-packages
+ */
 function getPreAnalysisType(pkgName) {
-    if (fs.readFileSync(PRE_ANALYSIS + '/results/nodejs-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    if (fs.readFileSync(PACKAGE_DATA + 'nodejs-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.NODE_JS;
-    } else if (fs.readFileSync(PRE_ANALYSIS + '/results/frontend-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
-        || fs.readFileSync(PRE_ANALYSIS + '/results/err-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
-        || fs.readFileSync(__dirname + '/other/no-pre-modules.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    } else if (fs.readFileSync(PACKAGE_DATA + 'frontend-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
+        || fs.readFileSync(PACKAGE_DATA + 'err-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
+        || fs.readFileSync(__dirname + '/other/non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.FRONTEND;
     } else {
         return null;
@@ -620,7 +565,7 @@ function getResultFilenames(pkgName, resultBasePath) {
  * Sets up package by fetching the git repository and installing the dependencies
  * @param pkgName - the actual name of the package
  * @param sanitizedPkgName - a sanitized version the is used as the directory name of the repository
- * @returns path to local repository
+ * @returns path to the local repository
  */
 async function setupPkg(pkgName, sanitizedPkgName) {
     console.error('Fetching URL');

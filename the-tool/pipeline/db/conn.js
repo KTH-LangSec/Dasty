@@ -10,7 +10,7 @@ async function getDb() {
         try {
             conn = await client.connect();
         } catch (e) {
-            // ToDo - proper error handling
+            // ToDo - proper error handling ;)
             console.error(e);
         }
     }
