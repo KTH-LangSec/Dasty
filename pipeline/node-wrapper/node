@@ -1,0 +1,10 @@
+#!/bin/bash
+
+NODE_WRAPPER="$THE_TOOL_HOME"pipeline/node-wrapper
+
+if [[ ":$PATH:" != *":$NODE_WRAPPER:"* ]]; then
+  # If the directory is not in the path, add it
+  export PATH="$NODE_WRAPPER:$PATH"
+fi
+
+python3.8 "$NODE_WRAPPER"/node.py "$@"
