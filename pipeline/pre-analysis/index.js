@@ -6,20 +6,21 @@ const {sanitizePkgName} = require("../utils/utils");
 
 const pkgName = J$.initParams.pkgName ?? 'result';
 
-const resultPath = __dirname + '/../package-data/';
+const resultListPath = __dirname + '/../package-data/';
+const resultPath = __dirname = '/results/';
 
 const analysis = new PreAnalysis(pkgName, (err) => {
 
     if (err) {
-        fs.appendFileSync(`${resultPath}/err-packages.txt`, pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(`${resultListPath}/err-packages.txt`, pkgName + '\n', {encoding: 'utf8'});
     }
 
     if (analysis.builtinDependencies.length === 0) {
-        fs.appendFileSync(`${resultPath}/frontend-packages.txt`, pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(`${resultListPath}/frontend-packages.txt`, pkgName + '\n', {encoding: 'utf8'});
         return;
     }
 
-    fs.appendFileSync(`${resultPath}/nodejs-packages.txt`, pkgName + '\n', {encoding: 'utf8'});
+    fs.appendFileSync(`${resultListPath}/nodejs-packages.txt`, pkgName + '\n', {encoding: 'utf8'});
 
     const resultFilename = `${resultPath}/${sanitizePkgName(pkgName)}.json`;
     const dependencies = analysis.builtinDependencies;

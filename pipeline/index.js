@@ -11,7 +11,7 @@ const {removeDuplicateFlows, removeDuplicateTaints} = require("../taint-analysis
 // const DEFAULT_TIMEOUT = 1 * 60 * 1000;
 // const DEFAULT_TIMEOUT = 20000;
 const DEFAULT_TIMEOUT = -1;
-const MAX_RUNS = 5;
+const MAX_RUNS = 1;
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
@@ -528,6 +528,7 @@ async function setupPkg(pkgName, sanitizedPkgName) {
 
 async function runPipeline(pkgName, cliArgs) {
     if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
+        fs.appendFileSync(PACKAGE_DATA + 'filtered-packages.txt', pkgName + '\n', {encoding: 'utf8'});
         console.log(`${pkgName} is a 'don't analyse' script`);
         return;
     }

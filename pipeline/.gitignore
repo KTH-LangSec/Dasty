@@ -1,3 +1,4 @@
-packages/
+packages/*
 results/*
 tmp/*
+package-data/*.txt

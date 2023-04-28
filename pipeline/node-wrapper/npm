@@ -1,6 +1,11 @@
 #!/bin/bash
 
-export PATH=$THE_TOOL_HOME/pipeline/pipeline/node-wrapper/:$PATH
+NODE_WRAPPER="$THE_TOOL_HOME"/pipeline/node-wrapper
 
-/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm "$@"
+if [[ ":$PATH:" != *":$NODE_WRAPPER:"* ]]; then
+  # If the directory is not in the path, add it
+  export PATH="$NODE_WRAPPER:$PATH"
+fi
+
+"$NVM_DIR"/versions/node/v18.12.1/bin/npm "$@"
 #$GRAAL_NPM_HOME "$@"

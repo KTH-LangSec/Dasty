@@ -2,8 +2,8 @@ import sys
 import subprocess
 import os
 
-NVM_NODE_EXEC = "/home/pmoosi/.nvm/versions/node/v18.12.1/bin/node"
-TIMEOUT = 60 * 2
+NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
+TIMEOUT = 60 * 15
 
 
 def get_flag_idx(flag, exact_match=True):
@@ -68,8 +68,8 @@ def set_flag(argv_string, program, flags, value=None):
 
 
 def main():
-    with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
-        file.write(' '.join(sys.argv[1:]) + '\n')
+    # with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
+    #     file.write(' '.join(sys.argv[1:]) + '\n')
 
     # Note that printing (stdout or stderr) can change and fuck up the behaviour of some tests (and testing frameworks)
     print('\n------------------', file=sys.stderr)
@@ -101,7 +101,7 @@ def main():
 
     # if it already has the instrumentation flags just execute it
     if '--jvm' in sys.argv:
-        subprocess.run([os.environ['GRAAL_NODE_HOME']] + sys.argv[1:])
+        subprocess.run([os.environ['GRAAL_NODE']] + sys.argv[1:])
         sys.exit()
 
     # check npm
@@ -123,17 +123,15 @@ def main():
             subprocess.run(sys.argv[idx + 1:])
             return
 
-    # node_exec = ["/home/pmoosi/.nvm/versions/node/v19.5.0/bin/node"]
     node_exec = [NVM_NODE_EXEC]
-    # node_exec = [os.environ['GRAAL_NODE_HOME'], '--engine.WarnInterpreterOnly=false']
+
     # instrument when testing framework or test directory or is simple node [file].js and not specifically excluded (exclude_instrument)
     instrument_args = []
-    script_idx = 1
     if (any(s in argv_string for s in include_instrument)
         or (len(sys.argv) == 2 and sys.argv[1].endswith('.js'))) \
             and all(s not in argv_string for s in exclude_instrument):
 
-        node_exec = [os.environ['GRAAL_NODE_HOME'], '--engine.WarnInterpreterOnly=false']
+        node_exec = [os.environ['GRAAL_NODE'], '--engine.WarnInterpreterOnly=false']
 
         # print("Attaching analysis to node process")
         with open(os.path.dirname(os.path.realpath(__file__)) + '/params.txt') as paramFile:
