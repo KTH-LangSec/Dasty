@@ -21,6 +21,32 @@ const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const TMP_DIR = __dirname + '/tmp';
 const FAILED_DB_WRITE = __dirname + '/results/failed-db-write';
 
+// keywords of packages that are known to be not interesting (for now)
+// if encountered the analysis is terminated
+const DONT_ANALYSE = [
+    'react',
+    'angular',
+    'vue',
+    'webpack',
+    'vite',
+    'babel',
+    'gulp',
+    'bower',
+    'lint',
+    '/types',
+    '@type/',
+    '@types/',
+    'electron',
+    'tailwind',
+    'jest',
+    'mocha',
+    'nyc',
+    'typescript',
+    'jquery',
+    'browser'
+];
+
+// specific keyword that if included in the filepath won't be instrumented during the anlysis
 const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/istanbul-lib-instrument/',
     'node_modules/mocha/',
@@ -63,30 +89,6 @@ const CLI_ARGS = {
     '--execFile': 1,
     '--noForIn': 0
 }
-
-// keywords of packages that are known to be not interesting (for now)
-const DONT_ANALYSE = [
-    'react',
-    'angular',
-    // 'vue',
-    'webpack',
-    'vite',
-    'babel',
-    'gulp',
-    'bower',
-    'lint',
-    '/types',
-    '@type/',
-    '@types/',
-    'electron',
-    'tailwind',
-    'jest',
-    'mocha',
-    'nyc',
-    'typescript',
-    'jquery',
-    'browser'
-];
 
 function parseCliArgs() {
     // Set default values (also so that the ide linter shuts up)
@@ -207,68 +209,6 @@ async function fetchURL(pkgName) {
     } else {
         console.error('No git repository found');
         return null;
-    }
-}
-
-function getBin(repoPath, pkgName) {
-    const modulePath = `${repoPath}/node_modules/${pkgName}/`;
-    if (!fs.existsSync(modulePath)) return null;
-
-    const pkgJson = JSON.parse(fs.readFileSync(modulePath + 'package.json', {encoding: 'utf8'}));
-    if (typeof pkgJson?.bin) {
-        if (typeof pkgJson.bin === 'string') {
-            return modulePath + pkgJson.bin;
-        } else if (pkgJson.bin[pkgName]) {
-            return modulePath + pkgJson.bin[pkgName];
-        }
-    }
-
-    return null;
-}
-
-function adaptTestScript(script, scripts, repoPath) {
-    const argParts = script.trim().split(' ');
-    switch (argParts[0]) {
-        case 'node':
-            return argParts.slice(1).join(' ');
-        case 'mocha':
-            argParts[0] = './node_modules/mocha/bin/' + (fs.existsSync(repoPath + '/node_modules/mocha/bin/mocha.js') ? 'mocha.js' : 'mocha');
-            const bailIndex = argParts.findIndex(a => a === '--bail');
-            if (bailIndex >= 0) {
-                argParts[bailIndex] = '--exit';
-            }
-            return argParts.join(' ');
-        case 'jest':
-            argParts[0] = './node_modules/jest/bin/jest.js'
-            return argParts.join(' ');
-        case 'npm':
-            if (argParts[1] === 'run' && !argParts[2].includes('lint')) {
-                return adaptTestScript(scripts[argParts[2]], scripts, repoPath);
-            }
-            // ignore other npm commands (e.g. audit)
-            return null;
-        case 'c8':
-        case 'nyc':
-            return adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
-        case 'cross-env':
-            return `${getBin(repoPath, 'cross-env')} ${argParts[1]} ${adaptTestScript(argParts.slice(2).join(' '), scripts, repoPath)}`;
-        // blacklist for linters and similar
-        case 'xo':
-        case 'tsd':
-            return null;
-        default:
-            // if nothing else matches check try to find the module and extract the 'bin' file
-            const bin = getBin(repoPath, argParts[0]);
-
-            if (bin === null) return null;
-
-            // skip shell files for now - ToDo extract with npm (see node-wrapper dir)
-            if (bin.endsWith('.sh')) {
-                return adaptTestScript(argParts.slice(1).join(' '), scripts, repoPath);
-            }
-
-            argParts[0] = bin;
-            return argParts.join(' ');
     }
 }
 
@@ -437,7 +377,7 @@ function getPreAnalysisType(pkgName) {
         return PKG_TYPE.NODE_JS;
     } else if (fs.readFileSync(PACKAGE_DATA + 'frontend-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
         || fs.readFileSync(PACKAGE_DATA + 'err-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
-        || fs.readFileSync(__dirname + '/other/non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        || fs.readFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.FRONTEND;
     } else {
         return null;
@@ -603,7 +543,7 @@ async function runPipeline(pkgName, cliArgs) {
 
     const resultBasePath = __dirname + '/results/';
 
-    fs.writeFileSync(__dirname + '/other/last-analyzed.txt', pkgName, {encoding: 'utf8'});
+    fs.writeFileSync(PACKAGE_DATA + 'last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
     let propBlacklist = null;
     try {
@@ -747,7 +687,7 @@ async function runPipeline(pkgName, cliArgs) {
         branchedOnFilenames.forEach(fs.unlinkSync);
         taintsFilenames.forEach(fs.unlinkSync);
 
-        fs.appendFileSync(__dirname + '/other/already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(PACKAGE_DATA + 'already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
 }
 
@@ -968,12 +908,12 @@ async function run() {
 
     let skipTo = cliArgs.skipTo;
     if (!skipTo && cliArgs.skipToLast) {
-        skipTo = fs.readFileSync(__dirname + '/other/last-analyzed.txt', {encoding: 'utf8'});
+        skipTo = fs.readFileSync(PACKAGE_DATA + 'last-analyzed.txt', {encoding: 'utf8'});
     }
 
     let packagesToSkip = [];
     if (cliArgs.skipDone) {
-        packagesToSkip = fs.readFileSync(__dirname + '/other/already-analyzed.txt', {encoding: 'utf8'}).split('\n').map(p => p.trim());
+        packagesToSkip = fs.readFileSync(PACKAGE_DATA + 'already-analyzed.txt', {encoding: 'utf8'}).split('\n').map(p => p.trim());
     }
 
     for (const pkgName of pkgNames) {
