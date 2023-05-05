@@ -7,7 +7,7 @@ const {sanitizePkgName} = require("../utils/utils");
 const pkgName = J$.initParams.pkgName ?? 'result';
 
 const resultListPath = __dirname + '/../package-data/';
-const resultPath = __dirname = '/results/';
+const resultPath = __dirname + '/results/';
 
 const analysis = new PreAnalysis(pkgName, (err) => {
 
