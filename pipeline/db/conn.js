@@ -1,5 +1,7 @@
 const {MongoClient} = require('mongodb');
-const connectionURI = JSON.parse('../../config.json').mongoURI;
+const fs = require('fs');
+const path = require('path');
+const connectionURI = JSON.parse(fs.readFileSync(path.join(__dirname, '../../config.json'), 'utf8')).mongoURI;
 
 const client = new MongoClient(connectionURI);
 
