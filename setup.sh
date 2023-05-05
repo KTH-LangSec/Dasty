@@ -5,6 +5,7 @@ apt-get install -y curl && \
 apt-get install -y git && \
 apt-get install -y g++ && \
 apt-get install -y make && \
+apt-get install -y python3.8 && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/* &&
 
@@ -28,9 +29,11 @@ mkdir nodeprof-graalvm && \
 cd nodeprof-graalvm && \
 git clone https://github.com/pmoosi/nodeprof.js.git && \
 cd nodeprof.js && \
+git checkout pp-gadget && \
 mx sforceimports && \
 mx build && \
 cd ../.. &&
 
 # Set environment variables for node and nodeprof
 # ./setup_GRAAL_NODE.sh
+export THE_TOOL_HOME=$(realpath ./the-tool)/
