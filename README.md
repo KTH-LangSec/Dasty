@@ -49,7 +49,7 @@ mx build
 
 ```
 export GRAAL_NODE=/path/to/nodeprof-graalvm/graal/sdk/mxbuild/linux-amd64/GRAALVM_6B34DA359F_JAVA19/graalvm-6b34da359f-java19-23.0.0-dev/languages/nodejs/bin/node
-export NODEPROF_HOME=/path/to/nodeprof-graalvm/nodeprof.js
+export NODEPROF_HOME=/path/to/nodeprof-graalvm/nodeprof.js/
 ```
 
 Note that the id in `GRAAL_NODE` (i.e. `GRAALVM_[id]_JAVA19/graalvm-[id]-java19-23.0.0-dev`) might differ on your
@@ -60,7 +60,7 @@ machine.
 ```
 git clone https://github.com/pmoosi/the-tool.git
 npm install
-export THE_TOOL_HOME=/path/to/the-tool
+export THE_TOOL_HOME=/path/to/the-tool/
 ```
 
 #### 6. Install MongoDB on your system. You can follow the installation guide for your specific operating system [here](https://www.mongodb.com/docs/manual/installation/#mongodb-installation-tutorials).
