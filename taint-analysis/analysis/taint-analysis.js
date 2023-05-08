@@ -10,7 +10,13 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
-const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_INJECTION, DONT_UNWRAP} = require("../conf/analysis-conf");
+const {
+    DEFAULT_CHECK_DEPTH,
+    MAX_LOOPS,
+    DEFAULT_UNWRAP_DEPTH,
+    EXCLUDE_INJECTION,
+    DONT_UNWRAP
+} = require("../conf/analysis-conf");
 const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
@@ -450,19 +456,9 @@ class TaintAnalysis {
         if (!base || offset === '__taint') return;
 
         // this is probably an array access (don't inject)
-        if (isComputed && typeof offset === 'number') {
-            if (isTaintProxy(base)) {
-                base.__type = 'array';
-            }
-            return;
-            // if (isTaintProxy(base)) {
-            //     return {result: base.__getArrayElem(iid, offset)};
-            // } else {
-            //     return;
-            // }
-        }
+        if (isComputed && typeof offset === 'number' && isTaintProxy(base)) return;
 
-        if (typeof offset !== 'string') return;
+        if (typeof offset !== 'string' && typeof offset !== 'number') return;
 
         // if it is already tainted report repeated read
         if (isTaintProxy(val)) {
@@ -488,12 +484,10 @@ class TaintAnalysis {
         if (val === undefined && Object.prototype.isPrototypeOf(base) && !base.hasOwnProperty(offset) && !this.propBlacklist?.includes(offset) && !EXCLUDE_INJECTION.some(e => loc.includes(e))) {
             const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
 
-            if (this.forceBranches) {
-                try {
-                    base[offset] = res;
-                } catch (e) {
-                    // in some cases injection does not work e.g. read only
-                }
+            try {
+                base[offset] = res;
+            } catch (e) {
+                // in some cases injection does not work e.g. read only
             }
 
             this.lastReadTaint = res;
@@ -651,12 +645,12 @@ class TaintAnalysis {
         this.lastExprResult = result;
         if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
             this.orExpr = 0;
-        //     if (this.undefOrReadVal !== null) {
-        //         this.undefOrReadVal.__setValue(result);
-        //         const val = this.undefOrReadVal;
-        //         this.undefOrReadVal = null;
-        //         return {result: val};
-        //     }
+            //     if (this.undefOrReadVal !== null) {
+            //         this.undefOrReadVal.__setValue(result);
+            //         const val = this.undefOrReadVal;
+            //         this.undefOrReadVal = null;
+            //         return {result: val};
+            //     }
         }
     }
 }
