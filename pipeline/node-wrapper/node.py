@@ -5,7 +5,7 @@ import os
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
 TIMEOUT = 60 * 5  # in seconds
 
-STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.json'
+STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.csv'
 EXEC_RESULT_FILE = os.path.dirname(os.path.realpath(__file__)) + '/exec-result.txt'
 
 
@@ -69,28 +69,30 @@ def set_flag(argv_string, program, flags, value=None):
         if value is not None:
             sys.argv.insert(program_idx + 2, value)
 
-def get_arg_from_keyword(args, keyword):
-    return next((arg for arg in args if keyword in arg), None)
+
+def get_arg_from_keyword(args, keyword, exclude=None):
+    return next((arg for arg in args if keyword in arg and (exclude is None or exclude not in arg)), None)
 
 
 def get_arg_idx_from_keyword(args, keyword):
     return next((idx for idx, arg in enumerate(args) if keyword in arg), -1)
 
 
-def set_status(args, instrumented, timeout):
+def write_status(args, instrumented, timed_out):
     args_string = ' '.join(args[1:])
 
-    if not instrumented:
-        script_wrapper_idx = get_arg_idx_from_keyword(args, '/script-wrapper.js')
-        bin = args[script_wrapper_idx + 1:] if script_wrapper_idx > -1 else args_string
-        status = 'timeout' if timeout else 'success'
-    else:
-        if '.bin/' in args_string:
-            bin = get_arg_from_keyword(args, '.bin/')
-        else:
-            bin = 'no bin'
+    exec_bin = None
+    if '.bin/' in args_string:
+        exec_bin = get_arg_from_keyword(args, '.bin/', '--nodeprof.ExcludeSource')
 
-        if timeout:
+    if not instrumented:
+        status = 'timeout' if timed_out else 'success'
+
+        if exec_bin is None:
+            script_wrapper_idx = get_arg_idx_from_keyword(args, '/script-wrapper.js')
+            exec_bin = ' '.join(args[script_wrapper_idx + 1:]) if script_wrapper_idx > -1 else args_string
+    else:
+        if timed_out:
             status = 'timeout'
         elif os.path.exists(EXEC_RESULT_FILE):
             with open(EXEC_RESULT_FILE, 'r') as file:
@@ -98,11 +100,30 @@ def set_status(args, instrumented, timeout):
         else:
             status = 'success'
 
-    if os.path.exists(STATUS_FILE):
-        with open(STATUS_FILE, 'r+') as file:
-            st = file.read()
-            file.seek(0)
-            file.write(f'{bin: $bin}')
+        if exec_bin is None:
+            # take the last --initParam to find the position of the executed script
+            # this assumes that there is a --initParam that is the last parameter of the instrumentation (hackish but works for now)
+            exec_idx = len(args) - 1 - args[::-1].index('--initParam') + 2 if '--initParam' in args else -1
+            exec_bin = ' '.join(args[exec_idx:]) if exec_idx > -1 else args_string
+
+    with open(STATUS_FILE, 'a') as file:
+        file.write(f"{exec_bin};{status};{'instrumented' if instrumented else 'not-instrumented'}\n")
+
+
+def run_process(args):
+    timed_out = False
+
+    # clean up the previous status
+    if os.path.exists(EXEC_RESULT_FILE):
+        os.remove(EXEC_RESULT_FILE)
+
+    try:
+        subprocess.run(args, timeout=TIMEOUT)
+    except subprocess.TimeoutExpired:
+        timed_out = True
+
+    write_status(args, instrumented='--jvm' in args, timed_out=timed_out)
+
 
 def main():
     # with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
@@ -138,13 +159,17 @@ def main():
 
     # if it already has the instrumentation flags just execute it
     if '--jvm' in sys.argv:
-        subprocess.run([os.environ['GRAAL_NODE']] + sys.argv[1:])
+        # subprocess.run([os.environ['GRAAL_NODE']] + sys.argv[1:])
+        run_process([os.environ['GRAAL_NODE']] + sys.argv[1:])
         sys.exit()
 
     # check npm
     if ((len(sys.argv) > 1 and sys.argv[1].endswith('npm')
          and (sys.argv[2] in exclude_npm or (sys.argv[2] == 'run' and all(s not in sys.argv[-1] for s in include_run) and 'lint' not in sys.argv[2])))
             or any(s in argv_string for s in exclude)):
+        if os.path.exists(STATUS_FILE):
+            with open(STATUS_FILE, 'a') as file:
+                file.write(f"{sys.argv[1:]};skipped")
         sys.exit()
 
     # skip nyc for improved performance (needs to be tested further)
@@ -157,7 +182,7 @@ def main():
             while sys.argv[idx + 1].startswith('-'):
                 sys.argv.remove(sys.argv[idx + 1])
 
-            subprocess.run(sys.argv[idx + 1:])
+            run_process(sys.argv[idx + 1:])
             return
 
     node_exec = [NVM_NODE_EXEC]
@@ -272,8 +297,7 @@ def main():
 
     print(' '.join(args), file=sys.stderr, flush=True)
 
-    # subprocess.run(args, timeout=TIMEOUT)
-    subprocess.run(args)
+    run_process(args)
 
 
 if __name__ == '__main__':

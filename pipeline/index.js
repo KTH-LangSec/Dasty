@@ -20,6 +20,7 @@ const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const TMP_DIR = __dirname + '/tmp';
 const FAILED_DB_WRITE = __dirname + '/results/failed-db-write';
+const NODE_WRAPPER_STATUS_FILE = __dirname + '/node-wrapper/status.csv';
 
 // keywords of packages that are known to be not interesting (for now)
 // if encountered the analysis is terminated
@@ -254,11 +255,16 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
 
     fs.writeFileSync(__dirname + '/node-wrapper/params.txt', params, {encoding: 'utf8'});
 
+    // delete previous status file
+    if (fs.existsSync(NODE_WRAPPER_STATUS_FILE)) {
+        fs.unlinkSync(NODE_WRAPPER_STATUS_FILE);
+    }
+
     const exec = execFile ? NODE_WRAPPER + ' ' + execFile : NPM_WRAPPER + ' test';
     await execCmd(`cd ${dir}; ${exec}`, true, false);
 }
 
-async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames) {
+async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, runExecStatuses) {
     const db = await getDb();
     const runId = new ObjectId();
 
@@ -276,17 +282,16 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
         results.push(...JSON.parse(fs.readFileSync(resultFilename, {encoding: 'utf8'})));
     });
 
-    if (results.length > 0) {
-        results = removeDuplicateFlows(results);
+    results = removeDuplicateFlows(results);
 
-        const run = {
-            _id: runId,
-            runName,
-            results
-        };
+    const run = {
+        _id: runId,
+        runName,
+        runExecStatuses,
+        results
+    };
 
-        await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
-    }
+    await resultsColl.updateOne({_id: resultId}, {$push: {runs: run}});
 
     // store branched on
     const branchedOn = [];
@@ -384,6 +389,21 @@ function getPreAnalysisType(pkgName) {
     }
 }
 
+function parseExecStatuses() {
+    if (!fs.existsSync(NODE_WRAPPER_STATUS_FILE)) return null;
+
+    const statusLines = fs.readFileSync(NODE_WRAPPER_STATUS_FILE, {encoding: 'utf8'}).trim().split('\n');
+    // note that the parent status is written after the child status as it finishes later
+    return statusLines.map(statusLine => {
+        const statusData = statusLine.split(';');
+        return {
+            bin: statusData[0],
+            status: statusData[1],
+            instrumented: statusData[2]?.trim() === 'instrumented'
+        }
+    });
+}
+
 async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile) {
     const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
     const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
@@ -437,8 +457,10 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             let {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
 
             const runName = `forceBranchProps: ${Array.from(props).join(', ')}`;
+            const execStatuses = parseExecStatuses();
+
             try {
-                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames);
+                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, null, null, execStatuses);
                 dbResultId = resultId; // if no results found dbResultId might be still null
             } catch (e) {
                 // if there is a problem writing to the database move files to not lose the data
@@ -621,8 +643,10 @@ async function runPipeline(pkgName, cliArgs) {
 
             let noFlows = false;
             let runId = null;
+
             try {
-                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames);
+                const execStatuses = parseExecStatuses();
+                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, execStatuses);
                 dbResultId = result.resultId;
                 runId = result.runId;
                 noFlows = result.noFlows;

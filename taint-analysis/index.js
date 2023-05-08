@@ -8,6 +8,7 @@ const {writeFlows, writeTaints} = require("./utils/result-handler");
 
 // function run() {
 const blacklistFilepath = __dirname + '/conf/sink-blacklist.json';
+const processResultPath = __dirname + '/../pipeline/node-wrapper/exec-result.txt'; // writes a status for the node wrapper
 
 const ts = Date.now();
 const pkgName = J$.initParams.pkgName ?? null;
@@ -37,8 +38,11 @@ const recordAllFunCalls = J$.initParams.recordAllFunCalls === 'true';
 const injectForIn = J$.initParams.injectForIn === 'true';
 
 function executionDone(allTaintValues, err) {
-    const flows = analysis.flows;
+    // write status for the node-wrapper
+    const execStatus = err ? `UncaughtException:${err.name ?? 'undefinedName'}` : 'success';
+    fs.writeFileSync(processResultPath, execStatus, {encoding: 'utf8'});
 
+    const flows = analysis.flows;
     console.log(flows.length > 0 ? flows.length + " flows found" : "No flows found");
 
     if (!writeOnDetect && resultFilename) {

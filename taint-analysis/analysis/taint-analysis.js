@@ -10,7 +10,7 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
-const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_INJECTION} = require("../conf/analysis-conf");
+const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_INJECTION, DONT_UNWRAP} = require("../conf/analysis-conf");
 const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
@@ -83,7 +83,7 @@ class TaintAnalysis {
             && (f === undefined // check if node internal function
                 || (!functionScope?.startsWith('node:')) // We only care for internal node functions
                 || f === console.log
-                || f.name === 'emit'
+                || DONT_UNWRAP.includes(f.name)
                 || argLength === 0)) return;
 
         // if it is an internal function replace it with wrapper function that checks for and unwraps taint values
