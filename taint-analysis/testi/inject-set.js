@@ -1,8 +1,10 @@
 const obj = {};
 
+const x = () => console.log('hey');
+
 obj.script || (obj.script = []);
-obj.script.push('ho');
+obj.script.push(x);
 
 for (let i = 0; i < obj.script.length; i++) {
-    console.log(obj.script[i]);
+    obj.script[i].call();
 }

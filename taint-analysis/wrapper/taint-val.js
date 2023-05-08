@@ -187,7 +187,9 @@ class TaintProxyHandler {
     // Convert to primitive
     // when type coercing the toPrimitive symbol is checked first and then falls back to valueOf toString
     [Symbol.toPrimitive](hint) {
-        this.__type = 'string';
+        if (this.__type !== 'string' && this.__type !== 'number' && this.__type !== 'boolean') {
+            this.__type = hint;
+        }
         return this.__val.valueOf();
     }
 

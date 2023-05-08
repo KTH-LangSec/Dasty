@@ -441,21 +441,6 @@ class TaintAnalysis {
                 // Todo - look into string Template Literals (it works but the other side is always '')
                 const res = left?.__taint ? left.__add(iid, right, result, true) : right.__add(iid, left, result, false);
                 return {result: res};
-            case '<':
-            case '<=':
-            case '>':
-            case '>=':
-                // Todo - record branching?
-                let leftVal = left;
-                let rightVal = right;
-                if (isTaintProxy(left)) {
-                    leftVal = left.__val;
-                }
-                if (isTaintProxy(right)) {
-                    rightVal = right.__val;
-                }
-
-                return {result: eval(`${leftVal} ${op} ${rightVal};`)}
         }
     }
 
