@@ -1,3 +1,3 @@
-test/ --integration;success;instrumented
-['/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm', 'run', 'test-integration'];success;not-instrumented
-['/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm', 'test'];success;not-instrumented
+test/ --integration;UncaughtException:Error;instrumented
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration;success;not-instrumented
+/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test;success;not-instrumented

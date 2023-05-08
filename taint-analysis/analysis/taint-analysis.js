@@ -150,6 +150,9 @@ class TaintAnalysis {
                     ? Reflect.apply(f, receiver, unwrappedArgs)
                     : Reflect.construct(f, unwrappedArgs);
 
+                // if (taints && taints.length > 0 && taints[0]?.length > 0) {
+                //     console.log(taints[0][0]);
+                // }
                 // emulate the taint propagation
                 const emulatedResult = emulateNodeJs(functionScope, iid, result, receiver, f, args);
                 return emulatedResult ?? result;
@@ -438,6 +441,24 @@ class TaintAnalysis {
                 // Todo - look into string Template Literals (it works but the other side is always '')
                 const res = left?.__taint ? left.__add(iid, right, result, true) : right.__add(iid, left, result, false);
                 return {result: res};
+        }
+    }
+
+    putFieldPre = (iid, base, offset, value) => {
+        /* assigning a field in an '||' should not overwrite the taint (e.g. obj.prop || obj.prop = [])
+        Why does this code work? Returning a result here aborts the evaluation of the node (i.e. the new value is never assigned)
+        and return the value. Because we are in a '||' expression,
+        the return value will be assigned to the taint proxy when exiting the '||' (see 'binary').
+         */
+        if (this.orExpr && isTaintProxy(base[offset])) {
+            console.log(iidToLocation(iid));
+            return {result: value};
+        }
+    }
+
+    putField = (iid, base, offset, value) => {
+        if (this.orExpr && isTaintProxy(base[offset])) {
+            console.log('put');
         }
     }
 

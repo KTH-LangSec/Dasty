@@ -1,5 +1,6 @@
 const obj = {};
 
-obj.script || (obj.script = 'console.log("hey")');
+obj.script || (obj.script = []);
+obj.script.push('ho');
 
-eval(obj.script);
+console.log(0 < obj.script.length);
