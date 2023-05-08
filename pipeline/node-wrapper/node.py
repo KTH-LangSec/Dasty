@@ -3,7 +3,10 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
-TIMEOUT = 60 * 15
+TIMEOUT = 60 * 5  # in seconds
+
+STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.json'
+EXEC_RESULT_FILE = os.path.dirname(os.path.realpath(__file__)) + '/exec-result.txt'
 
 
 def get_flag_idx(flag, exact_match=True):
@@ -66,6 +69,40 @@ def set_flag(argv_string, program, flags, value=None):
         if value is not None:
             sys.argv.insert(program_idx + 2, value)
 
+def get_arg_from_keyword(args, keyword):
+    return next((arg for arg in args if keyword in arg), None)
+
+
+def get_arg_idx_from_keyword(args, keyword):
+    return next((idx for idx, arg in enumerate(args) if keyword in arg), -1)
+
+
+def set_status(args, instrumented, timeout):
+    args_string = ' '.join(args[1:])
+
+    if not instrumented:
+        script_wrapper_idx = get_arg_idx_from_keyword(args, '/script-wrapper.js')
+        bin = args[script_wrapper_idx + 1:] if script_wrapper_idx > -1 else args_string
+        status = 'timeout' if timeout else 'success'
+    else:
+        if '.bin/' in args_string:
+            bin = get_arg_from_keyword(args, '.bin/')
+        else:
+            bin = 'no bin'
+
+        if timeout:
+            status = 'timeout'
+        elif os.path.exists(EXEC_RESULT_FILE):
+            with open(EXEC_RESULT_FILE, 'r') as file:
+                status = file.read()
+        else:
+            status = 'success'
+
+    if os.path.exists(STATUS_FILE):
+        with open(STATUS_FILE, 'r+') as file:
+            st = file.read()
+            file.seek(0)
+            file.write(f'{bin: $bin}')
 
 def main():
     # with open(os.path.dirname(os.path.realpath(__file__)) + '/args.txt', 'a+') as file:
