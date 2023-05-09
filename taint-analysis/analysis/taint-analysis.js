@@ -10,7 +10,13 @@ const {
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
-const {DEFAULT_CHECK_DEPTH, MAX_LOOPS, DEFAULT_UNWRAP_DEPTH, EXCLUDE_INJECTION} = require("../conf/analysis-conf");
+const {
+    DEFAULT_CHECK_DEPTH,
+    MAX_LOOPS,
+    DEFAULT_UNWRAP_DEPTH,
+    EXCLUDE_INJECTION,
+    DONT_UNWRAP
+} = require("../conf/analysis-conf");
 const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
 
@@ -83,7 +89,7 @@ class TaintAnalysis {
             && (f === undefined // check if node internal function
                 || (!functionScope?.startsWith('node:')) // We only care for internal node functions
                 || f === console.log
-                || f.name === 'emit'
+                || DONT_UNWRAP.includes(f.name)
                 || argLength === 0)) return;
 
         // if it is an internal function replace it with wrapper function that checks for and unwraps taint values
@@ -144,6 +150,9 @@ class TaintAnalysis {
                     ? Reflect.apply(f, receiver, unwrappedArgs)
                     : Reflect.construct(f, unwrappedArgs);
 
+                // if (taints && taints.length > 0 && taints[0]?.length > 0) {
+                //     console.log(taints[0][0]);
+                // }
                 // emulate the taint propagation
                 const emulatedResult = emulateNodeJs(functionScope, iid, result, receiver, f, args);
                 return emulatedResult ?? result;
@@ -296,20 +305,6 @@ class TaintAnalysis {
             });
         }
 
-        // if we only inject one property record all exceptions
-        // if (this.forceBranchProp && this.lastReadTaint) {
-        //     newFlows.push({
-        //             ...this.lastReadTaint.__getFlowSource(),
-        //             sink: {
-        //                 iid,
-        //                 type: 'functionCallArgException',
-        //                 value: e.code + ' ' + e.toString(),
-        //                 functionName: f?.name
-        //             }
-        //         }
-        //     )
-        // }
-
         if (newFlows.length > 0) {
             addAndWriteFlows(newFlows, this.flows, this.processedFlow, this.resultFilename);
         }
@@ -435,6 +430,17 @@ class TaintAnalysis {
         }
     }
 
+    putFieldPre = (iid, base, offset, value) => {
+        /* assigning a field in an '||' should not overwrite the taint (e.g. obj.prop || obj.prop = [])
+        Why does this code work? Returning a result here aborts the evaluation of the node (i.e. the new value is never assigned)
+        and return the value. Because we are in a '||' expression,
+        the return value will be assigned to the taint proxy when exiting the '||' (see 'binary').
+         */
+        if (this.orExpr && isTaintProxy(base[offset])) {
+            return {result: value};
+        }
+    }
+
     getField = (iid, base, offset, val, isComputed, functionScope, isAsync, scope) => {
         if (isTaintProxy(offset)) {
             try {
@@ -450,19 +456,9 @@ class TaintAnalysis {
         if (!base || offset === '__taint') return;
 
         // this is probably an array access (don't inject)
-        if (isComputed && typeof offset === 'number') {
-            if (isTaintProxy(base)) {
-                base.__type = 'array';
-            }
-            return;
-            // if (isTaintProxy(base)) {
-            //     return {result: base.__getArrayElem(iid, offset)};
-            // } else {
-            //     return;
-            // }
-        }
+        if (isComputed && typeof offset === 'number' && isTaintProxy(base)) return;
 
-        if (typeof offset !== 'string') return;
+        if (typeof offset !== 'string' && typeof offset !== 'number') return;
 
         // if it is already tainted report repeated read
         if (isTaintProxy(val)) {
@@ -488,12 +484,10 @@ class TaintAnalysis {
         if (val === undefined && Object.prototype.isPrototypeOf(base) && !base.hasOwnProperty(offset) && !this.propBlacklist?.includes(offset) && !EXCLUDE_INJECTION.some(e => loc.includes(e))) {
             const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
 
-            if (this.forceBranches) {
-                try {
-                    base[offset] = res;
-                } catch (e) {
-                    // in some cases injection does not work e.g. read only
-                }
+            try {
+                base[offset] = res;
+            } catch (e) {
+                // in some cases injection does not work e.g. read only
             }
 
             this.lastReadTaint = res;
@@ -636,9 +630,6 @@ class TaintAnalysis {
         if (this.executionDoneCallback) {
             this.executionDoneCallback(allTaintValues, this.uncaughtErr);
         }
-
-        // ToDo - store it somewhere
-        // console.log(new Set(this.branchedOn));
     }
 
     startExpression = (iid, type) => {
@@ -651,12 +642,12 @@ class TaintAnalysis {
         this.lastExprResult = result;
         if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
             this.orExpr = 0;
-        //     if (this.undefOrReadVal !== null) {
-        //         this.undefOrReadVal.__setValue(result);
-        //         const val = this.undefOrReadVal;
-        //         this.undefOrReadVal = null;
-        //         return {result: val};
-        //     }
+            //     if (this.undefOrReadVal !== null) {
+            //         this.undefOrReadVal.__setValue(result);
+            //         const val = this.undefOrReadVal;
+            //         this.undefOrReadVal = null;
+            //         return {result: val};
+            //     }
         }
     }
 }

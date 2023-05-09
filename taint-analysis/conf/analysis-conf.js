@@ -10,5 +10,8 @@ module.exports = {
         'test/',
         'tests/',
         'examples/'
+    ],
+    DONT_UNWRAP: [
+        'emit'
     ]
 }
