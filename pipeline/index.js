@@ -69,8 +69,11 @@ const EXCLUDE_ANALYSIS_KEYWORDS = [
 ];
 
 const PKG_TYPE = {
-    NODE_JS: 0,
-    FRONTEND: 1
+    NODE_JS: 'Node.js',
+    FRONTEND: 'Frontend',
+    NOT_INSTRUMENTED: 'Not Instrumented',
+    PRE_FILTERED: 'Pre Filtered',
+    ERR: 'Uncaught Error'
 }
 
 const CLI_ARGS = {
@@ -218,15 +221,16 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
         ['/node_modules', 'tests/', 'test/', 'test-', 'test.js'] // exclude some classic test patterns to avoid false positives
     );
 
-    const type = getPreAnalysisType(pkgName);
+    let type = getPreAnalysisType(pkgName);
 
     // if it is still not found it means that it was never instrumented
     // save it separately to inspect it later
     if (type === null) {
         fs.appendFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', pkgName + '\n', {encoding: 'utf8'});
+        type = PKG_TYPE.NOT_INSTRUMENTED;
     }
 
-    return type === PKG_TYPE.NODE_JS;
+    return type;
 }
 
 async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFile = null) {
@@ -262,6 +266,18 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
 
     const exec = execFile ? NODE_WRAPPER + ' ' + execFile : NPM_WRAPPER + ' test';
     await execCmd(`cd ${dir}; ${exec}`, true, false);
+}
+
+async function writePackageDataToDB(pkgName, type, preAnalysisStatuses) {
+    const db = await getDb();
+    const packageDataColl = await db.collection('packageData');
+
+    let pkgDataId = await packageDataColl.findOne({"package": pkgName})?._id;
+    if (!pkgDataId) {
+        pkgDataId = (await packageDataColl.insertOne({package: pkgName})).insertedId;
+    }
+
+    await packageDataColl.updateOne({_id: pkgDataId}, {$set: {type, preAnalysisStatuses}});
 }
 
 async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, runExecStatuses) {
@@ -380,10 +396,12 @@ function locToSarif(dbLocation, message = null) {
 function getPreAnalysisType(pkgName) {
     if (fs.readFileSync(PACKAGE_DATA + 'nodejs-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.NODE_JS;
-    } else if (fs.readFileSync(PACKAGE_DATA + 'frontend-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
-        || fs.readFileSync(PACKAGE_DATA + 'err-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)
-        || fs.readFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    } else if (fs.readFileSync(PACKAGE_DATA + 'frontend-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.FRONTEND;
+    } else if (fs.readFileSync(PACKAGE_DATA + 'err-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        return PKG_TYPE.ERR
+    } else if (fs.readFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+        return PKG_TYPE.NOT_INSTRUMENTED;
     } else {
         return null;
     }
@@ -552,13 +570,14 @@ async function runPipeline(pkgName, cliArgs) {
     if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
         fs.appendFileSync(PACKAGE_DATA + 'filtered-packages.txt', pkgName + '\n', {encoding: 'utf8'});
         console.log(`${pkgName} is a 'don't analyse' script`);
+        await writePackageDataToDB(pkgName, PKG_TYPE.PRE_FILTERED, null);
         return;
     }
 
     // first check if pre-analysis was already done
-    const preAnalysisType = getPreAnalysisType(pkgName);
-    if (preAnalysisType === PKG_TYPE.FRONTEND && !cliArgs.force) {
-        console.error(`Looks like ${pkgName} is a frontend module (from a previous analysis). Use --force to force re-evaluation.`);
+    let preAnalysisType = getPreAnalysisType(pkgName);
+    if (preAnalysisType !== PKG_TYPE.NODE_JS && !cliArgs.force) {
+        console.error(`Looks like ${pkgName} is not a node.js package (from a previous analysis). Use --force to force re-evaluation.`);
         return;
     }
 
@@ -591,11 +610,13 @@ async function runPipeline(pkgName, cliArgs) {
             // await execCmd(`cd ${repoPath}; npm test;`, true, false);
 
             console.error('\nRunning pre-analysis');
-            const preAnalysisSuccess = preAnalysisType === null || cliArgs.force
-                ? await runPreAnalysisNodeWrapper(repoPath, pkgName)
-                : preAnalysisType === PKG_TYPE.NODE_JS;
+            if (preAnalysisType === null || cliArgs.force) {
+                preAnalysisType = await runPreAnalysisNodeWrapper(repoPath, pkgName)
+                const preAnalysisStatuses = parseExecStatuses();
+                await writePackageDataToDB(pkgName, preAnalysisType, preAnalysisStatuses);
+            }
 
-            if (!preAnalysisSuccess) {
+            if (preAnalysisType !== PKG_TYPE.NODE_JS) {
                 console.error('\nNo internal dependencies detected.');
                 if (preAnalysisType !== null && !cliArgs.force) {
                     console.error('Use force to enforce re-evaluation.');

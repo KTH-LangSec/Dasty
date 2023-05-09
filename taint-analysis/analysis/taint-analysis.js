@@ -305,20 +305,6 @@ class TaintAnalysis {
             });
         }
 
-        // if we only inject one property record all exceptions
-        // if (this.forceBranchProp && this.lastReadTaint) {
-        //     newFlows.push({
-        //             ...this.lastReadTaint.__getFlowSource(),
-        //             sink: {
-        //                 iid,
-        //                 type: 'functionCallArgException',
-        //                 value: e.code + ' ' + e.toString(),
-        //                 functionName: f?.name
-        //             }
-        //         }
-        //     )
-        // }
-
         if (newFlows.length > 0) {
             addAndWriteFlows(newFlows, this.flows, this.processedFlow, this.resultFilename);
         }
