@@ -3,7 +3,7 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
-TIMEOUT = 60 * 15
+TIMEOUT = 60 * 5
 
 
 def get_flag_idx(flag, exact_match=True):
@@ -235,8 +235,8 @@ def main():
 
     print(' '.join(args), file=sys.stderr, flush=True)
 
-    # subprocess.run(args, timeout=TIMEOUT)
-    subprocess.run(args)
+    subprocess.run(args, timeout=TIMEOUT)
+    #subprocess.run(args)
 
 
 if __name__ == '__main__':

@@ -7,5 +7,10 @@ if [[ ":$PATH:" != *":$NODE_WRAPPER:"* ]]; then
   export PATH="$NODE_WRAPPER:$PATH"
 fi
 
+# echo "RUN NPM!!!"
+# echo "$NVM_DIR"/versions/node/v18.12.1/bin/npm
+# echo $NODE_WRAPPER
+# echo $PATH
+
 "$NVM_DIR"/versions/node/v18.12.1/bin/npm "$@"
 #$GRAAL_NPM_HOME "$@"
