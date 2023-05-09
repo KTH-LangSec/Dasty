@@ -1,3 +1,2 @@
-test/ --integration;UncaughtException:Error;instrumented
-/home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm run test-integration;success;not-instrumented
+/home/pmoosi/Documents/KTH/2023-ss/the-tool/pipeline/packages/express/node_modules/.bin/mocha;success;instrumented
 /home/pmoosi/.nvm/versions/node/v18.12.1/bin/npm test;success;not-instrumented

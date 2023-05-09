@@ -451,14 +451,7 @@ class TaintAnalysis {
         the return value will be assigned to the taint proxy when exiting the '||' (see 'binary').
          */
         if (this.orExpr && isTaintProxy(base[offset])) {
-            console.log(iidToLocation(iid));
             return {result: value};
-        }
-    }
-
-    putField = (iid, base, offset, value) => {
-        if (this.orExpr && isTaintProxy(base[offset])) {
-            console.log('put');
         }
     }
 
@@ -651,9 +644,6 @@ class TaintAnalysis {
         if (this.executionDoneCallback) {
             this.executionDoneCallback(allTaintValues, this.uncaughtErr);
         }
-
-        // ToDo - store it somewhere
-        // console.log(new Set(this.branchedOn));
     }
 
     startExpression = (iid, type) => {

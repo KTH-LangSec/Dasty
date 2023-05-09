@@ -52,8 +52,9 @@ class TaintProxyHandler {
             case 'array':
                 return [];
             case 'function':
-                return () => {
-                };
+                const fun = () => '';
+                fun.__isDefaultFun = true; // indicator if it is a 'made up' fun
+                return fun;
             case 'boolean':
                 return true;
             case 'object':
@@ -324,8 +325,12 @@ class TaintProxyHandler {
     apply(target, thisArg, argumentList) {
         // Return a new tainted value with unknown type and null as value
         this.__type = 'function';
+        const result = this.__val.call(thisArg, ...argumentList);
+        // get type if it is not our 'made up function' but an actually inferred type
+        const type = !this.__val.__isDefaultFun ? getTypeOf(result) :  null;
+
         const cf = createCodeFlow(null, 'functionCall', '');
-        return this.__copyTaint('', cf, null);
+        return this.__copyTaint(result, cf, type);
     }
 }
 
