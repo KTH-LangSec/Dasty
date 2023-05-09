@@ -196,10 +196,14 @@ class TaintAnalysis {
         // record code flows for function calls (only depth 3)
         if (this.recordAllFunCalls) {
             args.forEach((arg, index) => {
-                const taintVals = checkTaints(arg, 3);
-                taintVals?.forEach(taintVal => {
-                    taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
-                });
+                try {
+                    const taintVals = checkTaints(arg, 3);
+                    taintVals?.forEach(taintVal => {
+                        taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
+                    });
+                } catch (e) {
+                    // ignore
+                }
             });
         }
 
