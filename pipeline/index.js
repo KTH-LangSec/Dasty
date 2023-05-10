@@ -47,7 +47,7 @@ const DONT_ANALYSE = [
     'browser'
 ];
 
-// specific keyword that if included in the filepath won't be instrumented during the anlysis
+// specific keyword that if included in the filepath won't be instrumented during the analysis
 const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/istanbul-lib-instrument/',
     'node_modules/mocha/',

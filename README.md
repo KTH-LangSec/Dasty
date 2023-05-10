@@ -77,26 +77,32 @@ node index.js --fromFile [flags] /path/to/packages-list
 ```
 
 Analyze specific package:
+
 ```
 node index.js express
 ```
 
-Run analysis for a list of packages and skip already analyzed ones (stored in pipeline/package-data/already-analyzed.txt):
+Run analysis for a list of packages and skip already analyzed ones (stored in
+pipeline/package-data/already-analyzed.txt):
+
 ```
 node index.js --fromFile --skipDone /path/to/packages-list
 ```
 
 Ignore previous pre-analysis result and force full analysis
+
 ```
 node index.js --force express
 ```
 
 Export all sarif data of the last analysis for a specific package:
+
 ```
 node index.js --sarif --allTaints --out /path/to/sarif.sarif express
 ```
 
 Export all sarif data of the last analysis for all analyzed packages:
+
 ```
 node index.js --sarif --allTaints --outDir /path/to/sarif-dir/
 ```
@@ -105,8 +111,8 @@ node index.js --sarif --allTaints --outDir /path/to/sarif-dir/
 
 General
 
-* `--fromFile`                 : Analyze a list of packages from a file
-* `--skipTo <test_case_id>`    : Skip to the specified test case package.
+* `--fromFile`                 : Analyze a list of packages from a file (provide a file instead of a pkgName)
+* `--skipTo <package_name>`    : Skip to the specified package.
 * `--skipToLast`               : Skip to the last analyzed package.
 * `--skipDone`                 : Skip all already analyzed packages
 
@@ -116,15 +122,16 @@ Analysis
 * `--execFile <file_path>`     : Specify a file instead of a package to run.
 * `--noForIn`                  : Disable `for..in` injection run.
 * `--onlyPre`                  : Only run the pre-analysis phase.
-* `--allTaints`                : Store all injected taints in addition to the flows .
 * `--force`                    : Force analysis (ignore previous pre-analysis results)
+* `--maxRuns <n>`       : Set the maximum number of 'normal' runs. If n > 1 then for every additional exception throwing
 
 **Sarif export**
+
 * `--sarif`                    : Output results in SARIF format.
 * `--out <output_file_path>`   : Specifies the path and file name for the output file.
 * `--outDir <output_dir_path>` : Specifies the directory for the output file.
+* `--allTaints`                : Export all injected taints in addition to the flows (in a separate file).
 * `--exportRuns <n>`  : Export the last <n> runs (only works for flows and exceptions not for all taints and branchings)
-* `--maxRuns <n>`       : Set the maximum number of 'normal' runs. If n > 1 then for every additional exception throwing
   injections from the previous runs are skipped (default: 1).
 
 ### Package Data Files
@@ -135,15 +142,18 @@ Information about analyzed packages are located in `pipeline/package-data`:
 * `last-analyzed.txt`: Contains the name of the last analyzed package (is used for `--skipToLast`)
 * `nodejs-packages.txt`: Contains all package names that passed the pre-analysis
 * `frontend-packages.txt`: Contains all package names that failed the pre-analysis
-* `err-packages.txt`: Contains all package names that crashed during the pre-analysis (with an uncaught exception). Note, that if a node API call was encountered it is still added to `nodejs-packages.txt`
+* `err-packages.txt`: Contains all package names that crashed during the pre-analysis (with an uncaught exception).
+  Note, that if a node API call was encountered it is still added to `nodejs-packages.txt`
 * `non-instrumented-packages.txt`: Contains all package names that ran but were never instrumented
 * `filtered-packages`: Contains package names that were filtered out due to their name
 
-If a package is either in `nodejs-packages.txt`, `frontend-packages.txt`, `err-packages.txt` or `non-instrumented-packages.txt` the pre-analysis is skipped (if `--force` is not set).
+If a package is either in `nodejs-packages.txt`, `frontend-packages.txt`, `err-packages.txt`
+or `non-instrumented-packages.txt` the pre-analysis is skipped (if `--force` is not set).
 
 ## A note on instrumentation filters for Mikhail
 
 As you know there is filtering based on the executed programs in `pipeline/node-wrapper/node.py`.
 
-There are also additional filters on packages names `pipeline/index.js`. Specifically `DONT_ANALYSE` specifies keywords that if contained in the package name are not analyzed. You might want to change these (or remove them completely).
+There are also additional filters on packages names `pipeline/index.js`. Specifically `DONT_ANALYSE` specifies keywords
+that if contained in the package name are not analyzed. You might want to change these (or remove them completely).
 
