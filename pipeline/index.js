@@ -1,6 +1,6 @@
 const util = require('node:util');
 // const exec = util.promisify(require('child_process').exec);
-const {exec} = require('child_process');
+const {exec, spawn} = require('child_process');
 const fs = require('fs');
 const {getDb, closeConnection} = require('./db/conn');
 const {ObjectId} = require("mongodb");
@@ -12,6 +12,7 @@ const {removeDuplicateFlows, removeDuplicateTaints} = require("../taint-analysis
 // const DEFAULT_TIMEOUT = 20000;
 const DEFAULT_TIMEOUT = -1;
 const MAX_RUNS = 1;
+const NPM_INSTALL_TIMEOUT = 8 * 60 * 1000;
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
@@ -73,7 +74,8 @@ const PKG_TYPE = {
     FRONTEND: 'Frontend',
     NOT_INSTRUMENTED: 'Not Instrumented',
     PRE_FILTERED: 'Pre Filtered',
-    ERR: 'Uncaught Error'
+    ERR: 'Uncaught Error',
+    NPM_TIMEOUT: 'Npm Install Timeout'
 }
 
 const CLI_ARGS = {
@@ -150,13 +152,15 @@ function parseCliArgs() {
     return parsedArgs;
 }
 
-function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT) {
-    console.error(cmd + '\n');
+function execCmd(cmd, args, workingDir = null, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT) {
+    console.error(cmd + ' ' + args.join(' ') + '\n');
 
     return new Promise((resolve, reject) => {
-        const childProcess = exec(cmd);
+        const options = workingDir ? {cwd: workingDir} : {};
+        const childProcess = spawn(cmd, args, options);
         let out = '';
         let err = '';
+        let timedOut = false;
 
         let killTimeout;
         const setKillTimout = () => {
@@ -167,6 +171,7 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
                 console.error('TIMEOUT');
 
                 killTimeout = null;
+                timedOut = true;
                 childProcess.kill('SIGINT');
             }, timeout);
         };
@@ -194,13 +199,13 @@ function execCmd(cmd, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT
                 if (throwOnErr) reject(err);
             }
 
-            resolve(out, err);
+            resolve({out, err, timedOut});
         });
     });
 }
 
 async function fetchURL(pkgName) {
-    let url = (await execCmd(`npm view ${pkgName} repository.url`)).trim();
+    let url = (await execCmd('npm', ['view', pkgName, 'repository.url'], null)).out.trim();
 
     if (url.startsWith('git+')) {
         url = url.substring(4);
@@ -273,8 +278,9 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
         fs.unlinkSync(NODE_WRAPPER_STATUS_FILE);
     }
 
-    const exec = execFile ? NODE_WRAPPER + ' ' + execFile : NPM_WRAPPER + ' test';
-    await execCmd(`cd ${dir}; ${exec}`, true, false);
+    const cmd = execFile ? NODE_WRAPPER : NPM_WRAPPER;
+    const args = execFile ? [execFile] : ['test'];
+    await execCmd(cmd, args, dir,true, false);
 }
 
 async function writePackageDataToDB(pkgName, type, preAnalysisStatuses) {
@@ -564,13 +570,18 @@ async function setupPkg(pkgName, sanitizedPkgName) {
     const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
     if (!fs.existsSync(repoPath)) {
         console.error(`\nFetching repository ${url}`);
-        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
+        await execCmd('git', ['clone', url, sanitizedPkgName], __dirname + '/packages/', true);
     } else {
         console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
     }
 
     console.error('\nInstalling dependencies');
-    await execCmd(`cd ${repoPath}; npm install --force;`, true, true, -1);
+    const timedOut = (await execCmd('npm', ['install'], repoPath, true, false, NPM_INSTALL_TIMEOUT)).timedOut;
+
+    if (timedOut) {
+        await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null);
+        throw new Error("npm install timeout");
+    }
 
     return repoPath;
 }
