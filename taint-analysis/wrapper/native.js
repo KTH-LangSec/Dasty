@@ -14,7 +14,7 @@ const builtins = new Map([
 
             taintArg.__type = 'string';
             const cf = createCodeFlow(iid, 'functionArgResult', 'Array.join');
-            return taintArg.__copyTaint(result, cf, 'string', false);
+            return taintArg.__copyTaint(result, cf, 'string');
         }
     ], [
         JSON.stringify,
@@ -23,7 +23,7 @@ const builtins = new Map([
 
             args[0].__type = 'string';
             const cf = createCodeFlow(iid, 'functionArgResult', 'JSON.stringify');
-            return args[0].__copyTaint(result, cf, 'string', false);
+            return args[0].__copyTaint(result, cf, 'string');
         }
     ]
 ]);

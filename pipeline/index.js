@@ -207,13 +207,22 @@ async function fetchURL(pkgName) {
     }
 
     if (url.startsWith('git://') || url.startsWith('ssh://')) {
-        return 'https' + url.substring(3);
-    } else if (url.startsWith('https://')) {
-        return url;
-    } else {
+        url = 'https' + url.substring(3);
+    } else if (!url.startsWith('https://')) {
         console.error('No git repository found');
         return null;
     }
+
+    // add some password to skip password prompts
+    console.log(url);
+    let urlNoProt = url.substring('https://'.length);
+    console.log(urlNoProt);
+    if (urlNoProt.includes("@")) {
+        const atIdx = urlNoProt.indexOf("@");
+        urlNoProt = urlNoProt.substring(atIdx + 1);
+    }
+
+    return 'https://flub:blub@' + urlNoProt;
 }
 
 async function runPreAnalysisNodeWrapper(repoName, pkgName) {
@@ -508,7 +517,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
                             }
                         });
 
-                        forcedProps.add(b.prop); // add to all props that were already force executed
+                        forcedProps.add(b.prop); // add to all props that were already force executed - ToDo maybe it would be better to not that and re execute them separately?
                         props.add(b.prop); // add to props for the next run
                     }
 
@@ -555,7 +564,7 @@ async function setupPkg(pkgName, sanitizedPkgName) {
     const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
     if (!fs.existsSync(repoPath)) {
         console.error(`\nFetching repository ${url}`);
-        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName} && echo ""`, true);
+        await execCmd(`cd packages; git clone ${url} ${sanitizedPkgName}`, true);
     } else {
         console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
     }
@@ -722,7 +731,6 @@ async function runPipeline(pkgName, cliArgs) {
         if (cliArgs.forceBranchExec) {
             await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile);
         }
-
     } finally {
         console.error('\nCleaning up');
         if (propBlacklist) fs.unlinkSync(propBlacklist);
