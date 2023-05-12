@@ -32,6 +32,7 @@ const DONT_ANALYSE = [
     'vite',
     'babel',
     'gulp',
+    'grunt',
     'bower',
     'lint',
     '/types',
