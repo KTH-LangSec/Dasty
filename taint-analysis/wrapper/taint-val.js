@@ -191,7 +191,7 @@ class TaintProxyHandler {
         if (this.__type !== 'string' && this.__type !== 'number' && this.__type !== 'boolean') {
             this.__type = hint;
         }
-        return this.__val.valueOf();
+        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
     }
 
     [Symbol.iterator]() {
