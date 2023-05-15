@@ -963,7 +963,12 @@ async function getBranchedOnSarifData(pkgName) {
 }
 
 function getPkgsFromFile(filename) {
-    const contents = fs.readFileSync(filename, {encoding: 'utf8'});
+    const filepath = path.resolve(filename);
+    if (!fs.existsSync(filepath)) {
+        throw new Error("File does not exists");
+    }
+
+    const contents = fs.readFileSync(filepath, {encoding: 'utf8'});
     return contents.split('\n').map(pkg => pkg.trim());
 }
 
