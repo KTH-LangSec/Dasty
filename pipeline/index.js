@@ -280,7 +280,7 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
 
     const cmd = execFile ? NODE_WRAPPER : NPM_WRAPPER;
     const args = execFile ? [execFile] : ['test'];
-    await execCmd(cmd, args, dir,true, false);
+    await execCmd(cmd, args, dir, true, false);
 }
 
 async function writePackageDataToDB(pkgName, type, preAnalysisStatuses) {
@@ -596,7 +596,7 @@ async function runPipeline(pkgName, cliArgs) {
 
     // first check if pre-analysis was already done
     let preAnalysisType = getPreAnalysisType(pkgName);
-    if (preAnalysisType !== PKG_TYPE.NODE_JS && !cliArgs.force) {
+    if (preAnalysisType !== null && preAnalysisType !== PKG_TYPE.NODE_JS && !cliArgs.force) {
         console.error(`Looks like ${pkgName} is not a node.js package (from a previous analysis). Use --force to force re-evaluation.`);
         return;
     }
