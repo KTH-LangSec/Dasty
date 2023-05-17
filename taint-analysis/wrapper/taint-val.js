@@ -42,7 +42,7 @@ class TaintProxyHandler {
     }
 
     /**
-     * Defines a (non-falsy) default values based on a type
+     * Defines a default values based on a type
      */
     __getDefaultVal(type) {
         // ToDo - symbol, bigint?
@@ -60,7 +60,7 @@ class TaintProxyHandler {
             case 'object':
                 return {};
             case 'string':
-                return 'TAINTED';
+                return '';
             default:
                 return undefined;
         }

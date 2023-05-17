@@ -1,10 +1,10 @@
 const obj = {};
 
-// const or = obj.blub || obj.slub || 'oror'
-// const nullCoal = obj.flub ?? 'nullCoal';
-//
-// console.log(or.toString(), !!or.__taint);
-// console.log(nullCoal.toString(), !!nullCoal.__taint);
+const or = obj.blub || obj.slub || 'oror'
+const nullCoal = obj.flub ?? 'nullCoal';
+
+console.log(or.__val, !!or.__taint);
+console.log(nullCoal.__val, !!nullCoal.__taint);
 //
 // const x = 10;
 // if (obj.cond || x === 5) {
