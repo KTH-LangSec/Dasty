@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.backends.backend_pdf import PdfPages
 
 
 def tool_exec(pkg, y):
@@ -9,8 +10,7 @@ def tool_exec(pkg, y):
     y1 = [0, 0, y[1], y[2]]
     y2 = [y[0], y[1], y[2] - y[1], y[3] - y[2]]
 
-    plt.title('Tools vs. Execution Time - ' + pkg)
-    plt.xlabel('Tools')
+    plt.title('Performance Overhead - ' + pkg)
     plt.ylabel('Execution Time (in seconds)')
     x = ['V8 Node.js', 'Graal Node.js', 'NodeProf', 'Analysis']
 
@@ -24,10 +24,14 @@ def tool_exec(pkg, y):
     for bar_idx, bar in enumerate(top_bar):
         plt.text(bar.get_x() + bar.get_width() / 2, y[bar_idx] + height_diff, str(y[bar_idx]) + 's', ha='center', va='bottom')
 
-    plt.show()
+    # plt.show()
+    pdf = PdfPages('overhead-' + pkg + '.pdf')
+    pdf.savefig()
+    pdf.close()
+    plt.close()
 
 
-def comp(x_labels, the_tool, augur, bar_labels):
+def comp(x_labels, the_tool, augur, bar_labels, filename):
     # x = ['small.js', 'gm', 'fs-extra', 'express']
     x = np.arange(len(x_labels))
     width = 0.25
@@ -54,10 +58,17 @@ def comp(x_labels, the_tool, augur, bar_labels):
         for bar_idx, bar in enumerate(b):
             plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + height_diff, bar_labels[b_idx][bar_idx], ha='center', va='bottom')
 
-    plt.show()
+    pdf = PdfPages(filename)
+    pdf.savefig()
+    pdf.close()
+    plt.close()
 
 
 def main():
+    # plt.rcParams.update({
+    #     "text.usetex": True,
+    # })
+
     tool_exec(
         'small',
         [0.09, 1.82, 2.3, 2.35]
@@ -70,12 +81,12 @@ def main():
 
     tool_exec(
         'gm',
-        [8.09, 14.36, 16.47, 19.28]
+        [0.45, 3.26, 4.36, 5.37]
     )
 
     tool_exec(
-        'gm',
-        [0.45, 3.26, 4.36, 5.37]
+        'gm-2',
+        [8.09, 14.36, 16.47, 19.28]
     )
 
     tool_exec(
@@ -90,7 +101,8 @@ def main():
         bar_labels=[
             ['2.35s', '5.37s'],
             ['3.42s', '23.21s']
-        ]
+        ],
+        filename='comp-small.pdf'
     )
 
     comp(
@@ -100,7 +112,8 @@ def main():
         bar_labels=[
             ['25.1s', '165.29s'],
             ['300s (timeout)', '300s (timeout)']
-        ]
+        ],
+        filename='comp-big.pdf'
     )
 
     # augur
