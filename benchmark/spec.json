@@ -1,0 +1,47 @@
+{
+  "main": "small.js",
+  "tracking": "SourcedBoolean",
+  "sources": [
+    {
+      "type": "undefinedPropRead"
+    }
+  ],
+  "sinks": [
+    {
+      "type": "functionInvocation",
+      "name": "_forkChild"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "ChildProcess"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "exec"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "execFile"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "execFileSync"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "execSync"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "fork"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "spawn"
+    },
+    {
+      "type": "functionInvocation",
+      "name": "spawnSync"
+    }
+  ]
+}
