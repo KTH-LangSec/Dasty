@@ -6,7 +6,7 @@ const {
     isAnalysisWrapper,
     checkTaints,
     isTaintProxy,
-    taintCompResult, iidToCode, updateAndCheckBranchCounter
+    taintCompResult, iidToCode, updateAndCheckBranchCounter, iidToSourceObject
 } = require("../utils/utils");
 const {createModuleWrapper} = require("../wrapper/module-wrapper");
 const {emulateBuiltin, emulateNodeJs} = require("../wrapper/native");
@@ -446,6 +446,8 @@ class TaintAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, functionScope, isAsync, scope) => {
+        // console.log(iidToLocation(iid));
+        // console.log(iidToSourceObject(iid));
         if (isTaintProxy(offset)) {
             try {
                 offset.__type = 'string';

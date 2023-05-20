@@ -4,6 +4,14 @@ const cp = require('child_process');
 
 const obj = {};
 
+const x = obj.x;
+
+if (x) {
+    if (obj.blub) {
+        eval(x);
+    }
+}
+
 // const x = 5;
 // if (obj.additionalArgs === 'something') {
 //     console.log('oh no');
@@ -20,11 +28,11 @@ const obj = {};
 //     }
 // }
 
-if (!obj.blub) {
-    console.log('hey');
-} else {
-    console.log('oh no');
-}
+// if (!obj.blub) {
+//     console.log('hey');
+// } else {
+//     console.log('oh no');
+// }
 
 // if (obj.blub) {
 //     console.log('ho');

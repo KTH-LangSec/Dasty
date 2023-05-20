@@ -25,8 +25,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'tmp', 'views'));
 
 app.get('/inject', (req, res) => {
-    Object.prototype['client'] = 'true';
-    Object.prototype['escapeFunction'] = 'function (param) {console.log("whut")}';
+    Object.prototype.client = 'true';
+    Object.prototype.escapeFunction = 'function (param) {console.log("whut")}';
 
     res.sendStatus(200);
 });

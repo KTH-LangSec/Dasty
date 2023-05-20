@@ -119,6 +119,7 @@ General
 Analysis
 
 * `--forceBranchExec`          : Enable force branch execution.
+* `--onlyForceBranchExec`      : Only do force branch execution runs. Requires a previous unintrusive run.
 * `--execFile <file_path>`     : Specify a file instead of a package to run.
 * `--noForIn`                  : Disable `for..in` injection run.
 * `--onlyPre`                  : Only run the pre-analysis phase.

@@ -3,7 +3,7 @@ const util = require('node:util');
 const {exec, spawn} = require('child_process');
 const fs = require('fs');
 const {getDb, closeConnection} = require('./db/conn');
-const {ObjectId} = require("mongodb");
+const {ObjectId, Db} = require("mongodb");
 const path = require("path");
 const {sanitizePkgName} = require("./utils/utils");
 const {removeDuplicateFlows, removeDuplicateTaints} = require("../taint-analysis/utils/result-handler");
@@ -93,6 +93,7 @@ const CLI_ARGS = {
     '--exportRuns': 1,
     '--maxRuns': 1,
     '--forceBranchExec': 0,
+    '--onlyForceBranchExec': 0,
     '--execFile': 1,
     '--noForIn': 0
 }
@@ -114,6 +115,7 @@ function parseCliArgs() {
         maxRuns: MAX_RUNS,
         exportRuns: undefined,
         forceBranchExec: false,
+        onlyForceBranchExec: false,
         execFile: undefined,
         noForIn: false
     };
@@ -442,21 +444,30 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
     const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
     const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
 
-    const {branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+    // const {branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+
+    const db = await getDb();
+    const branchedOnColl = await db.collection('branchedOn');
+
+    const branchedOn = (await branchedOnColl.findOne({package: pkgName}, {sort: {timestamp: -1}}))?.branchedOn;
+
+    if (!branchedOn || branchedOn.length === 0) {
+        return;
+    }
 
     // parse files
-    branchedOnFilenames.forEach(branchedOnFilename => {
-        const branchedOn = JSON.parse(fs.readFileSync(branchedOnFilename, {encoding: 'utf8'}));
-        branchedOn.forEach(b => {
-            allBranchedOns.set(b.loc, b.result);
-            if (!branchedOnPerProp.has(b.prop)) {
-                branchedOnPerProp.set(b.prop, new Map());
-            }
-            branchedOnPerProp.get(b.prop).set(b.loc, b.result);
-        });
-    });
+    branchedOn.forEach(b => {
+        allBranchedOns.set(b.loc, b.result);
+        if (!branchedOnPerProp.has(b.prop)) {
+            branchedOnPerProp.set(b.prop, new Map());
+        }
+        // convert loc object to loc string for analysis
+        const locStart = b.loc.region.start;
+        const locEnd = b.loc.region.end;
+        const loc = `(${b.loc.artifact}:${locStart.line}:${locStart.column}:${locEnd.line}:${locEnd.column + 1})`;
 
-    branchedOnFilenames.forEach(fs.unlinkSync);
+        branchedOnPerProp.get(b.prop).set(loc, b.result);
+    });
 
     const forcedProps = new Set(); // keeps track of all force executed props
 
@@ -654,12 +665,13 @@ async function runPipeline(pkgName, cliArgs) {
         let run = 0;
         let blacklistedProps = [];
         const resultFilename = `${resultBasePath}${sanitizedPkgName}`;
-        let forceBranchProp = null; // the property that is currently force branch executed
         let dbResultId = null; // the db id for the current analysis run
 
         let forInRun = !cliArgs.noForIn; // make one for in run
 
-        while (true) {
+        // this is the unintrusive analysis - it is only run when onlyForceBranchExec is not set
+        // the break condition is inside the loop
+        while (!cliArgs.onlyForceBranchExec) {
             const runName = `run: ${forInRun ? 'forIn' : run + 1}`;
             console.log(`\nStarting ${runName}`);
 
@@ -671,7 +683,6 @@ async function runPipeline(pkgName, cliArgs) {
                     resultFilename,
                     propBlacklist,
                     writeOnDetect: true,
-                    forceBranchProp,
                     recordAllFunCalls: true,
                     injectForIn: forInRun
                 },
@@ -696,18 +707,13 @@ async function runPipeline(pkgName, cliArgs) {
                 console.error('\nCleaning up result files');
                 resultFilenames.forEach(fs.unlinkSync);
                 taintsFilenames.forEach(fs.unlinkSync);
+                branchedOnFilenames.forEach(fs.unlinkSync);
             } catch {
                 // if there is a problem writing to the database move files to not lose the data
                 resultFilenames.concat(taintsFilenames).forEach(file => {
                     const filename = path.basename(file);
                     fs.renameSync(file, `${FAILED_DB_WRITE}/${filename}`);
                 });
-            }
-
-            // we currently only care for branchings of the first run
-            // because we do not blacklist properties in the force branching (for now)
-            if (run !== 0 || forInRun) {
-                branchedOnFilenames.forEach(fs.unlinkSync);
             }
 
             // if it was a forInRun continue without checking for exceptions
@@ -740,7 +746,7 @@ async function runPipeline(pkgName, cliArgs) {
             console.error('Rerunning analysis with new blacklist (' + blacklistedProps.join(', ') + ')');
         }
 
-        if (cliArgs.forceBranchExec) {
+        if (cliArgs.forceBranchExec || cliArgs.onlyForceBranchExec) {
             await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile);
         }
     } finally {
