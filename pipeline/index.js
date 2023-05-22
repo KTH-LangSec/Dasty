@@ -14,6 +14,8 @@ const DEFAULT_TIMEOUT = -1;
 const MAX_RUNS = 1;
 const NPM_INSTALL_TIMEOUT = 8 * 60 * 1000;
 
+const RESULTS_COLL = 'resultsForcedBranchExec';
+
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
 const PACKAGE_DATA = __dirname + '/package-data/';
@@ -302,7 +304,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
     const db = await getDb();
     const runId = new ObjectId();
 
-    const resultsColl = await db.collection('results');
+    const resultsColl = await db.collection(RESULTS_COLL);
 
     // create an empty result document (if it does not exist yet)
     if (!resultId) {
@@ -374,7 +376,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
 async function fetchExceptions(resultId, runId) {
     const db = await getDb();
 
-    const resultColl = await db.collection('results');
+    const resultColl = await db.collection(RESULTS_COLL);
 
     const query = {
         "_id": resultId,
@@ -767,7 +769,7 @@ async function getSarif(pkgName, cliArgs) {
     let pkgNames;
     if (pkgName === null) {
         const db = await getDb();
-        const results = await db.collection('results');
+        const results = await db.collection(RESULTS_COLL);
         pkgNames = new Set(await results.find({}, {package: 1}).map(p => p.package).toArray());
     } else {
         pkgNames = [pkgName];
@@ -825,7 +827,7 @@ async function getSarifData(pkgName, sinkType, amountRuns = 1) {
         query["runs.results.sink.type"] = sinkType
     }
 
-    let results = await db.collection('results').find(query).toArray();
+    let results = await db.collection(RESULTS_COLL).find(query).toArray();
     if (!results) return null;
 
     if (amountRuns >= 0) {
@@ -980,6 +982,7 @@ function getPkgsFromFile(filename) {
 
 async function run() {
     const cliArgs = parseCliArgs();
+    const startTs = Date.now();
 
     const pkgNames = cliArgs.fromFile ? getPkgsFromFile(cliArgs.pkgName) : [cliArgs.pkgName];
 
@@ -1016,6 +1019,19 @@ async function run() {
             console.error(e);
         }
     }
+
+    const endTs = Date.now();
+
+    // insert data about the run
+    const db = await getDb();
+    const runData = await db.collection('runData');
+    await runData.insertOne({
+        cmd: process.argv.slice(2).join(' '),
+        startTs,
+        endTs,
+        duration: endTs - startTs
+    })
+
     closeConnection();
 }
 
