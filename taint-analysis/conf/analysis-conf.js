@@ -12,6 +12,8 @@ module.exports = {
         'examples/'
     ],
     DONT_UNWRAP: [
-        'emit'
+        'emit',
+        'setTimeout',
+        'nextTick'
     ]
 }
