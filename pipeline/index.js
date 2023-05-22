@@ -14,7 +14,7 @@ const DEFAULT_TIMEOUT = -1;
 const MAX_RUNS = 1;
 const NPM_INSTALL_TIMEOUT = 8 * 60 * 1000;
 
-const RESULTS_COLL = 'resultsForcedBranchExec';
+const DEFAULT_RESULTS_COLL = 'resultsForcedBranchExec';
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
@@ -97,7 +97,8 @@ const CLI_ARGS = {
     '--forceBranchExec': 0,
     '--onlyForceBranchExec': 0,
     '--execFile': 1,
-    '--noForIn': 0
+    '--noForIn': 0,
+    '--resultsCollection': 1
 }
 
 function parseCliArgs() {
@@ -119,7 +120,8 @@ function parseCliArgs() {
         forceBranchExec: false,
         onlyForceBranchExec: false,
         execFile: undefined,
-        noForIn: false
+        noForIn: false,
+        resultsCollection: DEFAULT_RESULTS_COLL
     };
 
     // a copy of the args with all parsed args removed
@@ -300,11 +302,11 @@ async function writePackageDataToDB(pkgName, type, preAnalysisStatuses) {
     await packageDataColl.updateOne({_id: pkgDataId}, {$set: {type, preAnalysisStatuses}});
 }
 
-async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, runExecStatuses) {
+async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, runExecStatuses, resultsCollection = DEFAULT_RESULTS_COLL) {
     const db = await getDb();
     const runId = new ObjectId();
 
-    const resultsColl = await db.collection(RESULTS_COLL);
+    const resultsColl = await db.collection(resultsCollection);
 
     // create an empty result document (if it does not exist yet)
     if (!resultId) {
@@ -373,10 +375,10 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
     return {resultId, runId: runId, noFlows: results.length === 0};
 }
 
-async function fetchExceptions(resultId, runId) {
+async function fetchExceptions(resultId, runId, resultsCollection) {
     const db = await getDb();
 
-    const resultColl = await db.collection(RESULTS_COLL);
+    const resultColl = await db.collection(resultsCollection);
 
     const query = {
         "_id": resultId,
@@ -442,7 +444,7 @@ function parseExecStatuses() {
     });
 }
 
-async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile) {
+async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, cliArgs) {
     const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
     const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
 
@@ -507,7 +509,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             const execStatuses = parseExecStatuses();
 
             try {
-                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, null, null, execStatuses);
+                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, null, null, execStatuses, cliArgs.resultsCollection);
                 dbResultId = resultId; // if no results found dbResultId might be still null
             } catch (e) {
                 // if there is a problem writing to the database move files to not lose the data
@@ -701,7 +703,7 @@ async function runPipeline(pkgName, cliArgs) {
 
             try {
                 const execStatuses = parseExecStatuses();
-                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, execStatuses);
+                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, execStatuses, cliArgs.resultsCollection);
                 dbResultId = result.resultId;
                 runId = result.runId;
                 noFlows = result.noFlows;
@@ -728,7 +730,7 @@ async function runPipeline(pkgName, cliArgs) {
             if (noFlows || ++run === +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
-            const exceptions = await fetchExceptions(dbResultId, runId);
+            const exceptions = await fetchExceptions(dbResultId, runId, cliArgs.resultsCollection);
 
             // if no exceptions found stop
             if (!exceptions || exceptions.length === 0) break;
@@ -749,7 +751,7 @@ async function runPipeline(pkgName, cliArgs) {
         }
 
         if (cliArgs.forceBranchExec || cliArgs.onlyForceBranchExec) {
-            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile);
+            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, cliArgs);
         }
     } finally {
         console.error('\nCleaning up');
@@ -769,15 +771,15 @@ async function getSarif(pkgName, cliArgs) {
     let pkgNames;
     if (pkgName === null) {
         const db = await getDb();
-        const results = await db.collection(RESULTS_COLL);
+        const results = await db.collection(cliArgs.resultsCollection);
         pkgNames = new Set(await results.find({}, {package: 1}).map(p => p.package).toArray());
     } else {
         pkgNames = [pkgName];
     }
 
     for (pkgName of pkgNames) {
-        const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.exportRuns);
-        const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.exportRuns);
+        const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.resultsCollection, cliArgs.exportRuns);
+        const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.resultsCollection, cliArgs.exportRuns);
         const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName) : null;
         const sarifBranchedOn = cliArgs.allTaints ? await getBranchedOnSarifData(pkgName) : null;
 
@@ -820,14 +822,14 @@ async function getSarif(pkgName, cliArgs) {
     }
 }
 
-async function getSarifData(pkgName, sinkType, amountRuns = 1) {
+async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1) {
     const db = await getDb();
     const query = {package: pkgName};
     if (sinkType) {
         query["runs.results.sink.type"] = sinkType
     }
 
-    let results = await db.collection(RESULTS_COLL).find(query).toArray();
+    let results = await db.collection(resultsCollection).find(query).toArray();
     if (!results) return null;
 
     if (amountRuns >= 0) {
