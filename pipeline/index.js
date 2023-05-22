@@ -585,16 +585,16 @@ async function setupPkg(pkgName, sanitizedPkgName) {
     if (!fs.existsSync(repoPath)) {
         console.error(`\nFetching repository ${url}`);
         await execCmd('git', ['clone', url, sanitizedPkgName], __dirname + '/packages/', true);
+
+        console.error('\nInstalling dependencies');
+        const timedOut = (await execCmd('npm', ['install'], repoPath, true, false, NPM_INSTALL_TIMEOUT)).timedOut;
+
+        if (timedOut) {
+            await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null);
+            throw new Error("npm install timeout");
+        }
     } else {
         console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
-    }
-
-    console.error('\nInstalling dependencies');
-    const timedOut = (await execCmd('npm', ['install'], repoPath, true, false, NPM_INSTALL_TIMEOUT)).timedOut;
-
-    if (timedOut) {
-        await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null);
-        throw new Error("npm install timeout");
     }
 
     return repoPath;
