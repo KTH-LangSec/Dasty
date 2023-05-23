@@ -473,16 +473,10 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
         branchedOnPerProp.get(b.prop).set(loc, b.result);
     });
 
-    const forcedProps = new Set(); // keeps track of all force executed props
-
     console.log(`\nFound ${branchedOnPerProp.size} injected properties used for branching. Force executing.`)
 
     // force branching for every property separately
     for (const [prop, b] of branchedOnPerProp.entries()) {
-        // check if already done (this can be the case when a prop was force executed with another one)
-        if (forcedProps.has(prop)) continue;
-        forcedProps.add(prop);
-
         let newBranchingFound = b.size > 0;
 
         const props = new Set([prop]); // keeps track of all properties that are currently enforced
@@ -539,7 +533,6 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
                             }
                         });
 
-                        forcedProps.add(b.prop); // add to all props that were already force executed - ToDo maybe it would be better to not that and re execute them separately?
                         props.add(b.prop); // add to props for the next run
                     }
 

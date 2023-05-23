@@ -2,13 +2,19 @@ const request = require('request');
 const JSONStream = require('JSONStream');
 const fs = require('fs');
 const path = require('path');
+const NpmRegistry = require('npm-registry-client');
 
 const dependedUpon = {};
 const devDependedUpon = {};
 
 let i = 0;
 
-request('https://skimdb.npmjs.com/registry/_all_docs?include_docs=true')
+const client = new NpmRegistry({
+    registry: 'https://mdb.npmjs.com/registry/'
+});
+
+// fs.createReadStream('docs.json', {encoding: 'utf8'})
+client.get('/_all_docs?include_docs=true')
     .pipe(JSONStream.parse('rows.*.doc'))
     .on('data', function (doc) {
         console.log(i++);
