@@ -1,7 +1,7 @@
 // DO NOT INSTRUMENT
 
 const fs = require("fs");
-const {DEFAULT_UNWRAP_DEPTH, DEFAULT_CHECK_DEPTH} = require("../conf/analysis-conf");
+const {DEFAULT_UNWRAP_DEPTH, DEFAULT_CHECK_DEPTH, FORCE_MAX_BRANCHES} = require("../conf/analysis-conf");
 
 function iidToLocation(iid) {
     return J$.iidToLocation(iid);
@@ -346,7 +346,7 @@ function updateAndCheckBranchCounter(branchCounter, loc) {
 
     let done = true;
     branchCounter.forEach(c => {
-        if (c < 2) {
+        if (c < FORCE_MAX_BRANCHES) {
             done = false;
         }
     });

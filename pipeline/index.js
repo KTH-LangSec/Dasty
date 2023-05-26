@@ -492,18 +492,18 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
-                {pkgName, resultFilename, writeOnDetect: true, forceBranchesFilename},
+                {pkgName, resultFilename, writeOnDetect: true, forceBranchesFilename, recordAllFunCalls: true},
                 EXCLUDE_ANALYSIS_KEYWORDS,
                 execFile
             );
 
-            let {resultFilenames, branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
+            let {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
 
             const runName = `forceBranchProps: ${Array.from(props).join(', ')}`;
             const execStatuses = parseExecStatuses();
 
             try {
-                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, null, null, execStatuses, cliArgs.resultsCollection);
+                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, null, execStatuses, cliArgs.resultsCollection);
                 dbResultId = resultId; // if no results found dbResultId might be still null
             } catch (e) {
                 // if there is a problem writing to the database move files to not lose the data
@@ -543,6 +543,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             console.error('\nCleaning up result files');
             resultFilenames.forEach(fs.unlinkSync);
             branchedOnFilenames.forEach(fs.unlinkSync);
+            taintsFilenames.forEach(fs.unlinkSync);
 
             if (newBranchingFound) {
                 console.log('\nNew (sub-)branches found');
@@ -773,8 +774,8 @@ async function getSarif(pkgName, cliArgs) {
     for (pkgName of pkgNames) {
         const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.resultsCollection, cliArgs.exportRuns);
         const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.resultsCollection, cliArgs.exportRuns);
-        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName) : null;
-        const sarifBranchedOn = cliArgs.allTaints ? await getBranchedOnSarifData(pkgName) : null;
+        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName, cliArgs.resultsCollection) : null;
+        const sarifBranchedOn = cliArgs.allTaints ? await getBranchedOnSarifData(pkgName, cliArgs.resultsCollection) : null;
 
         if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
@@ -880,10 +881,11 @@ async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1
     };
 }
 
-async function getAllTaintsSarifData(pkgName) {
+async function getAllTaintsSarifData(pkgName, resultsColl) {
     const db = await getDb();
 
     const taintsColl = db.collection('taints');
+    // const pkgRuns = (await taintsColl.find({package: pkgName}, {sort: {timestamp: -1}}).toArray());
     const pkgRuns = (await taintsColl.find({package: pkgName}).toArray());
     if (pkgRuns.length === 0) return null;
     const resId = pkgRuns[pkgRuns.length - 1]?.resultId;
@@ -893,11 +895,16 @@ async function getAllTaintsSarifData(pkgName) {
 
     if (!runs || runs.length === 0) return null;
 
+    for (const run of runs) {
+        const res = await db.collection(resultsColl).findOne({'runs._id': run.runId});
+        run.runName = res.runs.find(r => r._id.equals(run.runId)).runName;
+    }
+
     return {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
         runs: runs.map(run => ({
-            runName: run.runId,
+            runName: run.runName,
             tool: {
                 driver: {
                     name: 'GadgetTaintTracker',
@@ -908,7 +915,7 @@ async function getAllTaintsSarifData(pkgName) {
             results: run.taints.map(taint => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `TaintValue {prop: ${taint.source.prop}}, runName: ${run.runId}}`},
+                message: {text: `TaintValue {prop: ${taint.source.prop}}, runName: ${run.runName}}`},
                 locations: [locToSarif(taint.source.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},
@@ -930,7 +937,7 @@ async function getAllTaintsSarifData(pkgName) {
     };
 }
 
-async function getBranchedOnSarifData(pkgName) {
+async function getBranchedOnSarifData(pkgName, resultsColl) {
     const db = await getDb();
 
     const branchedOnColl = db.collection('branchedOn');
@@ -946,22 +953,24 @@ async function getBranchedOnSarifData(pkgName) {
     return {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
-        runs: runs.map(run => ({
-            runName: run.runId,
-            tool: {
-                driver: {
-                    name: 'GadgetTaintTracker',
-                    version: '0.1',
-                    informationUri: "https://ToDoLinktoRepo.com"
-                }
-            },
-            results: run.branchedOn.map(bo => ({
-                ruleId: run._id,
-                level: 'error',
-                message: {text: `BranchedOn {prop: ${bo.prop}}, result: ${bo.result}}`},
-                locations: [locToSarif(bo.loc)]
-            }))
-        }))
+        runs: runs.map(run => {
+            return {
+                runName: run._id,
+                tool: {
+                    driver: {
+                        name: 'GadgetTaintTracker',
+                        version: '0.1',
+                        informationUri: "https://ToDoLinktoRepo.com"
+                    }
+                },
+                results: run.branchedOn.map(bo => ({
+                    ruleId: run._id,
+                    level: 'error',
+                    message: {text: `BranchedOn {prop: ${bo.prop}}, result: ${bo.result}}`},
+                    locations: [locToSarif(bo.loc)]
+                }))
+            }
+        })
     };
 }
 

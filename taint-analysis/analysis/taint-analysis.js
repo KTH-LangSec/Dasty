@@ -207,7 +207,7 @@ class TaintAnalysis {
             });
         }
 
-        if (this.lastReadTaint === null || !args || args.length === 0 || typeof functionScope === 'string' && !functionScope?.startsWith('node:') || f === console.log) return;
+        if (this.lastReadTaint === null || !args || args.length === 0 || !f?.name?.includes('spawn') && typeof functionScope === 'string' && !functionScope?.startsWith('node:') || f === console.log) return;
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
