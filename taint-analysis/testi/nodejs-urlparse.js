@@ -1,11 +1,18 @@
 const url = require('url');
+const path = require('path');
 const cp = require('child_process');
 
 const obj = {};
 
 const parsedUrl = url.parse('https://' + obj.url);
 
-// console.log(parsedUrl);
+const str = path.join(parsedUrl.toString(), '/abc');
 
-cp.exec('echo ' + parsedUrl);
+const byte = obj.byte || '0x12';
+const x = Buffer.from([byte]);
 
+try {
+    cp.exec(x);
+} catch (e) {
+
+}

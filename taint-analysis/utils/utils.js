@@ -40,6 +40,18 @@ function checkTaints(obj, depth) {
     return J$.checkTaints(obj, depth);
 }
 
+function extractFunctionNamesShallow(obj) {
+    const fNames = [];
+    // prototype pollution safe ;)
+    for (const prop of Object.keys(obj)) {
+        const fn = obj[prop];
+        if (typeof fn === 'function' && fn.name) {
+            fNames.push(fn.name);
+        }
+    }
+    return fNames;
+}
+
 /**
  * A function that recursively extracts all function names of an object
  *
@@ -460,6 +472,7 @@ module.exports = {
     hasTaint,
     checkTaints,
     extractFunctionNames,
+    extractFunctionNamesShallow,
     extractFunctions,
     getSinkBlacklist,
     checkTaintDeep,

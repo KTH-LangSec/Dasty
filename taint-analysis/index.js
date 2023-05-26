@@ -2,7 +2,7 @@
 
 const TaintAnalysis = require('./analysis/taint-analysis');
 const fs = require('fs');
-const {getSinkBlacklist} = require('./utils/utils');
+const {getSinkBlacklist, extractFunctionNamesShallow} = require('./utils/utils');
 const {DEFAULT_CHECK_DEPTH} = require("./conf/analysis-conf");
 const {writeFlows, writeTaints} = require("./utils/result-handler");
 
@@ -37,6 +37,9 @@ if (J$.initParams.propBlacklist) {
 const recordAllFunCalls = J$.initParams.recordAllFunCalls === 'true';
 const injectForIn = J$.initParams.injectForIn === 'true';
 
+// get child_process functions to set additional sinks by function names
+const sinkStrings = extractFunctionNamesShallow(require('child_process'));
+
 function executionDone(allTaintValues, err) {
     // write status for the node-wrapper
     const execStatus = err ? `UncaughtException:${err.name ?? 'undefinedName'}` : 'success';
@@ -68,7 +71,8 @@ const analysis = new TaintAnalysis(
     executionDone,
     forceBranches,
     recordAllFunCalls,
-    injectForIn
+    injectForIn,
+    sinkStrings
 );
 
 J$.addAnalysis(analysis);

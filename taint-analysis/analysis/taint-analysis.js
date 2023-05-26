@@ -55,6 +55,8 @@ class TaintAnalysis {
 
     branchCounter = new Map(); // keeps track of how often we visited the same branch when force executing
 
+    sinkStrings = []; // list of keywords that if contained in a function name it is considered a sink
+
     /**
      * @param pkgName
      * @param sinksBlacklist a blacklist of node internal function and modules that should not be considered sinks
@@ -65,8 +67,9 @@ class TaintAnalysis {
      * @param forceBranches is a map in the form of (loc -> result) that specifies all the conditions that should be 'inversed'
      * @param recordAllFunCalls specifies if all function calls with tainted parameters should be recorded
      * @param injectForIn specifies if for 'for in' iterations a taint value should be injected as source (might lead to unexpected behaviour)
+     * @param sinkStrings specifies a list of 'keywords' that specifies all functions that contain any of them as sinks
      */
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false) {
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false, sinkStrings = []) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
@@ -81,6 +84,7 @@ class TaintAnalysis {
 
         this.recordAllFunCalls = recordAllFunCalls;
         this.injectForIn = injectForIn;
+        this.sinkStrings = sinkStrings;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
@@ -150,11 +154,8 @@ class TaintAnalysis {
                     ? Reflect.apply(f, receiver, unwrappedArgs)
                     : Reflect.construct(f, unwrappedArgs);
 
-                // if (taints && taints.length > 0 && taints[0]?.length > 0) {
-                //     console.log(taints[0][0]);
-                // }
-                // emulate the taint propagation
-                const emulatedResult = emulateNodeJs(functionScope, iid, result, receiver, f, args);
+                // emulate the taint propagation (only if tainted)
+                const emulatedResult = taints.length > 0 ? emulateNodeJs(functionScope, iid, result, receiver, f, args) : null;
                 return emulatedResult ?? result;
             } catch (e) {
                 taints.forEach((t, index) => {
@@ -207,7 +208,13 @@ class TaintAnalysis {
             });
         }
 
-        if (this.lastReadTaint === null || !args || args.length === 0 || !f?.name?.includes('spawn') && typeof functionScope === 'string' && !functionScope?.startsWith('node:') || f === console.log) return;
+        // check if the function is (not) a sink
+        if (this.lastReadTaint === null || !args || args.length === 0) return;
+
+        const sinkByString = f?.name && this.sinkStrings.find(s => f.name.includes(s));
+        const sinkByFunction = typeof functionScope === 'string' && functionScope.startsWith('node:');
+
+        if (!sinkByString && !sinkByFunction) return;
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
@@ -227,7 +234,11 @@ class TaintAnalysis {
                 newFlows.push({
                     ...taintVal.__getFlowSource(),
                     sink: {
-                        iid, type: 'functionCallArg', module: functionScope, functionName: f?.name, argIndex: index
+                        iid,
+                        type: 'functionCallArg',
+                        module: sinkByFunction ? functionScope : `fnNameMatch (${functionScope})`,
+                        functionName: f?.name,
+                        argIndex: index
                     }
                 });
             });
@@ -446,8 +457,6 @@ class TaintAnalysis {
     }
 
     getField = (iid, base, offset, val, isComputed, functionScope, isAsync, scope) => {
-        // console.log(iidToLocation(iid));
-        // console.log(iidToSourceObject(iid));
         if (isTaintProxy(offset)) {
             try {
                 offset.__type = 'string';

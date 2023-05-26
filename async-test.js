@@ -1,3 +1,4 @@
-console.log('hey');
+let obj = {__proto__: null};
 
-console.log(process.execPath);
+console.log({} + 'hey');
+console.log(obj + ' hey ');
