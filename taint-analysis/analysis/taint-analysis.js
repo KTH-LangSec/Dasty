@@ -195,10 +195,13 @@ class TaintAnalysis {
         }
 
         // record code flows for function calls (only depth 3)
+        let recordedTaint = false; // if we already record it - use it later
         if (this.recordAllFunCalls) {
+            recordedTaint = false;
             args.forEach((arg, index) => {
                 try {
                     const taintVals = checkTaints(arg, 3);
+                    if (taintVals && taintVals.length > 0) recordedTaint = true;
                     taintVals?.forEach(taintVal => {
                         taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
                     });
@@ -211,7 +214,9 @@ class TaintAnalysis {
         // check if the function is (not) a sink
         if (this.lastReadTaint === null || !args || args.length === 0) return;
 
-        const sinkByString = f?.name && this.sinkStrings.find(s => f.name.includes(s));
+
+        // only check sink by string if we recorded some taint before
+        const sinkByString = (!this.recordAllFunCalls || recordedTaint) && f?.name && this.sinkStrings.find(s => f.name.includes(s));
         const sinkByFunction = typeof functionScope === 'string' && functionScope.startsWith('node:');
 
         if (!sinkByString && !sinkByFunction) return;
