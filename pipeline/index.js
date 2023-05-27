@@ -55,7 +55,7 @@ const DONT_ANALYSE = [
 const EXCLUDE_ANALYSIS_KEYWORDS = [
     'node_modules/istanbul-lib-instrument/',
     'node_modules/mocha/',
-    'node_module/.bin/',
+    'node_modules/.bin/',
     'node_modules/nyc',
     'node_modules/jest',
     'node_modules/@jest',
@@ -69,7 +69,9 @@ const EXCLUDE_ANALYSIS_KEYWORDS = [
     'eslint',
     'Gruntfile.js',
     'jest',
-    '.node'
+    '.node',
+    'test/',
+    'tests/'
 ];
 
 const PKG_TYPE = {
@@ -461,6 +463,8 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
     // parse files
     branchedOn.forEach(b => {
+        if (b.prop !== 'path') return;
+
         allBranchedOns.set(b.loc, b.result);
         if (!branchedOnPerProp.has(b.prop)) {
             branchedOnPerProp.set(b.prop, new Map());

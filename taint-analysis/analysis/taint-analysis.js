@@ -357,6 +357,12 @@ class TaintAnalysis {
         // }
     };
 
+    binaryEnter = (iid, op) => {
+        if (this.orExpr === 0 && (op === '||' || op === '??')) {
+            this.orExpr = iid;
+        }
+    }
+
     binary = (iid, op, left, right, result, isLogic) => {
         if (iid === this.orExpr && (op === '||' || op === '??')) {
             this.orExpr = 0;
@@ -438,7 +444,8 @@ class TaintAnalysis {
                         updateAndCheckBranchCounter(this.branchCounter, loc);
                         // if we force execute
                         const res = !this.forceBranches.get(loc);
-                        left.__addCodeFlow(iid, 'conditional', '&&', {result: res});
+                        const resVal = typeof result.__val === 'object' ? {} : result.__val; // don't store full object in code-flow -  can lead to structured clone problems
+                        left.__addCodeFlow(iid, 'conditional', '&&', {result: resVal});
                         return {result: res};
                     }
                 }
@@ -547,7 +554,8 @@ class TaintAnalysis {
         if (!this.forceBranches?.has(loc)) {
             // if it is a taint proxy and the underlying value is undefined result to false
             addAndWriteBranchedOn(result.__taint.source.prop, iid, result.__val, this.branchedOn, this.branchedOnFilename);
-            result.__addCodeFlow(iid, 'conditional', '-', {result: result.__val});
+            const res = typeof result.__val === 'object' ? {} : result.__val; // don't store full object in code-flow -  can lead to structured clone and other problems
+            result.__addCodeFlow(iid, 'conditional', '-', {result: res});
             if (!result.__val) {
                 return {result: result.__val};
             }
@@ -570,66 +578,66 @@ class TaintAnalysis {
     #forInLoops = new Map(); // keeps track of the locations of all for in loops
     #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
 
-    controlFlowRootEnter = (iid, loopType, conditionResult) => {
-        if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
-
-        if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
-            const loc = iidToLocation(iid);
-            if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
-                && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
-
-                this.#injectedForInLoop.set(iid, true);
-
-                const propName = `__forInTaint${iid}`;
-                ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
-                    iid: this.entryPointIID,
-                    entryPoint: this.entryPoint
-                }, false);
-
-                this.forInInjectedProps.push(propName);
-            }
-        }
-
-        // to prevent infinite loops we keep track of how often the loop is entered and abort on a certain threshold
-        if (!this.loops.has(iid)) {
-            this.loops.set(iid, 1);
-        } else {
-            const calls = this.loops.get(iid) + 1;
-            if (calls > MAX_LOOPS) {
-                // console.log('Infinite loop detected');
-
-                if (this.lastReadTaint) {
-                    const newFlow = {
-                        ...this.lastReadTaint.__getFlowSource(),
-                        sink: {
-                            iid, type: 'functionCallArgException', functionName: '<infiniteLoop>'
-                        }
-                    };
-                    addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
-                }
-
-                this.loops.delete(iid);
-                return {result: null};
-                // throw new Error('infinite loop');
-                // process.exit(1);
-            }
-            this.loops.set(iid, calls);
-        }
-    }
-
-    controlFlowRootExit = (iid, loopType) => {
-        if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
-
-        // delete the injected property after a for in iteration
-        if (this.injectForIn && loopType === 'ForInIteration' && this.#injectedForInLoop.has(iid)) {
-            const injectedProp = this.forInInjectedProps.pop();
-            if (injectedProp) {
-                delete ({})['__proto__'][injectedProp];
-            }
-        }
-
-        this.loops.delete(iid);
-    }
+    // controlFlowRootEnter = (iid, loopType, conditionResult) => {
+    //     if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
+    //
+    //     if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
+    //         const loc = iidToLocation(iid);
+    //         if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
+    //             && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+    //
+    //             this.#injectedForInLoop.set(iid, true);
+    //
+    //             const propName = `__forInTaint${iid}`;
+    //             ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
+    //                 iid: this.entryPointIID,
+    //                 entryPoint: this.entryPoint
+    //             }, false);
+    //
+    //             this.forInInjectedProps.push(propName);
+    //         }
+    //     }
+    //
+    //     // to prevent infinite loops we keep track of how often the loop is entered and abort on a certain threshold
+    //     if (!this.loops.has(iid)) {
+    //         this.loops.set(iid, 1);
+    //     } else {
+    //         const calls = this.loops.get(iid) + 1;
+    //         if (calls > MAX_LOOPS) {
+    //             // console.log('Infinite loop detected');
+    //
+    //             if (this.lastReadTaint) {
+    //                 const newFlow = {
+    //                     ...this.lastReadTaint.__getFlowSource(),
+    //                     sink: {
+    //                         iid, type: 'functionCallArgException', functionName: '<infiniteLoop>'
+    //                     }
+    //                 };
+    //                 addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
+    //             }
+    //
+    //             this.loops.delete(iid);
+    //             return {result: null};
+    //             // throw new Error('infinite loop');
+    //             // process.exit(1);
+    //         }
+    //         this.loops.set(iid, calls);
+    //     }
+    // }
+    //
+    // controlFlowRootExit = (iid, loopType) => {
+    //     if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
+    //
+    //     // delete the injected property after a for in iteration
+    //     if (this.injectForIn && loopType === 'ForInIteration' && this.#injectedForInLoop.has(iid)) {
+    //         const injectedProp = this.forInInjectedProps.pop();
+    //         if (injectedProp) {
+    //             delete ({})['__proto__'][injectedProp];
+    //         }
+    //     }
+    //
+    //     this.loops.delete(iid);
+    // }
 
     uncaughtException = (err, origin) => {
         if (this.lastReadTaint) {
@@ -652,24 +660,24 @@ class TaintAnalysis {
         }
     }
 
-    startExpression = (iid, type) => {
-        if (this.orExpr === 0 && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
-            this.orExpr = iid;
-        }
-    }
+    // startExpression = (iid, type) => {
+    //     if (this.orExpr === 0 && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
+    //         this.orExpr = iid;
+    //     }
+    // }
 
-    endExpression = (iid, type, result) => {
-        this.lastExprResult = result;
-        if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
-            this.orExpr = 0;
-            //     if (this.undefOrReadVal !== null) {
-            //         this.undefOrReadVal.__setValue(result);
-            //         const val = this.undefOrReadVal;
-            //         this.undefOrReadVal = null;
-            //         return {result: val};
-            //     }
-        }
-    }
+    // endExpression = (iid, type, result) => {
+    //     this.lastExprResult = result;
+    //     if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
+    //         this.orExpr = 0;
+    //         //     if (this.undefOrReadVal !== null) {
+    //         //         this.undefOrReadVal.__setValue(result);
+    //         //         const val = this.undefOrReadVal;
+    //         //         this.undefOrReadVal = null;
+    //         //         return {result: val};
+    //         //     }
+    //     }
+    // }
 }
 
 module.exports = TaintAnalysis;

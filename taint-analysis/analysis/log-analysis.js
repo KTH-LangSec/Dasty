@@ -144,6 +144,10 @@ class LogAnalysis {
         // return {returnVal: returnVal};
     };
 
+    binaryEnter = (iid, op) => {
+        console.log(this.hookToString('binaryEnter', {iid, op}));
+    }
+
     /**
      * These callbacks are called before and after a binary operation.
      **/

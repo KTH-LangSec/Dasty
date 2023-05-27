@@ -3,7 +3,7 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
-TIMEOUT = 60 * 5  # in seconds
+TIMEOUT = 60 * 15  # in seconds
 
 STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.csv'
 EXEC_RESULT_FILE = os.path.dirname(os.path.realpath(__file__)) + '/exec-result.txt'
@@ -236,7 +236,7 @@ def main():
         if '--jobs' in str(proc.stdout):
             set_flag(argv_string, mocha_bin, ['-j', '--jobs'], '1')
 
-        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '10000')
+        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '2000')
 
         remove_flag(argv_string, mocha_bin, '--bail')
         remove_flag(argv_string, mocha_bin, '--no-exit')

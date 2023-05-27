@@ -327,7 +327,7 @@ class TaintProxyHandler {
         this.__type = 'function';
         const result = this.__val.call(thisArg, ...argumentList);
         // get type if it is not our 'made up function' but an actually inferred type
-        const type = !this.__val.__isDefaultFun ? getTypeOf(result) :  null;
+        const type = !this.__val.__isDefaultFun ? getTypeOf(result) : null;
 
         const cf = createCodeFlow(null, 'functionCall', '');
         return this.__copyTaint(result, cf, type);
