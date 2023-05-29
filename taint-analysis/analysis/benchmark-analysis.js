@@ -30,7 +30,6 @@ class TaintAnalysis {
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
-        console.log(iidToLocation(iid));
     }
 
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
