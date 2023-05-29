@@ -895,16 +895,17 @@ async function getAllTaintsSarifData(pkgName, resultsColl) {
 
     if (!runs || runs.length === 0) return null;
 
-    for (const run of runs) {
-        const res = await db.collection(resultsColl).findOne({'runs._id': run.runId});
-        run.runName = res.runs.find(r => r._id.equals(run.runId)).runName;
-    }
+    // for (const run of runs) {
+    //     const res = await db.collection(resultsColl).findOne({'runs._id': run.runId});
+    //     run.runName = res.runs.find(r => r._id.equals(run.runId)).runName;
+    // }
 
     return {
         version: '2.1.0',
         $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
         runs: runs.map(run => ({
-            runName: run.runName,
+            // runName: run.runName,
+            runName: run.runId,
             tool: {
                 driver: {
                     name: 'GadgetTaintTracker',
