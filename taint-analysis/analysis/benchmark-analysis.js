@@ -49,6 +49,9 @@ class TaintAnalysis {
         // }
     };
 
+    binaryEnter = (iid, op) => {
+    }
+
     binary = (iid, op, left, right, result, isLogic) => {
     }
 
@@ -64,19 +67,11 @@ class TaintAnalysis {
     conditional = (iid, result, isValue) => {
     }
 
-
-    /**
-     * Called whenever a control flow root is executed (e.g. if, while, async function call, ....)
-     * For loops it is called every time the condition is evaluated (i.e. every loop)
-     */
-    #forInLoops = new Map(); // keeps track of the locations of all for in loops
-    #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
-
-    controlFlowRootEnter = (iid, loopType, conditionResult) => {
-    }
-
-    controlFlowRootExit = (iid, loopType) => {
-    }
+    // controlFlowRootEnter = (iid, loopType, conditionResult) => {
+    // }
+    //
+    // controlFlowRootExit = (iid, loopType) => {
+    // }
 
     uncaughtException = (err, origin) => {
     }
@@ -84,11 +79,11 @@ class TaintAnalysis {
     endExecution = (code) => {
     }
 
-    startExpression = (iid, type) => {
-    }
-
-    endExpression = (iid, type, result) => {
-    }
+    // startExpression = (iid, type) => {
+    // }
+    //
+    // endExpression = (iid, type, result) => {
+    // }
 }
 
 module.exports = TaintAnalysis;

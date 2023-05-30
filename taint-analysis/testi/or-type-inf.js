@@ -16,8 +16,8 @@ console.log(nullCoal.__val, !!nullCoal.__taint);
 //     console.log('hey');
 // }
 
-const undef = obj.blub || obj.flub;
-
-const ret = undef ? '-' : 'flub';
-
-console.log(undef.__val);
+// const undef = obj.blub || obj.flub;
+//
+// const ret = undef ? '-' : 'flub';
+//
+// console.log(ret);
