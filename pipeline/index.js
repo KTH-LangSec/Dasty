@@ -260,7 +260,7 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
 }
 
 async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null) {
-    await runAnalysisNodeWrapper(SINK_ANALYSIS, repoName, {pkgName}, ['/node_modules'], execFile);
+    await runAnalysisNodeWrapper(SINK_ANALYSIS, repoName, {pkgName}, EXCLUDE_ANALYSIS_KEYWORDS, execFile);
 
     // write results to db
     const resultsBasePath = SINK_ANALYSIS + 'results/';
@@ -283,6 +283,7 @@ async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null) {
     await resColl.insertOne({
         package: pkgName,
         timestamp: Date.now(),
+        execStatuses: parseExecStatuses(),
         results: Array.from(uniqueResults.values())
     });
 
