@@ -346,10 +346,6 @@ function taintCompResult(left, right, op) {
             return taintVal === otherVal;
         case '==':
             return taintVal == otherVal;
-        case '!==':
-            return taintVal !== otherVal;
-        case '!=':
-            return taintVal != otherVal;
     }
 }
 

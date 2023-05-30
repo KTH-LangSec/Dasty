@@ -101,7 +101,8 @@ const CLI_ARGS = {
     '--noForIn': 0,
     '--resultsCollection': 1,
     '--sinkAnalysis': 0,
-    '--onlySinkAnalysis': 0
+    '--onlySinkAnalysis': 0,
+    '--repoPath': 1
 }
 
 function parseCliArgs() {
@@ -126,7 +127,8 @@ function parseCliArgs() {
         noForIn: false,
         resultsCollection: DEFAULT_RESULTS_COLL,
         sinkAnalysis: false,
-        onlySinkAnalysis: false
+        onlySinkAnalysis: false,
+        repoPath: undefined
     };
 
     // a copy of the args with all parsed args removed
@@ -522,7 +524,10 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
             // write to branched on file
             const forceBranchesFilename = `${TMP_DIR}/force-branching/${pkgName}.json`;
-            fs.writeFileSync(forceBranchesFilename, JSON.stringify(Array.from(b)), {encoding: 'utf8'});
+            fs.writeFileSync(forceBranchesFilename, JSON.stringify({
+                branchings: Array.from(b),
+                props: Array.from(props)
+            }), {encoding: 'utf8'});
 
             // run analysis
             await runAnalysisNodeWrapper(
@@ -658,18 +663,23 @@ async function runPipeline(pkgName, cliArgs) {
         // set repo path and execFile (if specified)
         let repoPath;
         let execFile;
-        if (!cliArgs.execFile) {
-            // if no execFile is specified fetch the pkg repository and install the dependencies
-            repoPath = await setupPkg(pkgName, sanitizedPkgName);
-        } else {
-            // if a execFile is specified, set its directory as the repository path
+        if (cliArgs.repoPath) {
+            // if a repoPath is specified set it as the repository and skip set up
+            repoPath = cliArgs.repoPath;
+        }
+        if (cliArgs.execFile) {
+            // if a execFile is specified, set its directory as the repository path (if not set explicitly)
             execFile = path.resolve(cliArgs.execFile);
-            repoPath = path.dirname(execFile);
+            if (!repoPath) repoPath = path.dirname(execFile);
+        }
+        if (!cliArgs.execFile && !cliArgs.repoPath) {
+            // if no file or repo specified, fetch the pkg repository and install the dependencies
+            repoPath = await setupPkg(pkgName, sanitizedPkgName);
         }
 
         if (!repoPath) return;
 
-        // only run the pre analysis for fetched packages
+        // only run the pre analysis for repositories/packages
         if (!execFile) {
             // run a non-instrumented run that does e.g. all the compiling/building, so we can skip it for the multiple instrumented runs
             // console.error('\nRunning non-instrumented run');

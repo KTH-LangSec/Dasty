@@ -11,12 +11,14 @@ const allTaintValues = []; // stores all taint values
 class TaintProxyHandler {
     __isAnalysisProxy = true;
     __isFixated = false; // indicates if the underlying value can not be freely set anymore (e.g. after a comparison)
+    __forceBranchExec = false; // indicates if this property is force branch executed (used for type inference)
 
-    constructor(sourceIID, prop, entryPoint, val = null, type = null) {
+    constructor(sourceIID, prop, entryPoint, val = null, type = null, forceBranchExec = false) {
         this.__taint = sourceIID ? {source: {iid: sourceIID, prop}, entryPoint, codeFlow: []} : null;
 
         this.#type = type;
         this.__val = val ?? this.__getDefaultVal(type);
+        this.__forceBranchExec = forceBranchExec;
 
         allTaintValues.push(this);
     }
@@ -79,6 +81,10 @@ class TaintProxyHandler {
 
     __typeof() {
         // ToDo - boolean, symbol, bigint?
+        if (this.__type === 'array') {
+            return 'object';
+        }
+
         return this.__type ?? typeof this.__val;
         // switch (this.__type) {
         //     case null:
@@ -166,12 +172,12 @@ class TaintProxyHandler {
      * @param type - an optional type for the injected value
      * @returns {{}} - the new TaintVal with the copied data
      */
-    __copyTaint(newVal = undefined, codeFlow = undefined, type = undefined) {
+    __copyTaint(newVal, codeFlow = undefined, type = undefined) {
         const taintHandler = new TaintProxyHandler(
             null,
             null,
             null,
-            newVal ?? this.__val,
+            newVal,
             type !== undefined ? type : this.__type
         );
 
@@ -191,7 +197,17 @@ class TaintProxyHandler {
         if (this.__type !== 'string' && this.__type !== 'number' && this.__type !== 'boolean') {
             this.__type = hint;
         }
-        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
+        if (!this.__val) return this.__val;
+
+        if (this.__val[Symbol.toPrimitive]) {
+            return this.__val[Symbol.toPrimitive](hint);
+        } else if (hint === 'string' && this.__val.toString) {
+            return this.__val.toString();
+        } else if (this.__val.valueOf) {
+            return this.__val.valueOf();
+        }
+
+        return this.__val;
     }
 
     [Symbol.iterator]() {
@@ -293,8 +309,9 @@ class TaintProxyHandler {
             //     this.__val = {};
             // }
 
-            // if the property exists copy it -> else set it to null (i.e. 'unknown')
-            const newVal = this.__val && this.__val[prop] ? this.__val[prop] : null;
+
+            // if the property exists copy it
+            const newVal = this.__val && this.__val[prop] ? this.__val[prop] : undefined;
             const cf = createCodeFlow(null, 'propRead', prop);
 
             // if already tainted simply return it
@@ -355,12 +372,12 @@ function createCodeFlow(iid, type, name, values = undefined) {
     return transformation;
 }
 
-function createTaintVal(sourceIID, prop, entryPoint, val = undefined, type = null) {
-    const handler = new TaintProxyHandler(sourceIID, prop, entryPoint, val, type);
+function createTaintVal(sourceIID, prop, entryPoint, val = undefined, type = null, forceBranchExec = false) {
+    const handler = new TaintProxyHandler(sourceIID, prop, entryPoint, val, type, forceBranchExec);
 
     // the target is a function as it makes it callable while still being an object
     return new Proxy(() => {
     }, handler);
 }
 
-module.exports = {createTaintVal, createCodeFlow, allTaintValues};
+module.exports = {createTaintVal, createCodeFlow, allTaintValues, getTypeOf};

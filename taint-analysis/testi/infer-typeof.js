@@ -1,17 +1,34 @@
+// const a = 'a';
+//
+// if (a === 'a') {
+//
+// }
+//
+// if (a !== 'b') {
+//
+// }
+//
+// const isNotB = a !== 'b';
+//
+// if (isNotB) {
+//
+// }
+
 const cp = require('child_process');
 
 const obj = {};
 
 const fn = obj.fn;
 
-if (typeof fn !== 'number') {
-    throw new TypeError("Invalid type")
+const tpe = typeof fn !== "number";
+console.log(fn.__type);
+
+if (tpe) {
+    throw new TypeError("Invalid type " + tpe)
 }
 
-console.log(typeof fn);
-
 try {
-    cp.exec(fn);
+    cp.exec(tpe.toString());
 } catch (e) {
 
 }

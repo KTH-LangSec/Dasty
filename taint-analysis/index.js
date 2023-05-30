@@ -23,8 +23,8 @@ if (resultFilename) {
 }
 let forceBranches = null;
 if (J$.initParams.forceBranchesFilename) {
-    const forceBranchesArr = JSON.parse(fs.readFileSync(J$.initParams.forceBranchesFilename, {encoding: "utf8"}));
-    forceBranches = new Map(forceBranchesArr);
+    const forceBranchesRes = JSON.parse(fs.readFileSync(J$.initParams.forceBranchesFilename, {encoding: "utf8"}));
+    forceBranches = {branchings: new Map(forceBranchesRes.branchings), props: forceBranchesRes.props};
 }
 
 const writeOnDetect = J$.initParams.writeOnDetect === 'true';
