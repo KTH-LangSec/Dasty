@@ -1,3 +1,5 @@
+// DO NOT INSTRUMENT
+
 /**
  * This is a simple wrapper that allows to propagate information 'up' the AST
  * Works only for primitives and should be unwrapped as soon as possible

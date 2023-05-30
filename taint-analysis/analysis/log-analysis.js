@@ -35,7 +35,7 @@ class LogAnalysis {
             isConstructor,
             isMethod,
             functionScope,
-            proxy: proxy !== undefined,
+            proxy: !!proxy,
             functionIid,
             functionSid
         }));
@@ -56,9 +56,9 @@ class LogAnalysis {
         // return {result: result};
     };
 
-    invokeFunStart = (iid, f, receiver, index, scope) => {
+    invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
         console.log(this.hookToString('invokeFunStart', {
-            iid, f, receiver, index, scope
+            iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength
         }));
     };
 

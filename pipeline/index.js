@@ -18,6 +18,7 @@ const DEFAULT_RESULTS_COLL = 'resultsForcedBranchExec';
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
+const SINK_ANALYSIS = __dirname + '/../sink-analysis/';
 const PACKAGE_DATA = __dirname + '/package-data/';
 const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
 const NODE_WRAPPER = __dirname + '/node-wrapper/node';
@@ -98,7 +99,9 @@ const CLI_ARGS = {
     '--onlyForceBranchExec': 0,
     '--execFile': 1,
     '--noForIn': 0,
-    '--resultsCollection': 1
+    '--resultsCollection': 1,
+    '--sinkAnalysis': 0,
+    '--onlySinkAnalysis': 0
 }
 
 function parseCliArgs() {
@@ -121,7 +124,9 @@ function parseCliArgs() {
         onlyForceBranchExec: false,
         execFile: undefined,
         noForIn: false,
-        resultsCollection: DEFAULT_RESULTS_COLL
+        resultsCollection: DEFAULT_RESULTS_COLL,
+        sinkAnalysis: false,
+        onlySinkAnalysis: false
     };
 
     // a copy of the args with all parsed args removed
@@ -254,6 +259,36 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     return type;
 }
 
+async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null) {
+    await runAnalysisNodeWrapper(SINK_ANALYSIS, repoName, {pkgName}, ['/node_modules'], execFile);
+
+    // write results to db
+    const resultsBasePath = SINK_ANALYSIS + 'results/';
+    const resultDirFilenames = fs.readdirSync(SINK_ANALYSIS + 'results/');
+    const resultFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-`)).map(f => path.join(resultsBasePath, f));
+
+    const results = resultFilenames.flatMap(f =>
+        JSON.parse(fs.readFileSync(f, {encoding: 'utf8'})));
+
+    // remove duplicates
+    const uniqueResults = new Map();
+    for (const res of results) {
+        if (uniqueResults.has(res.iid)) continue;
+
+        uniqueResults.set(res.iid, res);
+    }
+
+    const db = await getDb();
+    const resColl = await db.collection('sinkResults');
+    await resColl.insertOne({
+        package: pkgName,
+        timestamp: Date.now(),
+        results: Array.from(uniqueResults.values())
+    });
+
+    resultFilenames.forEach(fs.unlinkSync);
+}
+
 async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFile = null) {
     const nodeprofHome = process.env.NODEPROF_HOME;
 
@@ -286,7 +321,7 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
     }
 
     const cmd = execFile ? NODE_WRAPPER : NPM_WRAPPER;
-    const args = execFile ? [execFile] : ['test'];
+    const args = execFile ? execFile.split(' ') : ['test'];
     await execCmd(cmd, args, dir, true, false);
 }
 
@@ -658,6 +693,13 @@ async function runPipeline(pkgName, cliArgs) {
         }
 
         if (cliArgs.onlyPre) return;
+
+        if (cliArgs.sinkAnalysis || cliArgs.onlySinkAnalysis) {
+            console.log('Running sink-analysis');
+            await runSinkAnalysisNodeWrapper(repoPath, pkgName, execFile);
+
+            if (cliArgs.onlySinkAnalysis) return;
+        }
 
         console.error('\nRunning analysis');
         let run = 0;
