@@ -33,7 +33,7 @@ class TaintAnalysis {
     }
 
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
-    };
+    }
 
     invokeFunException = (iid, e, f, receiver, args) => {
     }
@@ -73,11 +73,11 @@ class TaintAnalysis {
     // controlFlowRootExit = (iid, loopType) => {
     // }
 
-    uncaughtException = (err, origin) => {
-    }
-
-    endExecution = (code) => {
-    }
+    // uncaughtException = (err, origin) => {
+    // }
+    //
+    // endExecution = (code) => {
+    // }
 
     // startExpression = (iid, type) => {
     // }
