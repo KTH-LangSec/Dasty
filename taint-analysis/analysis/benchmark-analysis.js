@@ -67,11 +67,11 @@ class TaintAnalysis {
     conditional = (iid, result, isValue) => {
     }
 
-    // controlFlowRootEnter = (iid, loopType, conditionResult) => {
-    // }
-    //
-    // controlFlowRootExit = (iid, loopType) => {
-    // }
+    controlFlowRootEnter = (iid, loopType, conditionResult) => {
+    }
+
+    controlFlowRootExit = (iid, loopType) => {
+    }
 
     // uncaughtException = (err, origin) => {
     // }

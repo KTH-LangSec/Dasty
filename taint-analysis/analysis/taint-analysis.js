@@ -521,7 +521,8 @@ class TaintAnalysis {
         // we also don't handle undefined property accesses of tainted values here
         // this is instead handled in the proxy itself
         // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
-        if (!scope?.startsWith('file:') || scope.includes('test/') || scope.includes('tests/') || base.__taint) return;
+        // ToDo - make configurable
+        if ((/*!scope?.startsWith('node_modules/') &&*/ !scope?.startsWith('file:')) || scope.includes('test/') || scope.includes('tests/') || base.__taint) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         const loc = iidToLocation(iid);

@@ -97,6 +97,7 @@ const CLI_ARGS = {
     '--maxRuns': 1,
     '--forceBranchExec': 0,
     '--onlyForceBranchExec': 0,
+    '--forceBranchExecProp': 1,
     '--execFile': 1,
     '--noForIn': 0,
     '--resultsCollection': 1,
@@ -123,6 +124,7 @@ function parseCliArgs() {
         exportRuns: undefined,
         forceBranchExec: false,
         onlyForceBranchExec: false,
+        forceBranchExecProp: undefined,
         execFile: undefined,
         noForIn: false,
         resultsCollection: DEFAULT_RESULTS_COLL,
@@ -499,7 +501,6 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
     // parse files
     branchedOn.forEach(b => {
-        allBranchedOns.set(b.loc, b.result);
         if (!branchedOnPerProp.has(b.prop)) {
             branchedOnPerProp.set(b.prop, new Map());
         }
@@ -508,6 +509,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
         const locEnd = b.loc.region.end;
         const loc = `(${b.loc.artifact}:${locStart.line}:${locStart.column}:${locEnd.line}:${locEnd.column + 1})`;
 
+        allBranchedOns.set(loc, b.result);
         branchedOnPerProp.get(b.prop).set(loc, b.result);
     });
 
@@ -520,6 +522,8 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
         const props = new Set([prop]); // keeps track of all properties that are currently enforced
 
         while (newBranchingFound) {
+            if (cliArgs.forceBranchExecProp && !props.has(cliArgs.forceBranchExecProp)) break;
+
             console.log(`\nRunning force branch execution for: ${Array.from(props).join(', ')}\n`);
 
             // write to branched on file
@@ -910,7 +914,7 @@ async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1
             results: run.results.map(result => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}, runName: ${run.runName}}`},
+                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, runName: ${run.runName}, value: ${result.sink.value}, module: ${result.sink.module}}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},
