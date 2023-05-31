@@ -158,6 +158,7 @@ class TaintAnalysis {
                 const emulatedResult = taints.length > 0 ? emulateNodeJs(functionScope, iid, result, receiver, f, args) : null;
                 return emulatedResult ?? result;
             } catch (e) {
+                console.log(f?.name, unwrappedArgs);
                 taints.forEach((t, index) => {
                     const newFlows = [];
                     t?.forEach(taintVal => {
@@ -649,20 +650,20 @@ class TaintAnalysis {
         //     this.loops.set(iid, calls);
         // }
     }
-    //
-    // controlFlowRootExit = (iid, loopType) => {
-    //     if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
-    //
-    //     // delete the injected property after a for in iteration
-    //     if (this.injectForIn && loopType === 'ForInIteration' && this.#injectedForInLoop.has(iid)) {
-    //         const injectedProp = this.forInInjectedProps.pop();
-    //         if (injectedProp) {
-    //             delete ({})['__proto__'][injectedProp];
-    //         }
-    //     }
-    //
-    //     this.loops.delete(iid);
-    // }
+
+    controlFlowRootExit = (iid, loopType) => {
+        if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
+
+        // delete the injected property after a for in iteration
+        if (this.injectForIn && loopType === 'ForInIteration' && this.#injectedForInLoop.has(iid)) {
+            const injectedProp = this.forInInjectedProps.pop();
+            if (injectedProp) {
+                delete ({})['__proto__'][injectedProp];
+            }
+        }
+
+        this.loops.delete(iid);
+    }
 
     uncaughtException = (err, origin) => {
         if (this.lastReadTaint) {

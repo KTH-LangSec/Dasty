@@ -1092,7 +1092,7 @@ async function run() {
         startTs,
         endTs,
         duration: endTs - startTs
-    })
+    });
 
     closeConnection();
 }

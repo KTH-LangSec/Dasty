@@ -26,9 +26,9 @@ const builtins = new Map([
         (iid, result, target, f, args) => {
             if (!args[0]?.__taint) return null;
 
-            args[0].__type = 'string';
+            const res = JSON.stringify(args[0].__val);
             const cf = createCodeFlow(iid, 'functionArgResult', 'JSON.stringify');
-            return args[0].__copyTaint(result, cf, 'string');
+            return args[0].__copyTaint(res, cf, 'string');
         }
     ]
 ]);
