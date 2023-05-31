@@ -13,10 +13,15 @@ const obj = {};
 // }
 // }
 
+const x = {};
 function copy(obj) {
     const copy = {};
     for (const key in obj) {
         copy[key] = obj[key];
+
+        if (typeof copy[key] == 'string') {
+            console.log('juhu');
+        }
     }
     return copy;
 }

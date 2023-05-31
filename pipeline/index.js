@@ -38,7 +38,7 @@ const DONT_ANALYSE = [
     'gulp',
     'grunt',
     'bower',
-    'lint',
+    // 'lint',
     '/types',
     '@type/',
     '@types/',
@@ -537,7 +537,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
-                {pkgName, resultFilename, writeOnDetect: true, forceBranchesFilename, recordAllFunCalls: true},
+                {pkgName, resultFilename, writeOnDetect: true, forceBranchesFilename, recordAllFunCalls: true, /*injectForIn: true*/},
                 EXCLUDE_ANALYSIS_KEYWORDS,
                 execFile
             );
@@ -928,7 +928,7 @@ async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1
                                 )
                             },
                             {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}, inferredType ${result.source.inferredType}}`)},
-                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
+                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name + ' ' + cf.result)})),
                             {location: locToSarif(result.sink.location, `Sink {argIndex: ${result.sink.argIndex}, value: ${result.sink.value}, module: ${result.sink.module}}`)}
                         ]
                     }]

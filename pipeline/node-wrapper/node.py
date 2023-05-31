@@ -3,7 +3,7 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
-TIMEOUT = 60 * 1.5  # in seconds
+TIMEOUT = 60 * 3  # in seconds
 
 STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.csv'
 EXEC_RESULT_FILE = os.path.dirname(os.path.realpath(__file__)) + '/exec-result.txt'
@@ -282,6 +282,8 @@ def main():
             set_flag(argv_string, 'bin/grunt', ['jest'])
         if 'mochaTest  ' in proc.stdout:
             set_flag(argv_string, 'bin/grunt', ['mochaTest'])
+        if 'mochaTest:src  ' in proc.stdout:
+            set_flag(argv_string, 'bin/grunt', ['mochaTest:src'])
 
     # nyc flags
     # remove_flag(argv_string, 'bin/nyc', '--reporter=lcov')

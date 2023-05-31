@@ -158,7 +158,6 @@ class TaintAnalysis {
                 const emulatedResult = taints.length > 0 ? emulateNodeJs(functionScope, iid, result, receiver, f, args) : null;
                 return emulatedResult ?? result;
             } catch (e) {
-                console.log(f?.name, unwrappedArgs);
                 taints.forEach((t, index) => {
                     const newFlows = [];
                     t?.forEach(taintVal => {
@@ -609,16 +608,18 @@ class TaintAnalysis {
 
         if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
             const loc = iidToLocation(iid);
-            if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
-                && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+            // if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
+            //     && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+            if (!EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
 
                 this.#injectedForInLoop.set(iid, true);
 
                 const propName = `__forInTaint${iid}`;
+                // since we don't know the intended use of the injected property we set forcedBranchExec to true (i.e. activate type inference)
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
                     entryPoint: this.entryPoint
-                }, false);
+                }, undefined, null, true);
 
                 this.forInInjectedProps.push(propName);
             }
