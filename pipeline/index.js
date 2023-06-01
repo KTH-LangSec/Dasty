@@ -778,7 +778,7 @@ async function runPipeline(pkgName, cliArgs) {
             }
 
             // if max run or if no flows stop
-            if (noFlows || ++run === +cliArgs.maxRuns) break;
+            if (noFlows || ++run >= +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
             const exceptions = await fetchExceptions(dbResultId, runId, cliArgs.resultsCollection);
