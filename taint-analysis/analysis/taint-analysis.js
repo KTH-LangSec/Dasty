@@ -497,12 +497,15 @@ class TaintAnalysis {
         }
 
         // if it is already tainted report repeated read
+
         if (isTaintProxy(val)) {
+            if (offset?.startsWith('__forInTaint')) return; // this is an edge case; we need to improve the orExpr rule
             this.lastReadTaint = val;
             val.__x_addCodeFlow(iid, 'read', offset);
 
             // if in 'or' and falsy return value and create a new taint value that is returned from the or expression
             if (this.orExpr && !val.__x_val) {
+                console.log('orExpr', iidToLocation(this.orExpr));
                 this.undefOrReadVal = val.__x_copyTaint(val.__x_val);
                 return {result: val.__x_val};
             }
@@ -620,7 +623,7 @@ class TaintAnalysis {
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
                     entryPoint: this.entryPoint
-                }, undefined, null, true);
+                }, undefined, null, false);
 
                 this.forInInjectedProps.push(propName);
             }
