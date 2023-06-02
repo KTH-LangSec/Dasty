@@ -1,5 +1,5 @@
 // DO NOT INSTRUMENT
-const {createTaintVal, createCodeFlow, allTaintValues} = require("../wrapper/taint-val");
+const {createTaintVal, createCodeFlow, allTaintValues, getTypeOf} = require("../wrapper/taint-val");
 const {
     iidToLocation,
     unwrapDeep,
@@ -78,7 +78,7 @@ class TaintAnalysis {
         this.branchedOnFilename = branchedOnFilename;
         this.forceBranches = forceBranches;
         // set branch counter to 0
-        forceBranches?.forEach((_, loc) => {
+        forceBranches?.branchings.forEach((_, loc) => {
             this.branchCounter.set(loc, 0);
         });
 
@@ -118,7 +118,7 @@ class TaintAnalysis {
                 // add code flow (redundant but might still be interesting when looking at the full flow)
                 if (self.recordAllFunCalls) {
                     argTaints?.forEach(taintVal => {
-                        taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
+                        taintVal.__x_addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
                     });
                 }
 
@@ -127,7 +127,7 @@ class TaintAnalysis {
                     const newFlows = [];
                     argTaints?.forEach(taintVal => {
                         newFlows.push({
-                            ...taintVal.__getFlowSource(),
+                            ...taintVal.__x_getFlowSource(),
                             sink: {
                                 iid,
                                 type: 'functionCallArg',
@@ -162,7 +162,7 @@ class TaintAnalysis {
                     const newFlows = [];
                     t?.forEach(taintVal => {
                         newFlows.push({
-                            ...taintVal.__getFlowSource(),
+                            ...taintVal.__x_getFlowSource(),
                             sink: {
                                 iid,
                                 type: 'functionCallArgException',
@@ -181,16 +181,16 @@ class TaintAnalysis {
             }
         }
 
-        internalWrapper.__isWrapperFun = true; // indicator that it is an internal wrapper function
+        internalWrapper.__x_isWrapperFun = true; // indicator that it is an internal wrapper function
 
         return {result: internalWrapper};
     }
 
     invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
-        if (f === undefined || functionScope === undefined || f.__isWrapperFun) return;
+        if (f === undefined || functionScope === undefined || f.__x_isWrapperFun) return;
 
-        if (proxy && isAnalysisWrapper(proxy) && proxy?.__entryPoint) {
-            this.entryPoint = proxy.__entryPoint;
+        if (proxy && isAnalysisWrapper(proxy) && proxy?.__x_entryPoint) {
+            this.entryPoint = proxy.__x_entryPoint;
             this.entryPointIID = iid;
         }
 
@@ -203,7 +203,7 @@ class TaintAnalysis {
                     const taintVals = checkTaints(arg, 3);
                     if (taintVals && taintVals.length > 0) recordedTaint = true;
                     taintVals?.forEach(taintVal => {
-                        taintVal.__addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
+                        taintVal.__x_addCodeFlow(iid, 'functionCallArg', f?.name ?? '<anonymous>', {argIndex: index});
                     });
                 } catch (e) {
                     // ignore
@@ -237,7 +237,7 @@ class TaintAnalysis {
             const argTaints = checkTaints(arg, DEFAULT_CHECK_DEPTH);
             argTaints?.forEach(taintVal => {
                 newFlows.push({
-                    ...taintVal.__getFlowSource(),
+                    ...taintVal.__x_getFlowSource(),
                     sink: {
                         iid,
                         type: 'functionCallArg',
@@ -293,7 +293,7 @@ class TaintAnalysis {
         // record tainted receiver
         if (isTaintProxy(receiver)) {
             newFlows.push({
-                ...receiver.__getFlowSource(),
+                ...receiver.__x_getFlowSource(),
                 sink: {
                     iid,
                     type: 'functionCallReceiverException',
@@ -312,7 +312,7 @@ class TaintAnalysis {
 
                 taints?.forEach(taintVal => {
                     newFlows.push({
-                        ...taintVal.__getFlowSource(),
+                        ...taintVal.__x_getFlowSource(),
                         sink: {
                             iid,
                             type: 'functionCallArgException',
@@ -340,9 +340,9 @@ class TaintAnalysis {
             // val.__addCodeFlow(iid, 'read', offset);
 
             // if an or add falsy return value
-            if (this.orExpr && !val.__val) {
-                this.undefOrReadVal = val.__copyTaint();
-                return {result: val.__val};
+            if (this.orExpr && !val.__x_val) {
+                this.undefOrReadVal = val.__x_copyTaint(val.__x_val);
+                return {result: val.__x_val};
                 // return {result: taintVal};
 
             }
@@ -367,10 +367,9 @@ class TaintAnalysis {
         if (iid === this.orExpr && (op === '||' || op === '??')) {
             this.orExpr = 0;
             if (this.undefOrReadVal !== null) {
-                result = isTaintProxy(result) ? result.__val : result;
+                result = isTaintProxy(result) ? result.__x_val : result;
 
-                // ToDo - think about it
-                this.undefOrReadVal.__setValue(result);
+                this.undefOrReadVal.__x_setValue(result);
                 const val = this.undefOrReadVal;
                 this.undefOrReadVal = null;
                 return {result: val};
@@ -378,19 +377,27 @@ class TaintAnalysis {
         }
 
         // if it is a typeof comparison with a taint value use this information to infer the type
-        if (((isAnalysisWrapper(left) && left?.__isInfoWrapper && left.__type === INFO_TYPE.TYPE_OF) || (isAnalysisWrapper(right) && right?.__isInfoWrapper && right.__type === INFO_TYPE.TYPE_OF)) && ['==', '===', '!=', '!=='].includes(op)) {
+        // ToDo - differentiate between === and !== based on conditional result (maybe record separately)
+        if (((isAnalysisWrapper(left) && left?.__x_isInfoWrapper && left.__x_type === INFO_TYPE.TYPE_OF)
+                || (isAnalysisWrapper(right) && right?.__x_isInfoWrapper && right.__x_type === INFO_TYPE.TYPE_OF))
+            && ['==', '==='].includes(op)) {
             let taint;
             let type;
-            if (left.__info) {
-                taint = left.__info;
+            if (left.__x_info) {
+                taint = left.__x_info;
                 type = right;
+
+                // unwrap
+                left = left.__x_val;
             } else {
-                taint = right.__info;
+                taint = right.__x_info;
                 type = left;
+
+                // unwrap
+                right = right.__x_val;
             }
 
-            taint.__type = type;
-            return {result: op === '===' || op === '=='};
+            taint.__x_type = type;
         }
 
         // ToDo - look into notUndefinedOr (default value for object deconstruction e.g. {prop = []})
@@ -400,59 +407,67 @@ class TaintAnalysis {
         switch (op) {
             case '===':
             case '==':
-            case '!==':
-            case '!=':
+                // note that there are no '!== and !=' they are represented as e.g. !(x === y) in GraalJS and trigger the unary hook
+
                 let compRes = taintCompResult(left, right, op);
                 const taintVal = isTaintProxy(left) ? left : right;
 
-                // if branch execution is forced inverse the comparison result
-                const loc = iidToLocation(iid);
-                if (!this.forceBranches?.has(loc)) {
-                    addAndWriteBranchedOn(taintVal.__taint.source.prop, iid, compRes, this.branchedOn, this.branchedOnFilename);
-                } else {
-                    updateAndCheckBranchCounter(this.branchCounter, loc);
+                taintVal.__x_addCodeFlow(iid, 'conditional', op, {result: compRes});
 
-                    compRes = !this.forceBranches.get(loc);
+                const cf = createCodeFlow(iid, 'compRes', op);
+                return {result: taintVal.__x_copyTaint(compRes, cf, 'boolean')};
 
-                    // infer type and set value based on comparison
-                    if (compRes && (op === '===' || op === '==') || !compRes && (op === '!==' || op === '!=')) {
-                        const otherVal = taintVal === left ? right : left;
-
-                        if (!isTaintProxy(otherVal)) {
-                            taintVal.__setValue(otherVal);
-                        } else {
-                            // if both are taint values just set value of the other
-                            // ToDo - maybe check which one to assign (e.g. if one is not undefined take this one)?
-                            taintVal.__setValue(otherVal.__val);
-                        }
-                    }
-                }
-
-                taintVal.__addCodeFlow(iid, 'conditional', op, {result: compRes});
-                return {result: compRes};
+            // if branch execution is forced inverse the comparison result
+            // const loc = iidToLocation(iid);
+            // if (!this.forceBranches?.has(loc)) {
+            //     addAndWriteBranchedOn(taintVal.__taint.source.prop, iid, compRes, this.branchedOn, this.branchedOnFilename);
+            // } else {
+            //     updateAndCheckBranchCounter(this.branchCounter, loc);
+            //
+            //     compRes = !this.forceBranches.get(loc);
+            //
+            //     // infer type and set value based on comparison
+            //     if (compRes && (op === '===' || op === '==') || !compRes && (op === '!==' || op === '!=')) {
+            //         const otherVal = taintVal === left ? right : left;
+            //
+            //         if (!isTaintProxy(otherVal)) {
+            //             taintVal.__setValue(otherVal);
+            //         } else {
+            //             // if both are taint values just set value of the other
+            //             // ToDo - maybe check which one to assign (e.g. if one is not undefined take this one)?
+            //             taintVal.__setValue(otherVal.__val);
+            //         }
+            //     }
+            // }
+            //
+            // return {result: compRes};
             case '&&':
-                // we currently only check for && when undefined -- ToDo - maybe for all?
-                if (isTaintProxy(left) && left.__val === undefined) {
-                    if (!this.forceBranches) {
-                        addAndWriteBranchedOn(left.__taint.source.prop, iid, false, this.branchedOn, this.branchedOnFilename);
-                        left.__addCodeFlow(iid, 'conditional', '&&', {result: false});
+                if (!isTaintProxy(left)) break;
 
-                        return {result: false};
+                // if left is undefined return false
+                if (!left.__x_val) {
+                    // if (!this.forceBranches) {
+                    // addAndWriteBranchedOn(left.__x_taint.source.prop, iid, false, this.branchedOn, this.branchedOnFilename);
+                    left.__x_addCodeFlow(iid, 'binary', '&&', {result: false});
+
+                    const cf = createCodeFlow(iid, 'binary', op);
+                    return {result: left.__x_copyTaint(false, cf, 'boolean')};
+                } else {
+                    // if left is not falsy wrap result
+                    let taintVal;
+                    const cf = createCodeFlow(iid, 'binary', op);
+                    if (isTaintProxy(result)) {
+                        taintVal = result;
+                        taintVal.__x_taint.codeFlow.push(cf);
+                    } else {
+                        taintVal = left.__x_copyTaint(result, cf, getTypeOf(result));
                     }
-                    const loc = iidToLocation(iid);
-                    if (this.forceBranches.has(loc)) {
-                        updateAndCheckBranchCounter(this.branchCounter, loc);
-                        // if we force execute
-                        const res = !this.forceBranches.get(loc);
-                        const resVal = typeof result.__val === 'object' ? {} : result.__val; // don't store full object in code-flow -  can lead to structured clone problems
-                        left.__addCodeFlow(iid, 'conditional', '&&', {result: resVal});
-                        return {result: res};
-                    }
+
+                    return {result: taintVal};
                 }
-                break;
             case '+':
                 // Todo - look into string Template Literals (it works but the other side is always '')
-                const res = left?.__taint ? left.__add(iid, right, result, true) : right.__add(iid, left, result, false);
+                const res = left?.__x_taint ? left.__x_add(iid, right, result, true) : right.__x_add(iid, left, result, false);
                 return {result: res};
         }
     }
@@ -463,6 +478,8 @@ class TaintAnalysis {
         and return the value. Because we are in a '||' expression,
         the return value will be assigned to the taint proxy when exiting the '||' (see 'binary').
          */
+        if (!base) return;
+
         if (this.orExpr && isTaintProxy(base[offset])) {
             return {result: value};
         }
@@ -471,45 +488,56 @@ class TaintAnalysis {
     getField = (iid, base, offset, val, isComputed, functionScope, isAsync, scope) => {
         if (isTaintProxy(offset)) {
             try {
-                offset.__type = 'string';
-                const cf = createCodeFlow(iid, 'propReadName', offset.__val);
-                return {result: offset.__copyTaint(base[offset.__val], cf, null)};
+                offset.__x_type = 'string';
+                const cf = createCodeFlow(iid, 'propReadName', offset.__x_val);
+                return {result: offset.__x_copyTaint(base[offset.__x_val], cf, null)};
             } catch (e) {
                 return;
             }
         }
 
-        // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
-        if (!base || offset === '__taint') return;
-
-        // this is probably an array access (don't inject)
-        if (isComputed && typeof offset === 'number' && isTaintProxy(base)) return;
-
-        if (typeof offset !== 'string' && typeof offset !== 'number') return;
-
         // if it is already tainted report repeated read
-        if (isTaintProxy(val)) {
-            this.lastReadTaint = val;
-            val.__addCodeFlow(iid, 'read', offset);
 
-            // if an or ad falsy return value and create a new taint value that is returned from the or expression
-            if (this.orExpr && !val.__val) {
-                this.undefOrReadVal = val.__copyTaint();
-                return {result: val.__val};
+        if (isTaintProxy(val)) {
+            if (typeof offset === 'string' && offset.startsWith('__forInTaint')) return; // this is an edge case; we need to improve the orExpr rule
+            this.lastReadTaint = val;
+            val.__x_addCodeFlow(iid, 'read', offset);
+
+            // if in 'or' and falsy return value and create a new taint value that is returned from the or expression
+            if (this.orExpr && !val.__x_val) {
+                this.undefOrReadVal = val.__x_copyTaint(val.__x_val);
+                return {result: val.__x_val};
             }
             return;
         }
+
+        if (!base || isTaintProxy(base) || offset === '__x_taint' // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
+            || typeof offset !== 'string' && typeof offset !== 'number') // we only care for string and number offsets
+            return;
+
+        // this is probably an array access (don't inject)
+        // if (isComputed && typeof offset === 'number' && isTaintProxy(base)) return;
+
+        // if (typeof offset !== 'string' && typeof offset !== 'number') return;
 
         // currently we only care for sources in non-native modules, even when analysing all
         // we also don't handle undefined property accesses of tainted values here
         // this is instead handled in the proxy itself
         // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
-        if (!scope?.startsWith('file:') || scope.includes('test/') || scope.includes('tests/') || base.__taint) return;
+        // ToDo - make configurable
+        if ((/*!scope?.startsWith('node_modules/') &&*/ !scope?.startsWith('file:')) || scope.includes('test/') || scope.includes('tests/') || isTaintProxy(base)) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         const loc = iidToLocation(iid);
         if (val === undefined && Object.prototype.isPrototypeOf(base) && !base.hasOwnProperty(offset) && !this.propBlacklist?.includes(offset) && !EXCLUDE_INJECTION.some(e => loc.includes(e))) {
-            const res = createTaintVal(iid, offset, {iid: this.entryPointIID, entryPoint: this.entryPoint});
+            const res = createTaintVal(
+                iid,
+                offset,
+                {iid: this.entryPointIID, entryPoint: this.entryPoint},
+                undefined,
+                null,
+                !!this.forceBranches?.props.includes(offset)
+            );
 
             try {
                 base[offset] = res;
@@ -536,36 +564,36 @@ class TaintAnalysis {
             case 'typeof':
                 /** if we don't know the type yet return the proxy object and an information that it is the result of typeof
                  this is used further up in the comparison to assign the correct type */
-                return {
-                    result: left.__type !== null
-                        ? left.__typeof()
-                        : new InfoWrapper(true, left, INFO_TYPE.TYPE_OF)
-                };
+                const cf = createCodeFlow(iid, 'unary', 'typeof');
+                let tpe = left.__x_copyTaint(left.__x_typeof(), cf, 'string');
+                // if we force branch execute - infer type
+                if (left.__x_forceBranchExec) {
+                    tpe = new InfoWrapper(tpe, left, INFO_TYPE.TYPE_OF);
+                }
+                return {result: tpe};
             case '!':
-                return {result: !left.__val};
+                // return new taint with 'reversed' value
+                let res = left.__x_copyTaint(!left.__x_val, createCodeFlow(iid, 'unary', '!'), 'boolean');
+                return {result: res};
+            // return {result: !left.__x_val};
         }
     }
 
-    conditional = (iid, result, isValue) => {
-        if (!isTaintProxy(result)) return;
+    conditional = (iid, input, result, isValue) => {
+        if (!isTaintProxy(input)) return;
 
         const loc = iidToLocation(iid);
 
-        if (!this.forceBranches?.has(loc)) {
+        if (!this.forceBranches?.branchings.has(loc)) {
             // if it is a taint proxy and the underlying value is undefined result to false
-            addAndWriteBranchedOn(result.__taint.source.prop, iid, result.__val, this.branchedOn, this.branchedOnFilename);
-            const res = typeof result.__val === 'object' ? {} : result.__val; // don't store full object in code-flow -  can lead to structured clone and other problems
-            result.__addCodeFlow(iid, 'conditional', '-', {result: res});
-            if (!result.__val) {
-                return {result: result.__val};
-            }
-            // The taint value is non-falsy so nothing to do here (it acts as it would when injected)
+            addAndWriteBranchedOn(input.__x_taint.source.prop, iid, input.__x_val, this.branchedOn, this.branchedOnFilename);
+            const res = typeof input.__x_val === 'object' ? {} : input.__x_val; // don't store full object in code-flow -  can lead to structured clone and other problems
+            input.__x_addCodeFlow(iid, 'conditional', '-', {result: res});
+            return {result: !!input.__x_val};
         } else {
-            updateAndCheckBranchCounter(this.branchCounter, loc);
-
             // when enforcing branching inverse the result
-            const res = !this.forceBranches.get(loc);
-            result.__addCodeFlow(iid, 'conditional', '-', {result: res});
+            const res = !this.forceBranches.branchings.get(loc);
+            input.__x_addCodeFlow(iid, 'conditional', '-', {result: res});
             return {result: res};
         }
     }
@@ -577,52 +605,54 @@ class TaintAnalysis {
      */
     #forInLoops = new Map(); // keeps track of the locations of all for in loops
     #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
-
+    //
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (loopType === 'AsyncFunction' || loopType === 'Conditional') return;
 
         if (this.injectForIn && loopType === 'ForInIteration' && !this.loops.has(iid)) {
             const loc = iidToLocation(iid);
-            if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
-                && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+            // if (typeof this.lastExprResult === 'object' && Object.prototype.isPrototypeOf(this.lastExprResult) // this should always be the case - but just to be safe
+            //     && !EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
+            if (!EXCLUDE_INJECTION.some(e => loc.includes(e))) { // try to avoid injecting in testing files
 
                 this.#injectedForInLoop.set(iid, true);
 
                 const propName = `__forInTaint${iid}`;
+                // since we don't know the intended use of the injected property we set forcedBranchExec to true (i.e. activate type inference)
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
                     entryPoint: this.entryPoint
-                }, false);
+                }, undefined, null, false);
 
                 this.forInInjectedProps.push(propName);
             }
         }
 
         // to prevent infinite loops we keep track of how often the loop is entered and abort on a certain threshold
-        if (!this.loops.has(iid)) {
-            this.loops.set(iid, 1);
-        } else {
-            const calls = this.loops.get(iid) + 1;
-            if (calls > MAX_LOOPS) {
-                // console.log('Infinite loop detected');
-
-                if (this.lastReadTaint) {
-                    const newFlow = {
-                        ...this.lastReadTaint.__getFlowSource(),
-                        sink: {
-                            iid, type: 'functionCallArgException', functionName: '<infiniteLoop>'
-                        }
-                    };
-                    addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
-                }
-
-                this.loops.delete(iid);
-                return {result: null};
-                // throw new Error('infinite loop');
-                // process.exit(1);
-            }
-            this.loops.set(iid, calls);
-        }
+        // if (!this.loops.has(iid)) {
+        //     this.loops.set(iid, 1);
+        // } else {
+        //     const calls = this.loops.get(iid) + 1;
+        //     if (calls > MAX_LOOPS) {
+        //         // console.log('Infinite loop detected');
+        //
+        //         if (this.lastReadTaint) {
+        //             const newFlow = {
+        //                 ...this.lastReadTaint.__getFlowSource(),
+        //                 sink: {
+        //                     iid, type: 'functionCallArgException', functionName: '<infiniteLoop>'
+        //                 }
+        //             };
+        //             addAndWriteFlows([newFlow], this.flows, this.processedFlow, this.resultFilename);
+        //         }
+        //
+        //         this.loops.delete(iid);
+        //         return {result: null};
+        //         // throw new Error('infinite loop');
+        //         // process.exit(1);
+        //     }
+        //     this.loops.set(iid, calls);
+        // }
     }
 
     controlFlowRootExit = (iid, loopType) => {
@@ -642,7 +672,7 @@ class TaintAnalysis {
     uncaughtException = (err, origin) => {
         if (this.lastReadTaint) {
             const newFlow = {
-                ...this.lastReadTaint.__getFlowSource(),
+                ...this.lastReadTaint.__x_getFlowSource(),
                 sink: {
                     type: 'functionCallArgException',
                     value: err.code + ' ' + err.toString(),
@@ -675,7 +705,7 @@ class TaintAnalysis {
     //     if (iid === this.orExpr && (type === 'JSOr' || type === 'JSNullishCoalescing')) {
     //         this.orExpr = 0;
     //         //     if (this.undefOrReadVal !== null) {
-    //         //         this.undefOrReadVal.__setValue(result);
+    //         //         this.undefOrReadVal.__x_setValue(result);
     //         //         const val = this.undefOrReadVal;
     //         //         this.undefOrReadVal = null;
     //         //         return {result: val};

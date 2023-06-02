@@ -24,12 +24,12 @@ class ModuleWrapperProxyHandler {
      */
     get(target, property, receiver) {
         // ToDo - does it work with getter???
-        if (property === '__entryPoint') {
+        if (property === '__x_entryPoint') {
             // allow to access handlers entrypoint
             return this.entryPoint;
-        } else if (property === '__isAnalysisProxy') {
+        } else if (property === '__x_isAnalysisProxy') {
             return true;
-        } else if (typeof property === 'string' && property.startsWith('__')) {
+        } else if (typeof property === 'string' && property.startsWith('__x_')) {
             // this is probably another analysis field access
             return undefined;
         }
@@ -100,7 +100,7 @@ class ModuleWrapperProxyHandler {
 function shouldWrap(obj) {
     // Don't wrap Map or Sets and Arrays as Proxy does not always delegate to the target (e.g. Array.from(set))
     // To fix this we could unpack it ourselves via instrumentation, but it's not relevant for now
-    return (obj !== null && obj !== undefined && !obj.__entryPoint
+    return (obj !== null && obj !== undefined && !obj.__x_entryPoint
         && (typeof obj === 'function' || typeof obj === 'object'));
     // && !(obj instanceof Map)
     // && !(obj instanceof Set))));

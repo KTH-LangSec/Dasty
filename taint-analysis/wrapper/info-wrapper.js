@@ -1,5 +1,6 @@
 // DO NOT INSTRUMENT
 
+const {isTaintProxy} = require("../utils/utils");
 /**
  * This is a simple wrapper that allows to propagate information 'up' the AST
  * Works only for primitives and should be unwrapped as soon as possible
@@ -11,21 +12,23 @@ const INFO_TYPE = {
 }
 
 class InfoWrapper {
-    __isAnalysisProxy = true;
-    __isInfoWrapper = true;
+    __x_isAnalysisProxy = true;
+    __x_isInfoWrapper = true;
 
     constructor(val, info, type) {
-        this.__val = val;
-        this.__info = info;
-        this.__type = type;
+        this.__x_val = val;
+        this.__x_info = info;
+        this.__x_type = type;
     }
 
     valueOf() {
-        return this.__val?.valueOf ? this.__val.valueOf() : this.__val;
+        const val = isTaintProxy(this.__x_val) ? this.__x_val.__x_val : this.__x_val;
+        return val?.valueOf ? val.valueOf() : val;
     }
 
     toString() {
-        return this.__val?.toString ? this.__val.toString() : this.__val;
+        const val = isTaintProxy(this.__x_val) ? this.__x_val.__x_val : this.__x_val;
+        return val?.toString ? val.toString() : val;
     }
 }
 

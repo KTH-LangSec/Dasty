@@ -14,21 +14,21 @@ const builtins = new Map([
     [
         Array.prototype.join,
         (iid, result, arr, f, args) => {
-            const taintArg = arr.find(arg => arg?.__taint);
+            const taintArg = arr.find(arg => arg?.__x_taint);
             if (!taintArg) return null;
 
-            taintArg.__type = 'string';
+            taintArg.__x_type = 'string';
             const cf = createCodeFlow(iid, 'functionArgResult', 'Array.join');
-            return taintArg.__copyTaint(result, cf, 'string');
+            return taintArg.__x_copyTaint(result, cf, 'string');
         }
     ], [
         JSON.stringify,
         (iid, result, target, f, args) => {
-            if (!args[0]?.__taint) return null;
+            if (!args[0]?.__x_taint) return null;
 
-            args[0].__type = 'string';
+            const res = JSON.stringify(args[0].__x_val);
             const cf = createCodeFlow(iid, 'functionArgResult', 'JSON.stringify');
-            return args[0].__copyTaint(result, cf, 'string');
+            return args[0].__x_copyTaint(res, cf, 'string');
         }
     ]
 ]);
@@ -142,7 +142,7 @@ function emulate(iid, result, args, fName, checkDeep = false, argsToCheck = null
     if (!taintVal) return null;
 
     const cf = createCodeFlow(iid, 'functionArgResult', fName, {'argIndex': taintIdx});
-    return taintVal.__copyTaint(result, cf, resultType);
+    return taintVal.__x_copyTaint(result, cf, resultType);
 }
 
 function emulateBuiltin(iid, result, target, f, args) {

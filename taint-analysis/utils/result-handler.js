@@ -171,7 +171,7 @@ function removeDuplicateTaints(taints) {
 function writeTaints(taintValues, resultPath) {
     if (!resultPath) return;
 
-    const taints = removeDuplicateTaints(taintValues.map(t => t.__taint));
+    const taints = removeDuplicateTaints(taintValues.map(t => t.__x_taint));
 
     taints.forEach(taint => {
         taint.source = replaceIID(taint.source);

@@ -20,7 +20,7 @@ const topPackages = fs.readFileSync(packagesFile, 'utf-8')
 // Select the database to use.
 use('analysis_results_v3');
 
-var collection = "results" //"resultsUnintrusiveRerun" //"results" // "resultsForcedBranchExec"
+var collection = "resultsUnintrusiveRerun" //"results" // "resultsForcedBranchExec"
 //var collection = "resultsForcedBranchExec"
 
 const data = db.getCollection(collection);

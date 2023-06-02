@@ -14,7 +14,7 @@ const DEFAULT_TIMEOUT = -1;
 const MAX_RUNS = 1;
 const NPM_INSTALL_TIMEOUT = 8 * 60 * 1000;
 
-const DEFAULT_RESULTS_COLL = 'resultsForcedBranchExec';
+const DEFAULT_RESULTS_COLL = 'results';
 
 const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
@@ -97,11 +97,14 @@ const CLI_ARGS = {
     '--maxRuns': 1,
     '--forceBranchExec': 0,
     '--onlyForceBranchExec': 0,
+    '--forceBranchExecProp': 1,
     '--execFile': 1,
     '--noForIn': 0,
     '--resultsCollection': 1,
+    '--collPrefix': 1,
     '--sinkAnalysis': 0,
-    '--onlySinkAnalysis': 0
+    '--onlySinkAnalysis': 0,
+    '--repoPath': 1
 }
 
 function parseCliArgs() {
@@ -122,11 +125,14 @@ function parseCliArgs() {
         exportRuns: undefined,
         forceBranchExec: false,
         onlyForceBranchExec: false,
+        forceBranchExecProp: undefined,
         execFile: undefined,
         noForIn: false,
+        collPrefix: '',
         resultsCollection: DEFAULT_RESULTS_COLL,
         sinkAnalysis: false,
-        onlySinkAnalysis: false
+        onlySinkAnalysis: false,
+        repoPath: undefined
     };
 
     // a copy of the args with all parsed args removed
@@ -158,6 +164,9 @@ function parseCliArgs() {
 
         i += expectedLength;
     }
+
+    // add coll prefix to results coll for backward compatability with --resultsCollection
+    parsedArgs.resultsCollection = parsedArgs.collPrefix + parsedArgs.resultsCollection;
 
     // the pkgName (or file) should now be the last (and only) arg
     parsedArgs.pkgName = trimmedArgv.length > 2 ? trimmedArgv[trimmedArgv.length - 1] : null;
@@ -259,7 +268,7 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     return type;
 }
 
-async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null) {
+async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null, collPrefix = '') {
     await runAnalysisNodeWrapper(SINK_ANALYSIS, repoName, {pkgName}, EXCLUDE_ANALYSIS_KEYWORDS, execFile);
 
     // write results to db
@@ -279,7 +288,7 @@ async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null) {
     }
 
     const db = await getDb();
-    const resColl = await db.collection('sinkResults');
+    const resColl = await db.collection(collPrefix + 'sinkResults');
     await resColl.insertOne({
         package: pkgName,
         timestamp: Date.now(),
@@ -326,9 +335,9 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
     await execCmd(cmd, args, dir, true, false);
 }
 
-async function writePackageDataToDB(pkgName, type, preAnalysisStatuses) {
+async function writePackageDataToDB(pkgName, type, preAnalysisStatuses, collPrefix) {
     const db = await getDb();
-    const packageDataColl = await db.collection('packageData');
+    const packageDataColl = await db.collection(collPrefix + 'packageData');
 
     let pkgDataId = await packageDataColl.findOne({"package": pkgName})?._id;
     if (!pkgDataId) {
@@ -338,7 +347,7 @@ async function writePackageDataToDB(pkgName, type, preAnalysisStatuses) {
     await packageDataColl.updateOne({_id: pkgDataId}, {$set: {type, preAnalysisStatuses}});
 }
 
-async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, runExecStatuses, resultsCollection = DEFAULT_RESULTS_COLL) {
+async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, runExecStatuses, resultsCollection, collPrefix) {
     const db = await getDb();
     const runId = new ObjectId();
 
@@ -375,7 +384,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
     });
 
     if (branchedOn.length > 0) {
-        const branchedOnColl = await db.collection('branchedOn');
+        const branchedOnColl = await db.collection(collPrefix + 'branchedOn');
 
         const bo = {
             resultId: resultId,
@@ -396,7 +405,7 @@ async function writeResultsToDB(pkgName, resultId, runName, resultFilenames, tai
 
     // we are storing every taint set in as separate document as it might be too big
     if (taints.length > 0) {
-        const taintsColl = await db.collection('taints');
+        const taintsColl = await db.collection(collPrefix + 'taints');
         const taintVals = {
             resultId: resultId,
             runId: runId,
@@ -487,7 +496,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
     // const {branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
 
     const db = await getDb();
-    const branchedOnColl = await db.collection('branchedOn');
+    const branchedOnColl = await db.collection(cliArgs.collPrefix + 'branchedOn');
 
     const branchedOn = (await branchedOnColl.findOne({package: pkgName}, {sort: {timestamp: -1}}))?.branchedOn;
 
@@ -497,7 +506,6 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 
     // parse files
     branchedOn.forEach(b => {
-        allBranchedOns.set(b.loc, b.result);
         if (!branchedOnPerProp.has(b.prop)) {
             branchedOnPerProp.set(b.prop, new Map());
         }
@@ -506,6 +514,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
         const locEnd = b.loc.region.end;
         const loc = `(${b.loc.artifact}:${locStart.line}:${locStart.column}:${locEnd.line}:${locEnd.column + 1})`;
 
+        allBranchedOns.set(loc, b.result);
         branchedOnPerProp.get(b.prop).set(loc, b.result);
     });
 
@@ -518,17 +527,28 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
         const props = new Set([prop]); // keeps track of all properties that are currently enforced
 
         while (newBranchingFound) {
+            if (cliArgs.forceBranchExecProp && !props.has(cliArgs.forceBranchExecProp)) break;
+
             console.log(`\nRunning force branch execution for: ${Array.from(props).join(', ')}\n`);
 
             // write to branched on file
             const forceBranchesFilename = `${TMP_DIR}/force-branching/${pkgName}.json`;
-            fs.writeFileSync(forceBranchesFilename, JSON.stringify(Array.from(b)), {encoding: 'utf8'});
+            fs.writeFileSync(forceBranchesFilename, JSON.stringify({
+                branchings: Array.from(b),
+                props: Array.from(props)
+            }), {encoding: 'utf8'});
 
             // run analysis
             await runAnalysisNodeWrapper(
                 TAINT_ANALYSIS,
                 repoPath,
-                {pkgName, resultFilename, writeOnDetect: true, forceBranchesFilename, recordAllFunCalls: true},
+                {
+                    pkgName,
+                    resultFilename,
+                    writeOnDetect: true,
+                    forceBranchesFilename,
+                    recordAllFunCalls: true, /*injectForIn: true*/
+                },
                 EXCLUDE_ANALYSIS_KEYWORDS,
                 execFile
             );
@@ -539,7 +559,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             const execStatuses = parseExecStatuses();
 
             try {
-                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, null, execStatuses, cliArgs.resultsCollection);
+                const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, null, execStatuses, cliArgs.resultsCollection, cliArgs.collPrefix);
                 dbResultId = resultId; // if no results found dbResultId might be still null
             } catch (e) {
                 // if there is a problem writing to the database move files to not lose the data
@@ -606,9 +626,10 @@ function getResultFilenames(pkgName, resultBasePath) {
  * Sets up package by fetching the git repository and installing the dependencies
  * @param pkgName - the actual name of the package
  * @param sanitizedPkgName - a sanitized version the is used as the directory name of the repository
+ * @param cliArgs
  * @returns path to the local repository
  */
-async function setupPkg(pkgName, sanitizedPkgName) {
+async function setupPkg(pkgName, sanitizedPkgName, cliArgs) {
     console.error('Fetching URL');
     const url = await fetchURL(pkgName);
     if (url === null) return;
@@ -622,7 +643,7 @@ async function setupPkg(pkgName, sanitizedPkgName) {
         const timedOut = (await execCmd('npm', ['install'], repoPath, true, false, NPM_INSTALL_TIMEOUT)).timedOut;
 
         if (timedOut) {
-            await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null);
+            await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null, cliArgs.collPrefix);
             throw new Error("npm install timeout");
         }
     } else {
@@ -636,7 +657,7 @@ async function runPipeline(pkgName, cliArgs) {
     if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
         fs.appendFileSync(PACKAGE_DATA + 'filtered-packages.txt', pkgName + '\n', {encoding: 'utf8'});
         console.log(`${pkgName} is a 'don't analyse' script`);
-        await writePackageDataToDB(pkgName, PKG_TYPE.PRE_FILTERED, null);
+        await writePackageDataToDB(pkgName, PKG_TYPE.PRE_FILTERED, null, cliArgs.collPrefix);
         return;
     }
 
@@ -658,18 +679,23 @@ async function runPipeline(pkgName, cliArgs) {
         // set repo path and execFile (if specified)
         let repoPath;
         let execFile;
-        if (!cliArgs.execFile) {
-            // if no execFile is specified fetch the pkg repository and install the dependencies
-            repoPath = await setupPkg(pkgName, sanitizedPkgName);
-        } else {
-            // if a execFile is specified, set its directory as the repository path
+        if (cliArgs.repoPath) {
+            // if a repoPath is specified set it as the repository and skip set up
+            repoPath = cliArgs.repoPath;
+        }
+        if (cliArgs.execFile) {
+            // if a execFile is specified, set its directory as the repository path (if not set explicitly)
             execFile = path.resolve(cliArgs.execFile);
-            repoPath = path.dirname(execFile);
+            if (!repoPath) repoPath = path.dirname(execFile);
+        }
+        if (!cliArgs.execFile && !cliArgs.repoPath) {
+            // if no file or repo specified, fetch the pkg repository and install the dependencies
+            repoPath = await setupPkg(pkgName, sanitizedPkgName, cliArgs);
         }
 
         if (!repoPath) return;
 
-        // only run the pre analysis for fetched packages
+        // only run the pre analysis for repositories/packages
         if (!execFile) {
             // run a non-instrumented run that does e.g. all the compiling/building, so we can skip it for the multiple instrumented runs
             // console.error('\nRunning non-instrumented run');
@@ -679,7 +705,7 @@ async function runPipeline(pkgName, cliArgs) {
             if (preAnalysisType === null || cliArgs.force) {
                 preAnalysisType = await runPreAnalysisNodeWrapper(repoPath, pkgName)
                 const preAnalysisStatuses = parseExecStatuses();
-                await writePackageDataToDB(pkgName, preAnalysisType, preAnalysisStatuses);
+                await writePackageDataToDB(pkgName, preAnalysisType, preAnalysisStatuses, cliArgs.collPrefix);
             }
 
             if (preAnalysisType !== PKG_TYPE.NODE_JS) {
@@ -697,7 +723,7 @@ async function runPipeline(pkgName, cliArgs) {
 
         if (cliArgs.sinkAnalysis || cliArgs.onlySinkAnalysis) {
             console.log('Running sink-analysis');
-            await runSinkAnalysisNodeWrapper(repoPath, pkgName, execFile);
+            await runSinkAnalysisNodeWrapper(repoPath, pkgName, execFile, cliArgs.collPrefix);
 
             if (cliArgs.onlySinkAnalysis) return;
         }
@@ -740,7 +766,7 @@ async function runPipeline(pkgName, cliArgs) {
 
             try {
                 const execStatuses = parseExecStatuses();
-                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, execStatuses, cliArgs.resultsCollection);
+                const result = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, branchedOnFilenames, execStatuses, cliArgs.resultsCollection, cliArgs.collPrefix);
                 dbResultId = result.resultId;
                 runId = result.runId;
                 noFlows = result.noFlows;
@@ -764,7 +790,7 @@ async function runPipeline(pkgName, cliArgs) {
             }
 
             // if max run or if no flows stop
-            if (noFlows || ++run === +cliArgs.maxRuns) break;
+            if (noFlows || ++run >= +cliArgs.maxRuns) break;
 
             console.error('\nChecking for exceptions');
             const exceptions = await fetchExceptions(dbResultId, runId, cliArgs.resultsCollection);
@@ -817,8 +843,8 @@ async function getSarif(pkgName, cliArgs) {
     for (pkgName of pkgNames) {
         const sarifCalls = await getSarifData(pkgName, 'functionCallArg', cliArgs.resultsCollection, cliArgs.exportRuns);
         const sarifException = await getSarifData(pkgName, 'functionCallArgException', cliArgs.resultsCollection, cliArgs.exportRuns);
-        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName, cliArgs.resultsCollection) : null;
-        const sarifBranchedOn = cliArgs.allTaints ? await getBranchedOnSarifData(pkgName, cliArgs.resultsCollection) : null;
+        const sarifAllTaints = cliArgs.allTaints ? await getAllTaintsSarifData(pkgName, cliArgs.collPrefix) : null;
+        const sarifBranchedOn = cliArgs.allTaints ? await getBranchedOnSarifData(pkgName, cliArgs.collPrefix) : null;
 
         if (!cliArgs.out && !cliArgs.outDir) {
             console.error('No output file (--out) specified. Writing to stdout.');
@@ -900,7 +926,7 @@ async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1
             results: run.results.map(result => ({
                 ruleId: run._id,
                 level: 'error',
-                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, value: ${result.sink.value}, module: ${result.sink.module}, runName: ${run.runName}}`},
+                message: {text: `Flow found from {prop: ${result.source.prop}} into sink {type: ${result.sink.type}, functionName: ${result.sink.functionName}, runName: ${run.runName}, value: ${result.sink.value}, module: ${result.sink.module}}`},
                 locations: [locToSarif(result.sink.location)],
                 codeFlows: [{
                     message: {text: 'ToDo'},
@@ -914,7 +940,7 @@ async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1
                                 )
                             },
                             {location: locToSarif(result.source.location, `Undefined property read {prop: ${result.source.prop}, inferredType ${result.source.inferredType}}`)},
-                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name)})),
+                            ...result.codeFlow.map(cf => ({location: locToSarif(cf.location, cf.type + ' ' + cf.name + ' ' + cf.result)})),
                             {location: locToSarif(result.sink.location, `Sink {argIndex: ${result.sink.argIndex}, value: ${result.sink.value}, module: ${result.sink.module}}`)}
                         ]
                     }]
@@ -924,10 +950,10 @@ async function getSarifData(pkgName, sinkType, resultsCollection, amountRuns = 1
     };
 }
 
-async function getAllTaintsSarifData(pkgName, resultsColl) {
+async function getAllTaintsSarifData(pkgName, collPrefix) {
     const db = await getDb();
 
-    const taintsColl = db.collection('taints');
+    const taintsColl = db.collection(collPrefix + 'taints');
     // const pkgRuns = (await taintsColl.find({package: pkgName}, {sort: {timestamp: -1}}).toArray());
     const pkgRuns = (await taintsColl.find({package: pkgName}).toArray());
     if (pkgRuns.length === 0) return null;
@@ -981,10 +1007,10 @@ async function getAllTaintsSarifData(pkgName, resultsColl) {
     };
 }
 
-async function getBranchedOnSarifData(pkgName, resultsColl) {
+async function getBranchedOnSarifData(pkgName, collPrefix) {
     const db = await getDb();
 
-    const branchedOnColl = db.collection('branchedOn');
+    const branchedOnColl = db.collection(collPrefix + 'branchedOn');
     const pkgRuns = (await branchedOnColl.find({package: pkgName}).toArray());
     if (pkgRuns.length === 0) return null;
     const resId = pkgRuns[pkgRuns.length - 1]?.resultId;
@@ -1078,7 +1104,7 @@ async function run() {
         startTs,
         endTs,
         duration: endTs - startTs
-    })
+    });
 
     closeConnection();
 }

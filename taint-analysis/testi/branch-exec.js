@@ -4,12 +4,11 @@ const cp = require('child_process');
 
 const obj = {};
 
-const x = obj.x;
-
-if (x) {
-    if (obj.blub) {
-        eval(x);
-    }
+if (obj.x) {
+    console.log('hey');
+    // if (obj.blub) {
+    //     eval(x);
+    // }
 }
 
 // const x = 5;

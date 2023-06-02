@@ -243,7 +243,7 @@ function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
     let argClone = arg;
     try {
         // try to clone - functions are not cloneable (tainted values are functions under the hood)
-        if (typeof arg !== "function" || arg.__taint) {
+        if (typeof arg !== "function" || arg.__x_taint) {
             argClone = structuredClone(arg);
         }
     } catch (e) {
@@ -258,7 +258,7 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
     }
 
     if (isTaintProxy(arg)) {
-        return unwrapDeepRec(arg.__val, depth - 1, done);
+        return unwrapDeepRec(arg.__x_val, depth - 1, done);
     }
 
     if (typeof arg !== 'object' && typeof arg !== 'function') return arg;
@@ -308,7 +308,7 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 function isAnalysisWrapper(obj) {
     try {
         return obj !== null && obj !== undefined
-            && (obj.__isAnalysisProxy);
+            && (obj.__x_isAnalysisProxy);
     } catch (e) {
         // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
         return false;
@@ -317,9 +317,9 @@ function isAnalysisWrapper(obj) {
 
 function isTaintProxy(obj) {
     try {
-        return obj !== null && obj !== undefined
+        return !!(obj !== null && obj !== undefined
             && typeof obj === 'function'
-            && obj.__taint;
+            && obj.__x_taint);
     } catch (e) {
         // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
         return false;
@@ -330,15 +330,15 @@ function taintCompResult(left, right, op) {
     let taintVal;
     let otherVal;
     if (isTaintProxy(left)) {
-        taintVal = left.__val;
+        taintVal = left.__x_val;
         otherVal = right;
     } else {
-        taintVal = right.__val;
+        taintVal = right.__x_val;
         otherVal = left;
     }
     if (isTaintProxy(otherVal)) {
         // if both are tainted get the value of both
-        otherVal = otherVal.__val;
+        otherVal = otherVal.__x_val;
     }
 
     switch (op) {
@@ -346,10 +346,6 @@ function taintCompResult(left, right, op) {
             return taintVal === otherVal;
         case '==':
             return taintVal == otherVal;
-        case '!==':
-            return taintVal !== otherVal;
-        case '!=':
-            return taintVal != otherVal;
     }
 }
 
@@ -424,7 +420,7 @@ function createInternalFunctionWrapper(iid, f, receiver, isAsync, flows, functio
             taints.push(argTaints);
             argTaints?.forEach(taintVal => {
                 flows.push({
-                    ...taintVal.__taint,
+                    ...taintVal.__x_taint,
                     sink: {
                         iid,
                         type: 'functionCallArg',
@@ -448,7 +444,7 @@ function createInternalFunctionWrapper(iid, f, receiver, isAsync, flows, functio
             taints.forEach((t, index) => {
                 t?.forEach(taintVal => {
                     flows.push({
-                        ...taintVal.__taint,
+                        ...taintVal.__x_taint,
                         sink: {
                             iid,
                             type: 'functionCallArgException',
