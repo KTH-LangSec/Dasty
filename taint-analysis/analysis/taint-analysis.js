@@ -505,7 +505,6 @@ class TaintAnalysis {
 
             // if in 'or' and falsy return value and create a new taint value that is returned from the or expression
             if (this.orExpr && !val.__x_val) {
-                console.log('orExpr', iidToLocation(this.orExpr));
                 this.undefOrReadVal = val.__x_copyTaint(val.__x_val);
                 return {result: val.__x_val};
             }
