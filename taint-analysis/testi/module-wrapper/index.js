@@ -6,6 +6,6 @@ function runAnalysis(sandbox, log) {
     sandbox.addAnalysis(new Analysis(), {includes: 'tests/module-wrapper/'});
 }
 
-// console.log = () => {};
+console.log = () => {};
 
 runAnalysis(J$, false);

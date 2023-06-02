@@ -24,7 +24,9 @@ class SinkAnalysis {
             const filepath = loc.substring(1, loc.indexOf(':'));
             const reqPath = path.join(path.dirname(filepath), args[0]);
 
-            if (fs.existsSync(reqPath) && fs.lstatSync(reqPath).isDirectory()) {
+            if (fs.existsSync(reqPath) && fs.lstatSync(reqPath).isDirectory() // is it a directory ...
+                && !fs.readdirSync(reqPath).includes('package.json')  // ... that does not contain 'package.json' ...
+                &&  !require.cache[reqPath + '/index.js']) { // ... and is not cached
                 this.writeSink(iid, 'require', args);
             }
             return;
