@@ -499,7 +499,7 @@ class TaintAnalysis {
         // if it is already tainted report repeated read
 
         if (isTaintProxy(val)) {
-            if (offset?.startsWith('__forInTaint')) return; // this is an edge case; we need to improve the orExpr rule
+            if (typeof offset === 'string' && offset.startsWith('__forInTaint')) return; // this is an edge case; we need to improve the orExpr rule
             this.lastReadTaint = val;
             val.__x_addCodeFlow(iid, 'read', offset);
 

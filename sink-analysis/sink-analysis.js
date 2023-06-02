@@ -19,14 +19,17 @@ class SinkAnalysis {
         if (f === undefined || !functionScope?.startsWith('node:')) return;
 
         // require(<arg1>)
-        if (f.name === 'require' && args?.length > 0 && args[0].startsWith('.')) {
-            const loc = iidToLocation(iid);
-            const filepath = loc.substring(1, loc.indexOf(':'));
-            const reqPath = path.join(path.dirname(filepath), args[0]);
+        if (f.name === 'require' && args?.length > 0 && (args[0].startsWith('.') || args[0].startsWith('/'))) {
+            let reqPath = args[0];
+            if (args[0].startsWith('.')) {
+                const loc = iidToLocation(iid);
+                const filepath = loc.substring(1, loc.indexOf(':'));
+                reqPath = path.join(path.dirname(filepath), args[0]);
+            }
 
             if (fs.existsSync(reqPath) && fs.lstatSync(reqPath).isDirectory() // is it a directory ...
                 && !fs.readdirSync(reqPath).includes('package.json')  // ... that does not contain 'package.json' ...
-                &&  !require.cache[reqPath + '/index.js']) { // ... and is not cached
+                && !require.cache[reqPath + '/index.js'] && !require.cache[reqPath + 'index.js']) { // ... and is not cached
                 this.writeSink(iid, 'require', args);
             }
             return;
@@ -41,10 +44,12 @@ class SinkAnalysis {
 
             if (Object.prototype.isPrototypeOf(argOpt)
                 && !argOpt.hasOwnProperty('shell')
-                && (!argOpt.env || Object.prototype.isPrototypeOf(argOpt))) {
+                && (!argOpt.env || Object.prototype.isPrototypeOf(argOpt.env))) {
                 this.writeSink(iid, 'child_process.' + f.name, args);
                 return;
             }
+
+            if (f === cp.fork) return;
 
             if (args[0] && typeof args[0] === 'string' && (!argOpt?.env || Object.prototype.isPrototypeOf(argOpt.env))) {
                 const execPath = args[0].split(' ')[0];
