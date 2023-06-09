@@ -236,7 +236,7 @@ def main():
         if '--jobs' in str(proc.stdout):
             set_flag(argv_string, mocha_bin, ['-j', '--jobs'], '1')
 
-        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '10000')
+        set_flag(argv_string, mocha_bin, ['-t', '--timeout', '--timeouts'], '5000')
 
         remove_flag(argv_string, mocha_bin, '--bail')
         remove_flag(argv_string, mocha_bin, '--no-exit')
@@ -246,7 +246,7 @@ def main():
     # set_flag(argv_string, 'bin/jest', ['--workerThreads=false'])
     set_flag(argv_string, 'bin/jest', ['-i', '--runInBand'])
     set_flag(argv_string, 'bin/jest', ['--forceExit'])
-    set_flag(argv_string, 'bin/jest', ['--testTimeout'], '10000')
+    set_flag(argv_string, 'bin/jest', ['--testTimeout'], '5000')
     remove_flag(argv_string, 'bin/jest', '-w', 1)
     remove_flag(argv_string, 'bin/jest', '--maxWorkers', 1)
     remove_flag(argv_string, 'bin/jest', '--coverage')
@@ -260,14 +260,14 @@ def main():
         if '--jobs' in str(proc.stdout):
             set_flag(argv_string, 'bin/tap', ['-j'], '1')
 
-        set_flag(argv_string, 'bin/tap', ['-t'], '180')
+        set_flag(argv_string, 'bin/tap', ['-t'], '5')
         remove_flag(argv_string, 'bin/tap', '--100')
         remove_flag(argv_string, 'bin/tap', '--coverage')
         remove_flag(argv_string, 'bin/tap', '--jobs-auto')
 
     set_flag(argv_string, 'bin/ava', ['-c'], '1')
     set_flag(argv_string, 'bin/ava', ['--no-worker-threads'])
-    set_flag(argv_string, 'bin/ava', ['--timeout'], '180s')
+    set_flag(argv_string, 'bin/ava', ['--timeout'], '5s')
 
     if 'bin/grunt' in argv_string:
         set_flag(argv_string, 'bin/grunt', ['--force'])
