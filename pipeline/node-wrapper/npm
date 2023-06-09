@@ -1,6 +1,10 @@
 #!/bin/bash
 
-NODE_WRAPPER="$THE_TOOL_HOME"/pipeline/node-wrapper
+CUR_DIR=$(pwd)
+# cd bash dir to get dirname
+NODE_WRAPPER=$(cd -- $(dirname $0) >/dev/null 2>&1; pwd)
+# cd back
+cd $CUR_DIR
 
 if [[ ":$PATH:" != *":$NODE_WRAPPER:"* ]]; then
   # If the directory is not in the path, add it

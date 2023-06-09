@@ -1,20 +1,11 @@
-// const fs = require('fs');
-// const mongo = require('mongodb');
-// const path = require('path');
+// Object.prototype.blub = 'hey';
+// Object.preventExtensions(Object.prototype);
+// Object.freeze(Object.prototype);
+Object.seal(Object.prototype);
 
-const x = require('/home/pmoosi/Documents/KTH/2023-ss/the-tool/sink-analysis/test/test-dir');
+const obj = {};
 
-console.log(x);
+obj['__proto__'].blub = 42;
 
-console.log(Object.prototype.isPrototypeOf([]));
+console.log(obj.blub);
 
-// const p = path.resolve('./taint-analysis/testi/module-wrapper/index.js');
-// console.log(!!require[p]);
-// const pipeline = require('./taint-analysis/testi/module-wrapper');
-//
-// // let obj = {__proto__: null};
-// //
-// // console.log({} + 'hey');
-// // console.log(obj + ' hey ');
-//
-// console.log(!!require.cache[p]);

@@ -8,7 +8,9 @@ const {writeFlows, writeTaints} = require("./utils/result-handler");
 
 // function run() {
 const blacklistFilepath = __dirname + '/conf/sink-blacklist.json';
-const processResultPath = __dirname + '/../pipeline/node-wrapper/exec-result.txt'; // writes a status for the node wrapper
+
+const driverDir = J$.initParams.driverDir ??  __dirname + '/../pipeline/node-wrapper';
+const processResultPath = driverDir + '/exec-result.txt'; // writes a status for the node wrapper
 
 const ts = Date.now();
 const pkgName = J$.initParams.pkgName ?? null;

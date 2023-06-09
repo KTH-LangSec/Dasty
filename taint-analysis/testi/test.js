@@ -1,15 +1,23 @@
 // import {PassThrough} from "stream";
 // import fs from "fs";
 
-const content = {};
+// const content = {};
+//
+// if (content && typeof content.path === 'string' && !content.href) {
+//     // if (this.disableFileAccess) {
+//     //     contentStream = new PassThrough();
+//     //     setImmediate(() => contentStream.emit('error', new Error('File access rejected for ' + content.path)));
+//     //     return contentStream;
+//     // }
+//     // // read file
+//     // return fs.createReadStream(content.path);
+//     console.log(content.path.__val);
+// }
 
-if (content && typeof content.path === 'string' && !content.href) {
-    // if (this.disableFileAccess) {
-    //     contentStream = new PassThrough();
-    //     setImmediate(() => contentStream.emit('error', new Error('File access rejected for ' + content.path)));
-    //     return contentStream;
-    // }
-    // // read file
-    // return fs.createReadStream(content.path);
-    console.log(content.path.__val);
-}
+const obj = {blub: 'blub'};
+
+const x = obj.blub || 'hey';
+
+// const y = x + 'b';
+
+console.log(x);

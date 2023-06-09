@@ -181,6 +181,7 @@ class TaintAnalysis {
             }
         }
 
+        internalWrapper.__x_fName = f?.name;
         internalWrapper.__x_isWrapperFun = true; // indicator that it is an internal wrapper function
 
         return {result: internalWrapper};
@@ -256,14 +257,13 @@ class TaintAnalysis {
 
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
-
         // ToDo - does not work perfectly - maybe there is a better way to record entry points
-        // if (f?.name === 'require' && f?.toString() === require.toString() && args.length > 0
+        // if (f?.name === 'require' || (f.__x_isWrapperFun && f?.__x_fName === 'require') && args.length > 0
         //     && (typeof result === 'object' || typeof result === 'function')
         //     && !iidToLocation(iid).includes('node_modules/')) {
         //     // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
         //     const moduleName = args[0];
-        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === '../' || moduleName === './module-wrapper/mock-module') {
+        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === '../' || moduleName === './thesis-package') {
         //         const wrapper = createModuleWrapper(result, moduleName);
         //         return {result: wrapper};
         //     }
@@ -512,7 +512,8 @@ class TaintAnalysis {
         }
 
         if (!base || isTaintProxy(base) || offset === '__x_taint' // if there is no base (should in theory never be the case) or if we access a taint object prop/fun (e.g. for testing) don't add new taint value
-            || typeof offset !== 'string' && typeof offset !== 'number') // we only care for string and number offsets
+            || typeof offset !== 'string' && typeof offset !== 'number' // we only care for string and number offsets
+            || this.injectForIn) // if for...in injection don't inject anything else
             return;
 
         // this is probably an array access (don't inject)

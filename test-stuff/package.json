@@ -16,6 +16,7 @@
     "express-session": "^1.17.3",
     "multer": "^1.4.5-lts.1",
     "multiparty": "^4.2.3",
+    "nodemailer": "^6.9.3",
     "pino": "^8.11.0",
     "restler": "^3.4.0",
     "serve-static": "^1.15.0"

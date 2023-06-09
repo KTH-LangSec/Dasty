@@ -11,7 +11,7 @@ url.searchParams.append('per_page', '100');
 url.searchParams.append('api_key', key);
 
 async function fetchData() {
-    let page = 100;
+    let page = 1;
     while (page <= 100) {
         let responseText;
         try {

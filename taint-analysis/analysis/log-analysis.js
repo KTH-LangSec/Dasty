@@ -120,7 +120,7 @@ class LogAnalysis {
      * These callbacks are called before the execution of a function body starts and after it completes.
      **/
     functionEnter = function (iid, f, dis, args) {
-        console.log(this.hookToString('functionEnter', {iid, f, dis, args}));
+        console.log(this.hookToString('functionEnter', {iid, f: f?.name, dis, args: ''}));
         this.depth++;
     };
     functionExit = function (iid, returnVal, wrappedExceptionVal) {

@@ -17,7 +17,7 @@ const str = '<% if (user) { %>\n' +
     '  <h2><%= user.name %></h2>\n' +
     '<% } %>'
 
-ejs.render(str, data)
+ejs.render(str, data, {})
 
 // console.log(ejs.compile(str, {
 //     client: true

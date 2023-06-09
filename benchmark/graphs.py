@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
+import statistics
 
 
 def tool_exec(pkg, y):
@@ -41,7 +42,7 @@ def comp(x_labels, the_tool, augur, bar_labels, filename):
     bars.append(ax.bar(x, the_tool, width=width, color='#512DA8'))
     bars.append(ax.bar(x + width, augur, width=width, color='#F45050'))
 
-    ax.legend(bars, ('TODO: the-tool', 'augur'))
+    ax.legend(bars, ('Dasty', 'Augur'))
 
     plt.xlabel('Packages')
     plt.ylabel('Execution Time (in seconds)')
@@ -64,40 +65,82 @@ def comp(x_labels, the_tool, augur, bar_labels, filename):
     plt.close()
 
 
+def perf_ratio(data):
+    d = []
+    for i in range(len(data) - 1):
+        d.append(data[i + 1] / data[i])
+    return d
+
+
 def main():
-    # plt.rcParams.update({
-    #     "text.usetex": True,
-    # })
+    small = [0.09, 1.82, 2.3, 2.35]
+    # tool_exec(
+    #     'small',
+    #     small
+    # )
 
-    tool_exec(
-        'small',
-        [0.09, 1.82, 2.3, 2.35]
-    )
+    express = [2.39, 23.2, 43.65, 165.29]
+    # tool_exec(
+    #     'express',
+    #     express
+    # )
 
-    tool_exec(
-        'express',
-        [2.39, 23.2, 43.65, 165.29]
-    )
+    gm = [0.45, 3.26, 4.36, 5.37]
+    # tool_exec(
+    #     'gm',
+    #     gm
+    # )
 
-    tool_exec(
-        'gm',
-        [0.45, 3.26, 4.36, 5.37]
-    )
+    gm_2 = [8.09, 14.36, 16.47, 19.28]
+    # tool_exec(
+    #     'gm-2',
+    #     gm_2
+    # )
 
-    tool_exec(
-        'gm-2',
-        [8.09, 14.36, 16.47, 19.28]
-    )
+    fs_extra = [5.91, 11.89, 16.33, 25.1]
+    # tool_exec(
+    #     'fs-extra',
+    #     fs_extra
+    # )
 
-    tool_exec(
-        'fs-extra',
-        [5.91, 11.89, 16.33, 25.1]
-    )
+    print('Performance Ratio')
+    print('small')
+    d_small = perf_ratio(small)
+    print(d_small)
+
+    print('gm')
+    d_gm = perf_ratio(gm)
+    print(d_gm)
+
+    print('fs-extra')
+    d_fs = perf_ratio(fs_extra)
+    print(d_fs)
+
+    print('expess')
+    d_express = perf_ratio(express)
+    print(d_express)
+
+    d_avg = []
+    for i in range(3):
+        d_avg.append((d_small[i] + d_gm[i] + d_fs[i] + d_express[i]) / 4)
+    print(d_avg)
+
+    the_tool_small = [2.32, 5.37]
+    augur_small = [3.42, 23.21]
+    the_tool_big = [25.1, 165.29]
+    augur_big = [300, 300]
+
+    overhead_small = ((augur_small[0] / the_tool_small[0]) + (augur_small[1] / the_tool_small[0])) / 2
+    overhead_big = ((augur_big[0] / the_tool_big[0]) + (augur_big[1] / the_tool_big[0])) / 2
+    overhead_avg = (overhead_big + overhead_small) / 2
+    print(overhead_small)
+    print(overhead_big)
+    print(overhead_avg)
 
     comp(
         ['small.js', 'gm'],
-        the_tool=[2.32, 5.37],
-        augur=[3.42, 23.21],
+        the_tool=the_tool_small,
+        augur=augur_small,
         bar_labels=[
             ['2.35s', '5.37s'],
             ['3.42s', '23.21s']
@@ -107,8 +150,8 @@ def main():
 
     comp(
         ['fs-extra', 'express'],
-        the_tool=[25.1, 165.29],
-        augur=[300, 300],
+        the_tool=the_tool_big,
+        augur=augur_big,
         bar_labels=[
             ['25.1s', '165.29s'],
             ['300s (timeout)', '300s (timeout)']
