@@ -20,11 +20,12 @@ const TAINT_ANALYSIS = __dirname + '/../taint-analysis/';
 const PRE_ANALYSIS = __dirname + '/pre-analysis/';
 const SINK_ANALYSIS = __dirname + '/../sink-analysis/';
 const PACKAGE_DATA = __dirname + '/package-data/';
-const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
-const NODE_WRAPPER = __dirname + '/node-wrapper/node';
+const NODE_WRAPPER_DIR = __dirname + '/node-wrapper';
+const TMP_WRAPPERS_DIR = NODE_WRAPPER_DIR + '/tmp-wrappers';
+// const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
+// const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const TMP_DIR = __dirname + '/tmp';
 const FAILED_DB_WRITE = __dirname + '/results/failed-db-write';
-const NODE_WRAPPER_STATUS_FILE = __dirname + '/node-wrapper/status.csv';
 
 // keywords of packages that are known to be not interesting (for now)
 // if encountered the analysis is terminated
@@ -104,37 +105,45 @@ const CLI_ARGS = {
     '--collPrefix': 1,
     '--sinkAnalysis': 0,
     '--onlySinkAnalysis': 0,
-    '--repoPath': 1
+    '--repoPath': 1,
+    '--processNr': 1,
+    '--forceProcess': 0
 }
 
-function parseCliArgs() {
-    // Set default values (also so that the ide linter shuts up)
-    const parsedArgs = {
-        out: undefined,
-        outDir: undefined,
-        onlyPre: false,
-        sarif: false,
-        allTaints: false,
-        fromFile: false,
-        skipTo: undefined,
-        skipToLast: false,
-        skipDone: false,
-        force: false,
-        pkgName: undefined,
-        maxRuns: MAX_RUNS,
-        exportRuns: undefined,
-        forceBranchExec: false,
-        onlyForceBranchExec: false,
-        forceBranchExecProp: undefined,
-        execFile: undefined,
-        noForIn: false,
-        collPrefix: '',
-        resultsCollection: DEFAULT_RESULTS_COLL,
-        sinkAnalysis: false,
-        onlySinkAnalysis: false,
-        repoPath: undefined
-    };
+// Set default values (also so that the ide linter shuts up)
+let cliArgs = {
+    out: undefined,
+    outDir: undefined,
+    onlyPre: false,
+    sarif: false,
+    allTaints: false,
+    fromFile: false,
+    skipTo: undefined,
+    skipToLast: false,
+    skipDone: false,
+    force: false,
+    pkgName: undefined,
+    maxRuns: MAX_RUNS,
+    exportRuns: undefined,
+    forceBranchExec: false,
+    onlyForceBranchExec: false,
+    forceBranchExecProp: undefined,
+    execFile: undefined,
+    noForIn: false,
+    collPrefix: '',
+    resultsCollection: DEFAULT_RESULTS_COLL,
+    sinkAnalysis: false,
+    onlySinkAnalysis: false,
+    repoPath: undefined,
+    processNr: 1,
+    forceProcess: false
+};
 
+let driverDir = null; // the directory containing the driver - depends on 'processNr'
+let driverStatusFile = null;
+let pkgDataPrefix = ''; // prefix for package data - depends on 'processNr'
+
+function parseCliArgs() {
     // a copy of the args with all parsed args removed
     const trimmedArgv = process.argv.slice();
     let removedArgs = 0;
@@ -153,10 +162,10 @@ function parseCliArgs() {
         // remove leading -
         const argName = arg.replace(/^(-)+/g, '');
         if (expectedLength === 0) {
-            parsedArgs[argName] = true;
+            cliArgs[argName] = true;
         } else {
             const values = process.argv.slice(i + 1, i + 1 + expectedLength);
-            parsedArgs[argName] = expectedLength === 1 ? values[0] : values;
+            cliArgs[argName] = expectedLength === 1 ? values[0] : values;
         }
 
         trimmedArgv.splice(i - removedArgs, expectedLength + 1);
@@ -165,12 +174,11 @@ function parseCliArgs() {
         i += expectedLength;
     }
 
-    // add coll prefix to results coll for backward compatability with --resultsCollection
-    parsedArgs.resultsCollection = parsedArgs.collPrefix + parsedArgs.resultsCollection;
+    // add coll prefix to results coll for compatability with --resultsCollection
+    cliArgs.resultsCollection = cliArgs.collPrefix + cliArgs.resultsCollection;
 
     // the pkgName (or file) should now be the last (and only) arg
-    parsedArgs.pkgName = trimmedArgv.length > 2 ? trimmedArgv[trimmedArgv.length - 1] : null;
-    return parsedArgs;
+    cliArgs.pkgName = trimmedArgv.length > 2 ? trimmedArgv[trimmedArgv.length - 1] : null;
 }
 
 function execCmd(cmd, args, workingDir = null, live = false, throwOnErr = true, timeout = DEFAULT_TIMEOUT) {
@@ -252,7 +260,7 @@ async function fetchURL(pkgName) {
 }
 
 async function runPreAnalysisNodeWrapper(repoName, pkgName) {
-    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName},
+    await runAnalysisNodeWrapper(PRE_ANALYSIS, repoName, {pkgName, resultListsPrefix: pkgDataPrefix},
         ['/node_modules', 'tests/', 'test/', 'test-', 'test.js'] // exclude some classic test patterns to avoid false positives
     );
 
@@ -261,7 +269,7 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     // if it is still not found it means that it was never instrumented
     // save it separately to inspect it later
     if (type === null) {
-        fs.appendFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(pkgDataPrefix + 'non-instrumented-packages.txt', pkgName + '\n', {encoding: 'utf8'});
         type = PKG_TYPE.NOT_INSTRUMENTED;
     }
 
@@ -314,8 +322,10 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
     }
 
     params += ` ${nodeprofHome}/src/ch.usi.inf.nodeprof/js/jalangi.js --analysis ${analysis}`;
-    params += ` --exec-path ${NODE_WRAPPER}`; // overwrite the exec path in the analysis
+    params += ` --exec-path ${driverDir}/node`; // overwrite the exec path in the analysis
 
+    // add driver dir initParam
+    params += ` --initParam driverDir:${driverDir}`;
     for (const initParamName in initParams) {
         const initParam = initParams[initParamName];
         if (initParam !== null && initParam !== undefined) {
@@ -323,14 +333,14 @@ async function runAnalysisNodeWrapper(analysis, dir, initParams, exclude, execFi
         }
     }
 
-    fs.writeFileSync(__dirname + '/node-wrapper/params.txt', params, {encoding: 'utf8'});
+    fs.writeFileSync(driverDir + '/params.txt', params, {encoding: 'utf8'});
 
     // delete previous status file
-    if (fs.existsSync(NODE_WRAPPER_STATUS_FILE)) {
-        fs.unlinkSync(NODE_WRAPPER_STATUS_FILE);
+    if (fs.existsSync(driverStatusFile)) {
+        fs.unlinkSync(driverStatusFile);
     }
 
-    const cmd = execFile ? NODE_WRAPPER : NPM_WRAPPER;
+    const cmd = execFile ? driverDir + '/node' : driverDir + '/npm';
     const args = execFile ? execFile.split(' ') : ['test'];
     await execCmd(cmd, args, dir, true, false);
 }
@@ -461,13 +471,13 @@ function locToSarif(dbLocation, message = null) {
  * First checks nodejs-packages then frontend-packages, err-packages and non-instrumented-packages
  */
 function getPreAnalysisType(pkgName) {
-    if (fs.readFileSync(PACKAGE_DATA + 'nodejs-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    if (fs.existsSync(pkgDataPrefix + 'nodejs-packages.txt') && fs.readFileSync(pkgDataPrefix + 'nodejs-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.NODE_JS;
-    } else if (fs.readFileSync(PACKAGE_DATA + 'frontend-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    } else if (fs.existsSync(pkgDataPrefix + 'frontend-packages.txt') && fs.readFileSync(pkgDataPrefix + 'frontend-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.FRONTEND;
-    } else if (fs.readFileSync(PACKAGE_DATA + 'err-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    } else if (fs.existsSync(pkgDataPrefix + 'err-packages.txt') && fs.readFileSync(pkgDataPrefix + 'err-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.ERR
-    } else if (fs.readFileSync(PACKAGE_DATA + 'non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
+    } else if (fs.existsSync(pkgDataPrefix + 'non-instrumented-packages.txt') && fs.readFileSync(pkgDataPrefix + 'non-instrumented-packages.txt', {encoding: 'utf8'}).split('\n').includes(pkgName)) {
         return PKG_TYPE.NOT_INSTRUMENTED;
     } else {
         return null;
@@ -475,9 +485,9 @@ function getPreAnalysisType(pkgName) {
 }
 
 function parseExecStatuses() {
-    if (!fs.existsSync(NODE_WRAPPER_STATUS_FILE)) return null;
+    if (!fs.existsSync(driverStatusFile)) return null;
 
-    const statusLines = fs.readFileSync(NODE_WRAPPER_STATUS_FILE, {encoding: 'utf8'}).trim().split('\n');
+    const statusLines = fs.readFileSync(driverStatusFile, {encoding: 'utf8'}).trim().split('\n');
     // note that the parent status is written after the child status as it finishes later
     return statusLines.map(statusLine => {
         const statusData = statusLine.split(';');
@@ -489,7 +499,7 @@ function parseExecStatuses() {
     });
 }
 
-async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, cliArgs) {
+async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile) {
     const allBranchedOns = new Map(); // all so far encountered branchings (loc -> result)
     const branchedOnPerProp = new Map(); // all branchings per prop (prop -> (loc -> result))
 
@@ -614,7 +624,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 function getResultFilenames(pkgName, resultBasePath) {
     const resultDirFilenames = fs.readdirSync(resultBasePath);
     const resultFilenames = resultDirFilenames
-        .filter(f => f.startsWith(pkgName) && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints'))
+        .filter(f => f.startsWith(pkgName + '-') && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints'))
         .map(f => resultBasePath + f);
     const branchedOnFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-branched-on`)).map(f => resultBasePath + f);
     const taintsFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-taints`)).map(f => resultBasePath + f);
@@ -626,10 +636,9 @@ function getResultFilenames(pkgName, resultBasePath) {
  * Sets up package by fetching the git repository and installing the dependencies
  * @param pkgName - the actual name of the package
  * @param sanitizedPkgName - a sanitized version the is used as the directory name of the repository
- * @param cliArgs
  * @returns path to the local repository
  */
-async function setupPkg(pkgName, sanitizedPkgName, cliArgs) {
+async function setupPkg(pkgName, sanitizedPkgName) {
     console.error('Fetching URL');
     const url = await fetchURL(pkgName);
     if (url === null) return;
@@ -653,9 +662,9 @@ async function setupPkg(pkgName, sanitizedPkgName, cliArgs) {
     return repoPath;
 }
 
-async function runPipeline(pkgName, cliArgs) {
+async function runPipeline(pkgName) {
     if (DONT_ANALYSE.find(keyword => pkgName.includes(keyword)) !== undefined) {
-        fs.appendFileSync(PACKAGE_DATA + 'filtered-packages.txt', pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(pkgDataPrefix + 'filtered-packages.txt', pkgName + '\n', {encoding: 'utf8'});
         console.log(`${pkgName} is a 'don't analyse' script`);
         await writePackageDataToDB(pkgName, PKG_TYPE.PRE_FILTERED, null, cliArgs.collPrefix);
         return;
@@ -672,7 +681,7 @@ async function runPipeline(pkgName, cliArgs) {
 
     const resultBasePath = __dirname + '/results/';
 
-    fs.writeFileSync(PACKAGE_DATA + 'last-analyzed.txt', pkgName, {encoding: 'utf8'});
+    fs.writeFileSync(pkgDataPrefix + 'last-analyzed.txt', pkgName, {encoding: 'utf8'});
 
     let propBlacklist = null;
     try {
@@ -690,7 +699,7 @@ async function runPipeline(pkgName, cliArgs) {
         }
         if (!cliArgs.execFile && !cliArgs.repoPath) {
             // if no file or repo specified, fetch the pkg repository and install the dependencies
-            repoPath = await setupPkg(pkgName, sanitizedPkgName, cliArgs);
+            repoPath = await setupPkg(pkgName, sanitizedPkgName);
         }
 
         if (!repoPath) return;
@@ -710,9 +719,6 @@ async function runPipeline(pkgName, cliArgs) {
 
             if (preAnalysisType !== PKG_TYPE.NODE_JS) {
                 console.error('\nNo internal dependencies detected.');
-                if (preAnalysisType !== null && !cliArgs.force) {
-                    console.error('Use force to enforce re-evaluation.');
-                }
 
                 fs.rmSync(repoPath, {recursive: true, force: true});
                 return;
@@ -814,7 +820,7 @@ async function runPipeline(pkgName, cliArgs) {
         }
 
         if (cliArgs.forceBranchExec || cliArgs.onlyForceBranchExec) {
-            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile, cliArgs);
+            await runForceBranchExec(pkgName, resultBasePath, resultFilename, dbResultId, repoPath, execFile);
         }
     } finally {
         console.error('\nCleaning up');
@@ -826,11 +832,11 @@ async function runPipeline(pkgName, cliArgs) {
         branchedOnFilenames.forEach(fs.unlinkSync);
         taintsFilenames.forEach(fs.unlinkSync);
 
-        fs.appendFileSync(PACKAGE_DATA + 'already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
+        fs.appendFileSync(pkgDataPrefix + 'already-analyzed.txt', pkgName + '\n', {encoding: 'utf8'});
     }
 }
 
-async function getSarif(pkgName, cliArgs) {
+async function getSarif(pkgName) {
     let pkgNames;
     if (pkgName === null) {
         const db = await getDb();
@@ -1055,19 +1061,40 @@ function getPkgsFromFile(filename) {
 }
 
 async function run() {
-    const cliArgs = parseCliArgs();
+    parseCliArgs();
+
+    // set driver dir by processNr to allow for multiple simultaneous runs
+    driverDir = `${TMP_WRAPPERS_DIR}/${cliArgs.processNr}`;
+    driverStatusFile = `${driverDir}/status.csv`;
+    // do the same for the package data prefix
+    pkgDataPrefix = PACKAGE_DATA + cliArgs.processNr + '_';
+
+    // check if driver already exists - if so warn user
+    if (!fs.existsSync(driverDir)) {
+        fs.mkdirSync(driverDir);
+    } else if (!cliArgs.forceProcess) {
+        console.error('Process directory (' + driverDir + ') already exists. Is a process already running? If not use --forceProcess.')
+        return;
+    }
+
+    // copy driver files
+    fs.copyFileSync(NODE_WRAPPER_DIR + '/node', driverDir + '/node');
+    fs.copyFileSync(NODE_WRAPPER_DIR + '/npm', driverDir + '/npm');
+    fs.copyFileSync(NODE_WRAPPER_DIR + '/node.py', driverDir + '/node.py');
+    fs.copyFileSync(NODE_WRAPPER_DIR + '/script-wrapper.js', driverDir + '/script-wrapper.js');
+
     const startTs = Date.now();
 
     const pkgNames = cliArgs.fromFile ? getPkgsFromFile(cliArgs.pkgName) : [cliArgs.pkgName];
 
     let skipTo = cliArgs.skipTo;
-    if (!skipTo && cliArgs.skipToLast) {
-        skipTo = fs.readFileSync(PACKAGE_DATA + 'last-analyzed.txt', {encoding: 'utf8'});
+    if (!skipTo && cliArgs.skipToLast && fs.existsSync(pkgDataPrefix + 'last-analyzed.txt')) {
+        skipTo = fs.readFileSync(pkgDataPrefix + 'last-analyzed.txt', {encoding: 'utf8'});
     }
 
     let packagesToSkip = [];
-    if (cliArgs.skipDone) {
-        packagesToSkip = fs.readFileSync(PACKAGE_DATA + 'already-analyzed.txt', {encoding: 'utf8'}).split('\n').map(p => p.trim());
+    if (cliArgs.skipDone && fs.existsSync(pkgDataPrefix + 'already-analyzed.txt')) {
+        packagesToSkip = fs.readFileSync(pkgDataPrefix + 'already-analyzed.txt', {encoding: 'utf8'}).split('\n').map(p => p.trim());
     }
 
     for (const pkgName of pkgNames) {
@@ -1082,10 +1109,10 @@ async function run() {
         try {
             if (cliArgs.sarif) {
                 console.error(`Creating sarif`);
-                await getSarif(pkgName, cliArgs);
+                await getSarif(pkgName);
             } else {
                 console.error(`Analysing '${pkgName}'`);
-                await runPipeline(pkgName, cliArgs)
+                await runPipeline(pkgName)
                 console.error(`Analyzing ${pkgName} complete`);
             }
         } catch (e) {
@@ -1105,6 +1132,9 @@ async function run() {
         endTs,
         duration: endTs - startTs
     });
+
+    // delete tmp driver
+    fs.rmSync(driverDir, {recursive: true, force: true});
 
     closeConnection();
 }

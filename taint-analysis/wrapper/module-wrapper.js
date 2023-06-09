@@ -65,7 +65,7 @@ class ModuleWrapperProxyHandler {
         //     args: argumentList.map(a => a.toString())
         // };
 
-        const ep = '()';
+        const ep = `(${argumentList.map(a => typeof a === 'object' ? JSON.stringify(a) : a.toString())})`;
 
         let result = null;
         callDepth++; // adapt call depth

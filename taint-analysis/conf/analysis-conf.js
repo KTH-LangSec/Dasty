@@ -10,7 +10,8 @@ module.exports = {
         'acorn',
         'test/',
         'tests/',
-        'examples/'
+        'examples/',
+        '/node_modules/superagent/node_modules/'
     ],
     DONT_UNWRAP: [
         'emit',

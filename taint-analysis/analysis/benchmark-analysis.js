@@ -52,7 +52,15 @@ class TaintAnalysis {
     binaryEnter = (iid, op) => {
     }
 
+    binaryInput = (iid, op, index, input) => {
+        if (op === '||' && index === 0 && input === 'blub') {
+            return {result: undefined};
+        }
+        // console.log(op, index, input);
+    }
+
     binary = (iid, op, left, right, result, isLogic) => {
+        console.log(op, left, right, result);
     }
 
     putFieldPre = (iid, base, offset, value) => {
