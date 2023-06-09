@@ -1070,6 +1070,22 @@ async function run() {
     // do the same for the package data prefix
     pkgDataPrefix = PACKAGE_DATA + cliArgs.processNr + '_';
 
+    if (!cliArgs.sarif) {
+        // check if driver already exists - if so warn user
+        if (!fs.existsSync(driverDir)) {
+            fs.mkdirSync(driverDir);
+        } else if (!cliArgs.forceProcess) {
+            console.error('Process directory (' + driverDir + ') already exists. Is the process already running? If not use --forceProcess.')
+            return;
+        }
+
+        // copy driver files
+        fs.copyFileSync(NODE_WRAPPER_DIR + '/node', driverDir + '/node');
+        fs.copyFileSync(NODE_WRAPPER_DIR + '/npm', driverDir + '/npm');
+        fs.copyFileSync(NODE_WRAPPER_DIR + '/node.py', driverDir + '/node.py');
+        fs.copyFileSync(NODE_WRAPPER_DIR + '/script-wrapper.js', driverDir + '/script-wrapper.js');
+    }
+
     const startTs = Date.now();
 
     const pkgNames = cliArgs.fromFile ? getPkgsFromFile(cliArgs.pkgName) : [cliArgs.pkgName];
@@ -1098,20 +1114,6 @@ async function run() {
                 console.error(`Creating sarif`);
                 await getSarif(pkgName);
             } else {
-                // check if driver already exists - if so warn user
-                if (!fs.existsSync(driverDir)) {
-                    fs.mkdirSync(driverDir);
-                } else if (!cliArgs.forceProcess) {
-                    console.error('Process directory (' + driverDir + ') already exists. Is the process already running? If not use --forceProcess.')
-                    return;
-                }
-
-                // copy driver files
-                fs.copyFileSync(NODE_WRAPPER_DIR + '/node', driverDir + '/node');
-                fs.copyFileSync(NODE_WRAPPER_DIR + '/npm', driverDir + '/npm');
-                fs.copyFileSync(NODE_WRAPPER_DIR + '/node.py', driverDir + '/node.py');
-                fs.copyFileSync(NODE_WRAPPER_DIR + '/script-wrapper.js', driverDir + '/script-wrapper.js');
-
                 console.error(`Analysing '${pkgName}'`);
                 await runPipeline(pkgName)
                 console.error(`Analyzing ${pkgName} complete`);
