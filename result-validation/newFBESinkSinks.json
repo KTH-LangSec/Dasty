@@ -1,0 +1,336 @@
+{
+  "node:events::emit": [
+    "archiver",
+    "archiver",
+    "archiver",
+    "enquirer",
+    "enquirer",
+    "gm",
+    "jshint",
+    "jshint",
+    "jshint",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "koa-static",
+    "koa-static",
+    "mqtt",
+    "mqtt",
+    "mqtt",
+    "mysql2",
+    "pino",
+    "raw-body",
+    "readable-stream",
+    "grpc",
+    "tape",
+    "tape",
+    "grpc",
+    "vinyl-fs",
+    "ws"
+  ],
+  "node:internal/streams/readable::": [
+    "archiver",
+    "sharp",
+    "unzipper",
+    "unzipper",
+    "unzipper",
+    "unzipper",
+    "unzipper",
+    "unzipper"
+  ],
+  "node:internal/process/task_queues::nextTick": [
+    "archiver",
+    "archiver",
+    "archiver",
+    "archiver",
+    "archiver",
+    "mqtt",
+    "mqtt",
+    "mqtt",
+    "raw-body",
+    "raw-body",
+    "raw-body",
+    "readable-stream",
+    "readable-stream",
+    "readable-stream",
+    "readable-stream",
+    "readable-stream",
+    "tape",
+    "vinyl-fs",
+    "vinyl-fs",
+    "vinyl-fs",
+    "vinyl-fs",
+    "vinyl-fs"
+  ],
+  "node:fs::createReadStream": [
+    "argparse",
+    "serve-static"
+  ],
+  "node:internal/util/inspect::inspect": [
+    "argparse"
+  ],
+  "node:child_process::spawn": [
+    "aws-sdk",
+    "gh-pages"
+  ],
+  "node:path::join": [
+    "aws-sdk",
+    "aws-sdk",
+    "aws-sdk",
+    "aws-sdk",
+    "aws-sdk",
+    "config",
+    "liftoff",
+    "nodemailer",
+    "rollup-plugin-node-resolve",
+    "rollup-plugin-node-resolve"
+  ],
+  "node:fs::writeFileSync": [
+    "aws-sdk",
+    "ejs",
+    "ejs"
+  ],
+  "node:_http_outgoing::end": [
+    "body-parser",
+    "body-parser",
+    "cookie-parser",
+    "express",
+    "koa-bodyparser",
+    "koa-logger",
+    "koa-router"
+  ],
+  "node:internal/util/inspect::format": [
+    "bunyan",
+    "bunyan",
+    "bunyan",
+    "karma"
+  ],
+  "node:buffer::isBuffer": [
+    "cheerio",
+    "config",
+    "jshint",
+    "jszip",
+    "koa-bodyparser",
+    "koa-logger",
+    "semver",
+    "tape",
+    "tape",
+    "vinyl-fs"
+  ],
+  "node:path::isAbsolute": [
+    "config"
+  ],
+  "node:internal/console/constructor::warn": [
+    "config",
+    "config",
+    "config",
+    "plist"
+  ],
+  "node:fs::readFileSync": [
+    "config",
+    "dotenv",
+    "jshint",
+    "rollup"
+  ],
+  "<builtin>::Function": [
+    "consolidate"
+  ],
+  "node:buffer::from": [
+    "convert-source-map",
+    "gray-matter",
+    "mqtt",
+    "readable-stream",
+    "request",
+    "ws"
+  ],
+  "node:_http_outgoing::setHeader": [
+    "cors"
+  ],
+  "node:url::urlFormat": [
+    "download-git-repo",
+    "request"
+  ],
+  "node:internal/streams/writable::": [
+    "ejs",
+    "gm",
+    "mqtt",
+    "ws"
+  ],
+  "node:path::extname": [
+    "ejs",
+    "rollup",
+    "rollup"
+  ],
+  "node:timers::setImmediate": [
+    "express-session",
+    "finalhandler"
+  ],
+  "node:url::urlParse": [
+    "express",
+    "oauth"
+  ],
+  "node:http::request": [
+    "form-data"
+  ],
+  "node:util::getStatsCallbackified": [
+    "fs-extra"
+  ],
+  "node:internal/modules/cjs/helpers::resolve": [
+    "gh-pages"
+  ],
+  "node:internal/util/types::isTypedArray": [
+    "jshint"
+  ],
+  "node:path::dirname": [
+    "jshint",
+    "rollup",
+    "rollup-plugin-node-resolve",
+    "rollup"
+  ],
+  "node:path::resolve": [
+    "jshint",
+    "karma",
+    "karma",
+    "liftoff",
+    "rollup-plugin-commonjs",
+    "rollup",
+    "rollup",
+    "rollup",
+    "send",
+    "sharp",
+    "typeorm"
+  ],
+  "node:internal/modules/cjs/loader::": [
+    "karma",
+    "karma",
+    "karma",
+    "karma",
+    "rimraf"
+  ],
+  "node:buffer::byteLength": [
+    "koa-bodyparser",
+    "koa-logger",
+    "koa-logger",
+    "koa-router",
+    "mqtt",
+    "pino",
+    "pino",
+    "request"
+  ],
+  "node:internal/fs/promises::chmod": [
+    "metalsmith"
+  ],
+  "node:timers::setTimeout": [
+    "morgan",
+    "mysql2"
+  ],
+  "node:internal/net::isIP": [
+    "mqtt"
+  ],
+  "node:_tls_wrap::connect": [
+    "mqtt"
+  ],
+  "node:net::connect": [
+    "mysql2"
+  ],
+  "node:internal/url::URL": [
+    "mysql2",
+    "sharp",
+    "source-map",
+    "source-map"
+  ],
+  "node:buffer::isEncoding": [
+    "mysql2",
+    "node-watch"
+  ],
+  "node:fs::createWriteStream": [
+    "ncp",
+    "winston-daily-rotate-file"
+  ],
+  "node:fs::readdirSync": [
+    "node-sass"
+  ],
+  "node:buffer::toString": [
+    "node-watch"
+  ],
+  "node:internal/encoding::encode": [
+    "pako"
+  ],
+  "node:domain::emit": [
+    "pino",
+    "restify",
+    "restify",
+    "restify"
+  ],
+  "node:internal/worker::Worker": [
+    "pino"
+  ],
+  "node:internal/url::pathToFileURL": [
+    "pino"
+  ],
+  "node:buffer::write": [
+    "pino"
+  ],
+  "node:internal/process/per_thread::hrtime": [
+    "restify"
+  ],
+  "node:domain::": [
+    "restify"
+  ],
+  "node:internal/http2/core::createSecureServer": [
+    "restify"
+  ],
+  "node:https::createServer": [
+    "restify",
+    "restify"
+  ],
+  "node:internal/assert/assertion_error::AssertionError": [
+    "restify"
+  ],
+  "node:fs::statSync": [
+    "rollup",
+    "touch"
+  ],
+  "node:path::basename": [
+    "rollup"
+  ],
+  "node:path::normalize": [
+    "rollup",
+    "rollup"
+  ],
+  "node:fs::stat": [
+    "rollup",
+    "rollup-plugin-node-resolve"
+  ],
+  "node:events::addListener": [
+    "serve-static"
+  ],
+  "node:https::request": [
+    "sockjs-client",
+    "ws"
+  ],
+  "node:internal/crypto/hash::update": [
+    "stylus"
+  ],
+  "node:internal/streams/legacy::": [
+    "grpc"
+  ],
+  "node:fs::futimes": [
+    "vinyl-fs",
+    "vinyl-fs"
+  ],
+  "node:path::relative": [
+    "vinyl"
+  ]
+}

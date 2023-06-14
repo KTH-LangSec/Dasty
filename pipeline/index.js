@@ -50,7 +50,8 @@ const DONT_ANALYSE = [
     'nyc',
     'typescript',
     'jquery',
-    'browser'
+    'browser',
+    'lodash.'
 ];
 
 // specific keyword that if included in the filepath won't be instrumented during the analysis
