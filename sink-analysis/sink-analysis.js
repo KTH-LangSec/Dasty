@@ -76,10 +76,13 @@ class SinkAnalysis {
     writeSink = (iid, fn, args) => {
         if (!this.#resultFilepath) return;
 
+        const callStack = (new Error()).stack?.split('\n').splice(3).map(s => s.trim().substring(3));
+
         this.sinks.push({
             ...parseIID(iid),
             fn,
-            args: args.map(a => a?.toString())
+            args: args.map(a => a?.toString()),
+            callStack
         });
         fs.writeFileSync(this.#resultFilepath, JSON.stringify(this.sinks), {encoding: 'utf8'});
     }

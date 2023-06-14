@@ -17,8 +17,11 @@ const {
     EXCLUDE_INJECTION,
     DONT_UNWRAP
 } = require("../conf/analysis-conf");
-const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn} = require('../utils/result-handler');
+const {addAndWriteFlows, writeFlows, addAndWriteBranchedOn, writeAdditionalSink} = require('../utils/result-handler');
 const {InfoWrapper, INFO_TYPE} = require("../wrapper/info-wrapper");
+const path = require("path");
+const fs = require("fs");
+const cp = require("child_process");
 
 /**
  * The analysis class that is registered with nodeprof and implements the hooks
@@ -57,6 +60,9 @@ class TaintAnalysis {
 
     sinkStrings = []; // list of keywords that if contained in a function name it is considered a sink
 
+    additionalSinksResultFilepath = null;
+    additionalSinks = [];
+
     /**
      * @param pkgName
      * @param sinksBlacklist a blacklist of node internal function and modules that should not be considered sinks
@@ -69,7 +75,7 @@ class TaintAnalysis {
      * @param injectForIn specifies if for 'for in' iterations a taint value should be injected as source (might lead to unexpected behaviour)
      * @param sinkStrings specifies a list of 'keywords' that specifies all functions that contain any of them as sinks
      */
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false, sinkStrings = []) {
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false, sinkStrings = [], additionalSinkResultFilepath = null) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
@@ -85,6 +91,7 @@ class TaintAnalysis {
         this.recordAllFunCalls = recordAllFunCalls;
         this.injectForIn = injectForIn;
         this.sinkStrings = sinkStrings;
+        this.additionalSinksResultFilepath = additionalSinkResultFilepath;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
@@ -187,8 +194,15 @@ class TaintAnalysis {
         return {result: internalWrapper};
     }
 
-    invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy) => {
-        if (f === undefined || functionScope === undefined || f.__x_isWrapperFun) return;
+    invokeFunPre = (iid, f, base, args, isConstructor, isMethod, functionScope, proxy, originalFun) => {
+        if (f === undefined) return;
+
+        // check for additional sinks
+        if (/*this.forceBranches && */(functionScope?.startsWith('node:') || originalFun !== undefined)) {
+            this.checkAdditionalSink(iid, originalFun ?? f, args);
+        }
+
+        if (functionScope === undefined || f.__x_isWrapperFun) return;
 
         if (proxy && isAnalysisWrapper(proxy) && proxy?.__x_entryPoint) {
             this.entryPoint = proxy.__x_entryPoint;
@@ -623,7 +637,7 @@ class TaintAnalysis {
                 ({})['__proto__'][propName] = createTaintVal(iid, 'forInProp', {
                     iid: this.entryPointIID,
                     entryPoint: this.entryPoint
-                }, undefined, null, false);
+                }, undefined, null, true);
 
                 this.forInInjectedProps.push(propName);
             }
@@ -688,6 +702,48 @@ class TaintAnalysis {
     endExecution = (code) => {
         if (this.executionDoneCallback) {
             this.executionDoneCallback(allTaintValues, this.uncaughtErr);
+        }
+    }
+
+    checkAdditionalSink = (iid, f, args) => {
+        if (f.name === 'require' && args?.length > 0 && (args[0].startsWith('.') || args[0].startsWith('/'))) {
+            let reqPath = args[0];
+            if (args[0].startsWith('.')) {
+                const loc = iidToLocation(iid);
+                const filepath = loc.substring(1, loc.indexOf(':'));
+                reqPath = path.join(path.dirname(filepath), args[0]);
+            }
+
+            if (fs.existsSync(reqPath) && fs.lstatSync(reqPath).isDirectory() // is it a directory ...
+                && !fs.readdirSync(reqPath).includes('package.json')  // ... that does not contain 'package.json' ...
+                && !require.cache[reqPath + '/index.js'] && !require.cache[reqPath + 'index.js']) { // ... and is not cached
+                writeAdditionalSink(iid, 'require', args, this.additionalSinksResultFilepath, this.forceBranches?.props, this.additionalSinks);
+            }
+            return;
+        }
+
+        if ([cp.exec, cp.execSync, cp.spawn, cp.spawnSync, cp.fork].includes(f)) {
+            let argOpt = f === cp.exec || f === cp.execSync || args.length <= 2 ? args[1] : args[2];
+
+            if (typeof argOpt !== 'object') { // it can be callback
+                argOpt = undefined;
+            }
+
+            if (Object.prototype.isPrototypeOf(argOpt)
+                && !argOpt.hasOwnProperty('shell')
+                && (!argOpt.env || Object.prototype.isPrototypeOf(argOpt.env))) {
+                writeAdditionalSink(iid, 'child_process.' + f.name, args, this.additionalSinksResultFilepath, this.forceBranches?.props, this.additionalSinks);
+                return;
+            }
+
+            if (f === cp.fork) return;
+
+            if (args[0] && typeof args[0] === 'string' && (!argOpt?.env || Object.prototype.isPrototypeOf(argOpt.env))) {
+                const execPath = args[0].split(' ')[0];
+                if (execPath.endsWith('.js') || execPath.endsWith('node') || execPath.endsWith('npm') || execPath.endsWith('git')) {
+                    writeAdditionalSink(iid, 'child_process.' + f.name, args, this.additionalSinksResultFilepath, this.forceBranches?.props, this.additionalSinks);
+                }
+            }
         }
     }
 

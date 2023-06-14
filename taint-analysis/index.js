@@ -18,9 +18,11 @@ const pkgName = J$.initParams.pkgName ?? null;
 let resultFilename = J$.initParams.resultFilename ?? (pkgName ? __dirname + `/results/${pkgName}` : null);
 let branchedOnFilename = null;
 let taintsFilename = null;
+let additionalSinksFilename = null;
 if (resultFilename) {
     branchedOnFilename = resultFilename + `-branched-on-${ts}.json`;
     taintsFilename = resultFilename + `-taints-${ts}.json`;
+    additionalSinksFilename = resultFilename + `-sinks-${ts}.json`;
     resultFilename += `-${ts}.json`;
 }
 let forceBranches = null;
@@ -74,7 +76,8 @@ const analysis = new TaintAnalysis(
     forceBranches,
     recordAllFunCalls,
     injectForIn,
-    sinkStrings
+    sinkStrings,
+    additionalSinksFilename
 );
 
 J$.addAnalysis(analysis);

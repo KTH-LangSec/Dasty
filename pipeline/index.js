@@ -103,6 +103,7 @@ const CLI_ARGS = {
     '--noForIn': 0,
     '--resultsCollection': 1,
     '--collPrefix': 1,
+    '--forceBranchExecCollPrefix': 1, // this is used to specify where the forced branch exec information should be obtained (defaults to collPrefix)
     '--sinkAnalysis': 0,
     '--onlySinkAnalysis': 0,
     '--repoPath': 1,
@@ -131,6 +132,7 @@ let cliArgs = {
     execFile: undefined,
     noForIn: false,
     collPrefix: '',
+    forceBranchExecCollPrefix: undefined,
     resultsCollection: DEFAULT_RESULTS_COLL,
     sinkAnalysis: false,
     onlySinkAnalysis: false,
@@ -176,6 +178,10 @@ function parseCliArgs() {
 
     // add coll prefix to results coll for compatability with --resultsCollection
     cliArgs.resultsCollection = cliArgs.collPrefix + cliArgs.resultsCollection;
+
+    if (cliArgs.forceBranchExecCollPrefix === undefined) {
+        cliArgs.forceBranchExecCollPrefix = cliArgs.collPrefix;
+    }
 
     // the pkgName (or file) should now be the last (and only) arg
     cliArgs.pkgName = trimmedArgv.length > 2 ? trimmedArgv[trimmedArgv.length - 1] : null;
@@ -276,14 +282,17 @@ async function runPreAnalysisNodeWrapper(repoName, pkgName) {
     return type;
 }
 
-async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null, collPrefix = '') {
+async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null) {
     await runAnalysisNodeWrapper(SINK_ANALYSIS, repoName, {pkgName}, EXCLUDE_ANALYSIS_KEYWORDS, execFile);
 
     // write results to db
     const resultsBasePath = SINK_ANALYSIS + 'results/';
     const resultDirFilenames = fs.readdirSync(SINK_ANALYSIS + 'results/');
     const resultFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-`)).map(f => path.join(resultsBasePath, f));
+    await writeSinksToDB(pkgName, resultFilenames);
+}
 
+async function writeSinksToDB(pkgName, resultFilenames) {
     const results = resultFilenames.flatMap(f =>
         JSON.parse(fs.readFileSync(f, {encoding: 'utf8'})));
 
@@ -296,7 +305,7 @@ async function runSinkAnalysisNodeWrapper(repoName, pkgName, execFile = null, co
     }
 
     const db = await getDb();
-    const resColl = await db.collection(collPrefix + 'sinkResults');
+    const resColl = await db.collection(cliArgs.collPrefix + 'sinkResults');
     await resColl.insertOne({
         package: pkgName,
         timestamp: Date.now(),
@@ -506,7 +515,7 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
     // const {branchedOnFilenames} = getResultFilenames(pkgName, resultBasePath);
 
     const db = await getDb();
-    const branchedOnColl = await db.collection(cliArgs.collPrefix + 'branchedOn');
+    const branchedOnColl = await db.collection(cliArgs.forceBranchExecCollPrefix + 'branchedOn');
 
     const branchedOn = (await branchedOnColl.findOne({package: pkgName}, {sort: {timestamp: -1}}))?.branchedOn;
 
@@ -563,7 +572,12 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
                 execFile
             );
 
-            let {resultFilenames, branchedOnFilenames, taintsFilenames} = getResultFilenames(pkgName, resultBasePath);
+            let {
+                resultFilenames,
+                branchedOnFilenames,
+                taintsFilenames,
+                sinksFilenames
+            } = getResultFilenames(pkgName, resultBasePath);
 
             const runName = `forceBranchProps: ${Array.from(props).join(', ')}`;
             const execStatuses = parseExecStatuses();
@@ -571,6 +585,8 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
             try {
                 const {resultId} = await writeResultsToDB(pkgName, dbResultId, runName, resultFilenames, taintsFilenames, null, execStatuses, cliArgs.resultsCollection, cliArgs.collPrefix);
                 dbResultId = resultId; // if no results found dbResultId might be still null
+
+                await writeSinksToDB(pkgName, sinksFilenames);
             } catch (e) {
                 // if there is a problem writing to the database move files to not lose the data
                 resultFilenames.forEach(file => {
@@ -624,12 +640,13 @@ async function runForceBranchExec(pkgName, resultBasePath, resultFilename, dbRes
 function getResultFilenames(pkgName, resultBasePath) {
     const resultDirFilenames = fs.readdirSync(resultBasePath);
     const resultFilenames = resultDirFilenames
-        .filter(f => f.startsWith(pkgName + '-') && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints'))
+        .filter(f => f.startsWith(pkgName + '-') && !f.includes('crash-report') && !f.includes('branched-on') && !f.includes('-taints') && !f.includes('-sinks'))
         .map(f => resultBasePath + f);
     const branchedOnFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-branched-on`)).map(f => resultBasePath + f);
     const taintsFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-taints`)).map(f => resultBasePath + f);
+    const sinksFilenames = resultDirFilenames.filter(f => f.startsWith(`${pkgName}-sinks-`)).map(f => resultBasePath + f);
 
-    return {resultFilenames, branchedOnFilenames, taintsFilenames};
+    return {resultFilenames, branchedOnFilenames, taintsFilenames, sinksFilenames};
 }
 
 /**

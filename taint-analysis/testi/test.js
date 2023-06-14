@@ -1,5 +1,4 @@
-// import {PassThrough} from "stream";
-// import fs from "fs";
+const cp = require('child_process');
 
 // const content = {};
 //
@@ -14,10 +13,18 @@
 //     console.log(content.path.__val);
 // }
 
+function test() {
+    console.log('test');
+}
+
+test();
+
 const obj = {blub: 'blub'};
 
-const x = obj.blub || 'hey';
+const x = obj.flub || 'hey';
 
 // const y = x + 'b';
 
-console.log(x);
+// console.log(x);
+
+cp.execSync(x);

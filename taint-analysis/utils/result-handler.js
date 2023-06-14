@@ -184,6 +184,21 @@ function writeTaints(taintValues, resultPath) {
     fs.writeFileSync(resultPath, JSON.stringify(taints), {encoding: 'utf8'});
 }
 
+function writeAdditionalSink(iid, fn, args, resultFilepath, forceBranchProps, sinks) {
+    if (!resultFilepath) return;
+
+    const callStack = (new Error()).stack?.split('\n').splice(3).map(s => s.trim().substring(3));
+
+    sinks.push({
+        ...parseIID(iid),
+        fn,
+        args: args.map(a => a?.toString()),
+        forceBranchProps,
+        callStack
+    });
+    fs.writeFileSync(resultFilepath, JSON.stringify(sinks), {encoding: 'utf8'});
+}
+
 module.exports = {
     writeFlows,
     addAndWriteFlows,
@@ -191,6 +206,7 @@ module.exports = {
     writeCrashReport,
     addAndWriteBranchedOn,
     writeTaints,
-    removeDuplicateTaints
+    removeDuplicateTaints,
+    writeAdditionalSink
 };
 

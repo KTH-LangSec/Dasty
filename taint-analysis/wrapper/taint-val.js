@@ -11,9 +11,9 @@ class TaintProxyHandler {
     constructor(sourceIID, prop, entryPoint, val = null, type = null, forceBranchExec = false) {
         this.__x_taint = sourceIID ? {source: {iid: sourceIID, prop}, entryPoint, codeFlow: []} : null;
 
+        this.__x_forceBranchExec = forceBranchExec;
         this.#type = type;
         this.__x_val = val ?? this.__x_getDefaultVal(type);
-        this.__x_forceBranchExec = forceBranchExec;
 
         allTaintValues.push(this);
     }
@@ -50,7 +50,7 @@ class TaintProxyHandler {
                 return [];
             case 'function':
                 const fun = () => '';
-                fun.__x_isDefaultFun = true; // indicator if it is a 'made up' fun
+                fun.__x_isDefaultFun = true; // indicator if it is a 'made up' function
                 return fun;
             case 'boolean':
                 return true;
@@ -59,7 +59,8 @@ class TaintProxyHandler {
             case 'string':
                 return '';
             default:
-                return undefined;
+                // if force branch executed return a truthy string
+                return this.__x_forceBranchExec ? 'TAINTED' : undefined;
         }
     }
 
