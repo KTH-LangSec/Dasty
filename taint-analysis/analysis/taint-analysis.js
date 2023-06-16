@@ -96,7 +96,11 @@ class TaintAnalysis {
         this.sinkStrings = sinkStrings;
         this.additionalSinksResultFilepath = additionalSinkResultFilepath;
 
-        this.requiredPkg = repoPath ? require(repoPath) : null;
+        try {
+            this.requiredPkg = repoPath ? require(repoPath) : null;
+        } catch (e) {
+            // if not a valid package (e.g. exec file)
+        }
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {

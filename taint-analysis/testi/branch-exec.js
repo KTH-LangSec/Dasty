@@ -5,7 +5,9 @@ const cp = require('child_process');
 const obj = {};
 
 if (obj.x) {
-    console.log('hey');
+    if (obj.y) {
+        console.log('hey');
+    }
     // if (obj.blub) {
     //     eval(x);
     // }
