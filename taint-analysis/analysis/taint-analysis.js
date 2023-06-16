@@ -301,7 +301,7 @@ class TaintAnalysis {
     };
 
     invokeFunException = (iid, e, f, receiver, args) => {
-        if (this.lastReadTaint === null) return;
+        if (this.lastReadTaint === null || !e) return;
 
         const newFlows = [];
         // record tainted receiver

@@ -51,7 +51,8 @@ const DONT_ANALYSE = [
     'typescript',
     'jquery',
     'browser',
-    'lodash.'
+    'lodash.',
+    'pm2'
 ];
 
 // specific keyword that if included in the filepath won't be instrumented during the analysis
@@ -88,6 +89,7 @@ const CLI_ARGS = {
     '--out': 1,
     '--outDir': 1,
     '--onlyPre': 0,
+    '--noPre': 0,
     '--sarif': 0,
     '--allTaints': 0,
     '--fromFile': 0,
@@ -117,6 +119,7 @@ let cliArgs = {
     out: undefined,
     outDir: undefined,
     onlyPre: false,
+    noPre: false,
     sarif: false,
     allTaints: false,
     fromFile: false,
@@ -723,7 +726,7 @@ async function runPipeline(pkgName) {
         if (!repoPath) return;
 
         // only run the pre analysis for repositories/packages
-        if (!execFile) {
+        if (!execFile && !cliArgs.noPre) {
             // run a non-instrumented run that does e.g. all the compiling/building, so we can skip it for the multiple instrumented runs
             // console.error('\nRunning non-instrumented run');
             // await execCmd(`cd ${repoPath}; npm test;`, true, false);
@@ -1154,7 +1157,9 @@ async function run() {
     });
 
     // delete tmp driver
-    fs.rmSync(driverDir, {recursive: true, force: true});
+    if (!cliArgs.sarif) {
+        fs.rmSync(driverDir, {recursive: true, force: true});
+    }
 
     closeConnection();
 }
