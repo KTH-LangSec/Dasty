@@ -63,6 +63,8 @@ class TaintAnalysis {
     additionalSinksResultFilepath = null;
     additionalSinks = [];
 
+    requiredPkg = null;
+
     /**
      * @param pkgName
      * @param sinksBlacklist a blacklist of node internal function and modules that should not be considered sinks
@@ -74,8 +76,9 @@ class TaintAnalysis {
      * @param recordAllFunCalls specifies if all function calls with tainted parameters should be recorded
      * @param injectForIn specifies if for 'for in' iterations a taint value should be injected as source (might lead to unexpected behaviour)
      * @param sinkStrings specifies a list of 'keywords' that specifies all functions that contain any of them as sinks
+     * @param additionalSinkResultFilepath result filename for the additional sinks not requiring a tainted value
      */
-    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false, sinkStrings = [], additionalSinkResultFilepath = null) {
+    constructor(pkgName, sinksBlacklist, propBlacklist, resultFilename = null, branchedOnFilename = null, executionDoneCallback = null, forceBranches = null, recordAllFunCalls = false, injectForIn = false, sinkStrings = [], additionalSinkResultFilepath = null, repoPath = null) {
         this.pkgName = pkgName;
         this.sinksBlacklist = sinksBlacklist;
         this.propBlacklist = propBlacklist;
@@ -92,6 +95,8 @@ class TaintAnalysis {
         this.injectForIn = injectForIn;
         this.sinkStrings = sinkStrings;
         this.additionalSinksResultFilepath = additionalSinkResultFilepath;
+
+        this.requiredPkg = repoPath ? require(repoPath) : null;
     }
 
     invokeFunStart = (iid, f, receiver, index, isConstructor, isAsync, functionScope, argLength) => {
@@ -272,15 +277,12 @@ class TaintAnalysis {
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
         // ToDo - does not work perfectly - maybe there is a better way to record entry points
-        // if (f?.name === 'require' || (f.__x_isWrapperFun && f?.__x_fName === 'require') && args.length > 0
-        //     && (typeof result === 'object' || typeof result === 'function')
-        //     && !iidToLocation(iid).includes('node_modules/')) {
-        //     // only wrap pkgName or relative path // ToDo - improve to check if it is actually the package
+        // if (this.requiredPkg && (f?.name === 'require' || (f.__x_isWrapperFun && f?.__x_fName === 'require') && args.length > 0)
+        //     && this.requiredPkg
+        //     && result === this.requiredPkg) {
         //     const moduleName = args[0];
-        //     if (moduleName === this.pkgName || moduleName === '..' || moduleName === '../' || moduleName === './thesis-package') {
-        //         const wrapper = createModuleWrapper(result, moduleName);
-        //         return {result: wrapper};
-        //     }
+        //     const wrapper = createModuleWrapper(result, moduleName);
+        //     return {result: wrapper};
         // }
 
         if (this.lastReadTaint === null) return;
@@ -301,7 +303,7 @@ class TaintAnalysis {
     };
 
     invokeFunException = (iid, e, f, receiver, args) => {
-        if (this.lastReadTaint === null) return;
+        if (this.lastReadTaint === null || !e) return;
 
         const newFlows = [];
         // record tainted receiver
