@@ -109,7 +109,8 @@ const CLI_ARGS = {
     '--onlySinkAnalysis': 0,
     '--repoPath': 1,
     '--processNr': 1,
-    '--forceProcess': 0
+    '--forceProcess': 0,
+    '--forceSetup': 0
 }
 
 // Set default values (also so that the ide linter shuts up)
@@ -139,7 +140,8 @@ let cliArgs = {
     onlySinkAnalysis: false,
     repoPath: undefined,
     processNr: 1,
-    forceProcess: false
+    forceProcess: false,
+    forceSetup: false
 };
 
 let driverDir = null; // the directory containing the driver - depends on 'processNr'
@@ -662,19 +664,25 @@ async function setupPkg(pkgName, sanitizedPkgName) {
     if (url === null) return;
 
     const repoPath = __dirname + `/packages/${sanitizedPkgName}`;
-    if (!fs.existsSync(repoPath)) {
-        console.error(`\nFetching repository ${url}`);
-        await execCmd('git', ['clone', url, sanitizedPkgName], __dirname + '/packages/', true);
-
-        console.error('\nInstalling dependencies');
-        const timedOut = (await execCmd('npm', ['install'], repoPath, true, false, NPM_INSTALL_TIMEOUT)).timedOut;
-
-        if (timedOut) {
-            await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null, cliArgs.collPrefix);
-            throw new Error("npm install timeout");
+    if (fs.existsSync(repoPath)) {
+        if (!cliArgs.forceSetup) {
+            console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
+            return repoPath;
         }
-    } else {
-        console.error(`\nDirectory ${repoPath} already exists. Skipping git clone.`)
+
+        // delete previous repository if forcing setup
+        fs.rmSync(repoPath, {force: true, recursive: true});
+    }
+
+    console.error(`\nFetching repository ${url}`);
+    await execCmd('git', ['clone', url, sanitizedPkgName], __dirname + '/packages/', true);
+
+    console.error('\nInstalling dependencies');
+    const timedOut = (await execCmd('npm', ['install'], repoPath, true, false, NPM_INSTALL_TIMEOUT)).timedOut;
+
+    if (timedOut) {
+        await writePackageDataToDB(pkgName, PKG_TYPE.NPM_TIMEOUT, null, cliArgs.collPrefix);
+        throw new Error("npm install timeout");
     }
 
     return repoPath;
@@ -747,7 +755,7 @@ async function runPipeline(pkgName) {
 
         if (cliArgs.sinkAnalysis || cliArgs.onlySinkAnalysis) {
             console.log('Running sink-analysis');
-            await runSinkAnalysisNodeWrapper(repoPath, pkgName, execFile, cliArgs.collPrefix);
+            await runSinkAnalysisNodeWrapper(repoPath, pkgName, execFile);
 
             if (cliArgs.onlySinkAnalysis) return;
         }

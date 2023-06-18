@@ -113,7 +113,6 @@ class TaintAnalysis {
                 || argLength === 0)) return;
 
         // if it is an internal function replace it with wrapper function that checks for and unwraps taint values
-        // ToDo - should the return value be tainted?
         // ToDo - we could add type hints for certain functions (e.g. eval has to unwrap to string)
 
         // is it blacklisted?
@@ -281,13 +280,13 @@ class TaintAnalysis {
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
         // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
         // ToDo - does not work perfectly - maybe there is a better way to record entry points
-        // if (this.requiredPkg && (f?.name === 'require' || (f.__x_isWrapperFun && f?.__x_fName === 'require') && args.length > 0)
-        //     && this.requiredPkg
-        //     && result === this.requiredPkg) {
-        //     const moduleName = args[0];
-        //     const wrapper = createModuleWrapper(result, moduleName);
-        //     return {result: wrapper};
-        // }
+        if (this.requiredPkg && (f?.name === 'require' || (f.__x_isWrapperFun && f?.__x_fName === 'require') && args.length > 0)
+            && this.requiredPkg
+            && result === this.requiredPkg) {
+            const moduleName = args[0];
+            const wrapper = createModuleWrapper(result, moduleName);
+            return {result: wrapper};
+        }
 
         if (this.lastReadTaint === null) return;
 
