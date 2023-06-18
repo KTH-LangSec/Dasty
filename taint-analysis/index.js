@@ -14,6 +14,7 @@ const processResultPath = driverDir + '/exec-result.txt'; // writes a status for
 
 const ts = Date.now();
 const pkgName = J$.initParams.pkgName ?? null;
+const repoPath = J$.initParams.repoPath ?? null;
 
 let resultFilename = J$.initParams.resultFilename ?? (pkgName ? __dirname + `/results/${pkgName}` : null);
 let branchedOnFilename = null;
@@ -77,7 +78,8 @@ const analysis = new TaintAnalysis(
     recordAllFunCalls,
     injectForIn,
     sinkStrings,
-    additionalSinksFilename
+    additionalSinksFilename,
+    repoPath
 );
 
 J$.addAnalysis(analysis);

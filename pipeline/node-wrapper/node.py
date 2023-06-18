@@ -3,6 +3,7 @@ import subprocess
 import os
 
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
+
 TIMEOUT = 60 * 8  # in seconds
 
 STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.csv'
