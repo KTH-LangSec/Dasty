@@ -26,9 +26,10 @@ def tool_exec(pkg, y):
         plt.text(bar.get_x() + bar.get_width() / 2, y[bar_idx] + height_diff, str(y[bar_idx]) + 's', ha='center', va='bottom')
 
     # plt.show()
-    pdf = PdfPages('overhead-' + pkg + '.pdf')
-    pdf.savefig()
-    pdf.close()
+    plt.savefig('overhead-' + pkg + '.png', dpi=600)
+    # pdf = PdfPages('overhead-' + pkg + '.pdf')
+    # pdf.savefig()
+    # pdf.close()
     plt.close()
 
 
@@ -59,9 +60,11 @@ def comp(x_labels, the_tool, augur, bar_labels, filename):
         for bar_idx, bar in enumerate(b):
             plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + height_diff, bar_labels[b_idx][bar_idx], ha='center', va='bottom')
 
-    pdf = PdfPages(filename)
-    pdf.savefig()
-    pdf.close()
+    # plt.show()
+    plt.savefig(filename + '.png', dpi=600)
+    # pdf = PdfPages(filename)
+    # pdf.savefig()
+    # pdf.close()
     plt.close()
 
 
@@ -74,22 +77,22 @@ def perf_ratio(data):
 
 def main():
     small = [0.09, 1.82, 2.3, 2.35]
-    # tool_exec(
-    #     'small',
-    #     small
-    # )
+    tool_exec(
+        'small',
+        small
+    )
 
     express = [2.39, 23.2, 43.65, 165.29]
-    # tool_exec(
-    #     'express',
-    #     express
-    # )
+    tool_exec(
+        'express',
+        express
+    )
 
     gm = [0.45, 3.26, 4.36, 5.37]
-    # tool_exec(
-    #     'gm',
-    #     gm
-    # )
+    tool_exec(
+        'gm',
+        gm
+    )
 
     gm_2 = [8.09, 14.36, 16.47, 19.28]
     # tool_exec(
@@ -98,10 +101,10 @@ def main():
     # )
 
     fs_extra = [5.91, 11.89, 16.33, 25.1]
-    # tool_exec(
-    #     'fs-extra',
-    #     fs_extra
-    # )
+    tool_exec(
+        'fs-extra',
+        fs_extra
+    )
 
     print('Performance Ratio')
     print('small')
