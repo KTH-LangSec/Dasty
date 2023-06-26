@@ -52,15 +52,15 @@ class TaintAnalysis {
     binaryEnter = (iid, op) => {
     }
 
-    binaryInput = (iid, op, index, input) => {
-        if (op === '||' && index === 0 && input === 'blub') {
-            return {result: undefined};
-        }
-        // console.log(op, index, input);
-    }
+    // binaryInput = (iid, op, index, input) => {
+    //     // if (op === '||' && index === 0 && input === 'blub') {
+    //     //     return {result: undefined};
+    //     // }
+    //     // console.log(op, index, input);
+    // }
 
     binary = (iid, op, left, right, result, isLogic) => {
-        console.log(op, left, right, result);
+        // console.log(op, left, right, result);
     }
 
     putFieldPre = (iid, base, offset, value) => {
@@ -75,17 +75,17 @@ class TaintAnalysis {
     conditional = (iid, result, isValue) => {
     }
 
-    controlFlowRootEnter = (iid, loopType, conditionResult) => {
-    }
-
-    controlFlowRootExit = (iid, loopType) => {
-    }
-
-    // uncaughtException = (err, origin) => {
+    // controlFlowRootEnter = (iid, loopType, conditionResult) => {
     // }
     //
-    // endExecution = (code) => {
+    // controlFlowRootExit = (iid, loopType) => {
     // }
+
+    uncaughtException = (err, origin) => {
+    }
+
+    endExecution = (code) => {
+    }
 
     // startExpression = (iid, type) => {
     // }

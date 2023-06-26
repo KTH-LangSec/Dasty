@@ -315,6 +315,16 @@ function isAnalysisWrapper(obj) {
     }
 }
 
+function isWrapperFun(obj) {
+    try {
+        return obj !== null && obj !== undefined
+            && (obj.__x_isWrapperFun);
+    } catch (e) {
+        // this for other proxies (test framework that uses proxies and throws error when undefined properties are accessed)
+        return false;
+    }
+}
+
 function isTaintProxy(obj) {
     try {
         return !!(obj !== null && obj !== undefined
@@ -475,6 +485,7 @@ module.exports = {
     unwrapDeep,
     isTaintProxy,
     isAnalysisWrapper,
+    isWrapperFun,
     createInternalFunctionWrapper,
     taintCompResult,
     updateAndCheckBranchCounter

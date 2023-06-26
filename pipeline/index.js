@@ -787,7 +787,7 @@ async function runPipeline(pkgName) {
                     writeOnDetect: true,
                     recordAllFunCalls: true,
                     injectForIn: forInRun,
-                    repoPath
+                    // repoPath
                 },
                 EXCLUDE_ANALYSIS_KEYWORDS,
                 execFile

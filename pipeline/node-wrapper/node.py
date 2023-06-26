@@ -4,7 +4,7 @@ import os
 
 NVM_NODE_EXEC = os.environ['NVM_DIR'] + '/versions/node/v18.12.1/bin/node'
 
-TIMEOUT = 60 * 8  # in seconds
+TIMEOUT = 60 * 20  # in seconds
 
 STATUS_FILE = os.path.dirname(os.path.realpath(__file__)) + '/status.csv'
 EXEC_RESULT_FILE = os.path.dirname(os.path.realpath(__file__)) + '/exec-result.txt'
