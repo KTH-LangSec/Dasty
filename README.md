@@ -36,16 +36,15 @@ mx fetch-jdk --java-distribution labsjdk-ce-19
 export JAVA_HOME=/path/to/labsjdk-ce-19-jvmci-23.0-b04
 ```
 
-#### 3. Install nodeprof.js
+#### 3. Set up nodeprof.js
 
 ```
-mkdir nodeprof-graalvm && cd nodeprof-graalvm
-git clone https://github.com/pmoosi/nodeprof.js.git
+cd nodeprof-graalvm/nodeprof.js
 mx sforceimports
 mx build
 ```
 
-#### 4. Set environment variables for node and nodeprof
+#### 4. Set environment variables for node and nodeprof.js
 
 ```
 export GRAAL_NODE=/path/to/nodeprof-graalvm/graal/sdk/mxbuild/linux-amd64/GRAALVM_6B34DA359F_JAVA19/graalvm-6b34da359f-java19-23.0.0-dev/languages/nodejs/bin/node
@@ -98,13 +97,13 @@ node index.js --force express
 Export all sarif data of the last analysis for a specific package:
 
 ```
-node index.js --sarif --allTaints --out /path/to/sarif.sarif express
+node index.js --sarif --out /path/to/sarif.sarif express
 ```
 
 Export all sarif data of the last analysis for all analyzed packages:
 
 ```
-node index.js --sarif --allTaints --outDir /path/to/sarif-dir/
+node index.js --sarif --outDir /path/to/sarif-dir/
 ```
 
 ### All flags:
@@ -131,7 +130,6 @@ Analysis
 * `--sarif`                    : Output results in SARIF format.
 * `--out <output_file_path>`   : Specifies the path and file name for the output file.
 * `--outDir <output_dir_path>` : Specifies the directory for the output file.
-* `--allTaints`                : Export all injected taints in addition to the flows (in a separate file).
 * `--exportRuns <n>`  : Export the last <n> runs (only works for flows and exceptions not for all taints and branchings)
   injections from the previous runs are skipped (default: 1).
 
