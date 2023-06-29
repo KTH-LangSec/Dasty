@@ -1,0 +1,13 @@
+newSource: src/ch.usi.inf.nodeprof.test/js/minitests/evalfunc.js / internal: false / eval: false / 2
+newSource matches: 2
+newSource: src/ch.usi.inf.nodeprof.test/js/minitests/evalfunc.js / internal: false / eval: true / 2
+newSource matches: 1
+new Function body (function foo() { console.log("abc") })(); return 42;
+result function: anonymous
+invoking func: Function
+abc
+invoking func: log
+invoking func: foo
+location inside eval on line: 16
+invoking func: anonymous
+at end of invocation at (src/ch.usi.inf.nodeprof.test/js/minitests/evalfunc.js:17:1:17:4), result: 42

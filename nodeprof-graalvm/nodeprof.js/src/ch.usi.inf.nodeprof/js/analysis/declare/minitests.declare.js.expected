@@ -1,0 +1,48 @@
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:{{module}})::exports var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:{{module}})::require var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:{{module}})::module var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:{{module}})::__filename var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:{{module}})::__dirname var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::foo var
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2) foo [Function: foo]
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:29:1:29:4) foo [Function: foo]
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::a var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::b var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::c var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::d let
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::j var
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::arr const
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::i let
+declare (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:16:1:27:2)::key let
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:17:13:17:14) a 1
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:17:5:17:14) d 1
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:10:18:19) i 0
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:21:18:22) i 0
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:28:18:31) i 0
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:28:18:31) i 1
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:21:18:22) i 1
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:28:18:31) i 1
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:28:18:31) i 2
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:21:18:22) i 2
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:28:18:31) i 2
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:28:18:31) i 3
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:18:21:18:22) i 3
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:10:20:19) j 0
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:21:20:22) j 0
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:28:20:31) j 0
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:28:20:31) j 1
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:21:20:22) j 1
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:28:20:31) j 1
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:28:20:31) j 2
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:21:20:22) j 2
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:28:20:31) j 2
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:28:20:31) j 3
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:20:21:20:22) j 3
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:22:5:22:24) arr [ 1, 2, 3 ]
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:23:21:23:24) arr [ 1, 2, 3 ]
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:23:5:25:6) key 1
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:23:5:25:6) key 2
+write (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:23:5:25:6) key 3
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:26:12:26:13) a 1
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:26:14:26:15) b 2
+read (src/ch.usi.inf.nodeprof.test/js/minitests/declare.js:26:16:26:17) c 3
