@@ -1,3 +1,5 @@
+# Dasty: Dynamic Taint Analysis Tool for Prototype Pollution Gadgets Detection
+
 ## Installation
 
 This repository provides instructions on how to set up a development environment for running Node.js programs with
@@ -150,11 +152,3 @@ Information about analyzed packages are located in `pipeline/package-data`:
 
 If a package is either in `nodejs-packages.txt`, `frontend-packages.txt`, `err-packages.txt`
 or `non-instrumented-packages.txt` the pre-analysis is skipped (if `--force` is not set).
-
-## A note on instrumentation filters for Mikhail
-
-As you know there is filtering based on the executed programs in `pipeline/node-wrapper/node.py`.
-
-There are also additional filters on packages names `pipeline/index.js`. Specifically `DONT_ANALYSE` specifies keywords
-that if contained in the package name are not analyzed. You might want to change these (or remove them completely).
-
