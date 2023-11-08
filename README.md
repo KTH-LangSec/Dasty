@@ -2,28 +2,30 @@
 
 Dasty is a performant dynamic taint analysis tool for the detection of prototype pollution gadgets in Node.js
 applications. It is a prototype implementation of the approach described in
-my [Master's thesis](https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-337039).
-The implementation is based on instrumentation
-with [NodeProf by Sun et al](https://github.com/Haiyang-Sun/nodeprof.js).
+my [Master's thesis](https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-337039) and
+the [paper](https://arxiv.org/abs/2311.03919).
+The implementation is based on instrumentation with [NodeProf by Sun et al](https://github.com/Haiyang-Sun/nodeprof.js).
 
 ## Overview
 
 Dasty reports flows from pollutable prototype properties to potentially dangerous function calls. Concretely, Dasty
-defines as sources every object property access (dot or brackets notation) that accesses `Object.prototype`. Sinks
+defines as sources every object property access (dot or brackets notation) that access `Object.prototype`. Sinks
 are defined as all Node.js API calls except the functions of the `assert` module. A recorded flow contains the code
-locations of the source, the sink and the code flow, i.e. all operations it was propagated through.
+locations of the source, the sink, and the code flow, i.e. all operations it was propagated through. Dasy also records
+flows that trigger *universal* gadgets (see the paper [here](https://arxiv.org/abs/2207.11171v1)).
 
 The flows are stored in a MongoDB database and can be exported as [Sarif](https://sarifweb.azurewebsites.net/) files for
 convenient analysis.
 
-Dasty can be run on specific file or leverage the test suits of an application as a basis for the analysis. In addition,
+Dasty can be run on a specific file or leverage the test suits of an application as a basis for the analysis. In
+addition,
 it provides a pipeline to automatically install and analyze npm packages.
 
 ### Analysis Phases
 
 A complete analysis consists of three phases:
 
-1. A pre-analysis that determines if the analyzed packages is intended to be used on the server by looking for Node.js
+1. A pre-analysis that determines if the analyzed packages are intended to be used on the server by looking for Node.js
    API calls. Only if this is the case the analysis is continued. This filtering can be skipped if not needed by
    specifying the `--noPre` flag.
 2. The *unintrusive* taint analysis runs the provided application once. It aims to record all gadgets that do not rely
@@ -31,8 +33,6 @@ A complete analysis consists of three phases:
 3. Finally, the *forced branch execution* taint analysis selectively conducts multiple runs in which the control flow
    of the program is altered based on polluted prototype properties. Through forced branch execution Dasty is able to
    detect flows that rely on multiple polluted properties.
-
-For an in depth description of the concepts and the implementation see thesis report.
 
 ## Installation
 
@@ -48,7 +48,8 @@ any problems during the installation process please refer to their documentation
 
 The current implementation requires Node 18.12.1 installed via nvm and the `NVM_DIR` environment variable to be set. If
 you want to use another installation, you need to adapt the path to the node executable
-in [`node.py`](pipeline/node-wrapper/node.py), [`node`](pipeline/node-wrapper/node) and [`npm`](pipeline/node-wrapper/npm).
+in [`node.py`](pipeline/node-wrapper/node.py), [`node`](pipeline/node-wrapper/node)
+and [`npm`](pipeline/node-wrapper/npm).
 However, we do not recommend to use a version other than 18.12.1.
 
 #### 1. Install nvm
@@ -204,6 +205,8 @@ node index.js --sarif --allTaints --outDir /path/to/sarif-dir/
 | `--processNr <n>`                      | Specify a unique number to run multiple analyses in parallel                                                                     |
 | `--forceProcess`                       | Forces the process to run                                                                                                        |
 | `--forceSetup`                         | Force the setup phase of a package. Usually the setup is skipped when the package is already present.                            |
+| `--sinkAnalysis`                       | Enables a run identifying *special* sinks that trigger *universal* gadgets.                                                      |
+| `--onlySinkAnalysis`                   | Run only the special sink analysis                                                                                               |
 
 #### Sarif export
 
@@ -237,8 +240,10 @@ If you encounter problems running the analysis you might want to try changing th
 avoid unnecessary instrumentation and analysis runs. If the analyzed package matches any of the filters it won't be
 analyzed. The filters are defined in two locations:
 
-1. `DONT_ANALYSE` in [`pipeline/index.js`](pipeline/index.js) specifies package names that are not analyzed at all (i.e. known uninteresting
+1. `DONT_ANALYSE` in [`pipeline/index.js`](pipeline/index.js) specifies package names that are not analyzed at all (i.e.
+   known uninteresting
    packages)
-2. [`node.py`](pipeline/node-wrapper/node.py) defines different allow- and blocklists specifying which processes are being run and instrumented
+2. [`node.py`](pipeline/node-wrapper/node.py) defines different allow- and blocklists specifying which processes are
+   being run and instrumented
 
 If the package is filtered out by the pre-analysis phase, you can try to skip it with the `--noPre` flag.
