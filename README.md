@@ -1,6 +1,6 @@
 # Dasty: Dynamic Taint Analysis Tool for Prototype Pollution Gadgets Detection
 
-Dasty is a performant dynamic taint analysis tool for the detection of prototype pollution gadgets in Node.js
+Dasty is a performant dynamic taint analysis tool for the detection of [prototype pollution gadgets](https://github.com/yuske/server-side-prototype-pollution) in Node.js
 applications. It is a prototype implementation of the approach described in
 my [Master's thesis](https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-337039) and
 the [paper](https://arxiv.org/abs/2311.03919).
