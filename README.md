@@ -80,11 +80,11 @@ mx fetch-jdk --java-distribution labsjdk-ce-19
 export JAVA_HOME=/path/to/labsjdk-ce-19-jvmci-23.0-b04
 ```
 
-#### 3. Install NodeProf
+#### 3. Install [NodeProf](https://github.com/KTH-LangSec/nodeprof.js)
 
 ```bash
 mkdir nodeprof-graalvm && cd nodeprof-graalvm
-git clone https://github.com/pmoosi/nodeprof.js.git
+git clone https://github.com/KTH-LangSec/nodeprof.js.git
 mx sforceimports
 mx build
 ```
