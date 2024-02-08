@@ -164,8 +164,9 @@ function getSinkBlacklist(filepath) {
     return blacklist;
 }
 
-const checkedArgs = new Map();
-
+/**
+ * Checks a taint deeply. It is recommended to use the Nodeprof API instead.
+ */
 function checkTaintDeep(arg, depth = DEFAULT_CHECK_DEPTH) {
     // if (checkedArgs.has(arg)) {
     //     return checkedArgs.get(arg);
@@ -201,7 +202,6 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
             checkTaintDeepRec(key, depth - 1, taints, done);
             checkTaintDeepRec(val, depth - 1, taints, done);
         });
-        // ToDo - other built-in objects?
     } else {
         // for (const prop in arg) {
         for (const prop of Reflect.ownKeys(arg)) {
@@ -220,9 +220,6 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
                 continue;
             }
 
-            // if (done.includes(propVal)) continue;
-            // done.push(propVal);
-
             checkTaintDeepRec(propVal, depth - 1, taints, done);
         }
 
@@ -232,6 +229,9 @@ function checkTaintDeepRec(arg, depth = DEFAULT_CHECK_DEPTH, taints = [], done =
     }
 }
 
+/**
+ * Unwraps an object deeply. Currently, supports Array, Set, Map and Objects.
+ */
 function unwrapDeep(arg, depth = DEFAULT_UNWRAP_DEPTH) {
     // if (checkedArgs.get(arg)?.length === 0) {
     //     return arg;
@@ -277,11 +277,9 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
         // return arg;
     } else if (arg instanceof Map) {
         return new Map(Array.from(arg, ([key, val]) => [unwrapDeepRec(key, depth - 1, done), unwrapDeepRec(val, depth - 1, done)]));
-        // ToDo - other built-in objects?
     } else {
         const unwrappedObj = {};
         for (const prop in arg) {
-            // for (const prop of Reflect.ownKeys(arg)) {
             let propVal;
             try {
                 propVal = arg[prop];
@@ -294,13 +292,9 @@ function unwrapDeepRec(arg, depth = DEFAULT_UNWRAP_DEPTH, done = []) {
 
             done.push(propVal);
 
-            // unwrappedObj[prop] = unwrapDeepRec(propVal, depth - 1, done);
             arg[prop] = unwrapDeepRec(propVal, depth - 1, done);
         }
-        // if (!isBuiltinProto(arg.__proto__)) {
-        //     unwrappedObj.__proto__ = unwrapDeepRec(arg.__proto__, depth, done);
-        // }
-        // return unwrappedObj;
+
         return arg;
     }
 }
@@ -418,8 +412,6 @@ function createInternalFunctionWrapper(iid, f, receiver, isAsync, flows, functio
     // ToDo - constructors?
     if (!f || (!functionScope?.startsWith('node:')) || f === console.log) return null;
     // if it is an internal function replace it with wrapper function that unwraps taint values
-    // ToDo - right now this is done for every internal node function call -> maybe remove e.g. the ones without arguments?
-    // ToDo - should the return value be tainted?
     const fName = f.name;
 
     return (function wrapper(...args) {

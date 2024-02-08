@@ -1,5 +1,3 @@
-const util = require('node:util');
-// const exec = util.promisify(require('child_process').exec);
 const {exec, spawn} = require('child_process');
 const fs = require('fs');
 const {getDb, closeConnection} = require('./db/conn');
@@ -8,8 +6,6 @@ const path = require("path");
 const {sanitizePkgName} = require("./utils/utils");
 const {removeDuplicateFlows, removeDuplicateTaints} = require("../taint-analysis/utils/result-handler");
 
-// const DEFAULT_TIMEOUT = 1 * 60 * 1000;
-// const DEFAULT_TIMEOUT = 20000;
 const DEFAULT_TIMEOUT = -1;
 const MAX_RUNS = 1;
 const NPM_INSTALL_TIMEOUT = 8 * 60 * 1000;
@@ -22,8 +18,6 @@ const SINK_ANALYSIS = __dirname + '/../sink-analysis/';
 const PACKAGE_DATA = __dirname + '/package-data/';
 const NODE_WRAPPER_DIR = __dirname + '/node-wrapper';
 const TMP_WRAPPERS_DIR = NODE_WRAPPER_DIR + '/tmp-wrappers';
-// const NPM_WRAPPER = __dirname + '/node-wrapper/npm';
-// const NODE_WRAPPER = __dirname + '/node-wrapper/node';
 const TMP_DIR = __dirname + '/tmp';
 const FAILED_DB_WRITE = __dirname + '/results/failed-db-write';
 

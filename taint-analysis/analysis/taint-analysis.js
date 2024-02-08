@@ -107,7 +107,7 @@ class TaintAnalysis {
                 || argLength === 0)) return;
 
         // if it is an internal function replace it with wrapper function that checks for and unwraps taint values
-        // ToDo - we could add type hints for certain functions (e.g. eval has to unwrap to string)
+        // Possible ToDo: we could add type hints for certain functions (e.g. eval has to unwrap to string)
 
         // is it blacklisted?
         let blacklisted = false;
@@ -240,7 +240,6 @@ class TaintAnalysis {
 
         // check if function is blacklisted
         // if the function has no name and the module is not blacklisted we take it as a sink for now (this happens e.g. when promisified)
-        // ToDo - also check functions with no name (by e.g. comparing the functions themselves?)
         if (this.sinksBlacklist) {
             const blacklistedFunctions = this.sinksBlacklist.get(functionScope);
             if (blacklistedFunctions !== undefined && (blacklistedFunctions == null || (!f.name && blacklistedFunctions.has(f.name)))) {
@@ -272,8 +271,7 @@ class TaintAnalysis {
     }
 
     invokeFun = (iid, f, base, args, result, isConstructor, isMethod, functionScope, functionIid, functionSid) => {
-        // wrap require to analysed module; ToDo - might be improved by sending the scope from nodeprof
-        // ToDo - does not work perfectly - maybe there is a better way to record entry points
+        // wrap require to analysed module to record entry points
         if (this.requiredPkg && (f?.name === 'require' || (f.__x_isWrapperFun && f?.__x_fName === 'require') && args.length > 0)
             && this.requiredPkg
             && result === this.requiredPkg) {
@@ -390,7 +388,6 @@ class TaintAnalysis {
         }
 
         // if it is a typeof comparison with a taint value use this information to infer the type
-        // ToDo - differentiate between === and !== based on conditional result (maybe record separately)
         if (((isAnalysisWrapper(left) && left?.__x_isInfoWrapper && left.__x_type === INFO_TYPE.TYPE_OF)
                 || (isAnalysisWrapper(right) && right?.__x_isInfoWrapper && right.__x_type === INFO_TYPE.TYPE_OF))
             && ['==', '==='].includes(op)) {
@@ -413,7 +410,7 @@ class TaintAnalysis {
             taint.__x_type = type;
         }
 
-        // ToDo - look into notUndefinedOr (default value for object deconstruction e.g. {prop = []})
+        // ToDo - handle notUndefinedOr (default value for object deconstruction e.g. {prop = []})
 
         if (!isTaintProxy(left) && !isTaintProxy(right)) return;
 
@@ -510,12 +507,10 @@ class TaintAnalysis {
 
         // if (typeof offset !== 'string' && typeof offset !== 'number') return;
 
-        // currently we only care for sources in non-native modules, even when analysing all
-        // we also don't handle undefined property accesses of tainted values here
-        // this is instead handled in the proxy itself
-        // not that scope is always undefined if val !== undefined (this is a nodeprof optimization)
-        // ToDo - make configurable
-        if ((/*!scope?.startsWith('node_modules/') &&*/ !scope?.startsWith('file:')) || scope.includes('test/') || scope.includes('tests/') || isTaintProxy(base)) return;
+        /* Currently we only care for sources in non-native modules, even when analysing all.
+        We also don't handle undefined property accesses of tainted values here, this is instead handled in the proxy itself.
+        Note that scope is always undefined if val !== undefined (this is a nodeprof optimization) */
+        if ((!scope?.startsWith('file:')) || scope.includes('test/') || scope.includes('tests/') || isTaintProxy(base)) return;
 
         // Create new taint value when the property is either undefined or injected by us (meaning that it would be undefined in a non-analysis run)
         const loc = iidToLocation(iid);
@@ -552,7 +547,7 @@ class TaintAnalysis {
 
         switch (op) {
             case 'typeof':
-                /** if we don't know the type yet return the proxy object and an information that it is the result of typeof
+                /* if we don't know the type yet return the proxy object and an information that it is the result of typeof
                  this is used further up in the comparison to assign the correct type */
                 const cf = createCodeFlow(iid, 'unary', 'typeof');
                 let tpe = left.__x_copyTaint(left.__x_typeof(), cf, 'string');
@@ -565,7 +560,6 @@ class TaintAnalysis {
                 // return new taint with 'reversed' value
                 let res = left.__x_copyTaint(!left.__x_val, createCodeFlow(iid, 'unary', '!'), 'boolean');
                 return {result: res};
-            // return {result: !left.__x_val};
         }
     }
 
@@ -590,14 +584,13 @@ class TaintAnalysis {
         }
     }
 
+    #forInLoops = new Map(); // keeps track of the locations of all for in loops
+    #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
 
     /**
      * Called whenever a control flow root is executed (e.g. if, while, async function call, ....)
      * For loops it is called every time the condition is evaluated (i.e. every loop)
      */
-    #forInLoops = new Map(); // keeps track of the locations of all for in loops
-    #injectedForInLoop = new Map(); // keeps track of all injectedForInLoop (as not all loops will be injected)
-
     controlFlowRootEnter = (iid, loopType, conditionResult) => {
         if (!this.injectForIn || loopType !== 'ForInIteration' || this.loops.has(iid)) return;
 

@@ -42,7 +42,6 @@ class TaintProxyHandler {
      * Defines a default values based on a type
      */
     __x_getDefaultVal(type) {
-        // ToDo - symbol, bigint?
         switch (type) {
             case 'number':
                 return 1;
@@ -76,7 +75,6 @@ class TaintProxyHandler {
     // }
 
     __x_typeof() {
-        // ToDo - boolean, symbol, bigint?
         if (this.__x_type === 'array') {
             return 'object';
         }
@@ -122,8 +120,8 @@ class TaintProxyHandler {
                     this.__x_taint.codeFlow.push(createCodeFlow(null, 'functionSideEffect', prop));
                 }
 
-                // ToDo - maybe don't propagate taint if function returns only boolean or int (e.g. Array.push)?
-                // but in theory it might be possible to overwrite these methods to return something else so I'm keeping it for now
+                // Maybe don't propagate taint if function returns only boolean or int (e.g. Array.push)?
+                // But in theory it might be possible to overwrite these methods to return something else, so I'm keeping it for now
                 return this.__x_copyTaint(newVal, createCodeFlow(null, 'functionResult', prop), getTypeOf(newVal));
             }.bind(this);
         }
@@ -138,28 +136,6 @@ class TaintProxyHandler {
             return newVal;
         }
     }
-
-    // unused (handled by get())
-    // __getArrayElem(iid, index) {
-    //     this.__x_type = 'array';
-    //
-    //     // inject new taint value if access is undefined
-    //     // ToDo - think about if we should taint every access (it might not always be true -> e.g. if was set after the pollution)
-    //     // if (index >= this.__val.length) {
-    //     //     const cf = createCodeFlow(null, 'arrayElemRead', index);
-    //     //     return this.__copyTaint(undefined, cf, null);
-    //     // } else {
-    //     //     return this.__val[index];
-    //     // }
-    //
-    //     const val = this.__x_val[index];
-    //     if (isTaintProxy(val)) {
-    //         return val;
-    //     }
-    //
-    //     const cf = createCodeFlow(iid, 'arrayElemRead', index);
-    //     return this.__copyTaint(val, cf, null);
-    // }
 
     /**
      * Creates a copy of a taint value with an optional new value and an added codeFlow
@@ -278,7 +254,7 @@ class TaintProxyHandler {
      */
     get(target, prop, receiver) {
         if (prop === 'constructor') {
-            // ToDo
+            // ToDo - handle constructor access
             return Reflect.get(target, prop, receiver);
         } else if (this.hasOwnProperty(prop) || TaintProxyHandler.prototype.hasOwnProperty(prop)) {
             // if the property is defined in the class delegate to it (this makes it straightforward to overwrite specific functions/members)
@@ -286,7 +262,6 @@ class TaintProxyHandler {
         } else if (typeof prop === 'symbol') {
             // ToDo - handle symbol access
             return undefined;
-            // return this.__val[prop] ? this.__val[prop] : undefined;
         } else if (typeof prop === 'string' && prop.startsWith('__x_')) {
             // access to other analysis wrappers
             return undefined;
@@ -317,8 +292,6 @@ class TaintProxyHandler {
             }
 
             const type = getTypeOf(newVal);
-
-            // ToDo - check blacklist
 
             // don't inject directly - this can lead to unwanted behavior and does not have any new information as we already track the taint via the base
             return this.__x_copyTaint(newVal, cf, type);

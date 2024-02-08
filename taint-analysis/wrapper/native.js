@@ -33,8 +33,6 @@ const builtins = new Map([
     ]
 ]);
 
-// ToDo - sinks by name
-
 const nodeJsFns = new Map();
 nodeJsFns.set('node:url', new Map([
     [

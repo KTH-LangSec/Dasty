@@ -24,7 +24,7 @@ class ModuleWrapperProxyHandler {
      * and returns the wrapped result (if not primitive)
      */
     get(target, property, receiver) {
-        // ToDo - does it work with getter???
+        // ToDo - chick if it work with getter
         if (property === '__x_entryPoint') {
             // allow to access handlers entrypoint
             return this.entryPoint;
