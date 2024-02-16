@@ -2,3 +2,4 @@ node_modules/
 *.sarif
 
 /config.json
+/test-stuff
