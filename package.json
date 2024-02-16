@@ -9,11 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "install": "^0.13.0",
     "JSONStream": "^1.3.5",
     "mongodb": "^5.1.0",
-    "node-fetch": "^2.6.11",
-    "npm": "^9.6.7",
-    "npm-registry-client": "^8.6.0"
+    "node-fetch": "^2.6.11"
   }
 }
